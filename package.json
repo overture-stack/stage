@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@arranger/components": "^2.4.0",
+    "@arranger/components": "^2.12.1",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
@@ -17,6 +17,7 @@
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.21.1",
     "emotion-theming": "^10.0.27",
+    "env-var": "^7.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",

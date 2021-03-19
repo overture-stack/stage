@@ -72,15 +72,17 @@ const getTableStyle = (theme: typeof defaultTheme) => css`
         font-weight: normal;
 
         /* left-orient checkboxes */
-        & .dropDownContentElement {
-          margin-left: 15px;
-          padding-left: 8px;
-          position: relative;
-        }
-        & .dropDownContentElement input[type='checkbox' i] {
-          position: absolute;
-          left: -17px;
-          bottom: 4px;
+        &.multiple {
+          .dropDownContentElement {
+            margin-left: 15px;
+            padding-left: 8px;
+            position: relative;
+          }
+          & .dropDownContentElement input[type='checkbox' i] {
+            position: absolute;
+            left: -17px;
+            bottom: 4px;
+          }
         }
       }
     }
@@ -205,7 +207,12 @@ const getTableStyle = (theme: typeof defaultTheme) => css`
 `;
 
 const RepoTable = (props: PageContentProps) => {
-  const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID } = getConfig();
+  const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+
+  const customExporters = [
+    {label: 'File Table'}, // exports a TSV with what is displayed on the table (columns selected, etc.)
+    {label: 'File Manifest', columns: NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS}, // exports a TSV with the manifest columns
+  ];
 
   return (
     <div css={(theme) => getTableStyle(theme)}>
@@ -213,7 +220,7 @@ const RepoTable = (props: PageContentProps) => {
         {...props}
         showFilterInput={false}
         columnDropdownText={'Columns'}
-        exportTSVText={'Download'}
+        exporter={customExporters}
         downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, 'download')}
       />
     </div>
