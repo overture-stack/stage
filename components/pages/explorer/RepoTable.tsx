@@ -212,9 +212,10 @@ const RepoTable = (props: PageContentProps) => {
     .split(',').filter(field => field.trim()) // break it into arrays, and ensure there's no empty field names
     .map(fieldName => fieldName.replace(/['"]+/g, '').trim());
 
+  const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
   const customExporters = [
-    {label: 'File Table'}, // exports a TSV with what is displayed on the table (columns selected, etc.)
-    {label: 'File Manifest', columns: manifestColumns,}, // exports a TSV with the manifest columns
+    {label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv`}, // exports a TSV with what is displayed on the table (columns selected, etc.)
+    {label: 'File Manifest', fileName: `score-manifest.${today}.tsv` , columns: manifestColumns,}, // exports a TSV with the manifest columns
   ];
 
   return (
