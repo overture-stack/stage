@@ -209,8 +209,8 @@ const getTableStyle = (theme: typeof defaultTheme) => css`
 const RepoTable = (props: PageContentProps) => {
   const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
   const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS
-    .split(',')
-    .map(fieldName => fieldName.trim().replace(/['"]+/g, ''));
+    .split(',').filter(field => field.trim()) // break it into arrays, and ensure there's no empty field names
+    .map(fieldName => fieldName.replace(/['"]+/g, '').trim());
 
   const customExporters = [
     {label: 'File Table'}, // exports a TSV with what is displayed on the table (columns selected, etc.)
