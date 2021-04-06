@@ -31,6 +31,7 @@ const PageContent = (props: PageContentProps) => {
     <div
       css={css`
         flex: 1;
+        width: 100vw;
       `}
     >
       <div
@@ -42,10 +43,8 @@ const PageContent = (props: PageContentProps) => {
       >
         <div
           css={(theme) => css`
-            flex: 3;
+            flex: 0 0 ${theme.dimensions.facets.width}px;
             flex-direction: column;
-            min-width: ${theme.dimensions.facets.minWidth}px;
-            max-width: ${theme.dimensions.facets.maxWidth}px;
             background-color: ${theme.colors.white};
             z-index: 1;
             ${theme.shadow.right};

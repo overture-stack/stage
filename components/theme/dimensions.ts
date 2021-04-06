@@ -27,8 +27,7 @@ const dimensions = {
     height: 47,
   },
   facets: {
-    minWidth: 250,
-    maxWidth: 270,
+    width: 250,
   },
   labIcon: {
     height: 35,
