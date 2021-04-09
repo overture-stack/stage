@@ -263,6 +263,7 @@ const RepoTable = (props: PageContentProps) => {
         >
           instructions
         </StyledLink>
+        .
       </span>
     ), },
   ];
