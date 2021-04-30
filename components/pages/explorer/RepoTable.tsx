@@ -250,9 +250,13 @@ const RepoTable = (props: PageContentProps) => {
           padding-top: 7px;
           white-space: pre-line;
           width: 140px;
+
+          a {
+            margin-left: 3px;
+          }
         `}
       >
-        {`To download files using a file manifest, please follow these `}
+        To download files using a file manifest, please follow these
         <StyledLink
           css={css`
             line-height: inherit;
