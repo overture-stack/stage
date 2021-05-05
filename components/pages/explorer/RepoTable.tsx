@@ -22,6 +22,7 @@
 import { css } from '@emotion/core';
 import dynamic from 'next/dynamic';
 import urlJoin from 'url-join';
+import { useTheme } from 'emotion-theming';
 
 import { PageContentProps } from './index';
 import StyledLink from '../../Link';
@@ -229,6 +230,7 @@ const getTableStyle = (theme: typeof defaultTheme) => css`
 `;
 
 const RepoTable = (props: PageContentProps) => {
+  const theme: typeof defaultTheme = useTheme();
   const {
     NEXT_PUBLIC_ARRANGER_API,
     NEXT_PUBLIC_ARRANGER_PROJECT_ID,
@@ -245,7 +247,7 @@ const RepoTable = (props: PageContentProps) => {
     { label: () => (
       <span
         css={css`
-          border-top: 1px solid #eee;
+          border-top: 1px solid ${theme.colors.grey_3};
           margin-top: -3px;
           padding-top: 7px;
           white-space: pre-line;
@@ -273,7 +275,7 @@ const RepoTable = (props: PageContentProps) => {
   ];
 
   return (
-    <div css={(theme) => getTableStyle(theme)}>
+    <div css={getTableStyle(theme)}>
       <Table
         {...props}
         showFilterInput={false}
