@@ -48,12 +48,12 @@ const NavBar: React.ComponentType = () => {
     <img
       src={`${NEXT_PUBLIC_BASE_PATH}/static/dms_user_assets/${NEXT_PUBLIC_LOGO_FILENAME}`}
       alt={NEXT_PUBLIC_LAB_NAME}
-      width={theme.dimensions.labIcon.width}
       height={theme.dimensions.labIcon.height}
     />
   ) : (
-    <OvertureLogo width={theme.dimensions.labIcon.width} height={theme.dimensions.labIcon.height} />
+    <OvertureLogo height={theme.dimensions.labIcon.height} />
   );
+
   return (
     <div
       css={(theme: typeof defaultTheme) => css`
