@@ -1,6 +1,6 @@
 {
   "name": "dms-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@arranger/components": "^2.12.3",
+    "@arranger/components": "^2.12.13",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
@@ -19,7 +19,7 @@
     "emotion-theming": "^10.0.27",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "next": "^9.5.4",
     "query-string": "^6.13.8",
     "react": "16.13.1",
