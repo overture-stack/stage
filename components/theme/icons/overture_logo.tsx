@@ -23,15 +23,12 @@ import { css } from '@emotion/core';
 
 import { IconProps } from './types';
 
-const OvertureLogo = ({ height, width, style }: IconProps) => {
+const OvertureLogo = ({ height, style }: IconProps) => {
   return (
     <svg
       css={css`
         ${style};
-        height: ${height};
-        width: ${width};
       `}
-      width={width}
       height={height}
       viewBox="0 0 55 55"
     >

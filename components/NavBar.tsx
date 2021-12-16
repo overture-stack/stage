@@ -48,7 +48,7 @@ const NavBar: React.ComponentType = () => {
     <img
       src={`${NEXT_PUBLIC_BASE_PATH}/static/dms_user_assets/${NEXT_PUBLIC_LOGO_FILENAME}`}
       alt={NEXT_PUBLIC_LAB_NAME}
-      height={theme.dimensions.labIcon.height}
+      height={`${theme.dimensions.labIcon.height}px`}
     />
   ) : (
     <OvertureLogo height={theme.dimensions.labIcon.height} />
