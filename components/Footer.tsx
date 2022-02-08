@@ -21,14 +21,15 @@
 
 import React from 'react';
 import { css } from '@emotion/core';
-
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
-
 import StyledLink from './Link';
 import { DMS_HELP_URL, DMS_INSTALLATION_URL } from '../global/utils/constants';
+import { getConfig } from '../global/config';
 
 const Footer = () => {
+  const { NEXT_PUBLIC_UI_VERSION } = getConfig();
+
   return (
     <div
       css={(theme: typeof defaultTheme) => css`
@@ -38,7 +39,7 @@ const Footer = () => {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        padding-right: 18px;
+        padding: 0 18px;
         ${theme.shadow.default};
         z-index: 10;
         position: fixed;
@@ -47,6 +48,14 @@ const Footer = () => {
         right: 0px;
       `}
     >
+      <div
+        css={(theme) => css`
+          ${theme.typography.subheading2}
+          margin-right: auto;
+        `}
+      >
+        v{NEXT_PUBLIC_UI_VERSION}
+      </div>
       <StyledLink
         css={(theme) => css`
           ${theme.typography.subheading2};
