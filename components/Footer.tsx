@@ -48,14 +48,6 @@ const Footer = () => {
         right: 0px;
       `}
     >
-      <div
-        css={(theme) => css`
-          ${theme.typography.subheading2}
-          margin-right: auto;
-        `}
-      >
-        v{NEXT_PUBLIC_UI_VERSION}
-      </div>
       <StyledLink
         css={(theme) => css`
           ${theme.typography.subheading2};
@@ -90,7 +82,7 @@ const Footer = () => {
           `
         }
       >
-        powered by
+        {NEXT_PUBLIC_UI_VERSION && `UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
       </span>
       <a href="https://www.overture.bio/" target="_blank">
         <OvertureLogoWithText width={100} height={18} />
