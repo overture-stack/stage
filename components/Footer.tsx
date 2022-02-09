@@ -21,14 +21,15 @@
 
 import React from 'react';
 import { css } from '@emotion/core';
-
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
-
 import StyledLink from './Link';
 import { DMS_HELP_URL, DMS_INSTALLATION_URL } from '../global/utils/constants';
+import { getConfig } from '../global/config';
 
 const Footer = () => {
+  const { NEXT_PUBLIC_UI_VERSION } = getConfig();
+
   return (
     <div
       css={(theme: typeof defaultTheme) => css`
@@ -38,7 +39,7 @@ const Footer = () => {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        padding-right: 18px;
+        padding: 0 18px;
         ${theme.shadow.default};
         z-index: 10;
         position: fixed;
@@ -81,7 +82,7 @@ const Footer = () => {
           `
         }
       >
-        powered by
+        {NEXT_PUBLIC_UI_VERSION && `UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
       </span>
       <a href="https://www.overture.bio/" target="_blank">
         <OvertureLogoWithText width={100} height={18} />
