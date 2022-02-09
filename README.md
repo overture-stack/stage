@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+You must use npm v8.3.0 at a minimum to ensure dependency overrides work.
+Minimum version comes bundled with Node v17.3.0 (https://nodejs.org/dist/index.json)
+
 First, run the development server:
 
 ```bash
