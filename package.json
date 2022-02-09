@@ -14,7 +14,7 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@types/lodash": "^4.14.168",
-    "axios": "^0.21.1",
+    "axios": "^0.25.0",
     "emotion-theming": "^10.0.27",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
@@ -40,5 +40,15 @@
     "printWidth": 100,
     "trailingComma": "all",
     "singleQuote": true
+  },
+  "overrides": {
+    "node-fetch": "3.2",
+    "graphiql": "1.5.17",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "engines": {
+    "node": ">=17.3.0",
+    "npm": ">=8.3.0"
   }
 }
