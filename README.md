@@ -2,17 +2,36 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+This app has been tested using NodeJS version ^16, and it may not work correctly on versions <14.
+
+We strongly recommend using the supported version.
+
+### Development Setup
+
+Setting up the project, and running a development server
 
 ```bash
-npm run dev
-# or
-yarn dev
+# 1. install the dependencies
+  npm ci
+
+# 2. serve the application
+  npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+This app has been tested using Node v16+. We recommend using this version if you encounter any issues.
+
+### Troubleshooting Note:
+
+DMS-UI requires NPM v^8.3.0, to ensure all dependencies are installed correctly
+
+```bash
+# If you need to update your NPM version first, use the following command:
+  npm i -g npm
+```
 
 ## Learn More
 
