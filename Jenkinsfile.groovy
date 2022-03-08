@@ -61,6 +61,7 @@ spec:
 				container('node') {
 					sh "npm ci"
 					sh "npm run test"
+					sh "npm run build"
 				}
 			}
 		}
