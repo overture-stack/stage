@@ -1,4 +1,4 @@
-FROM node:12.13.1-alpine
+FROM node:lts-alpine
 
 ARG ASSET_PREFIX
 ENV ASSET_PREFIX $ASSET_PREFIX

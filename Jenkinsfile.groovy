@@ -13,7 +13,7 @@ kind: Pod
 spec:
   containers:
   - name: node
-    image: node:12.13.1
+    image: node:lts-alpine
     tty: true
   - name: docker
     image: docker:18-git
