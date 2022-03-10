@@ -106,7 +106,6 @@ spec:
 				}
 			}
 		}
-		
 
 		stage('Deploy to overture-qa') {
 			when {
@@ -141,32 +140,51 @@ spec:
 				])
 			}
 		}
+  }
 
-    }
-    post {
-        unsuccessful {
-            // i used node container since it has curl already
-            container("node") {
-                script {
-                    if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
-                    withCredentials([string(credentialsId: 'JenkinsFailuresSlackChannelURL', variable: 'JenkinsFailuresSlackChannelURL')]) { 
-                            sh "curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}) \"}' ${JenkinsFailuresSlackChannelURL}"
-                        }
-                    }
-                }
+  // TODO: remove "master" references after renaming the mainstream branch
+
+  post {
+    fixed {
+      withCredentials([string(
+        credentialsId: 'OvertureSlackJenkinsWebhookURL',
+        variable: 'fixed_slackChannelURL'
+      )]) {
+        container('node') {
+          script {
+            if (env.BRANCH_NAME ==~ /(develop|main|master)/) {
+              sh "curl \
+                -X POST \
+                -H 'Content-type: application/json' \
+                --data '{ \
+                  \"text\":\"Build Fixed: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
+                }' \
+                ${fixed_slackChannelURL}"
             }
+          }
         }
-        fixed {
-            // i used node container since it has curl already
-            container("node") {
-                script {
-                    if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
-                    withCredentials([string(credentialsId: 'JenkinsFailuresSlackChannelURL', variable: 'JenkinsFailuresSlackChannelURL')]) { 
-                            sh "curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Build Fixed: ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}) \"}' ${JenkinsFailuresSlackChannelURL}"
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
+
+    unsuccessful {
+      withCredentials([string(
+        credentialsId: 'OvertureSlackJenkinsWebhookURL',
+        variable: 'failed_slackChannelURL'
+      )]) {
+        container('node') {
+          script {
+            if (env.BRANCH_NAME ==~ /(develop|main|master)/) {
+              sh "curl \
+                -X POST \
+                -H 'Content-type: application/json' \
+                --data '{ \
+                  \"text\":\"Build Failed: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
+                }' \
+                ${failed_slackChannelURL}"
+            }
+          }
+        }
+      }
+    }
+  }
 }
