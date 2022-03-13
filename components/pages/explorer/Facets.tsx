@@ -44,11 +44,7 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
   }
   .aggregations {
     .aggregation-card {
-      border-bottom: 1px solid ${theme.colors.grey_3};
-      padding-right: 8px;
-      &:first-of-type {
-        margin-top: 0;
-      }
+      border-bottom-color: ${theme.colors.grey_3};
       border-left: 3px solid;
       &:nth-of-type(5n + 1) {
         border-left-color: ${theme.colors.secondary};
@@ -66,48 +62,19 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
         border-left-color: ${theme.colors.accent3};
       }
       .header {
-        padding: 5px 0 6px 6px;
+        &.collapsed {
+          background-color: ${theme.colors.grey_2};
+        }
         .title-wrapper {
-          align-items: flex-start;
-          border-bottom: 1px solid ${theme.colors.grey_2};
-          padding-bottom: 5px;
-          .title-control {
-            flex: 1;
-            cursor: pointer;
-            padding-top: 2px;
+          border-bottom-color: ${theme.colors.grey_2};
+          .arrow {
+            stroke: #151c3d;
+            transition: all 0s !important;
           }
-          &.collapsed {
-            background-color: ${theme.colors.grey_2};
-            margin: -5px -8px -6px -7px;
-            padding: 5px 8px 6px 6px;
-          }
-          & .title {
+          .title {
             ${theme.typography.subheading}
             color: ${theme.colors.accent_dark};
-            margin-left: 8px;
-            display: inline-block;
-            width: 90%;
             line-height: 20px;
-          }
-          & .arrow {
-            display: inline-block;
-            height: 100%;
-            vertical-align: top;
-            transition: all 0s !important;
-            &:after {
-              display: inline-block;
-              transform: translateX(-2px) rotate(270deg);
-              content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%23151c3d' fill-rule='evenodd' d='M9.952 3.342c.468-.456 1.228-.456 1.697 0 .234.228.351.526.351.825 0 .298-.117.597-.351.825l-4.8 4.666c-.469.456-1.23.456-1.697 0l-4.8-4.666c-.47-.456-.47-1.194 0-1.65.468-.456 1.228-.456 1.696 0L6 7.184l3.952-3.842z'/%3E%3C/svg%3E ");
-            }
-          }
-          &.collapsed {
-            & .arrow {
-              &:after {
-                display: inline-block;
-                transform: translateX(-2px) rotate(-90deg);
-                content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%23151c3d' fill-rule='evenodd' d='M9.952 3.342c.468-.456 1.228-.456 1.697 0 .234.228.351.526.351.825 0 .298-.117.597-.351.825l-4.8 4.666c-.469.456-1.23.456-1.697 0l-4.8-4.666c-.47-.456-.47-1.194 0-1.65.468-.456 1.228-.456 1.696 0L6 7.184l3.952-3.842z'/%3E%3C/svg%3E ");
-              }
-            }
           }
         }
       }
@@ -126,13 +93,6 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
             border-radius: 3px;
             margin: 2px 0;
           }
-          & .bucket-link {
-            display: flex;
-            align-items: center;
-          }
-        }
-        &:last-of-type {
-          padding-bottom: 4px;
         }
       }
       & .showMore-wrapper {
@@ -159,9 +119,13 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
       }
       & .filter .inputWrapper {
         border-radius: 5px;
-        box-shadow: 0 0 4px 1px rgba(155, 199, 237, 0.8);
         border: 1px solid ${theme.colors.secondary};
         margin: 6px 5px 7px 0;
+
+        &.focused {
+          box-shadow: 0 0 4px 1px rgba(155, 199, 237, 0.8);
+        }
+
         & input {
           ${theme.typography.data}
           &::placeholder {
@@ -226,15 +190,8 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
         }
       }
 
-      & .action-icon {
-        margin-left: 5px;
-        margin-top: 2px;
-        svg {
-          fill: ${theme.colors.secondary};
-          width: 14px;
-          height: 14px;
-          padding-bottom: 3px;
-        }
+      & .action-icon svg {
+        fill: ${theme.colors.secondary};
       }
     }
   }
