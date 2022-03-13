@@ -40,7 +40,7 @@ const PageContent = (props: PageContentProps) => {
           margin-left: 0;
         `}
       >
-        <div
+        <aside
           css={(theme) => css`
             flex: 3;
             flex-direction: column;
@@ -56,7 +56,7 @@ const PageContent = (props: PageContentProps) => {
           `}
         >
           <Facets {...props} />
-        </div>
+        </aside>
         <div
           css={(theme) => css`
             display: flex;
