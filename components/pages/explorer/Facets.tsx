@@ -47,14 +47,6 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
         & .bucket-item {
           ${theme.typography.data}
           padding-bottom: 2px;
-          & .bucket-count {
-            ${theme.typography.label2}
-            display: inline-block;
-            background-color: ${theme.colors.grey_3};
-            padding: 0 3px;
-            border-radius: 3px;
-            margin: 2px 0;
-          }
         }
       }
 
@@ -120,6 +112,17 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
         headerDividerColor: theme.colors.grey_2,
         headerFontColor: theme.colors.accent_dark,
       },
+      BooleanAgg: {
+        BucketCount: {
+          activeBackground: theme.colors.secondary_2,
+          background: theme.colors.grey_3,
+          borderRadius: '3px',
+          css: css`
+            ${theme.typography.label2}
+            padding: 0 3px;
+          `,
+        },
+      },
       FilterInput: {
         css: css`
           border-radius: 5px;
@@ -165,7 +168,7 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
       ToggleButton: {
         background: theme.colors.white,
         activeBackground: theme.colors.secondary_light,
-        borderColor: theme.colors.grey_5,
+        borderColor: theme.colors.grey_4,
         css: css`
           padding: 2px 5px 8px;
           margin: 5px 5px 0;
@@ -175,19 +178,6 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
         fontColor: theme.colors.black,
         OptionCSS: css`
           ${theme.typography.data}
-
-          // these are carryover
-          &.active .bucket-count {
-            background: ${theme.colors.secondary_2};
-          }
-
-          .bucket-count {
-            ${theme.typography.label2}
-            display: inline-block;
-            background-color: ${theme.colors.grey_3};
-            padding: 0 3px;
-            border-radius: 3px;
-          }
         `,
       },
       TreeJointIcon: {
