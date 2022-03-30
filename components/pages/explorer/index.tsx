@@ -19,9 +19,10 @@
  *
  */
 
-import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import urlJoin from 'url-join';
 import { css, useTheme } from '@emotion/react';
+import { Arranger } from '@overture-stack/arranger-components';
 
 import PageContent from './PageContent';
 import PageLayout from '../../PageLayout';
@@ -29,23 +30,17 @@ import PageLayout from '../../PageLayout';
 import { RepoFiltersType } from './sqonTypes';
 import { getConfig } from '../../../global/config';
 import createArrangerFetcher from '../../utils/arrangerFetcher';
-import { useEffect, useState } from 'react';
 import ErrorNotification from '../../ErrorNotification';
 import getConfigError from './getConfigError';
 import Loader from '../../Loader';
 import sleep from '../../utils/sleep';
-
-const Arranger = dynamic(
-  () => import('@arranger/components/dist/Arranger').then((comp) => comp.Arranger),
-  { ssr: false },
-) as any;
 
 export interface PageContentProps {
   sqon: RepoFiltersType;
   selectedTableRows: string[];
   setSelectedTableRows: (id: string) => void;
   index: string;
-  api: ({
+  apiFetcher: ({
     endpoint,
     body,
     headers,
@@ -105,7 +100,6 @@ const RepositoryPage = () => {
         await sleep(1000);
         setLoadingArrangerConfig(false);
       });
-    setLoadingArrangerConfig(false);
   }, []);
 
   const ConfigError = getConfigError({
@@ -144,7 +138,7 @@ const RepositoryPage = () => {
         </ErrorNotification>
       ) : (
         <Arranger
-          api={arrangerFetcher}
+          apiFetcher={arrangerFetcher}
           graphqlField={NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD}
           index={NEXT_PUBLIC_ARRANGER_INDEX}
           render={(props: PageContentProps) => {

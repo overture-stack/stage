@@ -28,6 +28,10 @@ export const PageContext = React.createContext<ClientSideGetInitialPropsContext>
   asPath: '',
 });
 
+if (process.env.NODE_ENV === 'development') {
+  PageContext.displayName = 'PageContext';
+}
+
 export default function usePageContext(): ClientSideGetInitialPropsContext {
   const pageContext = React.useContext(PageContext);
   return pageContext;

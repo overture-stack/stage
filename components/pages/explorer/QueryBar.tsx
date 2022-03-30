@@ -19,17 +19,12 @@
  *
  */
 
-import dynamic from 'next/dynamic';
 import { css, useTheme } from '@emotion/react';
+import { CurrentSQON } from '@overture-stack/arranger-components';
 import { Row } from 'react-grid-system';
 
 import { DMSThemeInterface } from '../../theme';
 import { PageContentProps } from '.';
-
-const CurrentSQON = dynamic(
-  import('@arranger/components/dist/Arranger').then((comp) => comp.CurrentSQON),
-  { ssr: false },
-) as any;
 
 const getCss = (theme: DMSThemeInterface) => css`
   ${theme.shadow.default};

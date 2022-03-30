@@ -19,19 +19,14 @@
  *
  */
 
-import dynamic from 'next/dynamic';
 import { css, useTheme } from '@emotion/react';
+import { Table } from '@overture-stack/arranger-components';
 import urlJoin from 'url-join';
 
 import { PageContentProps } from './index';
 import StyledLink from '../../Link';
 import { DMSThemeInterface } from '../../theme';
 import { getConfig } from '../../../global/config';
-
-const Table = dynamic(
-  () => import('@arranger/components/dist/Arranger').then((comp) => comp.Table),
-  { ssr: false },
-) as any;
 
 const getTableStyle = (theme: DMSThemeInterface) => css`
   border-radius: 5px;
