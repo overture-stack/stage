@@ -19,7 +19,7 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 import IconButton from './IconButton';
@@ -61,8 +61,8 @@ const getContainerStyles = (size: ErrorSize) =>
     `,
   }[size]);
 
-const ErrorContentContainer = styled('div')`
-  ${({ theme, size }: { theme: typeof defaultTheme; size: ErrorSize }) => css`
+const ErrorContentContainer = styled('div')<{ size: ErrorSize }>`
+  ${({ theme, size }) => css`
     border: 1px solid ${theme.colors.error_2};
     border-radius: 5px;
     ${theme.shadow.default};

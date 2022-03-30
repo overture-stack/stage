@@ -21,6 +21,7 @@
 
 import dynamic from 'next/dynamic';
 import urlJoin from 'url-join';
+import { css, useTheme } from '@emotion/react';
 
 import PageContent from './PageContent';
 import PageLayout from '../../PageLayout';
@@ -32,7 +33,6 @@ import { useEffect, useState } from 'react';
 import ErrorNotification from '../../ErrorNotification';
 import getConfigError from './getConfigError';
 import Loader from '../../Loader';
-import { css } from '@emotion/core';
 import sleep from '../../utils/sleep';
 
 const Arranger = dynamic(
@@ -89,6 +89,7 @@ const RepositoryPage = () => {
     NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
     NEXT_PUBLIC_ARRANGER_INDEX,
   } = getConfig();
+  const theme = useTheme();
 
   const [availableProjects, setAvailableProjects] = useState<Project[]>([]);
   const [loadingProjects, setLoadingProjects] = useState<boolean>(true);

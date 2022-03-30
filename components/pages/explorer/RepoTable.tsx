@@ -19,14 +19,13 @@
  *
  */
 
-import { css } from '@emotion/core';
 import dynamic from 'next/dynamic';
+import { css, useTheme } from '@emotion/react';
 import urlJoin from 'url-join';
-import { useTheme } from 'emotion-theming';
 
 import { PageContentProps } from './index';
 import StyledLink from '../../Link';
-import defaultTheme from '../../theme';
+import { DMSThemeInterface } from '../../theme';
 import { getConfig } from '../../../global/config';
 
 const Table = dynamic(
@@ -34,7 +33,7 @@ const Table = dynamic(
   { ssr: false },
 ) as any;
 
-const getTableStyle = (theme: typeof defaultTheme) => css`
+const getTableStyle = (theme: DMSThemeInterface) => css`
   border-radius: 5px;
   background-color: ${theme.colors.white};
   padding: 8px;
@@ -230,12 +229,12 @@ const getTableStyle = (theme: typeof defaultTheme) => css`
 `;
 
 const RepoTable = (props: PageContentProps) => {
-  const theme: typeof defaultTheme = useTheme();
   const {
     NEXT_PUBLIC_ARRANGER_API,
     NEXT_PUBLIC_ARRANGER_PROJECT_ID,
     NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
   } = getConfig();
+  const theme = useTheme();
   const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
     .filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
     .map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
@@ -282,6 +281,7 @@ const RepoTable = (props: PageContentProps) => {
         columnDropdownText={'Columns'}
         exporter={customExporters}
         downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, 'download')}
+        enableSelectedTableRowsExporterFilter
       />
     </div>
   );

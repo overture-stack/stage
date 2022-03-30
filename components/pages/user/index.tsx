@@ -19,7 +19,7 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import React from 'react';
 import { isEmpty } from 'lodash';
 import styled from '@emotion/styled';

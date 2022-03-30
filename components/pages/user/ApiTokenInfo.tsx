@@ -19,9 +19,8 @@
  *
  */
 
-import { css, Global } from '@emotion/core';
+import { css, Global, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useTheme } from 'emotion-theming';
 import { has, isEmpty, orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Tooltip } from 'react-tippy';
@@ -51,7 +50,7 @@ interface ApiToken {
 }
 
 const TooltipContainer = styled('div')`
-  ${({ theme }: { theme: typeof defaultTheme }) => css`
+  ${({ theme }) => css`
     ${theme.typography.label};
     background: ${theme.colors.grey_6};
     border-radius: 2px;
@@ -143,7 +142,7 @@ const ApiTokenInfo = () => {
   const [isCopyingToken, setIsCopyingToken] = React.useState(false);
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [requestError, setRequestError] = React.useState<ErrorResponse | null>(null);
-  const theme: typeof defaultTheme = useTheme();
+  const theme = useTheme();
 
   // still need to display any errors for the generate request, as permissions may have changed in between
   // the time a user signed in and when they attempted to generate a token
@@ -303,26 +302,22 @@ const ApiTokenInfo = () => {
   return (
     <div>
       <h2
-        css={(theme) =>
-          css`
-            ${theme.typography.regular};
-            font-size: 24px;
-            line-height: 40px;
-            color: ${theme.colors.accent_dark};
-          `
-        }
+        css={css`
+          ${theme.typography.regular};
+          font-size: 24px;
+          line-height: 40px;
+          color: ${theme.colors.accent_dark};
+        `}
       >
         API Token
       </h2>
       <ol
-        css={(theme) =>
-          css`
-            ${theme.typography.subheading};
-            font-weight: normal;
-            color: ${theme.colors.accent_dark};
-            margin-bottom: 1rem;
-          `
-        }
+        css={css`
+          ${theme.typography.subheading};
+          font-weight: normal;
+          color: ${theme.colors.accent_dark};
+          margin-bottom: 1rem;
+        `}
       >
         <li>Your API token is used to download controlled access data.</li>
         <li>
@@ -353,7 +348,7 @@ const ApiTokenInfo = () => {
         >
           <ErrorNotification
             size="sm"
-            css={(theme) => css`
+            css={css`
               background-color: ${theme.colors.error_1};
               color: ${theme.colors.accent_dark};
             `}
@@ -391,16 +386,14 @@ const ApiTokenInfo = () => {
         <Button
           disabled={isEmpty(existingApiToken) || tokenIsExpired}
           isAsync
-          css={(theme) =>
-            css`
-              background-color: ${theme.colors.white};
-              color: ${theme.colors.accent_dark};
-              border: 1px solid ${theme.colors.grey_5};
-              &:hover {
-                background-color: ${theme.colors.accent_1};
-              }
-            `
-          }
+          css={css`
+            background-color: ${theme.colors.white};
+            color: ${theme.colors.accent_dark};
+            border: 1px solid ${theme.colors.grey_5};
+            &:hover {
+              background-color: ${theme.colors.accent_1};
+            }
+          `}
           onClick={() => revokeApiToken()}
         >
           Revoke Token
@@ -418,42 +411,38 @@ const ApiTokenInfo = () => {
         `}
       >
         <div
-          css={(theme) =>
-            css`
-              border: 1px solid ${theme.colors.grey_5};
-              border-radius: 5px 0px 0px 5px;
-              border-right: 0px;
-              color: ${isEmpty(existingApiToken) ? theme.colors.grey_6 : theme.colors.black};
-              width: 100%;
-              display: flex;
-              align-items: center;
-              padding-left: 5px;
-            `
-          }
+          css={css`
+            border: 1px solid ${theme.colors.grey_5};
+            border-radius: 5px 0px 0px 5px;
+            border-right: 0px;
+            color: ${isEmpty(existingApiToken) ? theme.colors.grey_6 : theme.colors.black};
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 5px;
+          `}
         >
           {existingApiToken && (
             <div
-              css={(theme) =>
-                css`
-                  color: ${theme.colors.white};
-                  border-radius: 6px;
-                  padding: 3px 8px;
-                  margin-right: 5px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  ${theme.typography.label}
-                  ${tokenIsExpired
-                    ? `background-color: ${theme.colors.error_dark}`
-                    : `background-color: ${theme.colors.grey_6};`}
-                `
-              }
+              css={css`
+                color: ${theme.colors.white};
+                border-radius: 6px;
+                padding: 3px 8px;
+                margin-right: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                ${theme.typography.label}
+                ${tokenIsExpired
+                  ? `background-color: ${theme.colors.error_dark}`
+                  : `background-color: ${theme.colors.grey_6};`}
+              `}
             >
               {tokenIsExpired ? 'Expired' : getDayValue(parsedExpiry)}
             </div>
           )}
           <span
-            css={(theme) => css`
+            css={css`
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -529,13 +518,11 @@ const ApiTokenInfo = () => {
         `}
       >
         <span
-          css={(theme) =>
-            css`
-              ${theme.typography.subheading};
-              font-weight: normal;
-              color: ${theme.colors.accent_dark};
-            `
-          }
+          css={css`
+            ${theme.typography.subheading};
+            font-weight: normal;
+            color: ${theme.colors.accent_dark};
+          `}
         >
           For more information, please read the{' '}
           <StyledLink href={``}>instructions on how to download data</StyledLink>.

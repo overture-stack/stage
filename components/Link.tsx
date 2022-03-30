@@ -20,7 +20,7 @@
  */
 
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import Link from 'next/link';
 
 import defaultTheme from './theme';

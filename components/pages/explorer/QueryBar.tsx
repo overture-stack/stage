@@ -19,11 +19,11 @@
  *
  */
 
-import { css } from '@emotion/core';
 import dynamic from 'next/dynamic';
+import { css, useTheme } from '@emotion/react';
 import { Row } from 'react-grid-system';
 
-import defaultTheme from '../../theme';
+import { DMSThemeInterface } from '../../theme';
 import { PageContentProps } from '.';
 
 const CurrentSQON = dynamic(
@@ -31,7 +31,7 @@ const CurrentSQON = dynamic(
   { ssr: false },
 ) as any;
 
-const getCss = (theme: typeof defaultTheme) => css`
+const getCss = (theme: DMSThemeInterface) => css`
   ${theme.shadow.default};
   & .sqon-view {
     background-color: transparent;
@@ -147,10 +147,11 @@ const getCss = (theme: typeof defaultTheme) => css`
 `;
 
 const QueryBar = (props: PageContentProps) => {
+  const theme = useTheme();
   return (
     <Row
       gutterWidth={2}
-      css={(theme) => css`
+      css={css`
         min-height: 48px;
         margin: 10px 0;
         background-color: ${theme.colors.white};

@@ -20,7 +20,7 @@
  */
 
 import React, { ReactNode } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 import NavBar from './NavBar';
 import Footer from './Footer';

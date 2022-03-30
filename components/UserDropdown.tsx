@@ -20,9 +20,8 @@
  */
 
 import React, { useEffect, useState, useRef } from 'react';
-import { css } from '@emotion/core';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useTheme } from 'emotion-theming';
 
 import defaultTheme from './theme';
 import { Avatar, ChevronDown } from './theme/icons';
