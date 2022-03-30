@@ -144,6 +144,13 @@ const RepositoryPage = () => {
           render={(props: PageContentProps) => {
             return <PageContent {...props} />;
           }}
+          theme={{
+            colors: {
+              common: {
+                black: theme.colors.black,
+              },
+            },
+          }}
         />
       )}
     </PageLayout>

@@ -45,10 +45,7 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
     .aggregation-group {
       & .bucket {
         & .bucket-item {
-          display: flex;
-          justify-content: space-between;
           ${theme.typography.data}
-          align-items: center;
           padding-bottom: 2px;
           & .bucket-count {
             ${theme.typography.label2}
@@ -117,37 +114,6 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
             ${theme.typography.subheading}
             line-height: 20px;
           }
-
-          // Leaving these toggle-button styles untouch as I haven't been able to test making changes
-          .toggle-button {
-            ${theme.typography.data};
-            padding: 2px 5px 8px 5px;
-            margin-left: 5px;
-            .toggle-button-option {
-              border: 1px solid ${theme.colors.grey_5};
-              &:nth-of-type(2) {
-                border-left: 0px;
-                border-right: 0px;
-              }
-            }
-            .toggle-button-option .bucket-count {
-              ${theme.typography.label2}
-              display: inline-block;
-              background-color: ${theme.colors.grey_3};
-              padding: 0 3px;
-              border-radius: 3px;
-            }
-            .toggle-button-option.active {
-              background-color: ${theme.colors.secondary_light};
-              .bucket-count {
-                background-color: ${theme.colors.secondary_2};
-              }
-            }
-            .toggle-button-option.disabled {
-              background-color: ${theme.colors.grey_2};
-              color: ${theme.colors.grey_6};
-            }
-          }
         `,
         groupDividerColor: theme.colors.grey_3,
         headerBackground: theme.colors.white,
@@ -196,9 +162,36 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
           }
         `,
       },
+      ToggleButton: {
+        background: theme.colors.white,
+        activeBackground: theme.colors.secondary_light,
+        borderColor: theme.colors.grey_5,
+        css: css`
+          padding: 2px 5px 8px;
+          margin: 5px 5px 0;
+        `,
+        disabledBackground: theme.colors.grey_2,
+        disabledFontColor: theme.colors.grey_6,
+        fontColor: theme.colors.black,
+        OptionCSS: css`
+          ${theme.typography.data}
+
+          // these are carryover
+          &.active .bucket-count {
+            background: ${theme.colors.secondary_2};
+          }
+
+          .bucket-count {
+            ${theme.typography.label2}
+            display: inline-block;
+            background-color: ${theme.colors.grey_3};
+            padding: 0 3px;
+            border-radius: 3px;
+          }
+        `,
+      },
       TreeJointIcon: {
         fill: '#151c3d',
-        line: 4,
         size: 8,
         transition: 'all 0s',
       },
