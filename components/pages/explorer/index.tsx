@@ -44,7 +44,6 @@ export interface PageContentProps {
   sqon: RepoFiltersType;
   selectedTableRows: string[];
   setSelectedTableRows: (id: string) => void;
-  projectId: string;
   index: string;
   api: ({
     endpoint,
@@ -58,81 +57,66 @@ export interface PageContentProps {
     method: string;
   }) => Promise<any>;
   setSQON: (sqon: RepoFiltersType) => void;
-  fetchData?: (projectId: string) => Promise<any>;
+  fetchData?: () => Promise<any>;
 }
-
-export type Project = {
-  id: string;
-  active: boolean;
-  indices: [{ id: string; esIndex: string; graphqlField: string }];
-};
 
 const arrangerFetcher = createArrangerFetcher({});
 
-const projectsQuery = `
-  query {
-    projects {
-      id
-      active
-      indices {
-        id
-        esIndex
-        graphqlField
-      }
-    }
+const configsQuery = `
+  query($field: String!, $index: String!) {
+    hasValidConfig(field: $field, index: $index)
   }
 `;
 
 const RepositoryPage = () => {
-  const {
-    NEXT_PUBLIC_ARRANGER_PROJECT_ID,
-    NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
-    NEXT_PUBLIC_ARRANGER_INDEX,
-  } = getConfig();
   const theme = useTheme();
+  const { NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
+  const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
+  const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
-  const [availableProjects, setAvailableProjects] = useState<Project[]>([]);
-  const [loadingProjects, setLoadingProjects] = useState<boolean>(true);
   useEffect(() => {
     const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
-    fetch(urlJoin(NEXT_PUBLIC_ARRANGER_API, 'admin/graphql'), {
+    fetch(urlJoin(NEXT_PUBLIC_ARRANGER_API, 'graphql'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        variables: {},
-        query: projectsQuery,
+        variables: {
+          field: NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
+          index: NEXT_PUBLIC_ARRANGER_INDEX,
+        },
+        query: configsQuery,
       }),
     })
       .then((res) => {
         if (res.status !== 200) {
-          throw new Error('Could not retrieve available projects from Arranger server!');
+          throw new Error('Could not validate Arranger server configuration!');
         }
         return res.json();
       })
-      .then(async ({ data: { projects } }: { data: { projects: Project[] } }) => {
-        await setAvailableProjects(projects);
+      .then(async ({ data }) => {
+        await setArrangerHasConfig(data?.hasValidConfig);
         // 1s delay so loader doesn't flicker on and off too quickly
         await sleep(1000);
-        setLoadingProjects(false);
+        setLoadingArrangerConfig(false);
       })
       .catch(async (err) => {
         console.warn(err);
         // same as above comment
         await sleep(1000);
-        setLoadingProjects(false);
+        setLoadingArrangerConfig(false);
       });
+    setLoadingArrangerConfig(false);
   }, []);
 
   const ConfigError = getConfigError({
-    availableProjects,
-    projectId: NEXT_PUBLIC_ARRANGER_PROJECT_ID,
+    hasConfig: arrangerHasConfig,
     index: NEXT_PUBLIC_ARRANGER_INDEX,
     graphqlField: NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
   });
 
   return (
     <PageLayout subtitle="Data Explorer">
-      {loadingProjects ? (
+      {loadingArrangerConfig ? (
         <div
           css={(theme) =>
             css`
@@ -161,7 +145,6 @@ const RepositoryPage = () => {
       ) : (
         <Arranger
           api={arrangerFetcher}
-          projectId={NEXT_PUBLIC_ARRANGER_PROJECT_ID}
           graphqlField={NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD}
           index={NEXT_PUBLIC_ARRANGER_INDEX}
           render={(props: PageContentProps) => {
