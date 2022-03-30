@@ -19,16 +19,11 @@
  *
  */
 
-import dynamic from 'next/dynamic';
 import { css, useTheme } from '@emotion/react';
+import { Aggregations } from '@overture-stack/arranger-components';
 
 import { PageContentProps } from '.';
 import { DMSThemeInterface } from '../../theme';
-
-const Aggregations = dynamic(
-  import('@arranger/components/dist/Arranger').then((comp) => comp.Aggregations),
-  { ssr: false },
-) as any;
 
 const getFacetStyles = (theme: DMSThemeInterface) => css`
   padding-bottom: 2rem;
@@ -246,7 +241,7 @@ const getFacetStyles = (theme: DMSThemeInterface) => css`
 `;
 
 const Facets = (props: PageContentProps) => {
-  const theme: DMSThemeInterface = useTheme();
+  const theme = useTheme();
   return (
     <div css={getFacetStyles(theme)}>
       <h2

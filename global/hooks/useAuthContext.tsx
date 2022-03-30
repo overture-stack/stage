@@ -41,6 +41,10 @@ const AuthContext = createContext<T_AuthContext>({
   fetchWithAuth: fetch,
 });
 
+if (process.env.NODE_ENV === 'development') {
+  AuthContext.displayName = 'AuthContext';
+}
+
 export const AuthProvider = ({
   egoJwt,
   children,
