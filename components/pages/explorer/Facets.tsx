@@ -25,56 +25,6 @@ import { Aggregations, useArrangerTheme } from '@overture-stack/arranger-compone
 import { PageContentProps } from '.';
 import { DMSThemeInterface } from '../../theme';
 
-const getFacetStyles = (theme: DMSThemeInterface) => css`
-  .input-range-wrapper div {
-    ${theme.typography.label2}
-    font-weight: bold;
-    background-color: ${theme.colors.grey_3};
-    border-radius: 3px;
-    padding: 0 4px;
-    &:last-of-type,
-    &:nth-of-type(4) {
-      background-color: ${theme.colors.white};
-      color: ${theme.colors.grey_6};
-    }
-    &:nth-of-type(3) {
-      background-color: ${theme.colors.white};
-    }
-  }
-  .aggregations {
-    .aggregation-group {
-      & .bucket {
-        & .bucket-item {
-          ${theme.typography.data}
-          padding-bottom: 2px;
-        }
-      }
-
-      & .bucket .range-wrapper {
-        .input-range {
-          margin-bottom: 30px;
-        }
-
-        .input-range__track.input-range__track--background {
-          background-color: ${theme.colors.grey_4};
-          .input-range__track--active {
-            background-color: ${theme.colors.secondary};
-          }
-          .input-range__slider-container {
-            .input-range__slider {
-              background-color: ${theme.colors.white};
-              border-color: ${theme.colors.grey_5};
-              ${theme.shadow.default}
-              padding: 0;
-              border-radius: 100%;
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const getAggregationsStyles = (theme: DMSThemeInterface) => ({
   components: {
     Aggregations: {
@@ -102,6 +52,10 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
             border-left-color: ${theme.colors.accent3};
           }
 
+          .bucket-item {
+            ${theme.typography.data}
+          }
+
           .title {
             ${theme.typography.subheading}
             line-height: 20px;
@@ -114,14 +68,21 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
       },
       BooleanAgg: {
         BucketCount: {
-          activeBackground: theme.colors.secondary_2,
-          background: theme.colors.grey_3,
-          borderRadius: '3px',
           css: css`
-            ${theme.typography.label2}
-            padding: 0 3px;
+            margin: 0;
           `,
         },
+      },
+      BucketCount: {
+        activeBackground: theme.colors.secondary_2,
+        background: theme.colors.grey_3,
+        borderRadius: '3px',
+        css: css`
+          ${theme.typography.label2}
+          padding: 0 3px;
+          margin: 2px 0;
+        `,
+        fontSize: '10px',
       },
       FilterInput: {
         css: css`
@@ -145,6 +106,33 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
             margin-top: 2px;
           }
         `,
+      },
+      RangeAgg: {
+        RangeLabel: {
+          // each of the labels with values
+          borderRadius: '3px',
+          css: css`
+            ${theme.typography.label2}
+            padding: 0 4px;
+
+            &.top {
+              background: ${theme.colors.grey_3};
+            }
+          `,
+          fontWeight: 'bold',
+        },
+        RangeSlider: {
+          // the knobs you click and slide
+          borderColor: theme.colors.grey_5,
+          css: css`
+            ${theme.shadow.default}
+          `,
+        },
+        RangeTrack: {
+          // the line behind the component
+          inBackground: theme.colors.secondary, // within the selected range
+          outBackground: theme.colors.accent, // outside the selected range
+        },
       },
       MoreOrLessButton: {
         css: css`
@@ -194,7 +182,6 @@ const Facets = (props: PageContentProps) => {
   useArrangerTheme(getAggregationsStyles(theme));
 
   return (
-    // <div css={getFacetStyles(theme)}>
     <div
       css={css`
         padding-bottom: 2rem;
