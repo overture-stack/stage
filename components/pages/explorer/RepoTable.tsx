@@ -229,12 +229,8 @@ const getTableStyle = (theme: DMSThemeInterface) => css`
 `;
 
 const RepoTable = (props: PageContentProps) => {
-  const {
-    NEXT_PUBLIC_ARRANGER_API,
-    NEXT_PUBLIC_ARRANGER_PROJECT_ID,
-    NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
-  } = getConfig();
   const theme = useTheme();
+  const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
   const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
     .filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
     .map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
@@ -243,45 +239,47 @@ const RepoTable = (props: PageContentProps) => {
   const customExporters = [
     { label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
     { label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-    { label: () => (
-      <span
-        css={css`
-          border-top: 1px solid ${theme.colors.grey_3};
-          margin-top: -3px;
-          padding-top: 7px;
-          white-space: pre-line;
-          width: 140px;
-
-          a {
-            margin-left: 3px;
-          }
-        `}
-      >
-        To download files using a file manifest, please follow these
-        <StyledLink
+    {
+      label: () => (
+        <span
           css={css`
-            line-height: inherit;
+            border-top: 1px solid ${theme.colors.grey_3};
+            margin-top: -3px;
+            padding-top: 7px;
+            white-space: pre-line;
+            width: 140px;
+
+            a {
+              margin-left: 3px;
+            }
           `}
-          href="https://overture.bio/documentation/score/user-guide/download"
-          rel="noopener noreferrer"
-          target="_blank"
         >
-          instructions
-        </StyledLink>
-        .
-      </span>
-    ), },
+          To download files using a file manifest, please follow these
+          <StyledLink
+            css={css`
+              line-height: inherit;
+            `}
+            href="https://overture.bio/documentation/score/user-guide/download"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            instructions
+          </StyledLink>
+          .
+        </span>
+      ),
+    },
   ];
 
   return (
     <div css={getTableStyle(theme)}>
       <Table
         {...props}
-        showFilterInput={false}
         columnDropdownText={'Columns'}
-        exporter={customExporters}
-        downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, 'download')}
+        downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, 'download')}
         enableSelectedTableRowsExporterFilter
+        exporter={customExporters}
+        showFilterInput={false}
       />
     </div>
   );
