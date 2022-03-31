@@ -62,7 +62,7 @@ export const ErrorPageLayout = ({
       <ErrorNotification
         size="lg"
         title={errorTitle}
-        styles={`
+        css={css`
           flex-direction: column;
           justify-content: center;
           align-items: center;
