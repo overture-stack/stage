@@ -19,7 +19,7 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import RepoTable from './RepoTable';
 import Facets from './Facets';
 import QueryBar from './QueryBar';

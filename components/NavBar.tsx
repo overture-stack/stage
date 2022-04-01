@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { css } from '@emotion/core';
+import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 
 import UserDropdown from './UserDropdown';
@@ -28,7 +28,6 @@ import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { useTheme } from 'emotion-theming';
 import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 

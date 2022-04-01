@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
 import StyledLink from './Link';

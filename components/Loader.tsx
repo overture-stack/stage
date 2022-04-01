@@ -19,7 +19,7 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 // TODO: this is a placeholder Loader
 const Loader = () => {

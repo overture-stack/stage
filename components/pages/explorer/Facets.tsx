@@ -19,18 +19,18 @@
  *
  */
 
-import { css } from '@emotion/core';
 import dynamic from 'next/dynamic';
+import { css, useTheme } from '@emotion/react';
 
 import { PageContentProps } from '.';
-import defaultTheme from '../../theme';
+import { DMSThemeInterface } from '../../theme';
 
 const Aggregations = dynamic(
   import('@arranger/components/dist/Arranger').then((comp) => comp.Aggregations),
   { ssr: false },
 ) as any;
 
-const getFacetStyles = (theme: typeof defaultTheme) => css`
+const getFacetStyles = (theme: DMSThemeInterface) => css`
   padding-bottom: 2rem;
   .input-range-wrapper div {
     ${theme.typography.label2}
@@ -246,10 +246,11 @@ const getFacetStyles = (theme: typeof defaultTheme) => css`
 `;
 
 const Facets = (props: PageContentProps) => {
+  const theme: DMSThemeInterface = useTheme();
   return (
-    <div css={(theme) => getFacetStyles(theme)}>
+    <div css={getFacetStyles(theme)}>
       <h2
-        css={(theme) => css`
+        css={css`
           ${theme.typography.subheading}
           padding: 6px 0 2px 8px;
           margin: 0;
@@ -258,6 +259,7 @@ const Facets = (props: PageContentProps) => {
       >
         Filters
       </h2>
+
       <Aggregations {...props} />
     </div>
   );

@@ -20,11 +20,11 @@
  */
 
 import React, { ReactNode } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 import NavBar from './NavBar';
 import Footer from './Footer';
-import { PageHead } from './Head';
+import PageHead from './Head';
 import ErrorNotification from './ErrorNotification';
 
 const PageLayout = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => {
@@ -62,7 +62,7 @@ export const ErrorPageLayout = ({
       <ErrorNotification
         size="lg"
         title={errorTitle}
-        styles={`
+        css={css`
           flex-direction: column;
           justify-content: center;
           align-items: center;

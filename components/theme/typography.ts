@@ -19,10 +19,10 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 const baseFont = css`
-  font-family: Lato, sans-serif;
+  font-family: 'Lato', sans-serif;
 `;
 
 const regular = css`

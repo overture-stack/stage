@@ -19,7 +19,7 @@
  *
  */
 
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { IconProps } from './types';
 
 const Error = ({ height, width, style }: IconProps) => {

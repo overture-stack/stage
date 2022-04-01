@@ -20,7 +20,7 @@
  */
 
 import React, { ReactNode, ReactNodeArray } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import defaultTheme from './theme';

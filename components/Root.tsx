@@ -20,12 +20,12 @@
  */
 
 import React from 'react';
-import { ThemeProvider } from 'emotion-theming';
-import defaultTheme from './theme';
-import Head from './Head';
+import { ThemeProvider } from '@emotion/react';
 import { AuthProvider } from '../global/hooks/useAuthContext';
 import { PageContext } from '../global/hooks/usePageContext';
 import { ClientSideGetInitialPropsContext } from '../global/utils/pages/types';
+
+import defaultTheme from './theme';
 
 const Root = ({
   children,
@@ -57,7 +57,7 @@ const Root = ({
         }
       `}
       </style>
-      <Head />
+
       <AuthProvider egoJwt={egoJwt}>
         <PageContext.Provider value={pageContext}>
           <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
