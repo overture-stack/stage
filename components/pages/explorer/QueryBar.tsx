@@ -44,8 +44,9 @@ const getCurrentSQONStyles = (theme: DMSThemeInterface) => ({
         borderRadius: '5px',
         fontColor: theme.colors.accent_dark,
         fontSize: '14px',
+        fontWeight: 'bold',
         lineHeight: '1.2rem',
-        padding: '0 0.7rem',
+        padding: '0.05rem 0.7rem',
         hoverBackground: theme.colors.secondary_light,
       },
       SQONField: {

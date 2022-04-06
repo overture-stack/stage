@@ -20,13 +20,14 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { Table, useArrangerTheme } from '@overture-stack/arranger-components';
+import { OldTable, useArrangerTheme } from '@overture-stack/arranger-components';
 import urlJoin from 'url-join';
 
-import { PageContentProps } from './index';
 import StyledLink from '../../Link';
 import { DMSThemeInterface } from '../../theme';
 import { getConfig } from '../../../global/config';
+
+import { PageContentProps } from './index';
 
 const getTableStyle = (theme: DMSThemeInterface) => css`
   border-radius: 5px;
@@ -229,12 +230,13 @@ const getTableStyles = (theme: DMSThemeInterface) => ({
 const RepoTable = (props: PageContentProps) => {
   const theme = useTheme();
   useArrangerTheme(getTableStyles(theme));
+
   const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
     .filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
     .map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
 
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const customExporters = [
     { label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
     { label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
@@ -272,7 +274,7 @@ const RepoTable = (props: PageContentProps) => {
 
   return (
     <div css={getTableStyle(theme)}>
-      <Table
+      <OldTable
         {...props}
         columnDropdownText={'Columns'}
         downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, 'download')}
