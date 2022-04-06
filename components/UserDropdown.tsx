@@ -19,7 +19,7 @@
  *
  */
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -72,7 +72,7 @@ const CurrentUser = () => {
 };
 
 const StyledListLink = styled('a')`
-  ${({ theme }: { theme: typeof defaultTheme }) => css`
+  ${({ theme }) => css`
     text-decoration: none;
     height: 40px;
     display: flex;
@@ -93,9 +93,11 @@ const StyledListLink = styled('a')`
 `;
 
 const UserDropdown = () => {
-  const node: any = useRef();
-
   const [open, setOpen] = useState(false);
+  const { logout } = useAuthContext();
+  const node: any = useRef();
+  const router = useRouter();
+  const theme = useTheme();
 
   const handleClickOutside = (e: any) => {
     if (node.current.contains(e.target)) {
@@ -115,9 +117,7 @@ const UserDropdown = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [open]);
-  const theme: typeof defaultTheme = useTheme();
-  const { logout } = useAuthContext();
-  const router = useRouter();
+
   const fillColor =
     router.pathname === USER_PATH ? theme.colors.accent2_dark : theme.colors.accent_dark;
 
@@ -171,7 +171,7 @@ const UserDropdown = () => {
             list-style: none;
             padding: 0;
             position: absolute;
-            top: 51px;
+            top: ${theme.dimensions.navbar.height}px;
             left: 0;
             margin: 0;
           `}

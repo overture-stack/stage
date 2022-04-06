@@ -15,6 +15,12 @@ module.exports = withPlugins([withTranspileModules], {
     }
 
     config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
+    config.resolve.alias['@emotion/react'] = path.resolve(
+      __dirname,
+      '.',
+      'node_modules',
+      '@emotion/react',
+    );
 
     return patchForGlobalCSS(config, options);
   },
