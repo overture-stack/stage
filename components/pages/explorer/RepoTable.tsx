@@ -215,7 +215,7 @@ const getTableStyle = (theme: DMSThemeInterface) => css`
   }
 `;
 
-const getTableStyles = (theme: DefaultTheme) => ({
+const getTableStyles = (theme: DMSThemeInterface) => ({
   components: {
     Table: {
       DropDown: {

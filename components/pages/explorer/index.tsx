@@ -20,7 +20,6 @@
  */
 
 import { useEffect, useState } from 'react';
-import urlJoin from 'url-join';
 import { css, useTheme } from '@emotion/react';
 import { Arranger } from '@overture-stack/arranger-components';
 
@@ -36,7 +35,7 @@ import Loader from '../../Loader';
 import sleep from '../../utils/sleep';
 
 export interface PageContentProps {
-  sqon: RepoFiltersType;
+  sqon: RepoFiltersType | null;
   selectedTableRows: string[];
   setSelectedTableRows: (id: string) => void;
   index: string;
@@ -51,15 +50,15 @@ export interface PageContentProps {
     headers: any;
     method: string;
   }) => Promise<any>;
-  setSQON: (sqon: RepoFiltersType) => void;
+  setSQON: (sqon: RepoFiltersType | null) => void;
   fetchData?: () => Promise<any>;
 }
 
 const arrangerFetcher = createArrangerFetcher({});
 
 const configsQuery = `
-  query($field: String!, $index: String!) {
-    hasValidConfig(field: $field, index: $index)
+  query ($field: String!, $index: String!) {
+    hasValidConfig (field: $field, index: $index)
   }
 `;
 
@@ -70,10 +69,8 @@ const RepositoryPage = () => {
   const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
   useEffect(() => {
-    const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
-    fetch(urlJoin(NEXT_PUBLIC_ARRANGER_API, 'graphql'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    arrangerFetcher({
+      endpoint: 'graphql/hasValidConfig',
       body: JSON.stringify({
         variables: {
           field: NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
@@ -82,17 +79,16 @@ const RepositoryPage = () => {
         query: configsQuery,
       }),
     })
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error('Could not validate Arranger server configuration!');
+      .then(async ({ data } = {}) => {
+        if (data?.hasValidConfig) {
+          await setArrangerHasConfig(data.hasValidConfig);
+          // 1s delay so loader doesn't flicker on and off too quickly
+          await sleep(1000);
+
+          return setLoadingArrangerConfig(false);
         }
-        return res.json();
-      })
-      .then(async ({ data }) => {
-        await setArrangerHasConfig(data?.hasValidConfig);
-        // 1s delay so loader doesn't flicker on and off too quickly
-        await sleep(1000);
-        setLoadingArrangerConfig(false);
+
+        throw new Error('Could not validate Arranger server configuration!');
       })
       .catch(async (err) => {
         console.warn(err);
