@@ -19,8 +19,8 @@
  *
  */
 
-import { css, useTheme } from '@emotion/react';
 import { Aggregations, useArrangerTheme } from '@overture-stack/arranger-components';
+import { css, useTheme } from '@emotion/react';
 
 import { PageContentProps } from '.';
 import { DMSThemeInterface } from '../../theme';
@@ -122,7 +122,7 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
           fontWeight: 'bold',
         },
         RangeSlider: {
-          // the knobs you click and slide
+          // the knobs you click on to select a value
           borderColor: theme.colors.grey_5,
           css: css`
             ${theme.shadow.default}
