@@ -57,14 +57,14 @@ export interface PageContentProps {
 const arrangerFetcher = createArrangerFetcher({});
 
 const configsQuery = `
-  query ($field: String!, $index: String!) {
-    hasValidConfig (field: $field, index: $index)
+  query ($documentType: String!, $index: String!) {
+    hasValidConfig (documentType: $documentType, index: $index)
   }
 `;
 
 const RepositoryPage = () => {
   const theme = useTheme();
-  const { NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
+  const { NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
   const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
   const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
@@ -73,7 +73,7 @@ const RepositoryPage = () => {
       endpoint: 'graphql/hasValidConfig',
       body: JSON.stringify({
         variables: {
-          field: NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
+          documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
           index: NEXT_PUBLIC_ARRANGER_INDEX,
         },
         query: configsQuery,
@@ -101,7 +101,7 @@ const RepositoryPage = () => {
   const ConfigError = getConfigError({
     hasConfig: arrangerHasConfig,
     index: NEXT_PUBLIC_ARRANGER_INDEX,
-    graphqlField: NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
+    documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
   });
 
   return (
@@ -135,7 +135,7 @@ const RepositoryPage = () => {
       ) : (
         <Arranger
           apiFetcher={arrangerFetcher}
-          graphqlField={NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD}
+          documentType={NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE}
           index={NEXT_PUBLIC_ARRANGER_INDEX}
           render={(props: PageContentProps) => {
             return <PageContent {...props} />;
