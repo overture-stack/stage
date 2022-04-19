@@ -84,14 +84,14 @@ const WarningListItem = ({ fieldName }: { fieldName: string }) => (
 
 const getConfigError = ({
   hasConfig,
-  graphqlField,
+  documentType,
   index,
 }: {
   hasConfig: boolean;
-  graphqlField: string;
+  documentType: string;
   index: string;
 }) =>
-  index && graphqlField ? (
+  index && documentType ? (
     !hasConfig && (
       <span>
         No active configurations for the DMS portal exist. Please make sure the index and GraphQL
@@ -127,7 +127,7 @@ const getConfigError = ({
         `}
       >
         {[
-          { field: 'Alias name', value: graphqlField },
+          { field: 'Document type', value: documentType },
           { field: 'Elasticsearch index', value: index },
         ].map(({ field, value }) => {
           return value ? (
