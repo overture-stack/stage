@@ -23,7 +23,8 @@ import { SerializedStyles } from '@emotion/react';
 
 export type IconProps = {
   fill?: string;
-  width?: number;
   height?: number;
+  size?: number;
   style?: SerializedStyles;
+  width?: number;
 };

@@ -20,7 +20,7 @@ COPY . /usr/src
 VOLUME [ "/usr/src/public/static/dms_user_assets" ]
 
 RUN npm ci
-RUN npm run build
+RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 
 EXPOSE 3000
 CMD npm start
