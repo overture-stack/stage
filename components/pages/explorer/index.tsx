@@ -21,37 +21,37 @@
 
 import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
-import { Arranger } from '@overture-stack/arranger-components';
+import { ArrangerDataProvider } from '@overture-stack/arranger-components';
 
-import PageContent from './PageContent';
-import PageLayout from '../../PageLayout';
-
-import { RepoFiltersType } from './sqonTypes';
-import { getConfig } from '../../../global/config';
-import createArrangerFetcher from '../../utils/arrangerFetcher';
 import ErrorNotification from '../../ErrorNotification';
-import getConfigError from './getConfigError';
 import Loader from '../../Loader';
+import PageLayout from '../../PageLayout';
+import createArrangerFetcher from '../../utils/arrangerFetcher';
 import sleep from '../../utils/sleep';
+import { getConfig } from '../../../global/config';
+import { RepoFiltersType } from './sqonTypes';
+
+import getConfigError from './getConfigError';
+import PageContent from './PageContent';
 
 export interface PageContentProps {
-  sqon: RepoFiltersType | null;
-  selectedTableRows: string[];
-  setSelectedTableRows: (id: string) => void;
-  index: string;
-  apiFetcher: ({
-    endpoint,
-    body,
-    headers,
-    method,
-  }: {
-    endpoint: string;
-    body: string;
-    headers: any;
-    method: string;
-  }) => Promise<any>;
-  setSQON: (sqon: RepoFiltersType | null) => void;
-  fetchData?: () => Promise<any>;
+	sqon: RepoFiltersType;
+	selectedTableRows: string[];
+	setSelectedTableRows: (ids: []) => void;
+	index: string;
+	api: ({
+		endpoint,
+		body,
+		headers,
+		method,
+	}: {
+		endpoint: string;
+		body: string;
+		headers: any;
+		method: string;
+	}) => Promise<any>;
+	setSQON: (sqon: RepoFiltersType) => void;
+	fetchData?: () => Promise<any>;
 }
 
 const arrangerFetcher = createArrangerFetcher({});
@@ -63,94 +63,97 @@ const configsQuery = `
 `;
 
 const RepositoryPage = () => {
-  const theme = useTheme();
-  const { NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
-  const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
-  const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
+	const theme = useTheme();
+	const {
+		NEXT_PUBLIC_ARRANGER_API,
+		NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
+		NEXT_PUBLIC_ARRANGER_INDEX,
+	} = getConfig();
+	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
+	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
-  useEffect(() => {
-    arrangerFetcher({
-      endpoint: 'graphql/hasValidConfig',
-      body: JSON.stringify({
-        variables: {
-          documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-          index: NEXT_PUBLIC_ARRANGER_INDEX,
-        },
-        query: configsQuery,
-      }),
-    })
-      .then(async ({ data } = {}) => {
-        if (data?.hasValidConfig) {
-          await setArrangerHasConfig(data.hasValidConfig);
-          // 1s delay so loader doesn't flicker on and off too quickly
-          await sleep(1000);
+	useEffect(() => {
+		arrangerFetcher({
+			endpoint: 'graphql/hasValidConfig',
+			body: JSON.stringify({
+				variables: {
+					documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
+					index: NEXT_PUBLIC_ARRANGER_INDEX,
+				},
+				query: configsQuery,
+			}),
+		})
+			.then(async ({ data } = {}) => {
+				if (data?.hasValidConfig) {
+					await setArrangerHasConfig(data.hasValidConfig);
+					// 1s delay so loader doesn't flicker on and off too quickly
+					await sleep(1000);
 
-          return setLoadingArrangerConfig(false);
-        }
+					return setLoadingArrangerConfig(false);
+				}
 
-        throw new Error('Could not validate Arranger server configuration!');
-      })
-      .catch(async (err) => {
-        console.warn(err);
-        // same as above comment
-        await sleep(1000);
-        setLoadingArrangerConfig(false);
-      });
-  }, []);
+				throw new Error('Could not validate Arranger server configuration!');
+			})
+			.catch(async (err) => {
+				console.warn(err);
+				// same as above comment
+				await sleep(1000);
+				setLoadingArrangerConfig(false);
+			});
+	}, [NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX]);
 
-  const ConfigError = getConfigError({
-    hasConfig: arrangerHasConfig,
-    index: NEXT_PUBLIC_ARRANGER_INDEX,
-    documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-  });
+	const ConfigError = getConfigError({
+		hasConfig: arrangerHasConfig,
+		index: NEXT_PUBLIC_ARRANGER_INDEX,
+		documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
+	});
 
-  return (
-    <PageLayout subtitle="Data Explorer">
-      {loadingArrangerConfig ? (
-        <div
-          css={(theme) =>
-            css`
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              background-color: ${theme.colors.grey_2};
-            `
-          }
-        >
-          <Loader />
-        </div>
-      ) : ConfigError ? (
-        <ErrorNotification
-          title={'DMS Configuration Error'}
-          size="lg"
-          css={css`
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          `}
-        >
-          {ConfigError}
-        </ErrorNotification>
-      ) : (
-        <Arranger
-          apiFetcher={arrangerFetcher}
-          documentType={NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE}
-          index={NEXT_PUBLIC_ARRANGER_INDEX}
-          render={(props: PageContentProps) => {
-            return <PageContent {...props} />;
-          }}
-          theme={{
-            colors: {
-              common: {
-                black: theme.colors.black,
-              },
-            },
-          }}
-        />
-      )}
-    </PageLayout>
-  );
+	return (
+		<PageLayout subtitle="Data Explorer">
+			{loadingArrangerConfig ? (
+				<div
+					css={(theme) =>
+						css`
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+							align-items: center;
+							background-color: ${theme.colors.grey_2};
+						`
+					}
+				>
+					<Loader />
+				</div>
+			) : ConfigError ? (
+				<ErrorNotification
+					title={'DMS Configuration Error'}
+					size="lg"
+					css={css`
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+					`}
+				>
+					{ConfigError}
+				</ErrorNotification>
+			) : (
+				<ArrangerDataProvider
+					apiUrl={NEXT_PUBLIC_ARRANGER_API}
+					customFetcher={arrangerFetcher}
+					documentType={NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE}
+					theme={{
+						colors: {
+							common: {
+								black: theme.colors.black,
+							},
+						},
+					}}
+				>
+					<PageContent />
+				</ArrangerDataProvider>
+			)}
+		</PageLayout>
+	);
 };
 
 export default RepositoryPage;

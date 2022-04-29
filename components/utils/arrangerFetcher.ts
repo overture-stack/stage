@@ -23,25 +23,46 @@ import urlJoin from 'url-join';
 import { getConfig } from '../../global/config';
 import ajax from './ajax';
 
-const createArrangerFetcher =
-  ({ onError = (err: any) => Promise.reject(err), defaultHeaders = {} } = {}) =>
-  ({ body = {}, endpoint = '/graphql', headers = {} }) => {
-    const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
-    const uri = urlJoin(NEXT_PUBLIC_ARRANGER_API, endpoint);
-    return ajax
-      .post(uri, body, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(defaultHeaders || {}),
-          ...headers,
-        },
-      })
-      .then((response: { data: any }) => {
-        return response.data;
-      })
-      .catch((err: { response: any }) => {
-        return onError(err);
-      });
-  };
+const createArrangerFetcher = ({
+	onError = (err: any) => Promise.reject(err),
+	defaultHeaders = {},
+} = {}) => {
+	const cache = new Map();
+
+	return async (args: {
+		body?: Record<string, any> | string | null;
+		endpoint?: string;
+		endpointTag?: string;
+		headers?: Record<string, string>;
+	}) => {
+		const key = JSON.stringify(args);
+
+		if (cache.has(key)) return cache.get(key);
+		// TODO: max cache size
+
+		const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
+
+		const { body = {}, endpoint = '/graphql', endpointTag = '', headers = {} } = args;
+		const uri = urlJoin(NEXT_PUBLIC_ARRANGER_API, endpoint, endpointTag);
+		const response = await ajax
+			.post(uri, body, {
+				headers: {
+					'Content-Type': 'application/json',
+					...(defaultHeaders || {}),
+					...headers,
+				},
+			})
+			.then((response: { data: any }) => {
+				return response.data;
+			})
+			.catch((err: { response: any }) => {
+				return onError(err);
+			});
+
+		cache.set(key, response);
+
+		return response;
+	};
+};
 
 export default createArrangerFetcher;

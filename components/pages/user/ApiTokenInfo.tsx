@@ -22,8 +22,8 @@
 import { css, Global, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { has, isEmpty, orderBy } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { Tooltip } from 'react-tippy';
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import { Tooltip, TooltipProps } from 'react-tippy';
 
 import { parseExpiry, getDayValue } from '../../../global/utils/apiToken';
 import { getConfig } from '../../../global/config';
@@ -48,6 +48,14 @@ interface ApiToken {
   name: string;
   scope: string[];
 }
+
+interface CustomTooltipProps extends TooltipProps {
+  children: ReactNode;
+}
+// TODO: workaround for react-tippy 1.4.0 --- remove with upgraded fix
+// related issue: https://github.com/tvkhoa/react-tippy/issues/169
+const CustomTooltip: FunctionComponent<CustomTooltipProps> = (props) =>
+  React.cloneElement(<Tooltip />, { ...props });
 
 const TooltipContainer = styled('div')`
   ${({ theme }) => css`
@@ -464,7 +472,7 @@ const ApiTokenInfo = () => {
               }
             `}
           />
-          <Tooltip
+          <CustomTooltip
             unmountHTMLWhenHide
             open={copySuccess}
             arrow
@@ -509,7 +517,7 @@ const ApiTokenInfo = () => {
                 Copy
               </span>
             </Button>
-          </Tooltip>
+          </CustomTooltip>
         </>
       </div>
       <div
