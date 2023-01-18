@@ -25,7 +25,7 @@ import { css } from '@emotion/react';
 
 import { getConfig } from '../global/config';
 import { createPage } from '../global/utils/pages';
-import { EGO_JWT_KEY, EXPLORER_PATH, LOGIN_PATH } from '../global/utils/constants';
+import { EGO_JWT_KEY, HOME_PATH, LOGIN_PATH } from '../global/utils/constants';
 import Router from 'next/router';
 import { isValidJwt } from '../global/utils/egoTokenUtils';
 import PageLayout from '../components/PageLayout';
@@ -54,7 +54,7 @@ const fetchEgoToken = () => {
     .then((jwt) => {
       if (isValidJwt(jwt)) {
         localStorage.setItem(EGO_JWT_KEY, jwt);
-        setTimeout(() => Router.push(getInternalLink({ path: EXPLORER_PATH })), 2000);
+        setTimeout(() => Router.push(getInternalLink({ path: HOME_PATH })), 2000);
       } else {
         throw new Error('Invalid jwt, cannot login.');
       }

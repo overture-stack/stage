@@ -21,14 +21,14 @@
 
 import React from 'react';
 
-import ExplorerPage from './explorer';
+import FilesPage from './files';
 import { createPage } from '../global/utils/pages';
 
 const HomePage = createPage({
   getInitialProps: async () => {},
   isPublic: true,
 })(() => {
-  return <ExplorerPage />;
+  return <FilesPage />;
 });
 
 export default HomePage;

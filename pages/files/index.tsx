@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2023 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -23,7 +23,7 @@ import React from 'react';
 import Explorer from '../../components/pages/explorer';
 import { createPage } from '../../global/utils/pages';
 
-const ExplorerPage = createPage({
+const FilesPage = createPage({
   getInitialProps: async ({ query, egoJwt }) => {
     return { query, egoJwt };
   },
@@ -32,4 +32,4 @@ const ExplorerPage = createPage({
   return <Explorer />;
 });
 
-export default ExplorerPage;
+export default FilesPage;

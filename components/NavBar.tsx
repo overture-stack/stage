@@ -28,7 +28,7 @@ import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import { HOME_PATH, FILES_PATH, VARIANTS_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const NavBar: React.ComponentType = () => {
@@ -76,7 +76,7 @@ const NavBar: React.ComponentType = () => {
           cursor: pointer;
         `}
       >
-        <Link path={EXPLORER_PATH}>
+        <Link path={HOME_PATH}>
           <a
             css={(theme) => css`
               display: flex;
@@ -117,7 +117,7 @@ const NavBar: React.ComponentType = () => {
             border-right: 2px solid ${theme.colors.white};
           `}
         >
-          <Link path={EXPLORER_PATH}>
+          <Link path={FILES_PATH}>
             <a
               css={(theme) => css`
                 display: flex;
@@ -128,10 +128,27 @@ const NavBar: React.ComponentType = () => {
                 text-decoration: none;
                 color: ${theme.colors.accent_dark};
                 cursor: pointer;
-                ${router.pathname === EXPLORER_PATH ? activeLinkStyle : ''}
+                ${router.pathname === HOME_PATH || router.pathname === FILES_PATH ? activeLinkStyle : ''}
               `}
             >
-              Data Explorer
+              Files
+            </a>
+          </Link>
+          <Link path={VARIANTS_PATH}>
+            <a
+              css={(theme) => css`
+                display: flex;
+                flex: 1;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+                color: ${theme.colors.accent_dark};
+                cursor: pointer;
+                ${router.pathname === VARIANTS_PATH ? activeLinkStyle : ''}
+              `}
+            >
+              Variants
             </a>
           </Link>
         </div>

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2023 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,23 +19,17 @@
  *
  */
 
-import urlJoin from 'url-join';
+import React from 'react';
+import Explorer from '../../components/pages/explorer';
+import { createPage } from '../../global/utils/pages';
 
-import { getConfig } from '../config';
+const VariantsPage = createPage({
+  getInitialProps: async ({ query, egoJwt }) => {
+    return { query, egoJwt };
+  },
+  isPublic: true,
+})(() => {
+  return <Explorer />;
+});
 
-const { NEXT_PUBLIC_EGO_API_ROOT } = getConfig();
-
-export const EGO_JWT_KEY = 'EGO_JWT';
-export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
-
-export const HOME_PATH = '/';
-export const FILES_PATH = '/files';
-export const VARIANTS_PATH = '/variants';
-export const USER_PATH = '/user';
-export const LOGIN_PATH = '/login';
-
-// external docs links
-const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms/';
-export const DMS_HELP_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'user-guide');
-export const DMS_INSTALLATION_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'installation');
-export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuration/prereq/emails');
+export default VariantsPage;
