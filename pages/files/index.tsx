@@ -22,6 +22,7 @@
 import React from 'react';
 import Explorer from '../../components/pages/explorer';
 import { createPage } from '../../global/utils/pages';
+import { ARRANGER_PROJECTS } from '../../global/utils/constants';
 
 const FilesPage = createPage({
   getInitialProps: async ({ query, egoJwt }) => {
@@ -29,7 +30,7 @@ const FilesPage = createPage({
   },
   isPublic: true,
 })(() => {
-  return <Explorer />;
+  return <Explorer project={ARRANGER_PROJECTS.FILES} />;
 });
 
 export default FilesPage;

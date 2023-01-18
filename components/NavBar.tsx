@@ -134,6 +134,21 @@ const NavBar: React.ComponentType = () => {
               Files
             </a>
           </Link>
+        </div>
+        <div
+          css={(theme) => css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 144px;
+            background-color: ${theme.colors.white};
+            height: 100%;
+            &:hover {
+              background-color: ${theme.colors.grey_2};
+            }
+            border-right: 2px solid ${theme.colors.white};
+          `}
+        >
           <Link path={VARIANTS_PATH}>
             <a
               css={(theme) => css`

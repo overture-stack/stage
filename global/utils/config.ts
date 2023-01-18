@@ -1,0 +1,49 @@
+/*
+ *
+ * Copyright (c) 2023 The Ontario Institute for Cancer Research. All rights reserved
+ *
+ *  This program and the accompanying materials are made available under the terms of
+ *  the GNU Affero General Public License v3.0. You should have received a copy of the
+ *  GNU Affero General Public License along with this program.
+ *   If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+import { getConfig } from '../config';
+import { ArrangerProject, ARRANGER_PROJECTS } from './constants';
+
+export const getArrangerConfig = (project: ArrangerProject) => {
+  const config = getConfig();
+
+  switch (project) {
+    case ARRANGER_PROJECTS.FILES:
+      return {
+        NEXT_PUBLIC_ARRANGER_PROJECT_ID: config.NEXT_PUBLIC_ARRANGER_FILES_PROJECT_ID || '',
+        NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD: config.NEXT_PUBLIC_ARRANGER_FILES_GRAPHQL_FIELD || '',
+        NEXT_PUBLIC_ARRANGER_INDEX: config.NEXT_PUBLIC_ARRANGER_FILES_INDEX || '',          
+      };
+    case ARRANGER_PROJECTS.VARIANTS:
+      return {
+        NEXT_PUBLIC_ARRANGER_PROJECT_ID: config.NEXT_PUBLIC_ARRANGER_VARIANTS_PROJECT_ID || '',
+        NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD: config.NEXT_PUBLIC_ARRANGER_VARIANTS_GRAPHQL_FIELD || '',
+        NEXT_PUBLIC_ARRANGER_INDEX: config.NEXT_PUBLIC_ARRANGER_VARIANTS_INDEX || '',          
+      };
+    // return 'files' project config by default
+    default:
+      return {
+        NEXT_PUBLIC_ARRANGER_PROJECT_ID: config.NEXT_PUBLIC_ARRANGER_FILES_PROJECT_ID || '',
+        NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD: config.NEXT_PUBLIC_ARRANGER_FILES_GRAPHQL_FIELD || '',
+        NEXT_PUBLIC_ARRANGER_INDEX: config.NEXT_PUBLIC_ARRANGER_FILES_INDEX || '',          
+      };
+  };
+}

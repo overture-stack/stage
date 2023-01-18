@@ -22,6 +22,7 @@
 import React from 'react';
 import Explorer from '../../components/pages/explorer';
 import { createPage } from '../../global/utils/pages';
+import { ARRANGER_PROJECTS } from '../../global/utils/constants';
 
 const VariantsPage = createPage({
   getInitialProps: async ({ query, egoJwt }) => {
@@ -29,7 +30,7 @@ const VariantsPage = createPage({
   },
   isPublic: true,
 })(() => {
-  return <Explorer />;
+  return <Explorer project={ARRANGER_PROJECTS.VARIANTS} />;
 });
 
 export default VariantsPage;

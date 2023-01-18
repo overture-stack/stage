@@ -27,6 +27,7 @@ import { PageContentProps } from './index';
 import StyledLink from '../../Link';
 import { DMSThemeInterface } from '../../theme';
 import { getConfig } from '../../../global/config';
+import { getArrangerConfig } from '../../../global/utils/config';
 
 const Table = dynamic(
   () => import('@arranger/components/dist/Arranger').then((comp) => comp.Table),
@@ -231,9 +232,11 @@ const getTableStyle = (theme: DMSThemeInterface) => css`
 const RepoTable = (props: PageContentProps) => {
   const {
     NEXT_PUBLIC_ARRANGER_API,
-    NEXT_PUBLIC_ARRANGER_PROJECT_ID,
     NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
   } = getConfig();
+  const {
+    NEXT_PUBLIC_ARRANGER_PROJECT_ID,
+  } = getArrangerConfig(props.project);
   const theme = useTheme();
   const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
     .filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names

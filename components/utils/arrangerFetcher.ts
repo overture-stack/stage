@@ -21,13 +21,17 @@
 
 import urlJoin from 'url-join';
 import { getConfig } from '../../global/config';
+import { getArrangerConfig } from '../../global/utils/config';
+import { ArrangerProject, ARRANGER_PROJECTS } from '../../global/utils/constants';
 import ajax from './ajax';
 
 const createArrangerFetcher = ({
   onError = (err: any) => Promise.reject(err),
   defaultHeaders = {},
+  project = ARRANGER_PROJECTS.FILES as ArrangerProject,
 } = {}) => ({ method = 'post', body = {}, headers = {} }) => {
-  const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID } = getConfig();
+  const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
+  const { NEXT_PUBLIC_ARRANGER_PROJECT_ID } = getArrangerConfig(project);
   const uri = urlJoin(NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, '/graphql');
   return ajax
     .post(uri, body, {

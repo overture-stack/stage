@@ -28,6 +28,8 @@ import PageLayout from '../../PageLayout';
 
 import { RepoFiltersType } from './sqonTypes';
 import { getConfig } from '../../../global/config';
+import { getArrangerConfig } from '../../../global/utils/config';
+import { ArrangerProject, ARRANGER_PROJECTS } from '../../../global/utils/constants';
 import createArrangerFetcher from '../../utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import ErrorNotification from '../../ErrorNotification';
@@ -59,6 +61,7 @@ export interface PageContentProps {
   }) => Promise<any>;
   setSQON: (sqon: RepoFiltersType) => void;
   fetchData?: (projectId: string) => Promise<any>;
+  project: ArrangerProject;
 }
 
 export type Project = {
@@ -66,8 +69,6 @@ export type Project = {
   active: boolean;
   indices: [{ id: string; esIndex: string; graphqlField: string }];
 };
-
-const arrangerFetcher = createArrangerFetcher({});
 
 const projectsQuery = `
   query {
@@ -83,12 +84,13 @@ const projectsQuery = `
   }
 `;
 
-const RepositoryPage = () => {
+const RepositoryPage = ({ project = ARRANGER_PROJECTS.FILES }: { project: ArrangerProject }) => {
   const {
     NEXT_PUBLIC_ARRANGER_PROJECT_ID,
     NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD,
     NEXT_PUBLIC_ARRANGER_INDEX,
-  } = getConfig();
+  } = getArrangerConfig(project);
+  const arrangerFetcher = createArrangerFetcher({ project });
   const theme = useTheme();
 
   const [availableProjects, setAvailableProjects] = useState<Project[]>([]);
@@ -131,7 +133,7 @@ const RepositoryPage = () => {
   });
 
   return (
-    <PageLayout subtitle="Data Explorer">
+    <PageLayout subtitle={project === ARRANGER_PROJECTS.VARIANTS ? "Variants Explorer" : "Files Explorer"}>
       {loadingProjects ? (
         <div
           css={(theme) =>
@@ -165,7 +167,7 @@ const RepositoryPage = () => {
           graphqlField={NEXT_PUBLIC_ARRANGER_GRAPHQL_FIELD}
           index={NEXT_PUBLIC_ARRANGER_INDEX}
           render={(props: PageContentProps) => {
-            return <PageContent {...props} />;
+            return <PageContent {...props} project={project} />;
           }}
         />
       )}
