@@ -27,6 +27,7 @@ import { PageContentProps } from './index';
 import StyledLink from '../../Link';
 import { DMSThemeInterface } from '../../theme';
 import { getConfig } from '../../../global/config';
+import { JbrowseLinear } from '@overture/dms-jbrowse';
 
 const Table = dynamic(
   () => import('@arranger/components/dist/Arranger').then((comp) => comp.Table),
@@ -243,38 +244,71 @@ const RepoTable = (props: PageContentProps) => {
   const customExporters = [
     { label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
     { label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-    { label: () => (
-      <span
-        css={css`
-          border-top: 1px solid ${theme.colors.grey_3};
-          margin-top: -3px;
-          padding-top: 7px;
-          white-space: pre-line;
-          width: 140px;
-
-          a {
-            margin-left: 3px;
-          }
-        `}
-      >
-        To download files using a file manifest, please follow these
-        <StyledLink
+    {
+      label: () => (
+        <span
           css={css`
-            line-height: inherit;
+            border-top: 1px solid ${theme.colors.grey_3};
+            margin-top: -3px;
+            padding-top: 7px;
+            white-space: pre-line;
+            width: 140px;
+
+            a {
+              margin-left: 3px;
+            }
           `}
-          href="https://overture.bio/documentation/score/user-guide/download"
-          rel="noopener noreferrer"
-          target="_blank"
         >
-          instructions
-        </StyledLink>
-        .
-      </span>
-    ), },
+          To download files using a file manifest, please follow these
+          <StyledLink
+            css={css`
+              line-height: inherit;
+            `}
+            href="https://overture.bio/documentation/score/user-guide/download"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            instructions
+          </StyledLink>
+          .
+        </span>
+      ),
+    },
+  ];
+
+  const selectedFiles = [
+    {
+      fileId: 'UUID',
+      fileName: '0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz',
+      fileType: 'VCF',
+      fileURI:
+        'http://localhost:3000/data/0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz',
+      indexURI:
+        'http://localhost:3000/data/0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz.tbi',
+    },
+    {
+      fileId: 'UUID_2',
+      fileName: '0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz',
+      fileType: 'VCF',
+      fileURI:
+        'http://localhost:3000/data/0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz',
+      indexURI:
+        'http://localhost:3000/data/0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz.tbi',
+    },
+    {
+      fileId: 'UUID_3',
+      fileName: 'ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz',
+      fileType: 'VCF',
+      fileURI:
+        'http://localhost:3000/data/ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz',
+      indexURI:
+        'http://localhost:3000/data/ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz.tbi',
+    },
   ];
 
   return (
     <div css={getTableStyle(theme)}>
+      <JbrowseLinear selectedFiles={selectedFiles} />
       <Table
         {...props}
         showFilterInput={false}
