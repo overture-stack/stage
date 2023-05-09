@@ -1,0 +1,14 @@
+{
+  "cHIP": "1",
+  "baseline_age": "67",
+  "genetic_sex": "0",
+  "rs7705526_G": "0",
+  "count": "1",
+  "gene.refGene": "DNMT3A",
+  "exonicFunc.refGene": ".",
+  "transcriptOI": "NM_175629:exon15:c.1851+1G>A;NM_153759:exon11:c.1284+1G>A;NM_022552:exon15:c.1851+1G>A;NM_001320893:exon10:c.1395+1G>A",
+  "nonsynOI": "nan",
+  "minAD": "13",
+  "aF": "0.115",
+  "dP": "101"
+}

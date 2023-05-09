@@ -1,0 +1,26 @@
+{
+	"facets": {
+		"aggregations": [
+			{
+				"fieldName": "studySample",
+				"isActive": true,
+				"show": true
+			},
+			{
+				"fieldName": "blinding",
+				"isActive": true,
+				"show": true
+			},
+			{
+				"fieldName": "comparisonGroups",
+				"isActive": true,
+				"show": true
+			},
+			{
+				"fieldName": "primaryOutcome",
+				"isActive": true,
+				"show": true
+			}
+		]
+	}
+}

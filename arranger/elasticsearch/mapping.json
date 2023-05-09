@@ -1,0 +1,69 @@
+// PUT ch_centric_1.0
+
+{
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"autocomplete_analyzed": {
+					"filter": ["lowercase", "edge_ngram"],
+					"tokenizer": "standard"
+				},
+				"autocomplete_prefix": {
+					"filter": ["lowercase", "edge_ngram"],
+					"tokenizer": "keyword"
+				},
+				"lowercase_keyword": {
+					"filter": ["lowercase"],
+					"tokenizer": "keyword"
+				}
+			},
+			"filter": {
+				"edge_ngram": {
+					"max_gram": "20",
+					"min_gram": "1",
+					"side": "front",
+					"type": "edge_ngram"
+				}
+			}
+		}
+	},
+	"mappings": {
+		"dynamic": "false",
+		"date_detection": false,
+		"properties": {
+			"author": {
+				"type": "keyword"
+			},
+			"blinding": {
+				"type": "keyword"
+			},
+			"comparisonGroups": {
+				"type": "keyword"
+			},
+			"conclusion": {
+				"type": "keyword"
+			},
+			"gPTSummary": {
+				"type": "keyword"
+			},
+			"primaryOutcome": {
+				"type": "keyword"
+			},
+			"primaryOutcomeResults": {
+				"type": "keyword"
+			},
+			"studySample": {
+				"type": "integer"
+			},
+			"studyTitle": {
+				"type": "keyword"
+			},
+			"studyURL": {
+				"type": "keyword"
+			},
+			"yearofPublication": {
+				"type": "integer"
+			}
+		}
+	}
+}

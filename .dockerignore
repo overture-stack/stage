@@ -1,0 +1,9 @@
+.env.local
+.env.test
+.env.schema
+.next
+.vscode
+arranger
+helm
+node_modules
+Dockerfile

@@ -1,0 +1,42 @@
+# to add configs using helm use `OVERTURE_ARGS_LINE`
+# -f helm/arranger/qa/configs/base.json -f helm/arranger/qa/configs/extended.json -f helm/arranger/qa/configs/facets.json -f helm/arranger/qa/configs/matchbox.json -f helm/arranger/qa/configs/table.json
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+config:
+  dev:
+    debug: true
+    admin: true
+    logs: true
+  elasticsearch:
+    host: http://overture-es-http:9200
+    username: "elastic"
+    password:
+      secretName: overture-es-elastic-user
+
+image:
+  tag: 3.0.0-beta.33
+
+ingress:
+  annotations:
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod-a
+    kubernetes.io/ingress.class: azure/application-gateway
+  enabled: true
+  hosts:
+    - host: arranger.chportal.playground.overture.bio
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - arranger.chportal.playground.overture.bio
+      secretName: arranger-server-chportal-cert
+
+serviceAccount:
+  create: false

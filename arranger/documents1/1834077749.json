@@ -1,0 +1,16 @@
+{
+  "iD": "3219478",
+  "gene.refGene": "BCOR",
+  "chr": "chrX",
+  "start": "40064335",
+  "end": "40064335",
+  "ref": "C",
+  "alt": "A",
+  "func.refGene": "splicing",
+  "exonicFunc.refGene": ".",
+  "transcriptOI": "NM_001123385:exon7:c.3502+1G>T;NM_001123383:exon7:c.3502+1G>T;NM_017745:exon7:c.3502+1G>T;NM_001123384:exon6:c.3448+1G>T",
+  "nonsynOI": "nan",
+  "minAD": "49",
+  "dP": "49",
+  "aF": "0.978"
+}

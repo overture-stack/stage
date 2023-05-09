@@ -1,0 +1,57 @@
+# repo: https://icgc-argo.github.io/charts/
+# chart: icgc-argo/es-operator
+# version: 0.8.0
+
+elastic:
+  http:
+    tls:
+      selfsignedCertificate:
+        disabled: true
+  name: overture
+  nodes:
+    data:
+      count: 1
+      env:
+        ES_JAVA_OPTS: "-Xms4g -Xmx4g"
+      name: data
+      resources:
+        limits:
+          cpu: 2
+          memory: 8Gi
+        requests:
+          cpu: 2
+          memory: 8Gi
+      storage: 20Gi
+      storageClass: default
+    master:
+      count: 1
+      env:
+        ES_JAVA_OPTS: "-Xms4g -Xmx4g"
+      name: master
+      resources:
+        limits:
+          cpu: 2
+          memory: 8Gi
+        requests:
+          cpu: 1
+          memory: 8Gi
+      storage: 3Gi
+      storageClass: default
+  version: 7.17.12
+ingress:
+  annotations:
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: cert-overture-playground-es-cert
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod-a
+    # kubernetes.io/ingress.class: azure/application-gateway
+  enabled: true
+  className: azure-application-gateway
+  hosts:
+    - host: elasticsearch.playground.overture.bio
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - elasticsearch.playground.overture.bio
+      secretName: playground-es-tls

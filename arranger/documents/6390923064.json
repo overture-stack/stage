@@ -1,0 +1,14 @@
+{
+  "cHIP": "1",
+  "baseline_age": "52",
+  "genetic_sex": "1",
+  "rs7705526_G": "1",
+  "count": "1",
+  "gene.refGene": "ASXL1",
+  "exonicFunc.refGene": "frameshift insertion",
+  "transcriptOI": "ASXL1:NM_015338:exon12:c.1927dupG:p.G646Wfs*12",
+  "nonsynOI": "G646Wfs*12",
+  "minAD": "23",
+  "aF": "0.286",
+  "dP": "80"
+}

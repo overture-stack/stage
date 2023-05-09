@@ -1,0 +1,16 @@
+{
+  "iD": "1211366",
+  "gene.refGene": "PHF6",
+  "chr": "chrX",
+  "start": "134393954",
+  "end": "134393954",
+  "ref": "-",
+  "alt": "A",
+  "func.refGene": "splicing",
+  "exonicFunc.refGene": ".",
+  "transcriptOI": "NM_001015877:exon5:c.418+2->A;NM_032335:exon5:c.418+2->A;NM_032458:exon5:c.418+2->A",
+  "nonsynOI": "nan",
+  "minAD": "28",
+  "dP": "28",
+  "aF": "0.962"
+}

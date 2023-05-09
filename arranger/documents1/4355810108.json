@@ -1,0 +1,16 @@
+{
+  "iD": "4312508",
+  "gene.refGene": "JAK2",
+  "chr": "chr9",
+  "start": "5073770",
+  "end": "5073770",
+  "ref": "G",
+  "alt": "T",
+  "func.refGene": "exonic",
+  "exonicFunc.refGene": "nonsynonymous SNV",
+  "transcriptOI": "JAK2:NM_004972:exon14:c.G1849T:p.V617F",
+  "nonsynOI": "V617F",
+  "minAD": "24",
+  "dP": "25",
+  "aF": "0.917"
+}
