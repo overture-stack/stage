@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Effect of Donor Sex on Recipient Mortality in Transfusion.",
+  "yearofPublication": "2023",
+  "author": "Micha√´l Chass√© et al.",
+  "studySample": "8719",
+  "comparisonGroups": [
+    "male donor group",
+    "female donor group"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Survival",
+  "primaryOutcomeResults": "1141 patients in the female donor group and 1712 patients in the male donor group died; adjusted hazard ratio for death was 0.98 (95% CI, 0.91 to 1.06).",
+  "conclusion": "No significant difference in survival between a transfusion strategy involving red-cell units from female donors and a strategy involving red-cell units from male donors.",
+  "gPTSummary": "40 ratio. The primary outcome was survival, with the male donor group as the reference group. Results showed no significant difference in survival between the two groups, with 1141 patients in the female donor group and 1712 patients in the male donor group dying and an adjusted hazard ratio for death of 0.98 (95% CI, 0.91 to 1.06).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37043654"
+}

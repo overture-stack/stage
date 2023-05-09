@@ -1,0 +1,18 @@
+{
+  "studyTitle": "Immunogenicity and safety of BPZE1, an intranasal live attenuated pertussis vaccine, versus tetanus-diphtheria-acellular pertussis vaccine: a randomised, double-blind, phase 2b trial.",
+  "yearofPublication": "2023",
+  "author": "Cheryl Keech et al.",
+  "studySample": "280",
+  "comparisonGroups": [
+    "bpze1-bpze1",
+    "bpze1-placebo",
+    "tdap-bpze1",
+    "tdap-placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Proportion of participants achieving nasal secretory IgA seroconversion against at least one B pertussis antigen on day 29 or day 113",
+  "primaryOutcomeResults": "79 (94% [95% CI 87-98]) of 84 participants in the BPZE1-BPZE1 group, 89 (95% [88-98]) of 94 in the BPZE1-placebo group, 38 (90% [77-97]) of 42 in the Tdap-BPZE1 group, and 42 (93% [82-99]) of 45 in the Tdap-placebo group",
+  "conclusion": "BPZE1 induced nasal mucosal immunity and produced functional serum responses, and both vaccines were well tolerated with mild reactogenicity and no serious adverse events.",
+  "gPTSummary": "This double-blind, phase 2b trial of 280 healthy adults aged 18-50 years in the USA compared the immunogenicity and safety of BPZE1 and the tetanus-diphtheria-acellular pertussis vaccine (Tdap). The primary outcome was the proportion of participants achieving nasal secretory IgA seroconversion against at least one B pertussis antigen on day 29 or day 113. Results showed that BPZE1 induced broad and consistent B pertussis-specific mucosal secretory IgA responses, whereas Tdap did not induce consistent mucosal secretory IgA responses. Both vaccines were well tolerated, with mild reactogenicity and no serious adverse events related to study vaccination.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36906345"
+}

@@ -1,0 +1,17 @@
+{
+  "studyTitle": "Effect of monthly intermittent preventive treatment with dihydroartemisinin-piperaquine with and without azithromycin versus monthly sulfadoxine-pyrimethamine on adverse pregnancy outcomes in Africa: a double-blind randomised, partly placebo-controlled trial.",
+  "yearofPublication": "2023",
+  "author": "Mwayiwawo Madanitsa et al.",
+  "studySample": "4680",
+  "comparisonGroups": [
+    "iptp with sulfadoxine-pyrimethamine",
+    "iptp with dihydroartemisinin-piperaquine",
+    "iptp with dihydroartemisinin-piperaquine plus azithromycin"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Adverse pregnancy outcome (fetal loss, adverse newborn baby outcomes, or neonatal death)",
+  "primaryOutcomeResults": "Adverse pregnancy outcome was reported more frequently in the dihydroartemisinin-piperaquine group (27.9%) and in the dihydroartemisinin-piperaquine plus azithromycin group (27.6%) compared to the sulfadoxine-pyrimethamine group (23.3%)",
+  "conclusion": "Monthly IPTp with dihydroartemisinin-piperaquine did not improve pregnancy outcomes, and the addition of a single course of azithromycin did not enhance the effect of monthly IPTp with dihydroartemisinin-piperaquine.",
+  "gPTSummary": "This double-blind, three-arm, partly placebo-controlled trial included 4680 HIV-negative pregnant women in Kenya, Malawi, and Tanzania. The study compared IPTp with sulfadoxine-pyrimethamine, IPTp with dihydroartemisinin-piperaquine plus a single treatment course of placebo, or IPTp with dihydroartemisinin-piperaquine plus a single treatment course of azithromycin. The primary outcome was adverse pregnancy outcome, which was reported more frequently in the dihydroartemisinin-piperaquine group (27.9%) and in the dihydroartemisinin-piperaquine plus azithromycin group (27.6%) compared to the sulfadoxine-pyrimethamine group (23.3%).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36913959"
+}

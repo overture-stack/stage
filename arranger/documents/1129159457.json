@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Trial of Hybrid Closed-Loop Control in Young Children with Type 1 Diabetes.",
+  "yearofPublication": "2023",
+  "author": "R Paul Wadwa et al.",
+  "studySample": "102",
+  "comparisonGroups": [
+    "closed-loop group",
+    "standard-care group"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Percentage of time that the glucose level was in the target range of 70 to 180 mg per deciliter",
+  "primaryOutcomeResults": "Mean adjusted difference of 12.4 percentage points (equivalent to approximately 3 hours per day); 95% confidence interval, 9.5 to 15.3; P<0.001",
+  "conclusion": "Closed-loop system of insulin delivery was more effective than standard care in keeping glucose levels in the target range for young children with type 1 diabetes.",
+  "gPTSummary": "This was a 13-week, multicenter, randomized controlled trial with an unspecified blinding, involving 102 young children with type 1 diabetes. The study compared a closed-loop system of insulin delivery to standard care, with the primary outcome being the percentage of time that the glucose level was in the target range. The results showed that the mean percentage of time that the glucose level was within the target range increased from 56.7±18.0% at baseline to 69.3±11.1% in the closed-loop group and from 54.9±14.7% to 55.9±12.6% in the standard-care group (mean adjusted difference, 12.4 percentage points [equivalent to approximately 3 hours per day]; 95% confidence interval, 9.5 to 15.3; P<0.001). This indicates that the closed-loop system of insulin delivery improved glycemic outcomes in young children with type 1 diabetes compared to standard care.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36920756"
+}

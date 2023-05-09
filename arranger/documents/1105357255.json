@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Treat-to-Target or High-Intensity Statin in Patients With Coronary Artery Disease: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Sung-Jin Hong et al.",
+  "studySample": "4400",
+  "comparisonGroups": [
+    "treat-to-target",
+    "high-intensity statin"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "3-year composite of death, myocardial infarction, stroke, or coronary revascularization",
+  "primaryOutcomeResults": "177 patients (8.1%) in the treat-to-target group and 190 patients (8.7%) in the high-intensity statin group (absolute difference, -0.6 percentage points [upper boundary of the 1-sided 97.5% CI, 1.1 percentage points]; P < .001 for noninferiority)",
+  "conclusion": "A treat-to-target LDL-C strategy of 50 to 70 mg/dL as the goal was noninferior to a high-intensity statin therapy for the 3-year composite of death, myocardial infarction, stroke, or coronary revascularization.",
+  "gPTSummary": "This randomized, multicenter, noninferiority trial in 4400 patients with coronary artery disease treated at 12 centers in South Korea compared a treat-to-target LDL-C strategy of 50 to 70 mg/dL as the goal with a high-intensity statin therapy for the 3-year composite of death, myocardial infarction, stroke, or coronary revascularization. The primary end point occurred in 177 patients (8.1%) in the treat-to-target group and 190 patients (8.7%) in the high-intensity statin group (absolute difference, -0.6 percentage points [upper boundary of the 1-sided 97.5% CI, 1.1 percentage points]; P < .001 for noninferiority).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36877807"
+}

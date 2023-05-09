@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Bivalent Prefusion F Vaccine in Pregnancy to Prevent RSV Illness in Infants.",
+  "yearofPublication": "2023",
+  "author": "Beate Kampmann et al.",
+  "studySample": "7358",
+  "comparisonGroups": [
+    "rsvpref vaccine",
+    "placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "Medically attended severe RSV-associated lower respiratory tract illness",
+  "primaryOutcomeResults": "Vaccine efficacy of 81.8% (99.5% CI, 40.6 to 96.3) within 90 days after birth, 69.4% (97.58% CI, 44.3 to 84.1) within 180 days after birth",
+  "conclusion": "RSVpreF vaccine administered during pregnancy was effective against medically attended severe RSV-associated lower respiratory tract illness in infants, and no safety concerns were identified.",
+  "gPTSummary": "This double-blind phase 3 trial included 7358 participants (3682 pregnant women and 3558 infants) from 18 countries. The comparison groups were RSVpreF vaccine vs. placebo. The primary outcome was medically attended severe RSV-associated lower respiratory tract illness. Results showed vaccine efficacy of 81.8% (99.5% CI, 40.6 to 96.3) within 90 days after birth and 69.4% (97.58% CI, 44.3 to 84.1) within 180 days after birth, and no safety concerns were identified.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37018474"
+}

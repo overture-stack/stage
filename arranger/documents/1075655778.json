@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct.",
+  "yearofPublication": "2023",
+  "author": "Xiaochuan Huo et al.",
+  "studySample": "456",
+  "comparisonGroups": [
+    "endovascular therapy",
+    "medical management"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Score on the modified Rankin scale at 90 days (scores range from 0 to 6, with higher scores indicating greater disability)",
+  "primaryOutcomeResults": "Shift in the distribution of scores on the modified Rankin scale toward better outcomes was observed in favor of endovascular therapy over medical management alone (generalized odds ratio, 1.37; 95% confidence interval, 1.11 to 1.69; P = 0.004)",
+  "conclusion": "Patients with large cerebral infarctions had better outcomes with endovascular therapy administered within 24 hours than with medical management alone but had more intracranial hemorrhages.",
+  "gPTSummary": "1 ratio to either endovascular therapy and receive medical management or to receive medical management alone. Results showed that endovascular therapy administered within 24 hours led to better outcomes on the modified Rankin scale at 90 days compared to medical management alone (generalized odds ratio, 1.37; 95% confidence interval, 1.11 to 1.69; P = 0.004), but with more intracranial hemorrhages.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36762852"
+}

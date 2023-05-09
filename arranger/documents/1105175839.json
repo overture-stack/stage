@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Effectiveness of a non-physician community health-care provider-led intensive blood pressure intervention versus usual care on cardiovascular disease (CRHCP): an open-label, blinded-endpoint, cluster-randomised trial.",
+  "yearofPublication": "2023",
+  "author": "Jiang He et al.",
+  "studySample": "33995",
+  "comparisonGroups": [
+    "intervention",
+    "usual care"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Composite outcome of myocardial infarction, stroke, heart failure requiring hospitalisation, and cardiovascular disease death during the 36-month follow-up",
+  "primaryOutcomeResults": "Fewer patients in the intervention group than the usual care group had a primary outcome (1¬∑62% vs 2¬∑40% per year; hazard ratio [HR] 0¬∑67, 95% CI 0¬∑61-0¬∑73; p<0¬∑0001)",
+  "conclusion": "The non-physician community health-care provider-led intensive blood pressure intervention is effective in reducing cardiovascular disease and death.",
+  "gPTSummary": "This open-label, blinded-endpoint, cluster-randomised trial included 33,995 participants aged at least 40 years with an untreated systolic blood pressure of at least 140 mm Hg or a diastolic blood pressure of at least 90 mm Hg. The study compared a non-physician community health-care provider-led intervention with usual care. The primary outcome was a composite outcome of myocardial infarction, stroke, heart failure requiring hospitalisation, and cardiovascular disease death during the 36-month follow-up. The intervention group had fewer patients with the primary outcome (1¬∑62% vs 2¬∑40% per year; hazard ratio [HR] 0¬∑67, 95% CI 0¬∑61-0¬∑73; p<0¬∑0001) and also showed reduced risk for secondary outcomes.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36871573"
+}

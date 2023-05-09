@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Efficacy and safety of garadacimab, a factor XIIa inhibitor for hereditary angioedema prevention (VANGUARD): a global, multicentre, randomised, double-blind, placebo-controlled, phase 3 trial.",
+  "yearofPublication": "2023",
+  "author": "Timothy J Craig et al.",
+  "studySample": "65",
+  "comparisonGroups": [
+    "garadacimab",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Investigator-assessed time-normalised number of hereditary angioedema attacks (number of hereditary angioedema attacks per month) during the 6-month treatment period (day 1 to day 182)",
+  "primaryOutcomeResults": "Mean number of hereditary angioedema attacks per month was significantly lower in the garadacimab group (0¬∑27, 95% CI 0¬∑05 to 0¬∑49) than in the placebo group (2¬∑01, 1¬∑44 to 2¬∑57; p<0¬∑0001)",
+  "conclusion": "Monthly garadacimab administration significantly reduced hereditary angioedema attacks in patients aged 12 years and older compared with placebo and had a favourable safety profile.",
+  "gPTSummary": "2) to receive garadacimab or placebo for 6 months. The primary endpoint was the investigator-assessed time-normalised number of hereditary angioedema attacks (number of hereditary angioedema attacks per month) during the 6-month treatment period. Results showed that the mean number of hereditary angioedema attacks per month was significantly lower in the garadacimab group (0¬∑27, 95% CI 0¬∑05 to 0¬∑49) than in the placebo group (2¬∑01, 1¬∑44 to 2¬∑57; p<0¬∑0001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36868261"
+}

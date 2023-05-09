@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Efficacy and Safety of Early Administration of 4-Factor Prothrombin Complex Concentrate in Patients With Trauma at Risk of Massive Transfusion: The PROCOAG Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Pierre Bouzat et al.",
+  "studySample": "324",
+  "comparisonGroups": [
+    "4f-pcc",
+    "saline solution (placebo)"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "24-hour all blood product consumption",
+  "primaryOutcomeResults": "No statistically or clinically significant between-group difference in median (IQR) total 24-hour blood product consumption (12 [5-19] U in the 4F-PCC group vs 11 [6-19] U in the placebo group; absolute difference, 0.2 U [95% CI, -2.99 to 3.33]; P = .72)",
+  "conclusion": "Administration of 4F-PCC did not reduce 24-hour blood product consumption, but thromboembolic events were more common.",
+  "gPTSummary": "This double-blind, randomized, placebo-controlled superiority trial with an unspecified study blinding involved 324 patients with trauma at risk of massive transfusion from 12 French designated level I trauma centers. Patients were administered either 1 mL/kg of 4F-PCC or 1 mL/kg of saline solution (placebo). The primary outcome was 24-hour all blood product consumption and the secondary outcome was arterial or venous thromboembolic events. There was no significant reduction of 24-hour blood product consumption after administration of 4F-PCC, but thromboembolic events were more common (35% vs 24%; relative risk, 1.48 [95% CI, 1.04-2.10]; P = .03).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36942533"
+}

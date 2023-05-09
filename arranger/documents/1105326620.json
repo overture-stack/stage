@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Bempedoic Acid and Cardiovascular Outcomes in Statin-Intolerant Patients.",
+  "yearofPublication": "2023",
+  "author": "Steven E Nissen et al.",
+  "studySample": "13970",
+  "comparisonGroups": [
+    "bempedoic acid",
+    "placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "Major adverse cardiovascular events (death from cardiovascular causes, nonfatal myocardial infarction, nonfatal stroke, or coronary revascularization)",
+  "primaryOutcomeResults": "Incidence of primary end-point event was significantly lower with bempedoic acid than with placebo (11.7% vs. 13.3%; hazard ratio, 0.87; 95% confidence interval [CI], 0.79 to 0.96; P = 0.004)",
+  "conclusion": "Treatment with bempedoic acid was associated with a lower risk of major adverse cardiovascular events.",
+  "gPTSummary": "This double-blind, randomized, placebo-controlled trial included 13,970 statin-intolerant patients at risk for cardiovascular disease. Patients were assigned to receive oral bempedoic acid (180 mg daily) or placebo. Results showed that the incidence of major adverse cardiovascular events was significantly lower with bempedoic acid than with placebo (11.7% vs. 13.3%; hazard ratio, 0.87; 95% confidence interval [CI], 0.79 to 0.96; P = 0.004).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36876740"
+}

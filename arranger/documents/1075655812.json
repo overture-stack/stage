@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Trial of Endovascular Thrombectomy for Large Ischemic Strokes.",
+  "yearofPublication": "2023",
+  "author": "Amrou Sarraj et al.",
+  "studySample": "178",
+  "comparisonGroups": [
+    "endovascular thrombectomy plus medical care",
+    "medical care alone"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Modified Rankin Scale Score at 90 days (range 0-6, higher scores indicating greater disability)",
+  "primaryOutcomeResults": "20% of the patients in the thrombectomy group and 7% in the medical-care group had functional independence (relative risk, 2.97; 95% CI, 1.60 to 5.51)",
+  "conclusion": "Endovascular thrombectomy resulted in better functional outcomes than medical care but was associated with vascular complications.",
+  "gPTSummary": "This prospective, randomized, open-label, adaptive, international trial (NCT03876457) with a sample size of 352 patients with large ischemic strokes found that endovascular thrombectomy plus medical care resulted in better functional outcomes than medical care alone (20% vs 7%, relative risk 2.97; 95% CI, 1.60 to 5.51). However, this was associated with vascular complications.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36762865"
+}

@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE) in the Netherlands: a multicentre, open-label, blinded-endpoint, randomised, controlled, phase 3 trial.",
+  "yearofPublication": "2023",
+  "author": "Susanne G H Olthuis et al.",
+  "studySample": "535",
+  "comparisonGroups": [
+    "endovascular treatment",
+    "no endovascular treatment"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Modified Rankin Scale (mRS) score at 90 days after randomisation",
+  "primaryOutcomeResults": "Median mRS score at 90 days was lower in the endovascular treatment group than in the control group (3 [IQR 2-5] vs 4 [2-6]); adjusted common OR 1¬∑67 [95% CI 1¬∑20-2¬∑32]",
+  "conclusion": "Endovascular treatment was efficacious and safe for patients with ischaemic stroke caused by an anterior circulation large-vessel occlusion who presented 6-24 h from onset or last seen well, and who were selected on the basis of the presence of collateral flow on CTA.",
+  "gPTSummary": "This was an open-label, blinded-endpoint, randomised, controlled, phase 3 trial with a sample size of 535 patients with ischaemic stroke caused by an anterior circulation large-vessel occlusion. Patients were randomly assigned to receive endovascular treatment or no endovascular treatment (control) in addition to best medical treatment. Results showed that endovascular treatment was efficacious and safe, with a median mRS score at 90 days being lower in the endovascular treatment group than in the control group (3 [IQR 2-5] vs 4 [2-6]); adjusted common OR 1¬∑67 [95% CI 1¬∑20-2¬∑32].",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37003289"
+}

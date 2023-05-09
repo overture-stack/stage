@@ -1,0 +1,15 @@
+{
+  "studyTitle": "Inaxaplin for Proteinuric Kidney Disease in Persons with Two APOL1 Variants.",
+  "yearofPublication": "2023",
+  "author": "Ogo Egbuna et al.",
+  "studySample": "16",
+  "comparisonGroups": [
+    "n/a"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Percent change from the baseline urinary protein-to-creatinine ratio at week 13",
+  "primaryOutcomeResults": "Mean change from the baseline urinary protein-to-creatinine ratio at week 13 was -47.6% (95% confidence interval, -60.0 to -31.3)",
+  "conclusion": "Targeted inhibition of APOL1 channel function with inaxaplin reduced proteinuria in participants with two APOL1 variants and focal segmental glomerulosclerosis.",
+  "gPTSummary": "This was a single-group, open-label, phase 2a clinical study with an unspecified blinding and a sample size of 16. The patient population was those with two APOL1 variants, biopsy-proven focal segmental glomerulosclerosis, and proteinuria. The primary outcome was the percent change from the baseline urinary protein-to-creatinine ratio at week 13, and the findings showed a mean change of -47.6% (95% confidence interval, -60.0 to -31.3).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36920755"
+}

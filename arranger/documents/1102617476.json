@@ -1,0 +1,17 @@
+{
+  "studyTitle": "Baricitinib for systemic lupus erythematosus: a double-blind, randomised, placebo-controlled, phase 3 trial (SLE-BRAVE-I).",
+  "yearofPublication": "2023",
+  "author": "Eric F Morand et al.",
+  "studySample": "760",
+  "comparisonGroups": [
+    "baricitinib 4 mg",
+    "baricitinib 2 mg",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Proportion of patients reaching an SLE Responder Index (SRI)-4 response at week 52",
+  "primaryOutcomeResults": "57% of participants who received baricitinib 4 mg reached SRI-4 response compared with 46% of participants who received placebo (odds ratio 1¬∑57 [95% CI 1¬∑09 to 2¬∑27]; difference with placebo 10¬∑8 [2¬∑0 to 19¬∑6]; p=0¬∑016)",
+  "conclusion": "Baricitinib 4 mg was more effective than placebo in helping patients with active SLE reach an SRI-4 response at week 52.",
+  "gPTSummary": "This was a double-blind, placebo-controlled, phase 3 study of 760 patients with active SLE receiving either baricitinib 4 mg, baricitinib 2 mg, or placebo once daily for 52 weeks. The primary outcome was the proportion of patients reaching an SLE Responder Index (SRI)-4 response at week 52, which was 57% in the baricitinib 4 mg group compared with 46% in the placebo group (odds ratio 1¬∑57 [95% CI 1¬∑09 to 2¬∑27]; difference with placebo 10¬∑8 [2¬∑0 to 19¬∑6]; p=0¬∑016).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36848918"
+}

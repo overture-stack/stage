@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Vedolizumab for the Treatment of Chronic Pouchitis.",
+  "yearofPublication": "2023",
+  "author": "Simon Travis et al.",
+  "studySample": "102",
+  "comparisonGroups": [
+    "vedolizumab",
+    "placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "mPDAI-defined remission at week 14",
+  "primaryOutcomeResults": "31% (16 of 51 patients) with vedolizumab vs 10% (5 of 51 patients) with placebo (difference, 21 percentage points; 95% CI, 5 to 38; P = 0.01)",
+  "conclusion": "Treatment with vedolizumab was more effective than placebo in inducing remission in patients who had chronic pouchitis after undergoing IPAA for ulcerative colitis.",
+  "gPTSummary": "This was a double-blind, randomized trial of 102 adult patients with chronic pouchitis after undergoing IPAA for ulcerative colitis, comparing vedolizumab to placebo. The primary outcome was mPDAI-defined remission at week 14, which was seen in 31% of patients in the vedolizumab group and 10% of patients in the placebo group (difference, 21 percentage points; 95% CI, 5 to 38; P = 0.01).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36988594"
+}

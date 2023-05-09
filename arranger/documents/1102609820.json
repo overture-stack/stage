@@ -1,0 +1,16 @@
+{
+  "studyTitle": "The Effects of Opt-out vs Opt-in Tobacco Treatment on Engagement, Cessation, and Costs: A Randomized Clinical Trial.",
+  "yearofPublication": "2024",
+  "author": "Kimber P Richter et al.",
+  "studySample": "1000",
+  "comparisonGroups": [
+    "opt-out care",
+    "opt-in care"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Biochemically verified abstinence and treatment uptake at 1 month after randomization",
+  "primaryOutcomeResults": "Opt-out group had 22% vs 16% at month 1 and 19% vs 18% at 6 months. Treatment use for the opt-out group vs the opt-in group was 60% vs 34% for postdischarge cessation medication and 89% vs 37% for completing at least 1 postdischarge counseling call.",
+  "conclusion": "Opt-out care doubled treatment engagement and increased quit attempts, while enhancing patients' sense of agency and alliance with practitioners.",
+  "gPTSummary": "This randomized clinical trial of 1000 adult patients at a tertiary care hospital in Kansas City compared opt-out care vs opt-in care for people who use tobacco. The primary outcome was biochemically verified abstinence and treatment uptake at 1 month after randomization. Results showed that opt-out care had 22% vs 16% at month 1 and 19% vs 18% at 6 months, and treatment use for the opt-out group vs the opt-in group was 60% vs 34% for postdischarge cessation medication and 89% vs 37% for completing at least 1 postdischarge counseling call. The study was unblinded and concluded that opt-out care doubled treatment engagement and increased quit attempts, while enhancing patients' sense of agency and alliance with practitioners.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36848129"
+}

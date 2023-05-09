@@ -1,0 +1,17 @@
+{
+  "studyTitle": "VE303, a Defined Bacterial Consortium, for Prevention of Recurrent Clostridioides difficile Infection: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Thomas Louie et al.",
+  "studySample": "79",
+  "comparisonGroups": [
+    "high-dose ve303 (8.0 x 109 cfus)",
+    "low-dose ve303 (1.6 x 109 cfus)",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Proportion of participants with CDI recurrence at 8 weeks using a combined clinical and laboratory definition",
+  "primaryOutcomeResults": "CDI recurrence rates through week 8 were 13.8% (4/29) for high-dose VE303, 37.0% (10/27) for low-dose VE303, and 45.5% (10/22) for placebo (P = .006, high-dose VE303 vs placebo)",
+  "conclusion": "High-dose VE303 prevented recurrent CDI compared with placebo.",
+  "gPTSummary": "This was a randomized, double-blind, placebo-controlled, dose-ranging study of 79 adults aged 18 or older with laboratory-confirmed CDI with 1 or more prior CDI episodes in the last 6 months or those with primary CDI at high risk for recurrence. Participants were assigned to high-dose VE303 (8.0 x 109 CFUs), low-dose VE303 (1.6 x 109 CFUs), or placebo capsules orally once daily for 14 days. The primary outcome was the proportion of participants with CDI recurrence at 8 weeks. Results showed that CDI recurrence rates through week 8 were 13.8% for high-dose VE303, 37.0% for low-dose VE303, and 45.5% for placebo (P = .006, high-dose VE303 vs placebo), indicating that high-dose VE303 prevented recurrent CDI compared with placebo.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37060545"
+}

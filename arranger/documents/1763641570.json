@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Panitumumab vs Bevacizumab Added to Standard First-line Chemotherapy and Overall Survival Among Patients With RAS Wild-type, Left-Sided Metastatic Colorectal Cancer: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Jun Watanabe et al.",
+  "studySample": "823",
+  "comparisonGroups": [
+    "panitumumab",
+    "bevacizumab"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Overall survival",
+  "primaryOutcomeResults": "Median overall survival was 37.9 months with panitumumab vs 34.3 months with bevacizumab in participants with left-sided tumors (hazard ratio [HR] for death, 0.82; 95.798% CI, 0.68-0.99; P = .03) and 36.2 vs 31.3 months, respectively, in the overall population (HR, 0.84; 95% CI, 0.72-0.98; P = .03).",
+  "conclusion": "Adding panitumumab to standard first-line chemotherapy significantly improved overall survival in those with left-sided tumors and in the overall population.",
+  "gPTSummary": "This randomized, open-label, phase 3 clinical trial conducted at 197 sites in Japan among 823 patients with chemotherapy-naive RAS wild-type, unresectable metastatic colorectal cancer compared the effects of adding panitumumab (an anti-EGFR monoclonal antibody) vs bevacizumab (an anti-VEGF monoclonal antibody) to standard first-line chemotherapy. The study found that overall survival was significantly improved with panitumumab compared to bevacizumab in both left-sided tumors (hazard ratio [HR] for death, 0.82; 95.798% CI, 0.68-0.99; P = .03) and the overall population (HR, 0.84; 95% CI, 0.72-0.98; P = .03).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37071094"
+}

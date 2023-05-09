@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Acute Effects of Coffee Consumption on Health among Ambulatory Adults.",
+  "yearofPublication": "2023",
+  "author": "Gregory M Marcus et al.",
+  "studySample": "100",
+  "comparisonGroups": [
+    "caffeinated coffee",
+    "avoid caffeine"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Mean number of daily premature atrial contractions",
+  "primaryOutcomeResults": "58 daily premature atrial contractions with caffeinated coffee vs 53 daily events on days when caffeine was avoided (rate ratio, 1.09; 95% CI, 0.98 to 1.20; P = 0.10)",
+  "conclusion": "Caffeinated coffee did not result in significantly more daily premature atrial contractions than the avoidance of caffeine.",
+  "gPTSummary": "This randomized trial involved 100 adults with a mean age of 39 years, 51% of whom were women and 51% non-Hispanic White. Unspecified study blinding was used to assess the effects of caffeinated coffee consumption on cardiac ectopy and arrhythmias, daily step counts, sleep minutes, and serum glucose levels. The primary outcome was the mean number of daily premature atrial contractions, which was found to be 58 with caffeinated coffee consumption and 53 when caffeine was avoided (rate ratio, 1.09; 95% CI, 0.98 to 1.20; P = 0.10). The results suggest that caffeinated coffee did not result in significantly more daily premature atrial contractions than the avoidance of caffeine.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36947466"
+}

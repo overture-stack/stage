@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Phase 3 Trial of Sotatercept for Treatment of Pulmonary Arterial Hypertension.",
+  "yearofPublication": "2023",
+  "author": "Marius M Hoeper et al.",
+  "studySample": "323",
+  "comparisonGroups": [
+    "sotatercept",
+    "placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "Change from baseline at week 24 in the 6-minute walk distance",
+  "primaryOutcomeResults": "Median change from baseline at week 24 in the 6-minute walk distance was 34.4 m (95% CI, 33.0 to 35.5) in the sotatercept group and 1.0 m (95% CI, -0.3 to 3.5) in the placebo group.",
+  "conclusion": "Sotatercept resulted in a greater improvement in exercise capacity (as assessed by the 6-minute walk test) than placebo.",
+  "gPTSummary": "1 ratio to receive subcutaneous sotatercept or placebo every 3 weeks. The primary outcome was the change from baseline at week 24 in the 6-minute walk distance. Results showed that the median change from baseline at week 24 in the 6-minute walk distance was 34.4 m (95% CI, 33.0 to 35.5) in the sotatercept group and 1.0 m (95% CI, -0.3 to 3.5) in the placebo group, indicating that sotatercept resulted in a greater improvement in exercise capacity than placebo.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36877098"
+}

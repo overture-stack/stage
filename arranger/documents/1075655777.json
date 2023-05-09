@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Ide-cel or Standard Regimens in Relapsed and Refractory Multiple Myeloma.",
+  "yearofPublication": "2023",
+  "author": "Paula Rodriguez-Otero et al.",
+  "studySample": "386",
+  "comparisonGroups": [
+    "ide-cel",
+    "standard regimen"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Progression-free survival",
+  "primaryOutcomeResults": "Median progression-free survival was 13.3 months in the ide-cel group, as compared with 4.4 months in the standard-regimen group (hazard ratio for disease progression or death, 0.49; 95% confidence interval, 0.38 to 0.65; P<0.001)",
+  "conclusion": "Ide-cel therapy significantly prolonged progression-free survival and improved response as compared with standard regimens in patients with triple-class-exposed relapsed and refractory multiple myeloma.",
+  "gPTSummary": "1 ratio to receive either ide-cel or one of five standard regimens. The primary end point was progression-free survival, and the median progression-free survival was 13.3 months in the ide-cel group, as compared with 4.4 months in the standard-regimen group (hazard ratio for disease progression or death, 0.49; 95% confidence interval, 0.38 to 0.65; P<0.001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36762851"
+}

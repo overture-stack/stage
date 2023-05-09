@@ -1,0 +1,15 @@
+{
+  "studyTitle": "Inflammation and cholesterol as predictors of cardiovascular events among patients receiving statin therapy: a collaborative analysis of three randomised trials.",
+  "yearofPublication": "2023",
+  "author": "Paul M Ridker et al.",
+  "studySample": "31245",
+  "comparisonGroups": [
+    "none"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Risk of future cardiovascular events and death",
+  "primaryOutcomeResults": "Residual inflammatory risk was significantly associated with incident major adverse cardiovascular events (highest high-sensitivity CRP quartile vs lowest high-sensitivity CRP quartile, adjusted HR 1¬∑31, 95% CI 1¬∑20-1¬∑43; p<0¬∑0001), cardiovascular mortality (2¬∑68, 2¬∑22-3¬∑23; p<0¬∑0001), and all-cause mortality (2¬∑42, 2¬∑12-2¬∑77; p<0¬∑0001). Residual cholesterol risk was neutral for major adverse cardiovascular events (highest LDLC quartile vs lowest LDLC quartile, adjusted HR 1¬∑07, 95% CI 0¬∑98-1¬∑17; p=0¬∑11), and of low magnitude for cardiovascular death (1¬∑27, 1¬∑07-1¬∑50; p=0¬∑0086) and all-cause death (1¬∑16, 1¬∑03-1¬∑32; p=0¬∑025).",
+  "conclusion": "Inflammation was a stronger predictor for risk of future cardiovascular events and death than cholesterol among patients receiving contemporary statins, suggesting that combined use of aggressive lipid-lowering and inflammation-inhibiting therapies might be needed to further reduce atherosclerotic risk.",
+  "gPTSummary": "This was an unspecified blinded study of 31,245 patients with or at high risk of atherosclerotic disease receiving contemporary statins. The primary outcome was risk of future cardiovascular events and death. The results showed that inflammation assessed by high-sensitivity CRP was a stronger predictor for risk of future cardiovascular events and death than cholesterol assessed by LDLC (adjusted HR 1¬∑31, 95% CI 1¬∑20-1¬∑43; p<0¬∑0001 for major adverse cardiovascular events, 2¬∑68, 2¬∑22-3¬∑23; p<0¬∑0001 for cardiovascular mortality, and 2¬∑42, 2¬∑12-2¬∑77; p<0¬∑0001 for all-cause mortality). These findings suggest that combined use of aggressive lipid-lowering and inflammation-inhibiting therapies might be needed to further reduce atherosclerotic risk.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36893777"
+}

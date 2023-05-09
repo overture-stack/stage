@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Early vs Interval Postpartum Intrauterine Device Placement: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Sarah Averbach et al.",
+  "studySample": "404",
+  "comparisonGroups": [
+    "early (14-28 days)",
+    "interval (42-56 days)"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Complete IUD expulsion by 6 months postpartum",
+  "primaryOutcomeResults": "3 of 149 (2.0% [95% CI, 0.4%-5.8%]) in the early placement group and 0 of 145 (0% [95% CI, 0.0%-2.5%]) in the interval placement group (between-group difference, 2.0 [95% CI, -0.5 to 5.7] percentage points)",
+  "conclusion": "Early IUD placement at 2 to 4 weeks postpartum compared with 6 to 8 weeks postpartum was noninferior for complete expulsion, but not partial expulsion.",
+  "gPTSummary": "This randomized noninferiority trial assessed 642 postpartum people from 4 US medical centers, with 404 participants enrolled from March 2018 to July 2021. Unspecified study blinding was used, and participants were randomly assigned to undergo early (14-28 days) or interval (42-56 days) postpartum IUD placement. The primary outcome was complete IUD expulsion by 6 months postpartum, and results showed that early IUD placement at 2 to 4 weeks postpartum compared with 6 to 8 weeks postpartum was noninferior for complete expulsion, but not partial expulsion.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36943214"
+}

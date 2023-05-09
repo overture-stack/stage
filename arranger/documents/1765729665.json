@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Randomized Trial of BCG Vaccine to Protect against Covid-19 in Health Care Workers.",
+  "yearofPublication": "2023",
+  "author": "Laure F Pittet et al.",
+  "studySample": "3986",
+  "comparisonGroups": [
+    "bcg-denmark vaccine",
+    "saline placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "Symptomatic Covid-19 and severe Covid-19 at 6 months",
+  "primaryOutcomeResults": "Risk of symptomatic Covid-19 by 6 months was 14.7% in the BCG group and 12.3% in the placebo group (risk difference, 2.4 percentage points; 95% CI, -0.7 to 5.5; P = 0.13). Risk of severe Covid-19 by 6 months was 7.6% in the BCG group and 6.5% in the placebo group (risk difference, 1.1 percentage points; 95% CI, -1.2 to 3.5; P = 0.34).",
+  "conclusion": "Vaccination with BCG-Denmark did not result in a lower risk of Covid-19 among health care workers than placebo.",
+  "gPTSummary": "This double-blind international study of 3986 health care workers found that vaccination with BCG-Denmark did not result in a lower risk of Covid-19 than placebo, with a risk of symptomatic Covid-19 by 6 months of 14.7% in the BCG group and 12.3% in the placebo group (risk difference, 2.4 percentage points; 95% CI, -0.7 to 5.5; P = 0.13). Risk of severe Covid-19 by 6 months was 7.6% in the BCG group and 6.5% in the placebo group (risk difference, 1.1 percentage points; 95% CI, -1.2 to 3.5; P = 0.34).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37099341"
+}

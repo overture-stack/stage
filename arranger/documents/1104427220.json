@@ -1,0 +1,18 @@
+{
+  "studyTitle": "Antidepressant Augmentation versus Switch in Treatment-Resistant Geriatric Depression.",
+  "yearofPublication": "2023",
+  "author": "Eric J Lenze et al.",
+  "studySample": "619",
+  "comparisonGroups": [
+    "aripiprazole augmentation",
+    "bupropion augmentation",
+    "switch to bupropion (step 1); lithium augmentation",
+    "switch to nortriptyline (step 2)"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Change from baseline in psychological well-being",
+  "primaryOutcomeResults": "Aripiprazole Augmentation improved well-being by 4.83 points, Bupropion Augmentation improved well-being by 4.33 points, and Switch to Bupropion improved well-being by 2.04 points (difference between Aripiprazole Augmentation and Switch to Bupropion was 2.79 points)",
+  "conclusion": "Aripiprazole Augmentation improved well-being more than Bupropion Augmentation or a Switch to Bupropion in older adults with treatment-resistant depression.",
+  "gPTSummary": "This open-label trial studied 619 older adults with treatment-resistant depression, randomly assigning them to Aripiprazole Augmentation, Bupropion Augmentation, or a Switch to Bupropion in Step 1, and 248 patients in Step 2 to Lithium Augmentation or a Switch to Nortriptyline. The primary outcome was the change from baseline in psychological well-being, and the results showed that Aripiprazole Augmentation improved well-being more than Bupropion Augmentation or a Switch to Bupropion (difference of 2.79 points). Remission rates were also higher in the Aripiprazole Augmentation group.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36867173"
+}

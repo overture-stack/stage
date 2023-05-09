@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Coordinated Care to Optimize Cardiovascular Preventive Therapies in Type 2 Diabetes: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Neha J Pagidipati et al.",
+  "studySample": "1049",
+  "comparisonGroups": [
+    "intervention",
+    "usual care"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Proportion of participants prescribed all 3 groups of recommended therapies at 6 to 12 months after enrollment",
+  "primaryOutcomeResults": "Intervention group (37.9%) vs Usual Care group (14.5%), a difference of 23.4% (adjusted odds ratio [OR], 4.38 [95% CI, 2.49 to 7.71]; P < .001)",
+  "conclusion": "A coordinated, multifaceted intervention increased prescription of 3 groups of evidence-based therapies in adults with type 2 diabetes and atherosclerotic cardiovascular disease.",
+  "gPTSummary": "This was a cluster randomized clinical trial with 43 US cardiology clinics that recruited 1049 adults with type 2 diabetes and atherosclerotic cardiovascular disease. The intervention group (n=459) received assessment, education, and feedback while the usual care group (n=590) received care per practice guidelines. Results showed that the intervention group was more likely to be prescribed all 3 therapies (37.9%) compared to the usual care group (14.5%), a difference of 23.4%. The intervention was not associated with changes in atherosclerotic cardiovascular disease risk factors.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36877177"
+}

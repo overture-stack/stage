@@ -1,0 +1,49 @@
+{
+	"extended": [
+		{
+			"displayName": "Author",
+			"fieldName": "author"
+		},
+		{
+			"displayName": "Blinding",
+			"fieldName": "blinding"
+		},
+		{
+			"displayName": "Comparison Groups",
+			"fieldName": "comparisonGroups",
+			"isArray": true
+		},
+		{
+			"displayName": "Conclusion",
+			"fieldName": "conclusion"
+		},
+		{
+			"displayName": "G PT Summary",
+			"fieldName": "gPTSummary"
+		},
+		{
+			"displayName": "Primary Outcome",
+			"fieldName": "primaryOutcome"
+		},
+		{
+			"displayName": "Primary Outcome Results",
+			"fieldName": "primaryOutcomeResults"
+		},
+		{
+			"displayName": "Study Sample",
+			"fieldName": "studySample"
+		},
+		{
+			"displayName": "Study Title",
+			"fieldName": "studyTitle"
+		},
+		{
+			"displayName": "Study URL",
+			"fieldName": "studyURL"
+		},
+		{
+			"displayName": "Year of Publication",
+			"fieldName": "yearofPublication"
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+  "studyTitle": "Heterogeneity in Blood Pressure Response to 4 Antihypertensive Drugs: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Johan Sundstr√∂m et al.",
+  "studySample": "280",
+  "comparisonGroups": [
+    "lisinopril",
+    "hydrochlorothiazide, lisinopril",
+    "amlodipine, candesartan",
+    "hydrochlorothiazide, candesartan",
+    "amlodipine"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Ambulatory daytime systolic blood pressure",
+  "primaryOutcomeResults": "Blood pressure response to different treatments varied considerably between individuals (P < .001), with an additional 4.4 mm Hg-lower systolic blood pressure on average.",
+  "conclusion": "Blood pressure response to drug therapy for hypertension varies significantly between individuals, which may have implications for personalized therapy.",
+  "gPTSummary": "This randomized, double-blind, repeated crossover trial of 280 men and women with grade 1 hypertension at low risk for cardiovascular events in Sweden found that blood pressure response to drug therapy for hypertension varies significantly between individuals, with an additional 4.4 mm Hg-lower systolic blood pressure on average. This finding may have implications for personalized therapy.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37039792"
+}

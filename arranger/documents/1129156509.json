@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Cut Calories, Lengthen Life Span? Randomized Trial Uncovers Evidence That Calorie Restriction Might Slow Aging, but Questions Remain.",
+  "yearofPublication": "2023",
+  "author": "Rita Rubin.",
+  "studySample": "218",
+  "comparisonGroups": [
+    "calorie restriction",
+    "usual diet"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Change in body weight",
+  "primaryOutcomeResults": "Calorie restriction resulted in an average weight loss of 7.7 kg (17 lbs) compared to a 0.4 kg (0.9 lbs) weight loss in the usual diet group",
+  "conclusion": "Calorie restriction resulted in significantly more weight loss than a usual diet.",
+  "gPTSummary": "This was a 2-year clinical trial of 218 participants that compared the effects of calorie restriction versus a usual diet on body weight. Unspecified blinding was used. Calorie restriction resulted in an average weight loss of 7.7 kg (17 lbs) compared to a 0.4 kg (0.9 lbs) weight loss in the usual diet group, indicating that calorie restriction is a more effective way to lose weight.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36920433"
+}

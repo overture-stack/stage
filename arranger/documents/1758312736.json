@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Efficacy and Safety of a Bivalent RSV Prefusion F Vaccine in Older Adults.",
+  "yearofPublication": "2023",
+  "author": "Edward E Walsh et al.",
+  "studySample": "34284",
+  "comparisonGroups": [
+    "rsvpref vaccine",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Vaccine efficacy against seasonal RSV-associated lower respiratory tract illness with at least two or at least three signs or symptoms and vaccine efficacy against RSV-associated acute respiratory illness",
+  "primaryOutcomeResults": "Vaccine efficacy of 66.7% (96.66% CI, 28.8 to 85.8) for lower respiratory tract illness with at least two signs or symptoms and 85.7% (96.66% CI, 32.0 to 98.7) for lower respiratory tract illness with at least three signs or symptoms; vaccine efficacy of 62.1% (95% CI, 37.1 to 77.9) for RSV-associated acute respiratory illness",
+  "conclusion": "RSVpreF vaccine is effective in preventing RSV-associated lower respiratory tract illness and RSV-associated acute respiratory illness in adults (‚â•60 years of age) without evident safety concerns.",
+  "gPTSummary": "This phase 3 trial studied the efficacy and safety of an investigational bivalent RSV prefusion F protein-based (RSVpreF) vaccine in adults aged 60 and over. 34,284 participants were randomly assigned to receive the vaccine or placebo, with the primary end points being vaccine efficacy against seasonal RSV-associated lower respiratory tract illness with at least two or at least three signs or symptoms. Results showed that the vaccine had an efficacy of 66.7% (96.66% CI, 28.8 to 85.8) for lower respiratory tract illness with at least two signs or symptoms and 85.7% (96.66% CI, 32.0 to 98.7) for lower respiratory tract illness with at least three signs or symptoms, and an efficacy of 62.1% (95% CI, 37.1 to 77.9) for RSV-associated acute respiratory illness, with no evident safety concerns.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37018468"
+}

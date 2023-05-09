@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Adjuvant nivolumab plus ipilimumab versus placebo for localised renal cell carcinoma after nephrectomy (CheckMate 914): a double-blind, randomised, phase 3 trial.",
+  "yearofPublication": "2023",
+  "author": "Robert J Motzer et al.",
+  "studySample": "816",
+  "comparisonGroups": [
+    "nivolumab plus ipilimumab",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Disease-Free Survival",
+  "primaryOutcomeResults": "Median Disease-Free Survival was not reached in the Nivolumab plus Ipilimumab group and was 50.7 months (95% CI 48.1 to not estimable) in the Placebo group (Hazard Ratio 0.92, 95% CI 0.71-1.19; p=0.53).",
+  "conclusion": "Adjuvant therapy with Nivolumab plus Ipilimumab did not improve Disease-Free Survival versus Placebo in patients with localised Renal Cell Carcinoma at high risk of recurrence after Nephrectomy.",
+  "gPTSummary": "This double-blind, phase 3 study of 816 patients with localised clear cell renal cell carcinoma at high risk of relapse after radical or partial nephrectomy compared the efficacy and safety of adjuvant Nivolumab plus Ipilimumab versus Placebo. Results showed that median Disease-Free Survival was not reached in the Nivolumab plus Ipilimumab group and was 50.7 months (95% CI 48.1 to not estimable) in the Placebo group (Hazard Ratio 0.92, 95% CI 0.71-1.19; p=0.53). Therefore, the study results do not support this regimen for the adjuvant treatment of renal cell carcinoma.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36774933"
+}

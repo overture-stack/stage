@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Hyperfractionation compared with standard fractionation in intensity-modulated radiotherapy for patients with locally advanced recurrent nasopharyngeal carcinoma: a multicentre, randomised, open-label, phase 3 trial.",
+  "yearofPublication": "2023",
+  "author": "Rui You et al.",
+  "studySample": "144",
+  "comparisonGroups": [
+    "hyperfractionation",
+    "standard fractionation"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Incidence of Severe Late Complications and Overall Survival",
+  "primaryOutcomeResults": "Hyperfractionation group had significantly lower incidence of grade 3 or worse late radiation-induced toxicity (34% vs 57%; p=0.023) and better 3-year overall survival (74.6% vs 55.0%; hazard ratio for death 0.54; p=0.014)",
+  "conclusion": "Hyperfractionated intensity-modulated radiotherapy could significantly decrease the rate of severe late complications and improve overall survival among patients with locally advanced recurrent nasopharyngeal carcinoma.",
+  "gPTSummary": "This was a randomized, open-label, phase 3 trial of 144 patients with locally advanced recurrent nasopharyngeal carcinoma, which compared hyperfractionation (65 Gy in 54 fractions, given twice daily) to standard fractionation (60 Gy in 27 fractions, given once a day). The study found that hyperfractionation was associated with a significantly lower incidence of grade 3 or worse late radiation-induced toxicity (34% vs 57%; p=0.023) and better 3-year overall survival (74.6% vs 55.0%; hazard ratio for death 0.54; p=0.014).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36842439"
+}

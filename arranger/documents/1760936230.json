@@ -1,0 +1,17 @@
+{
+  "studyTitle": "Dersimelagon in Erythropoietic Protoporphyrias.",
+  "yearofPublication": "2023",
+  "author": "Manisha Balwani et al.",
+  "studySample": "102",
+  "comparisonGroups": [
+    "placebo",
+    "100mg dersimelagon",
+    "300mg dersimelagon"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Change from baseline to week 16 in time to first prodromal symptom associated with sunlight exposure",
+  "primaryOutcomeResults": "Least-squares mean difference from placebo in change from baseline to week 16 was 53.8 minutes in the 100-mg dersimelagon group (P = 0.008) and 62.5 minutes in the 300-mg dersimelagon group (P = 0.003)",
+  "conclusion": "Dersimelagon significantly increased the duration of symptom-free sunlight exposure in patients with erythropoietic protoporphyria or X-linked protoporphyria.",
+  "gPTSummary": "1 ratio to receive placebo or dersimelagon at a dose of 100 or 300 mg once daily for 16 weeks. The primary end point was the change from baseline to week 16 in the time to the first prodromal symptom associated with sunlight exposure. Results showed that the mean daily time to the first prodromal symptom associated with sunlight exposure increased significantly with dersimelagon, with the least-squares mean difference from placebo in the change from baseline to week 16 being 53.8 minutes in the 100-mg dersimelagon group (P = 0.008) and 62.5 minutes in the 300-mg dersimelagon group (P = 0.003).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37043653"
+}

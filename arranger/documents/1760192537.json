@@ -1,0 +1,18 @@
+{
+  "studyTitle": "Effect of Angiotensin-Converting Enzyme Inhibitor and Angiotensin Receptor Blocker Initiation on Organ Support-Free Days in Patients Hospitalized With COVID-19: A Randomized Clinical Trial.",
+  "yearofPublication": "2023",
+  "author": "Writing Committee for the REMAP-CAP Investigators et al.",
+  "studySample": "721",
+  "comparisonGroups": [
+    "ace inhibitor",
+    "arb",
+    "arb + dmx-200",
+    "control"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Organ support-free days",
+  "primaryOutcomeResults": "Median organ support-free days of 10 (-1 to 16) for ACE inhibitor, 8 (-1 to 17) for ARB, and 12 (0 to 17) for control (median adjusted odds ratios of 0.77 [95% bayesian credible interval, 0.58-1.06] for improvement for ACE inhibitor and 0.76 [95% credible interval, 0.56-1.05] for ARB compared with control)",
+  "conclusion": "Initiation of an ACE inhibitor or ARB did not improve, and likely worsened, clinical outcomes in critically ill adults with COVID-19.",
+  "gPTSummary": "This randomized clinical trial of 779 hospitalized adults with COVID-19 (721 critically ill and 58 non-critically ill) with an unspecified study blinding examined the effects of initiating an ACE inhibitor or ARB on organ support-free days. The results showed that ACE inhibitors and ARBs did not improve, and likely worsened, clinical outcomes in critically ill adults with COVID-19 (median adjusted odds ratios of 0.77 [95% bayesian credible interval, 0.58-1.06] for improvement for ACE inhibitor and 0.76 [95% credible interval, 0.56-1.05] for ARB compared with control).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37039790"
+}

@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Expectant Management or Early Ibuprofen for Patent Ductus Arteriosus.",
+  "yearofPublication": "2023",
+  "author": "Tim Hundscheid et al.",
+  "studySample": "273",
+  "comparisonGroups": [
+    "expectant management",
+    "early ibuprofen treatment"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Necrotizing enterocolitis (Bell's stage IIa or higher), moderate to severe bronchopulmonary dysplasia, or death at 36 weeks' postmenstrual age",
+  "primaryOutcomeResults": "46.3% of infants in the expectant-management group and 63.5% in the early-ibuprofen group (absolute risk difference, -17.2 percentage points; upper boundary of the one-sided 95% confidence interval [CI], -7.4; P<0.001 for noninferiority)",
+  "conclusion": "Expectant management for PDA in extremely premature infants was noninferior to early ibuprofen treatment with respect to necrotizing enterocolitis, bronchopulmonary dysplasia, or death at 36 weeks' postmenstrual age.",
+  "gPTSummary": "This was a multicenter, noninferiority trial with a sample size of 273 extremely premature infants (<28 weeks' gestational age) with echocardiographically confirmed PDA. The study compared expectant management to early ibuprofen treatment, with the primary outcome being necrotizing enterocolitis, bronchopulmonary dysplasia, or death at 36 weeks' postmenstrual age. The results showed that expectant management was noninferior to early ibuprofen treatment, with an absolute risk difference of -17.2 percentage points and an upper boundary of the one-sided 95% confidence interval of -7.4 (P<0.001 for noninferiority).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36477458"
+}

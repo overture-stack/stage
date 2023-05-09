@@ -1,0 +1,17 @@
+{
+  "studyTitle": "Treatment Strategy for Rifampin-Susceptible Tuberculosis.",
+  "yearofPublication": "2023",
+  "author": "Nicholas I Paton et al.",
+  "studySample": "674",
+  "comparisonGroups": [
+    "standard treatment",
+    "rifampin-linezolid strategy",
+    "bedaquiline-linezolid strategy"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Composite of death, ongoing treatment, or active disease at week 96",
+  "primaryOutcomeResults": "7 of the 181 participants (3.9%) in the standard-treatment group, 21 of the 184 participants (11.4%) in the strategy group with an initial rifampin-linezolid regimen, and 11 of the 189 participants (5.8%) in the strategy group with an initial bedaquiline-linezolid regimen",
+  "conclusion": "A strategy involving initial treatment with an 8-week bedaquiline-linezolid regimen was noninferior to standard treatment for tuberculosis with respect to clinical outcomes.",
+  "gPTSummary": "This open-label, noninferiority trial studied 674 participants with rifampin-susceptible pulmonary tuberculosis. Participants were randomly assigned to either a standard treatment of rifampin and isoniazid for 24 weeks with pyrazinamide and ethambutol for the first 8 weeks or a strategy involving initial treatment with an 8-week regimen. The primary outcome was a composite of death, ongoing treatment, or active disease at week 96. Results showed that the strategy involving initial treatment with an 8-week bedaquiline-linezolid regimen was noninferior to standard treatment for tuberculosis with respect to clinical outcomes, with a shorter total duration of treatment and no evident safety concerns.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36808186"
+}

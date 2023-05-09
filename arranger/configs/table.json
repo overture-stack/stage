@@ -1,0 +1,76 @@
+{
+	"table": {
+		"columns": [
+			{
+				"canChangeShow": true,
+				"displayName": "Study Title",
+				"fieldName": "studyTitle",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Author",
+				"fieldName": "author",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Blinding",
+				"fieldName": "blinding",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Comparison Groups",
+				"fieldName": "comparisonGroups",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Conclusion",
+				"fieldName": "conclusion",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "G PT Summary",
+				"fieldName": "gPTSummary",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Primary Outcome",
+				"fieldName": "primaryOutcome",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Primary Outcome Results",
+				"fieldName": "primaryOutcomeResults",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Study Sample",
+				"displayType": "number",
+				"fieldName": "studySample",
+				"show": true
+			},
+			{
+				"canChangeShow": true,
+				"displayName": "Study URL",
+				"displayType": "link",
+				"fieldName": "studyURL",
+				"show": true
+			}
+		],
+		"defaultSorting": [
+			{
+				"desc": false,
+				"fieldName": "studyTitle"
+			}
+		],
+		"keyFieldName": "studyTitle",
+		"maxResultsWindow": 10000
+	}
+}

@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Nirogacestat, a Œ≥-Secretase Inhibitor for Desmoid Tumors.",
+  "yearofPublication": "2023",
+  "author": "Mrinal Gounder et al.",
+  "studySample": "70",
+  "comparisonGroups": [
+    "nirogacestat",
+    "placebo"
+  ],
+  "blinding": "Double-blind",
+  "primaryOutcome": "Progression-free survival",
+  "primaryOutcomeResults": "Nirogacestat had a significant progression-free survival benefit over placebo (hazard ratio for disease progression or death, 0.29; 95% confidence interval, 0.15 to 0.55; P<0.001); the likelihood of being event-free at 2 years was 76% with nirogacestat and 44% with placebo.",
+  "conclusion": "Nirogacestat was associated with significant benefits with respect to progression-free survival, objective response, pain, symptom burden, physical functioning, role functioning, and health-related quality of life in adults with progressing desmoid tumors.",
+  "gPTSummary": "This was a double-blind, randomized, placebo-controlled phase 3 trial of nirogacestat in adults with progressing desmoid tumors. The sample size was 70 (nirogacestat) vs. 72 (placebo). The primary outcome was progression-free survival, which showed significant benefits with nirogacestat (hazard ratio for disease progression or death, 0.29; 95% confidence interval, 0.15 to 0.55; P<0.001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36884323"
+}

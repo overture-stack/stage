@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Cerebral Oximetry Monitoring in Extremely Preterm Infants.",
+  "yearofPublication": "2023",
+  "author": "Mathias L Hansen et al.",
+  "studySample": "1601",
+  "comparisonGroups": [
+    "cerebral oximetry group",
+    "usual care group"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Death or severe brain injury on cerebral ultrasonography at 36 weeks' postmenstrual age",
+  "primaryOutcomeResults": "35.2% in the cerebral oximetry group vs 34.0% in the usual-care group (relative risk with cerebral oximetry, 1.03; 95% confidence interval, 0.90 to 1.18; P = 0.64)",
+  "conclusion": "Treatment guided by cerebral oximetry monitoring for the first 72 hours after birth was not associated with a lower incidence of death or severe brain injury at 36 weeks' postmenstrual age than usual care.",
+  "gPTSummary": "This randomized, phase 3 trial with a sample size of 1601 extremely preterm infants (gestational age, <28 weeks) in 17 countries compared the effects of treatment guided by cerebral oximetry monitoring for the first 72 hours after birth vs usual care on the primary outcome of death or severe brain injury on cerebral ultrasonography at 36 weeks' postmenstrual age. The study blinding was unspecified. Results showed no significant difference between the two groups (35.2% in the cerebral oximetry group vs 34.0% in the usual-care group, relative risk with cerebral oximetry, 1.03; 95% confidence interval, 0.90 to 1.18; P = 0.64).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37075142"
+}

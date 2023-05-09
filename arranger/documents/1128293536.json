@@ -1,0 +1,17 @@
+{
+  "studyTitle": "Fifteen-Year Outcomes after Monitoring, Surgery, or Radiotherapy for Prostate Cancer.",
+  "yearofPublication": "2023",
+  "author": "Freddie C Hamdy et al.",
+  "studySample": "1643",
+  "comparisonGroups": [
+    "active monitoring",
+    "prostatectomy",
+    "radiotherapy"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Death from prostate cancer",
+  "primaryOutcomeResults": "17 (3.1%) in the active-monitoring group, 12 (2.2%) in the prostatectomy group, and 16 (2.9%) in the radiotherapy group (P = 0.53 for the overall comparison).",
+  "conclusion": "Choice of therapy involves weighing trade-offs between benefits and harms associated with treatments for localized prostate cancer.",
+  "gPTSummary": "This randomized controlled trial with a sample size of 1643 men between 50 and 69 years of age with localized prostate cancer in the United Kingdom found that after 15 years of follow-up, prostate cancer-specific mortality was low regardless of the treatment assigned. The study blinding was unspecified. The comparison groups were active monitoring, prostatectomy, and radiotherapy. The primary outcome was death from prostate cancer, which occurred in 45 men (2.7%). No differential effects on cancer-specific mortality were noted in relation to the baseline PSA level, tumor stage or grade, or risk-stratification score.",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36912538"
+}

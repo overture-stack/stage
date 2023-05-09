@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Etrasimod as induction and maintenance therapy for ulcerative colitis (ELEVATE): two randomised, double-blind, placebo-controlled, phase 3 studies.",
+  "yearofPublication": "2023",
+  "author": "William J Sandborn et al.",
+  "studySample": "821",
+  "comparisonGroups": [
+    "etrasimod 2 mg",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Proportion of patients with clinical remission at weeks 12 and 52 in ELEVATE UC 52 and week 12 in ELEVATE UC 12",
+  "primaryOutcomeResults": "74 (27%) of 274 patients in the etrasimod group vs ten (7%) of 135 patients in the placebo group at completion of the 12-week induction period (p<0¬∑0001); 88 (32%) of 274 patients in the etrasimod group vs nine (7%) of 135 patients in the placebo group at week 52 (p<0¬∑0001); 55 (25%) of 222 patients in the etrasimod group had clinical remission compared with 17 (15%) of 112 patients in the placebo group at the end of the 12-week induction period (p=0¬∑026)",
+  "conclusion": "Etrasimod was effective and well tolerated as an induction and maintenance therapy in patients with moderately to severely active ulcerative colitis.",
+  "gPTSummary": "This was a double-blind, placebo-controlled, phase 3 trial of 821 and 606 patients with moderately to severely active ulcerative colitis in ELEVATE UC 52 and ELEVATE UC 12, respectively, comparing etrasimod 2 mg to placebo. The primary outcome was the proportion of patients with clinical remission at weeks 12 and 52 in ELEVATE UC 52 and week 12 in ELEVATE UC 12. Results showed that etrasimod was effective and well tolerated, with 74 (27%) of 274 patients in the etrasimod group vs ten (7%) of 135 patients in the placebo group achieving clinical remission at completion of the 12-week induction period (p<0¬∑0001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36871574"
+}

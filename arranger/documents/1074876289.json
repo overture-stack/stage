@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Azithromycin to Prevent Sepsis or Death in Women Planning a Vaginal Birth.",
+  "yearofPublication": "2023",
+  "author": "Alan T N Tita et al.",
+  "studySample": "29278",
+  "comparisonGroups": [
+    "azithromycin",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Composite of maternal sepsis or death and a composite of stillbirth or neonatal death or sepsis",
+  "primaryOutcomeResults": "Lower incidence of maternal sepsis or death in the azithromycin group (1.6%) compared to placebo group (2.4%), with a relative risk of 0.67 (95% CI, 0.56 to 0.79; P<0.001). Similar incidence of stillbirth or neonatal death or sepsis (10.5% vs. 10.3%), with a relative risk of 1.02 (95% CI, 0.95 to 1.09; P = 0.56).",
+  "conclusion": "Azithromycin resulted in a lower risk of maternal sepsis or death compared to placebo but had little effect on newborn sepsis or death.",
+  "gPTSummary": "This multicountry, placebo-controlled, randomized trial evaluated the effects of a single 2-g oral dose of azithromycin versus placebo in 29,278 women planning a vaginal delivery. The primary outcomes were a composite of maternal sepsis or death and a composite of stillbirth or neonatal death or sepsis. The results showed that the incidence of maternal sepsis or death was lower in the azithromycin group (1.6%) compared to the placebo group (2.4%), with a relative risk of 0.67 (95% CI, 0.56 to 0.79; P<0.001). The incidence of stillbirth or neonatal death or sepsis was similar (10.5% vs. 10.3%), with a relative risk of 1.02 (95% CI, 0.95 to 1.09; P = 0.56).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36757318"
+}

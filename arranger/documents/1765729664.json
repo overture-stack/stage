@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Blinatumomab Added to Chemotherapy in Infant Lymphoblastic Leukemia.",
+  "yearofPublication": "2023",
+  "author": "Inge M van der Sluis et al.",
+  "studySample": "30",
+  "comparisonGroups": [
+    "blinatumomab",
+    "interfant-06 trial"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Clinically relevant toxic effects",
+  "primaryOutcomeResults": "No toxic effects meeting the definition of the primary end point occurred; 10 serious adverse events reported",
+  "conclusion": "Blinatumomab appeared to be safe and had a high level of efficacy in infants with newly diagnosed KMT2A-rearranged ALL as compared with historical controls from the Interfant-06 trial.",
+  "gPTSummary": "This study was an unspecified blinded trial of 30 infants with newly diagnosed KMT2A-rearranged ALL who were given the chemotherapy used in the Interfant-06 trial with the addition of one postinduction course of blinatumomab. The primary end point was clinically relevant toxic effects, and no toxic effects meeting the definition of the primary end point occurred. Two-year disease-free survival was 81.6% (95% CI, 60.8 to 92.0) and overall survival was 93.3% (95% CI, 75.9 to 98.3).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37099340"
+}

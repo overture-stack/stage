@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Electronic nudges to increase influenza vaccination uptake in Denmark: a nationwide, pragmatic, registry-based, randomised implementation trial.",
+  "yearofPublication": "2023",
+  "author": "Niklas Dyrby Johansen et al.",
+  "studySample": "964870",
+  "comparisonGroups": [
+    "usual care",
+    "9 different electronic letters"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Receipt of influenza vaccination on or before Jan 1, 2023",
+  "primaryOutcomeResults": "81.00% vs 80.12%; difference 0.89 percentage points (99.55% CI 0.29-1.48); p<0.0001",
+  "conclusion": "Electronically delivered letters highlighting potential cardiovascular benefits of influenza vaccination or sent again as a reminder significantly increased vaccination uptake across Denmark.",
+  "gPTSummary": "This was a nationwide, registry-based, cluster-randomised implementation trial conducted in Denmark during the 2022-23 influenza season. The study included 964,870 individuals aged 65 years or older, excluding those living in nursing homes and those with an exemption from the Danish mandatory governmental electronic letter system. The primary outcome was receipt of influenza vaccination on or before Jan 1, 2023, and the results showed that electronic letters highlighting potential cardiovascular benefits of vaccination or sent again as a reminder significantly increased vaccination uptake (81.00% vs 80.12%; difference 0.89 percentage points; p<0.0001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/36889332"
+}

@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Postexposure Doxycycline to Prevent Bacterial Sexually Transmitted Infections.",
+  "yearofPublication": "2023",
+  "author": "Anne F Luetkemeyer et al.",
+  "studySample": "501",
+  "comparisonGroups": [
+    "doxycycline postexposure prophylaxis",
+    "standard care"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Incidence of at least one STI per follow-up quarter",
+  "primaryOutcomeResults": "10.7% in the doxycycline group and 31.9% in the standard-care group, for an absolute difference of -21.2 percentage points and a relative risk of 0.34 (95% CI, 0.24 to 0.46; P<0.001)",
+  "conclusion": "Doxycycline postexposure prophylaxis was two thirds more effective than standard care in reducing the incidence of gonorrhea, chlamydia, and syphilis among MSM with recent bacterial STIs.",
+  "gPTSummary": "This open-label, randomized study of 501 MSM and transgender women found that doxycycline postexposure prophylaxis was two thirds more effective than standard care in reducing the incidence of gonorrhea, chlamydia, and syphilis, with an absolute difference of -21.2 percentage points and a relative risk of 0.34 (95% CI, 0.24 to 0.46; P<0.001).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37018493"
+}

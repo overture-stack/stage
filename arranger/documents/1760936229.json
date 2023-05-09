@@ -1,0 +1,16 @@
+{
+  "studyTitle": "Tranexamic Acid to Prevent Obstetrical Hemorrhage after Cesarean Delivery.",
+  "yearofPublication": "2023",
+  "author": "Luis D Pacheco et al.",
+  "studySample": "11000",
+  "comparisonGroups": [
+    "tranexamic acid",
+    "placebo"
+  ],
+  "blinding": "Unspecified",
+  "primaryOutcome": "Composite of maternal death or blood transfusion by hospital discharge or 7 days post partum",
+  "primaryOutcomeResults": "3.6% in the tranexamic acid group and 4.3% in the placebo group (adjusted relative risk, 0.89; 95.26% confidence interval [CI], 0.74 to 1.07; P = 0.19)",
+  "conclusion": "Prophylactic use of tranexamic acid during cesarean delivery did not lead to a significantly lower risk of a composite outcome of maternal death or blood transfusion than placebo.",
+  "gPTSummary": "This randomized clinical trial of 11,000 participants with unspecified blinding compared the use of tranexamic acid to placebo for cesarean delivery. The primary outcome was a composite of maternal death or blood transfusion by hospital discharge or 7 days post partum. The results showed that 3.6% of the tranexamic acid group and 4.3% of the placebo group experienced the primary outcome (adjusted relative risk, 0.89; 95.26% confidence interval [CI], 0.74 to 1.07; P = 0.19).",
+  "studyURL": "https://pubmed.ncbi.nlm.nih.gov/pubmed/37043652"
+}
