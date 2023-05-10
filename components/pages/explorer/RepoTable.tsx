@@ -37,7 +37,8 @@ import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
-import Tabs, { RepoTableTabsContextProvider } from './Tabs';
+import Tabs from './Tabs';
+import { RepoTableTabsContextProvider } from './RepoTableTabsContext';
 
 const getTableConfigs = ({
 	apiHost,

@@ -21,58 +21,7 @@
 
 import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
-import { PropsWithChildren, ReactElement, createContext, useState } from 'react';
-
-export enum RepoTableTabs {
-	FILES = 'Files',
-	JBROWSE = 'JBrowse',
-}
-
-export const defaultRepoTableTabs = [RepoTableTabs.FILES];
-
-export interface RepoTableTabsContextInterface {
-	activeTab: RepoTableTabs;
-	handleAddTab: (tab: RepoTableTabs) => void;
-	handleChangeTab: (tab: RepoTableTabs) => void;
-	handleRemoveTab: (tab: RepoTableTabs) => void;
-	openTabs: RepoTableTabs[];
-}
-
-export const RepoTableTabsContext = createContext({
-	openTabs: defaultRepoTableTabs,
-	activeTab: defaultRepoTableTabs[0],
-});
-
-export const RepoTableTabsContextProvider = ({
-	children,
-}: PropsWithChildren<{}>): ReactElement<RepoTableTabsContextInterface> => {
-	const [openTabs, setOpenTabs] = useState<RepoTableTabs[]>(defaultRepoTableTabs);
-	const [activeTab, setActiveTab] = useState<RepoTableTabs>(defaultRepoTableTabs[0]);
-
-	const handleAddTab = (tab: RepoTableTabs) => {
-		setOpenTabs([...openTabs, tab]);
-		setActiveTab(tab);
-	};
-	const handleRemoveTab = (tab: RepoTableTabs) => {
-		setOpenTabs(openTabs.filter((openTabs) => openTabs !== tab));
-		setActiveTab(openTabs[openTabs.indexOf(tab) - 1 || 0]);
-	};
-	const handleChangeTab = (tab: RepoTableTabs) => {
-		setActiveTab(tab);
-	};
-
-	const contextValues = {
-		activeTab,
-		handleAddTab,
-		handleChangeTab,
-		handleRemoveTab,
-		openTabs,
-	};
-
-	return (
-		<RepoTableTabsContext.Provider value={contextValues}>{children}</RepoTableTabsContext.Provider>
-	);
-};
+import { useRepoTableTabsContext } from './RepoTableTabsContext';
 
 const TabWrapper = styled('div')`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.grey_3};
@@ -137,13 +86,14 @@ const Content = styled('div')`
 `;
 
 const Tabs = () => {
+	const { activeTab } = useRepoTableTabsContext();
 	return (
 		<TabWrapper>
 			<Tab>
-				<Content active>Files</Content>
+				<Content active={activeTab === 'Files'}>Files</Content>
 			</Tab>
 			<Tab>
-				<Content>JBrowse</Content>
+				<Content active={activeTab === 'JBrowse'}>JBrowse</Content>
 			</Tab>
 		</TabWrapper>
 	);
