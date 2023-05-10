@@ -37,7 +37,7 @@ import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
-import Tabs from './Tabs';
+import Tabs, { RepoTableTabs, defaultRepoTableTabs, useRepoTableTabs } from './Tabs';
 
 const getTableConfigs = ({
 	apiHost,
@@ -184,6 +184,8 @@ const RepoTable = () => {
 	];
 
 	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
+
+	const { activeTabState, handleAddTab, handleRemoveTab, openTabState } = useRepoTableTabs();
 
 	return useMemo(
 		() => (

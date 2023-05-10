@@ -21,6 +21,33 @@
 
 import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
+import { createContext, useState } from 'react';
+
+export enum RepoTableTabs {
+	FILES = 'Files',
+	JBROWSE = 'JBrowse',
+}
+
+export const defaultRepoTableTabs = [RepoTableTabs.FILES];
+
+export const useRepoTableTabs = () => {
+	const [openTabState, setOpenTabState] = useState<RepoTableTabs[]>(defaultRepoTableTabs);
+	const [activeTabState, setActiveTabState] = useState<RepoTableTabs>(defaultRepoTableTabs[0]);
+
+	const handleAddTab = (tab: RepoTableTabs) => {
+		setOpenTabState([...openTabState, tab]);
+		setActiveTabState(tab);
+	};
+	const handleRemoveTab = (tab: RepoTableTabs) => {
+		setOpenTabState(openTabState.filter((openTabs) => openTabs !== tab));
+		setActiveTabState(openTabState[openTabState.indexOf(tab) - 1 || 0]);
+	};
+	const handleChangeTab = (tab: RepoTableTabs) => {
+		setActiveTabState(tab);
+	};
+
+	return { activeTabState, handleAddTab, handleChangeTab, handleRemoveTab, openTabState };
+};
 
 const TabWrapper = styled('div')`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.grey_3};
