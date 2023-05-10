@@ -37,7 +37,7 @@ import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
-import Tabs, { RepoTableTabs, defaultRepoTableTabs, useRepoTableTabs } from './Tabs';
+import Tabs, { RepoTableTabsContextProvider } from './Tabs';
 
 const getTableConfigs = ({
 	apiHost,
@@ -185,8 +185,6 @@ const RepoTable = () => {
 
 	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
 
-	const { activeTabState, handleAddTab, handleRemoveTab, openTabState } = useRepoTableTabs();
-
 	return useMemo(
 		() => (
 			<>
@@ -200,21 +198,23 @@ const RepoTable = () => {
 					`}
 				>
 					<TableContextProvider>
-						<ActionBar />
-						<Tabs />
-						<CountDisplay
-							css={css`
-								flex-shrink: 0;
-								margin: 0.3rem 0 0 0.3rem;
+						<RepoTableTabsContextProvider>
+							<ActionBar />
+							<Tabs />
+							<CountDisplay
+								css={css`
+									flex-shrink: 0;
+									margin: 0.3rem 0 0 0.3rem;
 
-								.Spinner {
-									justify-content: space-between;
-									width: 65%;
-								}
-							`}
-						/>
-						<Table />
-						<Pagination />
+									.Spinner {
+										justify-content: space-between;
+										width: 65%;
+									}
+								`}
+							/>
+							<Table />
+							<Pagination />
+						</RepoTableTabsContextProvider>
 					</TableContextProvider>
 				</article>
 			</>

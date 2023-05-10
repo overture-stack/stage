@@ -21,7 +21,7 @@
 
 import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
-import { createContext, useState } from 'react';
+import { PropsWithChildren, ReactElement, createContext, useState } from 'react';
 
 export enum RepoTableTabs {
 	FILES = 'Files',
@@ -30,23 +30,48 @@ export enum RepoTableTabs {
 
 export const defaultRepoTableTabs = [RepoTableTabs.FILES];
 
-export const useRepoTableTabs = () => {
-	const [openTabState, setOpenTabState] = useState<RepoTableTabs[]>(defaultRepoTableTabs);
-	const [activeTabState, setActiveTabState] = useState<RepoTableTabs>(defaultRepoTableTabs[0]);
+export interface RepoTableTabsContextInterface {
+	activeTab: RepoTableTabs;
+	handleAddTab: (tab: RepoTableTabs) => void;
+	handleChangeTab: (tab: RepoTableTabs) => void;
+	handleRemoveTab: (tab: RepoTableTabs) => void;
+	openTabs: RepoTableTabs[];
+}
+
+export const RepoTableTabsContext = createContext({
+	openTabs: defaultRepoTableTabs,
+	activeTab: defaultRepoTableTabs[0],
+});
+
+export const RepoTableTabsContextProvider = ({
+	children,
+}: PropsWithChildren<{}>): ReactElement<RepoTableTabsContextInterface> => {
+	const [openTabs, setOpenTabs] = useState<RepoTableTabs[]>(defaultRepoTableTabs);
+	const [activeTab, setActiveTab] = useState<RepoTableTabs>(defaultRepoTableTabs[0]);
 
 	const handleAddTab = (tab: RepoTableTabs) => {
-		setOpenTabState([...openTabState, tab]);
-		setActiveTabState(tab);
+		setOpenTabs([...openTabs, tab]);
+		setActiveTab(tab);
 	};
 	const handleRemoveTab = (tab: RepoTableTabs) => {
-		setOpenTabState(openTabState.filter((openTabs) => openTabs !== tab));
-		setActiveTabState(openTabState[openTabState.indexOf(tab) - 1 || 0]);
+		setOpenTabs(openTabs.filter((openTabs) => openTabs !== tab));
+		setActiveTab(openTabs[openTabs.indexOf(tab) - 1 || 0]);
 	};
 	const handleChangeTab = (tab: RepoTableTabs) => {
-		setActiveTabState(tab);
+		setActiveTab(tab);
 	};
 
-	return { activeTabState, handleAddTab, handleChangeTab, handleRemoveTab, openTabState };
+	const contextValues = {
+		activeTab,
+		handleAddTab,
+		handleChangeTab,
+		handleRemoveTab,
+		openTabs,
+	};
+
+	return (
+		<RepoTableTabsContext.Provider value={contextValues}>{children}</RepoTableTabsContext.Provider>
+	);
 };
 
 const TabWrapper = styled('div')`
