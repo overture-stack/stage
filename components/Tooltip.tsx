@@ -28,6 +28,8 @@ export type CustomTooltipProps = PropsWithChildren<TooltipProps>;
 
 // TODO: workaround for react-tippy 1.4.0 --- remove with upgraded fix
 // related issue: https://github.com/tvkhoa/react-tippy/issues/169
+// update may 2023: issue has been deleted. without this wrapper,
+// there's a TS error due to children not being included in tooltip component type.
 export const CustomTooltip: FunctionComponent<CustomTooltipProps> = (props) =>
 	React.cloneElement(<Tooltip />, { ...props });
 
