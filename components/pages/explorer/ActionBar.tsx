@@ -20,7 +20,8 @@
  */
 
 import Button from '@/components/Button';
-import { css } from '@emotion/react';
+import { CustomTooltip } from '@/components/Tooltip';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
 	ColumnsSelectButton,
@@ -34,6 +35,7 @@ const ButtonWrapper = styled('div')`
 `;
 
 const ActionBar = () => {
+	const theme = useTheme();
 	return (
 		<div
 			className="buttons"
@@ -46,30 +48,49 @@ const ActionBar = () => {
 				padding: 0;
 			`}
 		>
-			<ButtonWrapper>
-				<Button
-					css={css`
-						padding: 2px 10px;
-					`}
-				>
+			<CustomTooltip
+				unmountHTMLWhenHide
+				arrow
+				html={
 					<div
 						css={css`
-							display: flex;
-							align-items: center;
+							${theme.typography.regular};
+							font-size: 12px;
 						`}
 					>
-						<img
-							src="images/jbrowse-logo.png"
-							alt=""
-							width={16}
-							css={css`
-								margin-right: 0.3rem;
-							`}
-						/>
-						<span>Jbrowse</span>
+						Please select a minimum of 1 file to launch JBrowse.
+						<br />
+						Only .BAM & .VCF file types are supported.
 					</div>
-				</Button>
-			</ButtonWrapper>
+				}
+				position="right"
+			>
+				<ButtonWrapper>
+					<Button
+						css={css`
+							padding: 2px 10px;
+						`}
+						disabled
+					>
+						<div
+							css={css`
+								display: flex;
+								align-items: center;
+							`}
+						>
+							<img
+								src="images/jbrowse-logo.png"
+								alt=""
+								width={16}
+								css={css`
+									margin-right: 0.3rem;
+								`}
+							/>
+							<span>Jbrowse</span>
+						</div>
+					</Button>
+				</ButtonWrapper>
+			</CustomTooltip>
 			<div
 				css={css`
 					display: flex;
