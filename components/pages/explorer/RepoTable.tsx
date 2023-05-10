@@ -19,7 +19,7 @@
  *
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import {
 	Pagination,

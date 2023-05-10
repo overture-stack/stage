@@ -27,6 +27,7 @@ import {
 	ColumnsSelectButton,
 	DownloadButton,
 	getDisplayName,
+	useTableContext,
 } from '@overture-stack/arranger-components';
 
 const ButtonWrapper = styled('div')`
@@ -36,6 +37,11 @@ const ButtonWrapper = styled('div')`
 
 const ActionBar = () => {
 	const theme = useTheme();
+	const { selectedRows } = useTableContext({
+		callerName: 'Table - ActionBar',
+	});
+
+	const enableJbrowse = !!selectedRows.length;
 	return (
 		<div
 			className="buttons"
@@ -49,6 +55,7 @@ const ActionBar = () => {
 			`}
 		>
 			<CustomTooltip
+				disabled={enableJbrowse}
 				unmountHTMLWhenHide
 				arrow
 				html={
@@ -70,7 +77,7 @@ const ActionBar = () => {
 						css={css`
 							padding: 2px 10px;
 						`}
-						disabled
+						disabled={!enableJbrowse}
 					>
 						<div
 							css={css`
