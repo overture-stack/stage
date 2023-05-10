@@ -37,6 +37,7 @@ import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
+import Tabs from './Tabs';
 
 const getTableConfigs = ({
 	apiHost,
@@ -198,6 +199,7 @@ const RepoTable = () => {
 				>
 					<TableContextProvider>
 						<ActionBar />
+						<Tabs />
 						<CountDisplay
 							css={css`
 								flex-shrink: 0;

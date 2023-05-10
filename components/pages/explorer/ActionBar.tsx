@@ -40,7 +40,7 @@ const ActionBar = () => {
 			css={css`
 				display: flex;
 				list-style: none;
-				margin: 0 0 -0.3rem -0.3rem;
+				margin: 0 0 0 -0.3rem;
 				justify-content: space-between;
 				align-items: center;
 				padding: 0;
