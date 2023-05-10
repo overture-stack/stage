@@ -86,7 +86,7 @@ const ActionBar = () => {
 									margin-right: 0.3rem;
 								`}
 							/>
-							<span>Jbrowse</span>
+							<span>JBrowse</span>
 						</div>
 					</Button>
 				</ButtonWrapper>

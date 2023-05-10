@@ -91,7 +91,7 @@ const Tabs = () => {
 				<Content active>Files</Content>
 			</Tab>
 			<Tab>
-				<Content>Jbrowse</Content>
+				<Content>JBrowse</Content>
 			</Tab>
 		</TabWrapper>
 	);
