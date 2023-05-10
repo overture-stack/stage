@@ -26,7 +26,7 @@ import {
 	Table,
 	TableContextProvider,
 	useArrangerTheme,
-	Toolbar,
+	CountDisplay,
 } from '@overture-stack/arranger-components';
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
@@ -36,6 +36,7 @@ import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
+import ActionBar from './ActionBar';
 
 const getTableConfigs = ({
 	apiHost,
@@ -196,7 +197,18 @@ const RepoTable = () => {
 					`}
 				>
 					<TableContextProvider>
-						<Toolbar />
+						<ActionBar />
+						<CountDisplay
+							css={css`
+								flex-shrink: 0;
+								margin: 0.3rem 0 0 0.3rem;
+
+								.Spinner {
+									justify-content: space-between;
+									width: 65%;
+								}
+							`}
+						/>
 						<Table />
 						<Pagination />
 					</TableContextProvider>
