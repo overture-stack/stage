@@ -19,6 +19,7 @@
  *
  */
 
+import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
 
 const TabWrapper = styled('div')`
@@ -26,7 +27,7 @@ const TabWrapper = styled('div')`
 	margin: 10px 0;
 `;
 
-const Tab = styled('div')`
+const Tab = styled('button')`
 	position: relative;
 	display: inline-block;
 	height: 32px;
@@ -34,7 +35,13 @@ const Tab = styled('div')`
 	z-index: 100;
 	box-sizing: border-box;
 	min-width: 50px;
-	padding-bottom: 1px;
+	padding: 0 0 1px 0;
+	cursor: pointer;
+	border: 0;
+	drop-shadow: none;
+	background: transparent;
+	color: ${({ theme }) => theme.colors.black};
+	${({ theme }) => theme.typography.regular};
 `;
 
 const Content = styled('div')`
@@ -46,13 +53,15 @@ const Content = styled('div')`
 	align-items: center;
 	justify-content: center;
 	height: 100%;
-	background: ${({ theme }) => theme.colors.grey_2};
+	background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
+		active ? theme?.colors.white : theme?.colors.grey_2};
 	font-size: 12px;
 	&:before,
 	&:after {
 		content: ' ';
 		display: block;
-		background: ${({ theme }) => theme.colors.grey_2};
+		background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
+			active ? theme?.colors.white : theme?.colors.grey_2};
 		border-color: ${({ theme }) => theme.colors.grey_4};
 		border-style: solid;
 		z-index: -1;
@@ -79,10 +88,10 @@ const Tabs = () => {
 	return (
 		<TabWrapper>
 			<Tab>
-				<Content>Jbrowse</Content>
+				<Content active>Files</Content>
 			</Tab>
 			<Tab>
-				<Content>Files</Content>
+				<Content>Jbrowse</Content>
 			</Tab>
 		</TabWrapper>
 	);
