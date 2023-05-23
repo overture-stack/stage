@@ -1,1 +1,1 @@
-declare module '@overture/dms-jbrowse';
+declare module '@overture-stack/dms-jbrowse';
