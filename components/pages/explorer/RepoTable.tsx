@@ -19,7 +19,6 @@
  *
  */
 
-import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import {
 	Pagination,
@@ -38,7 +37,13 @@ import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
 import Tabs from './Tabs';
-import { RepoTableTabsContextProvider } from './RepoTableTabsContext';
+import { TabsContextProvider, useTabsContext } from './TabsContext';
+import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
+
+export enum RepoTableTabNames {
+	FILES = 'Files',
+	JBROWSE = 'JBrowse',
+}
 
 const getTableConfigs = ({
 	apiHost,
@@ -69,10 +74,22 @@ const getTableConfigs = ({
 			DownloadButton: {
 				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
+				background: theme.colors.accent,
+				fontColor: theme.colors.white,
+				borderColor: theme.colors.accent,
+				hoverBackground: theme.colors.accent_dark,
+				padding: '2px 10px',
+				borderRadius: '5px',
+				fontSize: '14px',
+				css: css`
+					${theme.typography.baseFont}
+					border-width: 1px;
+					line-height: 24px;
+				`,
 				label: () => (
 					<>
 						<Download
-							fill={theme.colors.accent_dark}
+							fill={theme.colors.white}
 							style={css`
 								margin-right: 0.2rem;
 
@@ -88,8 +105,22 @@ const getTableConfigs = ({
 					width: '11rem',
 				},
 			},
+			ColumnSelectButton: {
+				background: theme.colors.accent,
+				fontColor: theme.colors.white,
+				borderColor: theme.colors.accent,
+				hoverBackground: theme.colors.accent_dark,
+				padding: '2px 10px',
+				borderRadius: '5px',
+				fontSize: '14px',
+				css: css`
+					${theme.typography.baseFont}
+					border-width: 1px;
+					line-height: 24px;
+				`,
+			},
 			DropDown: {
-				arrowColor: '#151c3d',
+				arrowColor: theme.colors.white,
 				arrowTransition: 'all 0s',
 				background: theme.colors.white,
 				borderColor: theme.colors.grey_5,
@@ -142,14 +173,38 @@ const getTableConfigs = ({
 	},
 });
 
+const TableDisplay = () => {
+	const { activeTab } = useTabsContext();
+
+	return activeTab === RepoTableTabNames.FILES ? (
+		<>
+			<CountDisplay
+				css={css`
+					flex-shrink: 0;
+					margin: 0.3rem 0 0 0.3rem;
+
+					.Spinner {
+						justify-content: space-between;
+						width: 65%;
+					}
+				`}
+			/>
+			<Table />
+			<Pagination />
+		</>
+	) : (
+		<JbrowseLinear selectedFiles={[]} />
+	);
+};
+
 const RepoTable = () => {
 	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
 	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
-		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
-		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
+		.filter((field: string) => field.trim()) // break it into arrays, and ensure there's no empty field names
+		.map((fieldName: string) => fieldName.replace(/['"]+/g, '').trim());
 	const customExporters = [
 		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
 		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
@@ -186,41 +241,24 @@ const RepoTable = () => {
 
 	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
 
-	return useMemo(
-		() => (
-			<>
-				<article
-					css={css`
-						background-color: ${theme.colors.white};
-						border-radius: 5px;
-						margin-bottom: 12px;
-						padding: 8px;
-						${theme.shadow.default};
-					`}
-				>
-					<TableContextProvider>
-						<RepoTableTabsContextProvider>
-							<ActionBar />
-							<Tabs />
-							<CountDisplay
-								css={css`
-									flex-shrink: 0;
-									margin: 0.3rem 0 0 0.3rem;
-
-									.Spinner {
-										justify-content: space-between;
-										width: 65%;
-									}
-								`}
-							/>
-							<Table />
-							<Pagination />
-						</RepoTableTabsContextProvider>
-					</TableContextProvider>
-				</article>
-			</>
-		),
-		[],
+	return (
+		<article
+			css={css`
+				background-color: ${theme.colors.white};
+				border-radius: 5px;
+				margin-bottom: 12px;
+				padding: 8px;
+				${theme.shadow.default};
+			`}
+		>
+			<TableContextProvider>
+				<TabsContextProvider defaultTabs={[{ name: 'Files', canClose: false }]}>
+					<ActionBar />
+					<Tabs />
+					<TableDisplay />
+				</TabsContextProvider>
+			</TableContextProvider>
+		</article>
 	);
 };
 

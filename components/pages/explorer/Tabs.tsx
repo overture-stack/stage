@@ -21,7 +21,7 @@
 
 import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
-import { useRepoTableTabsContext } from './RepoTableTabsContext';
+import { useTabsContext } from './TabsContext';
 
 const TabWrapper = styled('div')`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.grey_3};
@@ -86,15 +86,14 @@ const Content = styled('div')`
 `;
 
 const Tabs = () => {
-	const { activeTab } = useRepoTableTabsContext();
+	const { activeTab, openTabs } = useTabsContext();
 	return (
 		<TabWrapper>
-			<Tab>
-				<Content active={activeTab === 'Files'}>Files</Content>
-			</Tab>
-			<Tab>
-				<Content active={activeTab === 'JBrowse'}>JBrowse</Content>
-			</Tab>
+			{openTabs.map((tab) => (
+				<Tab key={tab.name}>
+					<Content active={activeTab === tab.name}>{tab.name}</Content>
+				</Tab>
+			))}
 		</TabWrapper>
 	);
 };

@@ -29,6 +29,8 @@ import {
 	getDisplayName,
 	useTableContext,
 } from '@overture-stack/arranger-components';
+import { useTabsContext } from './TabsContext';
+import { RepoTableTabNames } from './RepoTable';
 
 const ButtonWrapper = styled('div')`
 	margin-left: 0.3rem;
@@ -40,6 +42,7 @@ const ActionBar = () => {
 	const { selectedRows } = useTableContext({
 		callerName: 'Table - ActionBar',
 	});
+	const { handleOpenTab } = useTabsContext();
 
 	const enableJbrowse = !!selectedRows.length;
 	return (
@@ -78,6 +81,7 @@ const ActionBar = () => {
 							padding: 2px 10px;
 						`}
 						disabled={!enableJbrowse}
+						onClick={() => handleOpenTab({ name: RepoTableTabNames.JBROWSE, canClose: true })}
 					>
 						<div
 							css={css`
