@@ -56,11 +56,13 @@ export const TabsContextProvider = ({
 	const handleCloseTab = (tabName: string) => {
 		// if removed tab was active, set active tab to previous tab in the list
 		if (activeTab === tabName) {
-			setActiveTab(openTabs[findIndex(openTabs, { name: tabName }) - 1 || 0]?.name || null);
+			const nextActiveTab = openTabs[findIndex(openTabs, { name: tabName }) - 1 || 0]?.name || null;
+			handleChangeTab(nextActiveTab);
 		}
-		setOpenTabs(openTabs.filter((openTab) => openTab.name !== tabName));
+		const nextOpenTabs = openTabs.filter((openTab) => openTab.name !== tabName);
+		setOpenTabs(nextOpenTabs);
 	};
-	const handleChangeTab = (tabName: string) => {
+	const handleChangeTab = (tabName: string | null) => {
 		setActiveTab(tabName);
 	};
 

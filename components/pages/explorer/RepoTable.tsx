@@ -105,32 +105,19 @@ const getTableConfigs = ({
 					width: '11rem',
 				},
 			},
-			ColumnSelectButton: {
-				background: theme.colors.accent,
-				fontColor: theme.colors.white,
-				borderColor: theme.colors.accent,
-				hoverBackground: theme.colors.accent_dark,
-				padding: '2px 10px',
-				borderRadius: '5px',
-				fontSize: '14px',
-				css: css`
-					${theme.typography.baseFont}
-					border-width: 1px;
-					line-height: 24px;
-				`,
-			},
 			DropDown: {
 				arrowColor: theme.colors.white,
 				arrowTransition: 'all 0s',
-				background: theme.colors.white,
-				borderColor: theme.colors.grey_5,
+				background: theme.colors.accent,
+				borderColor: theme.colors.accent,
 				css: css`
 					${theme.typography.subheading2}
-					line-height: 1.3rem;
+					border-width: 1px;
+					line-height: 24px;
 				`,
-				fontColor: theme.colors.accent_dark,
+				fontColor: theme.colors.white,
 				disabledFontColor: theme.colors.grey_5,
-				hoverBackground: theme.colors.secondary_light,
+				hoverBackground: theme.colors.accent_dark,
 
 				ListWrapper: {
 					background: theme.colors.white,
@@ -139,7 +126,7 @@ const getTableConfigs = ({
 					`,
 					fontColor: theme.colors.black,
 					fontSize: '0.7rem',
-					hoverBackground: theme.colors.secondary_light,
+					hoverBackground: theme.colors.accent_dark,
 				},
 			},
 			HeaderRow: {
@@ -198,7 +185,7 @@ const TableDisplay = () => {
 			css={css`
 				.MuiPaper-elevation12 {
 					// elevation in MUI controls drop shadow
-					box-shadow: 0 none;
+					box-shadow: none;
 				}
 			`}
 		>

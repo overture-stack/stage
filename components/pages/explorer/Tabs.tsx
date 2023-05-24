@@ -22,6 +22,8 @@
 import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
 import { useTabsContext } from './TabsContext';
+import DismissIcon from '../../theme/icons/dismiss';
+import { useTheme } from '@emotion/react';
 
 const TabWrapper = styled('div')`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.grey_3};
@@ -35,7 +37,7 @@ const Tab = styled('button')`
 	margin: 0 13px;
 	z-index: 100;
 	box-sizing: border-box;
-	min-width: 50px;
+	min-width: 95px;
 	padding: 0 0 1px 0;
 	cursor: pointer;
 	border: 0;
@@ -85,13 +87,38 @@ const Content = styled('div')`
 	}
 `;
 
+const CloseButton = styled('button')`
+	position: absolute;
+	top: 7px;
+	right: -2px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+`;
+
 const Tabs = () => {
-	const { activeTab, openTabs } = useTabsContext();
+	const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
+	const theme = useTheme();
 	return (
 		<TabWrapper>
 			{openTabs.map((tab) => (
-				<Tab key={tab.name}>
+				<Tab
+					key={tab.name}
+					onClick={() => {
+						handleChangeTab(tab.name);
+					}}
+				>
 					<Content active={activeTab === tab.name}>{tab.name}</Content>
+					{tab.canClose && (
+						<CloseButton
+							onClick={(e) => {
+								e.stopPropagation();
+								handleCloseTab(tab.name);
+							}}
+						>
+							<DismissIcon width={5} fill={theme.colors.black} />
+						</CloseButton>
+					)}
 				</Tab>
 			))}
 		</TabWrapper>
