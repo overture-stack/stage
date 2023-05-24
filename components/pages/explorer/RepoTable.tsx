@@ -276,35 +276,7 @@ const RepoTable = (props: PageContentProps) => {
     },
   ];
 
-  const selectedFiles = [
-    {
-      fileId: 'UUID',
-      fileName: '0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz',
-      fileType: 'VCF',
-      fileURI:
-        'http://localhost:3000/data/0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz',
-      indexURI:
-        'http://localhost:3000/data/0a6be23a-d5a0-4e95-ada2-a61b2b5d9485.consensus.20160830.somatic.snv_mnv.vcf.gz.tbi',
-    },
-    {
-      fileId: 'UUID_2',
-      fileName: '0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz',
-      fileType: 'VCF',
-      fileURI:
-        'http://localhost:3000/data/0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz',
-      indexURI:
-        'http://localhost:3000/data/0a9c9db0-c623-11e3-bf01-24c6515278c0.consensus.20160830.somatic.snv_mnv.vcf.gz.tbi',
-    },
-    {
-      fileId: 'UUID_3',
-      fileName: 'ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz',
-      fileType: 'VCF',
-      fileURI:
-        'http://localhost:3000/data/ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz',
-      indexURI:
-        'http://localhost:3000/data/ALL.wgs.shapeit2_integrated_snvindels_v2a.GRCh38.27022019.sites.vcf.gz.tbi',
-    },
-  ];
+  const selectedFiles = [];
 
   return (
     <div css={getTableStyle(theme)}>
