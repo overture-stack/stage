@@ -175,6 +175,7 @@ const getTableConfigs = ({
 
 const TableDisplay = () => {
 	const { activeTab } = useTabsContext();
+	const theme = useTheme();
 
 	return activeTab === RepoTableTabNames.FILES ? (
 		<>
@@ -193,7 +194,23 @@ const TableDisplay = () => {
 			<Pagination />
 		</>
 	) : (
-		<JbrowseLinear selectedFiles={[]} />
+		<div
+			css={css`
+				.MuiPaper-elevation12 {
+					// elevation in MUI controls drop shadow
+					box-shadow: 0 none;
+				}
+			`}
+		>
+			<JbrowseLinear
+				options={{
+					configuration: {
+						theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
+					},
+				}}
+				selectedFiles={[]}
+			/>
+		</div>
 	);
 };
 
