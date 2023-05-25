@@ -50,7 +50,8 @@
 		"trailingComma": "all",
 		"semi": true,
 		"singleQuote": true,
-		"useTabs": true
+		"useTabs": false,
+		"tabWidth": 2
 	},
 	"overrides": {
 		"node-fetch": "3.2",
