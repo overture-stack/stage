@@ -53,35 +53,44 @@ const TablePagination = () => {
         `}
       >
         <MaxRowsSelector
-          css={css`
-            ${textCss}
-            margin-left: 0.3rem;
-            .Spinner {
-              justify-content: space-between;
-              width: 65%;
-            }
-          `}
+          css={[
+            textCss,
+            css`
+              margin-left: 0.3rem;
+              .Spinner {
+                justify-content: space-between;
+                width: 65%;
+              }
+              span:last-of-type {
+                display: none;
+              }
+            `,
+          ]}
         />
         <CountDisplay
-          css={css`
-            ${textCss}
-            margin-left: 10px;
-            .Spinner {
-              justify-content: space-between;
-              width: 65%;
-            }
-          `}
+          css={[
+            textCss,
+            css`
+              margin-left: 10px;
+              .Spinner {
+                justify-content: space-between;
+                width: 65%;
+              }
+            `,
+          ]}
         />
         {!!selectedRowsCount && (
           <div
-            css={css`
-              ${textCss}
-              color: ${theme.colors.accent_dark};
-              font-weight: bold;
-              background: ${theme.colors.secondary_light};
-              margin-left: 3px;
-              padding: 2px;
-            `}
+            css={[
+              textCss,
+              css`
+                color: ${theme.colors.accent_dark};
+                font-weight: bold;
+                background: ${theme.colors.secondary_light};
+                margin-left: 3px;
+                padding: 2px;
+              `,
+            ]}
           >
             ({selectedRowsCount} file{selectedRowsCount === 1 ? '' : 's'} selected)
           </div>

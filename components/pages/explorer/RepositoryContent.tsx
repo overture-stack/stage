@@ -166,35 +166,40 @@ const ContentDisplay = () => {
   const { isLoading } = useTableContext();
   const theme = useTheme();
 
-  return activeTab === RepositoryTabNames.FILES ? (
-    isLoading ? (
-      <Spinner />
-    ) : (
-      <>
-        <Table />
-        <TablePagination />
-      </>
-    )
-  ) : (
-    <div
-      css={css`
-        margin-top: 8px;
-        .MuiPaper-elevation12 {
-          // elevation in MUI controls drop shadow
-          box-shadow: none;
-        }
-      `}
-    >
-      <JbrowseLinear
-        options={{
-          configuration: {
-            theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
-          },
-        }}
-        selectedFiles={[]}
-      />
-    </div>
-  );
+  switch (activeTab) {
+    case RepositoryTabNames.FILES:
+      return isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Table />
+          <TablePagination />
+        </>
+      );
+    case RepositoryTabNames.JBROWSE:
+      return (
+        <div
+          css={css`
+            margin-top: 8px;
+            .MuiPaper-elevation12 {
+              // elevation in MUI controls drop shadow
+              box-shadow: none;
+            }
+          `}
+        >
+          <JbrowseLinear
+            options={{
+              configuration: {
+                theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
+              },
+            }}
+            selectedFiles={[]}
+          />
+        </div>
+      );
+    default:
+      return null;
+  }
 };
 
 const RepositoryContent = () => {
