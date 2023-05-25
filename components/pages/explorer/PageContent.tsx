@@ -23,7 +23,7 @@ import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 
 import Facets from './Facets';
-import RepoTable from './RepoTable';
+import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
 
 const PageContent = () => {
@@ -91,7 +91,7 @@ const PageContent = () => {
 							`}
 						>
 							<QueryBar />
-							<RepoTable />
+							<RepositoryContent />
 						</div>
 					</div>
 				</div>

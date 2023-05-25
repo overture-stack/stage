@@ -114,4 +114,5 @@ export default {
   label2,
   data,
   button,
+  baseFont,
 };
