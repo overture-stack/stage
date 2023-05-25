@@ -37,6 +37,7 @@ const TablePagination = () => {
 		line-height: 16px;
 	`;
 	const selectedRowsCount = selectedRows.length;
+
 	return isLoading ? null : (
 		<div
 			css={css`
@@ -86,7 +87,6 @@ const TablePagination = () => {
 					</div>
 				)}
 			</div>
-
 			<PageSelector />
 		</div>
 	);

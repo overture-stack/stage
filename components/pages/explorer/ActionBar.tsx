@@ -29,7 +29,7 @@ import {
 	useTableContext,
 } from '@overture-stack/arranger-components';
 import { useTabsContext } from './TabsContext';
-import { RepoTableTabNames } from './RepoTable';
+import { RepositoryTabNames } from './RepositoryContent';
 import { find } from 'lodash';
 
 const ButtonWrapper = styled('div')`
@@ -40,11 +40,11 @@ const ButtonWrapper = styled('div')`
 const ActionBar = () => {
 	const theme = useTheme();
 	const { selectedRows } = useTableContext({
-		callerName: 'Table - ActionBar',
+		callerName: 'Repository - ActionBar',
 	});
 	const { activeTab, handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
-
 	const enableJbrowse = !!selectedRows.length;
+
 	return (
 		<div
 			className="buttons"
@@ -83,10 +83,10 @@ const ActionBar = () => {
 						disabled={!enableJbrowse}
 						onClick={() => {
 							// go to jbrowse tab if open, otherwise add jbrowse tab
-							if (find(openTabs, { name: RepoTableTabNames.JBROWSE })) {
-								handleChangeTab(RepoTableTabNames.JBROWSE);
+							if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
+								handleChangeTab(RepositoryTabNames.JBROWSE);
 							} else {
-								handleOpenTab({ name: RepoTableTabNames.JBROWSE, canClose: true });
+								handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
 							}
 						}}
 					>
@@ -114,7 +114,7 @@ const ActionBar = () => {
 					display: flex;
 				`}
 			>
-				{activeTab === RepoTableTabNames.FILES && (
+				{activeTab === RepositoryTabNames.FILES && (
 					<ButtonWrapper>
 						<ColumnsSelectButton />
 					</ButtonWrapper>

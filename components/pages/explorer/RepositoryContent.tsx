@@ -40,7 +40,7 @@ import { TabsContextProvider, useTabsContext } from './TabsContext';
 import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
 import TablePagination from './TablePagination';
 
-export enum RepoTableTabNames {
+export enum RepositoryTabNames {
 	FILES = 'Files',
 	JBROWSE = 'JBrowse',
 }
@@ -54,7 +54,7 @@ const getTableConfigs = ({
 	customExporters?: CustomExporterInput;
 	theme: DMSThemeInterface;
 }): UseThemeContextProps => ({
-	callerName: 'RepoTable',
+	callerName: 'RepositoryContent',
 	components: {
 		Table: {
 			// functionality
@@ -161,12 +161,12 @@ const getTableConfigs = ({
 	},
 });
 
-const TableDisplay = () => {
+const ContentDisplay = () => {
 	const { activeTab } = useTabsContext();
-	const theme = useTheme();
 	const { isLoading } = useTableContext();
+	const theme = useTheme();
 
-	return activeTab === RepoTableTabNames.FILES ? (
+	return activeTab === RepositoryTabNames.FILES ? (
 		isLoading ? (
 			<Spinner />
 		) : (
@@ -197,7 +197,7 @@ const TableDisplay = () => {
 	);
 };
 
-const RepoTable = () => {
+const RepositoryContent = () => {
 	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
 
@@ -255,11 +255,11 @@ const RepoTable = () => {
 				<TabsContextProvider defaultTabs={[{ name: 'Files', canClose: false }]}>
 					<ActionBar />
 					<Tabs />
-					<TableDisplay />
+					<ContentDisplay />
 				</TabsContextProvider>
 			</TableContextProvider>
 		</article>
 	);
 };
 
-export default RepoTable;
+export default RepositoryContent;
