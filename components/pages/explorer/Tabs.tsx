@@ -26,8 +26,7 @@ import DismissIcon from '../../theme/icons/dismiss';
 import { useTheme } from '@emotion/react';
 
 const TabWrapper = styled('div')`
-	border-bottom: 1px solid ${({ theme }) => theme.colors.grey_3};
-	margin: 10px 0;
+	margin: 10px 0 -8px 4px;
 `;
 
 const Tab = styled('button')`
@@ -112,7 +111,7 @@ const Tabs = () => {
 					{tab.canClose && (
 						<CloseButton
 							onClick={(e) => {
-								e.stopPropagation();
+								e.stopPropagation(); // prevent switching to this tab
 								handleCloseTab(tab.name);
 							}}
 						>

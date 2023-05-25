@@ -26,11 +26,11 @@ import styled from '@emotion/styled';
 import {
 	ColumnsSelectButton,
 	DownloadButton,
-	getDisplayName,
 	useTableContext,
 } from '@overture-stack/arranger-components';
 import { useTabsContext } from './TabsContext';
 import { RepoTableTabNames } from './RepoTable';
+import { find } from 'lodash';
 
 const ButtonWrapper = styled('div')`
 	margin-left: 0.3rem;
@@ -42,7 +42,7 @@ const ActionBar = () => {
 	const { selectedRows } = useTableContext({
 		callerName: 'Table - ActionBar',
 	});
-	const { handleOpenTab } = useTabsContext();
+	const { activeTab, handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
 
 	const enableJbrowse = !!selectedRows.length;
 	return (
@@ -81,7 +81,14 @@ const ActionBar = () => {
 							padding: 2px 10px;
 						`}
 						disabled={!enableJbrowse}
-						onClick={() => handleOpenTab({ name: RepoTableTabNames.JBROWSE, canClose: true })}
+						onClick={() => {
+							// go to jbrowse tab if open, otherwise add jbrowse tab
+							if (find(openTabs, { name: RepoTableTabNames.JBROWSE })) {
+								handleChangeTab(RepoTableTabNames.JBROWSE);
+							} else {
+								handleOpenTab({ name: RepoTableTabNames.JBROWSE, canClose: true });
+							}
+						}}
 					>
 						<div
 							css={css`
@@ -107,11 +114,14 @@ const ActionBar = () => {
 					display: flex;
 				`}
 			>
-				{[ColumnsSelectButton, DownloadButton].map((Component) => (
-					<ButtonWrapper key={getDisplayName(Component)}>
-						<Component />
+				{activeTab === RepoTableTabNames.FILES && (
+					<ButtonWrapper>
+						<ColumnsSelectButton />
 					</ButtonWrapper>
-				))}
+				)}
+				<ButtonWrapper>
+					<DownloadButton />
+				</ButtonWrapper>
 			</div>
 		</div>
 	);

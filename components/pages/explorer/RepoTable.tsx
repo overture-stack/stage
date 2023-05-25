@@ -21,11 +21,10 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	Pagination,
 	Table,
 	TableContextProvider,
 	useArrangerTheme,
-	CountDisplay,
+	useTableContext,
 } from '@overture-stack/arranger-components';
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
@@ -34,11 +33,12 @@ import urlJoin from 'url-join';
 import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
-import { Download } from '@/components/theme/icons';
+import { Download, Spinner } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
 import Tabs from './Tabs';
 import { TabsContextProvider, useTabsContext } from './TabsContext';
 import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
+import TablePagination from './TablePagination';
 
 export enum RepoTableTabNames {
 	FILES = 'Files',
@@ -118,7 +118,8 @@ const getTableConfigs = ({
 				fontColor: theme.colors.white,
 				disabledFontColor: theme.colors.grey_5,
 				hoverBackground: theme.colors.accent_dark,
-
+				fontSize: '14px',
+				padding: '2px 10px',
 				ListWrapper: {
 					background: theme.colors.white,
 					css: css`
@@ -163,26 +164,21 @@ const getTableConfigs = ({
 const TableDisplay = () => {
 	const { activeTab } = useTabsContext();
 	const theme = useTheme();
+	const { isLoading } = useTableContext();
 
 	return activeTab === RepoTableTabNames.FILES ? (
-		<>
-			<CountDisplay
-				css={css`
-					flex-shrink: 0;
-					margin: 0.3rem 0 0 0.3rem;
-
-					.Spinner {
-						justify-content: space-between;
-						width: 65%;
-					}
-				`}
-			/>
-			<Table />
-			<Pagination />
-		</>
+		isLoading ? (
+			<Spinner />
+		) : (
+			<>
+				<Table />
+				<TablePagination />
+			</>
+		)
 	) : (
 		<div
 			css={css`
+				margin-top: 8px;
 				.MuiPaper-elevation12 {
 					// elevation in MUI controls drop shadow
 					box-shadow: none;
