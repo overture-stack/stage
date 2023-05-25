@@ -20,10 +20,8 @@
  */
 
 import { css, Global, useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import { has, isEmpty, orderBy } from 'lodash';
-import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react';
-import { Tooltip, TooltipProps } from 'react-tippy';
+import React, { useEffect, useState } from 'react';
 
 import { parseExpiry, getDayValue } from '../../../global/utils/apiToken';
 import { getConfig } from '../../../global/config';
@@ -33,13 +31,13 @@ import { EGO_API_KEY_ENDPOINT } from '../../../global/utils/constants';
 import Button from '../../Button';
 import StyledLink from '../../Link';
 
-import defaultTheme from '../../theme';
 import { Checkmark } from '../../theme/icons';
 import { AccessLevel, parseScope, ScopeObj } from '../../../global/utils/egoTokenUtils';
 import ErrorNotification from '../../ErrorNotification';
 
 import sleep from '../../utils/sleep';
 import DMSAdminContact, { GenericHelpMessage } from '../../DMSAdminContact';
+import { CustomTooltip, TooltipContainer } from '@/components/Tooltip';
 
 interface ApiToken {
   expiryDate: string;
@@ -48,41 +46,6 @@ interface ApiToken {
   name: string;
   scope: string[];
 }
-
-interface CustomTooltipProps extends TooltipProps {
-  children: ReactNode;
-}
-// TODO: workaround for react-tippy 1.4.0 --- remove with upgraded fix
-// related issue: https://github.com/tvkhoa/react-tippy/issues/169
-const CustomTooltip: FunctionComponent<CustomTooltipProps> = (props) =>
-  React.cloneElement(<Tooltip />, { ...props });
-
-const TooltipContainer = styled('div')`
-  ${({ theme }) => css`
-    ${theme.typography.label};
-    background: ${theme.colors.grey_6};
-    border-radius: 2px;
-    padding: 2px 4px;
-    color: white;
-    font-weight: normal;
-    margin-bottom: 10%;
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      width: 0;
-      height: 0;
-      border: 5px solid transparent;
-      pointer-events: none;
-      right: 50%;
-      top: 79%;
-      border-top-color: ${theme.colors.grey_6};
-      border-right: 5px solid transparent;
-      border-left: 5px solid transparent;
-      margin-right: -5px;
-    }
-  `}
-`;
 
 enum ApiTokenErrorType {
   SCOPES_ERROR = 'scopes_error',
