@@ -21,75 +21,75 @@
 
 import { css } from '@emotion/react';
 import {
-	CountDisplay,
-	useTableContext,
-	MaxRowsSelector,
-	PageSelector,
+  CountDisplay,
+  useTableContext,
+  MaxRowsSelector,
+  PageSelector,
 } from '@overture-stack/arranger-components';
 import { useTheme } from '@emotion/react';
 
 const TablePagination = () => {
-	const { isLoading, selectedRows } = useTableContext();
-	const theme = useTheme();
-	const textCss = css`
-		color: ${theme.colors.grey_6};
-		font-size: 0.8rem;
-		line-height: 16px;
-	`;
-	const selectedRowsCount = selectedRows.length;
+  const { isLoading, selectedRows } = useTableContext();
+  const theme = useTheme();
+  const textCss = css`
+    color: ${theme.colors.grey_6};
+    font-size: 0.8rem;
+    line-height: 16px;
+  `;
+  const selectedRowsCount = selectedRows.length;
 
-	return isLoading ? null : (
-		<div
-			css={css`
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			`}
-		>
-			<div
-				css={css`
-					display: flex;
-					align-items: center;
-				`}
-			>
-				<MaxRowsSelector
-					css={css`
-						${textCss}
-						margin-left: 0.3rem;
-						.Spinner {
-							justify-content: space-between;
-							width: 65%;
-						}
-					`}
-				/>
-				<CountDisplay
-					css={css`
-						${textCss}
-						margin-left: 10px;
-						.Spinner {
-							justify-content: space-between;
-							width: 65%;
-						}
-					`}
-				/>
-				{!!selectedRowsCount && (
-					<div
-						css={css`
-							${textCss}
-							color: ${theme.colors.accent_dark};
-							font-weight: bold;
-							background: ${theme.colors.secondary_light};
-							margin-left: 3px;
-							padding: 2px;
-						`}
-					>
-						({selectedRowsCount} file{selectedRowsCount === 1 ? '' : 's'} selected)
-					</div>
-				)}
-			</div>
-			<PageSelector />
-		</div>
-	);
+  return isLoading ? null : (
+    <div
+      css={css`
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      `}
+    >
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <MaxRowsSelector
+          css={css`
+            ${textCss}
+            margin-left: 0.3rem;
+            .Spinner {
+              justify-content: space-between;
+              width: 65%;
+            }
+          `}
+        />
+        <CountDisplay
+          css={css`
+            ${textCss}
+            margin-left: 10px;
+            .Spinner {
+              justify-content: space-between;
+              width: 65%;
+            }
+          `}
+        />
+        {!!selectedRowsCount && (
+          <div
+            css={css`
+              ${textCss}
+              color: ${theme.colors.accent_dark};
+              font-weight: bold;
+              background: ${theme.colors.secondary_light};
+              margin-left: 3px;
+              padding: 2px;
+            `}
+          >
+            ({selectedRowsCount} file{selectedRowsCount === 1 ? '' : 's'} selected)
+          </div>
+        )}
+      </div>
+      <PageSelector />
+    </div>
+  );
 };
 
 export default TablePagination;

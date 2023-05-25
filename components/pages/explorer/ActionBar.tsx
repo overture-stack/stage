@@ -24,107 +24,107 @@ import { CustomTooltip } from '@/components/Tooltip';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
-	ColumnsSelectButton,
-	DownloadButton,
-	useTableContext,
+  ColumnsSelectButton,
+  DownloadButton,
+  useTableContext,
 } from '@overture-stack/arranger-components';
 import { useTabsContext } from './TabsContext';
 import { RepositoryTabNames } from './RepositoryContent';
 import { find } from 'lodash';
 
 const ButtonWrapper = styled('div')`
-	margin-left: 0.3rem;
-	margin-bottom: 0.3rem;
+  margin-left: 0.3rem;
+  margin-bottom: 0.3rem;
 `;
 
 const ActionBar = () => {
-	const theme = useTheme();
-	const { selectedRows } = useTableContext({
-		callerName: 'Repository - ActionBar',
-	});
-	const { activeTab, handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
-	const enableJbrowse = !!selectedRows.length;
+  const theme = useTheme();
+  const { selectedRows } = useTableContext({
+    callerName: 'Repository - ActionBar',
+  });
+  const { activeTab, handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
+  const enableJbrowse = !!selectedRows.length;
 
-	return (
-		<div
-			className="buttons"
-			css={css`
-				display: flex;
-				list-style: none;
-				margin: 0 0 0 -0.3rem;
-				justify-content: space-between;
-				align-items: center;
-				padding: 0;
-			`}
-		>
-			<CustomTooltip
-				disabled={enableJbrowse}
-				unmountHTMLWhenHide
-				arrow
-				html={
-					<div
-						css={css`
-							${theme.typography.regular};
-							font-size: 12px;
-						`}
-					>
-						Please select a minimum of 1 file to launch JBrowse.
-						<br />
-						Only .BAM & .VCF file types are supported.
-					</div>
-				}
-				position="right"
-			>
-				<ButtonWrapper>
-					<Button
-						css={css`
-							padding: 2px 10px;
-						`}
-						disabled={!enableJbrowse}
-						onClick={() => {
-							// go to jbrowse tab if open, otherwise add jbrowse tab
-							if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
-								handleChangeTab(RepositoryTabNames.JBROWSE);
-							} else {
-								handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
-							}
-						}}
-					>
-						<div
-							css={css`
-								display: flex;
-								align-items: center;
-							`}
-						>
-							<img
-								src="images/jbrowse-logo.png"
-								alt=""
-								width={16}
-								css={css`
-									margin-right: 0.3rem;
-								`}
-							/>
-							<span>JBrowse</span>
-						</div>
-					</Button>
-				</ButtonWrapper>
-			</CustomTooltip>
-			<div
-				css={css`
-					display: flex;
-				`}
-			>
-				{activeTab === RepositoryTabNames.FILES && (
-					<ButtonWrapper>
-						<ColumnsSelectButton />
-					</ButtonWrapper>
-				)}
-				<ButtonWrapper>
-					<DownloadButton />
-				</ButtonWrapper>
-			</div>
-		</div>
-	);
+  return (
+    <div
+      className="buttons"
+      css={css`
+        display: flex;
+        list-style: none;
+        margin: 0 0 0 -0.3rem;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+      `}
+    >
+      <CustomTooltip
+        disabled={enableJbrowse}
+        unmountHTMLWhenHide
+        arrow
+        html={
+          <div
+            css={css`
+              ${theme.typography.regular};
+              font-size: 12px;
+            `}
+          >
+            Please select a minimum of 1 file to launch JBrowse.
+            <br />
+            Only .BAM & .VCF file types are supported.
+          </div>
+        }
+        position="right"
+      >
+        <ButtonWrapper>
+          <Button
+            css={css`
+              padding: 2px 10px;
+            `}
+            disabled={!enableJbrowse}
+            onClick={() => {
+              // go to jbrowse tab if open, otherwise add jbrowse tab
+              if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
+                handleChangeTab(RepositoryTabNames.JBROWSE);
+              } else {
+                handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
+              }
+            }}
+          >
+            <div
+              css={css`
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <img
+                src="images/jbrowse-logo.png"
+                alt=""
+                width={16}
+                css={css`
+                  margin-right: 0.3rem;
+                `}
+              />
+              <span>JBrowse</span>
+            </div>
+          </Button>
+        </ButtonWrapper>
+      </CustomTooltip>
+      <div
+        css={css`
+          display: flex;
+        `}
+      >
+        {activeTab === RepositoryTabNames.FILES && (
+          <ButtonWrapper>
+            <ColumnsSelectButton />
+          </ButtonWrapper>
+        )}
+        <ButtonWrapper>
+          <DownloadButton />
+        </ButtonWrapper>
+      </div>
+    </div>
+  );
 };
 
 export default ActionBar;

@@ -31,31 +31,31 @@ export type CustomTooltipProps = PropsWithChildren<TooltipProps>;
 // update may 2023: issue has been deleted. without this wrapper,
 // there's a TS error due to children not being included in tooltip component type.
 export const CustomTooltip: FunctionComponent<CustomTooltipProps> = (props) =>
-	React.cloneElement(<Tooltip />, { ...props });
+  React.cloneElement(<Tooltip />, { ...props });
 
 export const TooltipContainer = styled('div')`
-	${({ theme }) => css`
-		${theme.typography.label};
-		background: ${theme.colors.grey_6};
-		border-radius: 2px;
-		padding: 2px 4px;
-		color: white;
-		font-weight: normal;
-		margin-bottom: 10%;
-		&:before {
-			content: '';
-			display: block;
-			position: absolute;
-			width: 0;
-			height: 0;
-			border: 5px solid transparent;
-			pointer-events: none;
-			right: 50%;
-			top: 79%;
-			border-top-color: ${theme.colors.grey_6};
-			border-right: 5px solid transparent;
-			border-left: 5px solid transparent;
-			margin-right: -5px;
-		}
-	`}
+  ${({ theme }) => css`
+    ${theme.typography.label};
+    background: ${theme.colors.grey_6};
+    border-radius: 2px;
+    padding: 2px 4px;
+    color: white;
+    font-weight: normal;
+    margin-bottom: 10%;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      pointer-events: none;
+      right: 50%;
+      top: 79%;
+      border-top-color: ${theme.colors.grey_6};
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+      margin-right: -5px;
+    }
+  `}
 `;
