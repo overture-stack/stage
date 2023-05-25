@@ -32,13 +32,13 @@ export interface TabsContextInterface {
   handleOpenTab: (tab: TabRecord) => void;
   handleChangeTab: (tabName: string) => void;
   handleCloseTab: (tabName: string) => void;
-  openTabs: TabRecord[];
+  openTabs: TabRecord[] | [];
 }
 
 export const TabsContext = createContext<TabsContextInterface>({
   activeTab: null,
   openTabs: [],
-} as unknown as TabsContextInterface);
+} as TabsContextInterface);
 
 export const TabsContextProvider = ({
   defaultTabs,
