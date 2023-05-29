@@ -19,50 +19,9 @@
  *
  */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
-import { useTabsContext } from './TabsContext';
-import { RepositoryTabNames } from './RepositoryContent';
-import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
-
-export const ButtonWrapper = styled('div')`
-  margin-left: 0.3rem;
-  margin-bottom: 0.3rem;
-`;
-
-const ActionBar = () => {
-  const { activeTab } = useTabsContext();
-
-  return (
-    <div
-      className="buttons"
-      css={css`
-        display: flex;
-        list-style: none;
-        margin: 0 0 0 -0.3rem;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0;
-      `}
-    >
-      <JbrowseLaunchButton />
-      <div
-        css={css`
-          display: flex;
-        `}
-      >
-        {activeTab === RepositoryTabNames.FILES && (
-          <ButtonWrapper>
-            <ColumnsSelectButton />
-          </ButtonWrapper>
-        )}
-        <ButtonWrapper>
-          <DownloadButton />
-        </ButtonWrapper>
-      </div>
-    </div>
-  );
+export type JbrowseButtonQueryNode = {
+  file_type: string;
+  file: {
+    index_file: null | { file_type: string };
+  };
 };
-
-export default ActionBar;
