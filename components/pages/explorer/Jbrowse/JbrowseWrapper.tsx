@@ -19,50 +19,30 @@
  *
  */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
-import { useTabsContext } from './TabsContext';
-import { RepositoryTabNames } from './RepositoryContent';
-import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
+import { css, useTheme } from '@emotion/react';
+import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
 
-export const ButtonWrapper = styled('div')`
-  margin-left: 0.3rem;
-  margin-bottom: 0.3rem;
-`;
+const JbrowseWrapper = () => {
+	const theme = useTheme();
 
-const ActionBar = () => {
-  const { activeTab } = useTabsContext();
-
-  return (
-    <div
-      className="buttons"
-      css={css`
-        display: flex;
-        list-style: none;
-        margin: 0 0 0 -0.3rem;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0;
-      `}
-    >
-      <JbrowseLaunchButton />
-      <div
-        css={css`
-          display: flex;
-        `}
-      >
-        {activeTab === RepositoryTabNames.FILES && (
-          <ButtonWrapper>
-            <ColumnsSelectButton />
-          </ButtonWrapper>
-        )}
-        <ButtonWrapper>
-          <DownloadButton />
-        </ButtonWrapper>
-      </div>
-    </div>
-  );
+	return (
+		<div
+			css={css`
+				margin-top: 8px;
+				.MuiPaper-elevation12 {
+					// elevation in MUI controls drop shadow
+					box-shadow: none;
+				}
+			`}
+		>
+			<JbrowseLinear
+				configuration={{
+					theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
+				}}
+				selectedFiles={[]}
+			/>
+		</div>
+	);
 };
 
-export default ActionBar;
+export default JbrowseWrapper;

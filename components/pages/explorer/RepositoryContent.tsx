@@ -37,8 +37,8 @@ import { Download, Spinner } from '@/components/theme/icons';
 import ActionBar from './ActionBar';
 import Tabs from './Tabs';
 import { TabsContextProvider, useTabsContext } from './TabsContext';
-import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
 import TablePagination from './TablePagination';
+import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 
 export enum RepositoryTabNames {
   FILES = 'Files',
@@ -127,7 +127,7 @@ const getTableConfigs = ({
           `,
           fontColor: theme.colors.black,
           fontSize: '0.7rem',
-          hoverBackground: theme.colors.accent_dark,
+          hoverBackground: theme.colors.grey_2,
         },
       },
       HeaderRow: {
@@ -164,7 +164,6 @@ const getTableConfigs = ({
 const ContentDisplay = () => {
   const { activeTab } = useTabsContext();
   const { isLoading } = useTableContext();
-  const theme = useTheme();
 
   switch (activeTab) {
     case RepositoryTabNames.FILES:
@@ -177,26 +176,7 @@ const ContentDisplay = () => {
         </>
       );
     case RepositoryTabNames.JBROWSE:
-      return (
-        <div
-          css={css`
-            margin-top: 8px;
-            .MuiPaper-elevation12 {
-              // elevation in MUI controls drop shadow
-              box-shadow: none;
-            }
-          `}
-        >
-          <JbrowseLinear
-            options={{
-              configuration: {
-                theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
-              },
-            }}
-            selectedFiles={[]}
-          />
-        </div>
-      );
+      return <JbrowseWrapper />;
     default:
       return null;
   }
