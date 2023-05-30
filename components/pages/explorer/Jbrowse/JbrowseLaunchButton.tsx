@@ -31,28 +31,9 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
 import { JbrowseButtonQueryNode } from './types';
-import { jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
+import { jbrowseAllowedFileTypes, jbrowseFileMetadataQuery, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
-
-const jbrowseFileMetadataQuery = `
-  query tableData($filters: JSON) {
-  file {
-    hits(filters: $filters) {
-      edges {
-        node {
-          file_type
-          file {
-            index_file {
-              file_type
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
@@ -63,7 +44,7 @@ const JbrowseLaunchButton = () => {
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
 
   useEffect(() => {
-    // check if any files in selectedRows are compatible with JBrowse
+    // check if conditions are met to launch jbrowse
     arrangerFetcher({
       endpoint: 'graphql/TableDataQuery',
       body: JSON.stringify({
