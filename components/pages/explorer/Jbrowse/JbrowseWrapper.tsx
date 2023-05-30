@@ -20,9 +20,7 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
-import { useEffect } from 'react';
 
 const JbrowseWrapper = () => {
   const theme = useTheme();
