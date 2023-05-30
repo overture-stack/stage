@@ -31,7 +31,7 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
 import { JbrowseButtonQueryNode } from './types';
-import { jbrowseAllowedFileTypes } from './utils';
+import { jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -74,11 +74,12 @@ const JbrowseLaunchButton = () => {
       }),
     })
       .then(async ({ data }) => {
-        // must have at least 1 file with an acceptable file type, and an index file
-        const canEnableJbrowse = !!data.file?.hits?.edges?.filter(
+        // must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
+        const jbrowseFileCount = data.file?.hits?.edges?.filter(
           ({ node }: { node: JbrowseButtonQueryNode }) =>
             jbrowseAllowedFileTypes.includes(node.file_type) && node.file.index_file !== null,
         ).length;
+        const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
         setJbrowseEnabled(canEnableJbrowse);
       })
       .catch(async (err) => {
@@ -99,9 +100,11 @@ const JbrowseLaunchButton = () => {
             font-size: 12px;
           `}
         >
-          Please select a minimum of 1 file to launch JBrowse.
+          Please select 1 to {MAX_JBROWSE_FILES} files to launch JBrowse.
           <br />
-          Only .BAM & .VCF file types are supported.
+          Supported file types: {jbrowseAllowedFileTypes.join(', ')}
+          <br />
+          Index files are required
         </div>
       }
       position="right"

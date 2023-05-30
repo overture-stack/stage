@@ -19,7 +19,9 @@
  *
  */
 
-export const jbrowseAllowedFileTypes = ['VCF', 'BAM'];
+export const jbrowseAllowedFileTypes = ['BAM', 'VCF'];
+
+export const MAX_JBROWSE_FILES = 5;
 
 export const jbrowseFileMetadataQuery = `
   query tableData($filters: JSON) {
