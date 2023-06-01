@@ -147,7 +147,6 @@ pipeline {
                 anyOf {
                     branch 'develop'
                     branch 'main'
-                    branch 'arranger-rewrite'
                     expression { return params.PUBLISH_IMAGE }
                 }
             }
@@ -169,13 +168,6 @@ pipeline {
 
                                 sh "docker tag dms-ui:${commit} ${gitHubImageName}:latest"
                                 sh "docker push ${gitHubImageName}:latest"
-                            } else if (env.BRANCH_NAME ==~ /(arranger-rewrite)/) {
-                                // TODO: remove this fork path once branch is merged
-                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:arranger-rewrite-${commit}"
-                                sh "docker push ${gitHubImageName}:arranger-rewrite-${commit}"
-
-                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:arranger-rewrite"
-                                sh "docker push ${gitHubImageName}:arranger-rewrite"
                             } else { // push commit tags
                                 sh "docker tag dms-ui:${commit} ${gitHubImageName}:${commit}"
                                 sh "docker push ${gitHubImageName}:${commit}"
