@@ -28,6 +28,7 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import ErrorNotification from '@/components/ErrorNotification';
 import { JbrowseSelectedFilesQueryNode } from './types';
 import { jbrowseAllowedFileTypes } from './utils';
+import ExpandButton from '@/components/ExpandButton';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -123,6 +124,8 @@ const JbrowseSelectedFilesTable = () => {
       });
   }, [selectedRows]);
 
+  const [showTable, setShowTable] = useState<boolean>(true);
+
   return (
     <div
       css={css`
@@ -133,7 +136,7 @@ const JbrowseSelectedFilesTable = () => {
         <ErrorNotification
           size="md"
           css={css`
-            margin: 20px 0;
+            margin: 20px 0 10px;
             max-width: none;
           `}
           onDismiss={() => setHasWarnings(false)}
@@ -144,7 +147,28 @@ const JbrowseSelectedFilesTable = () => {
           {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
         </ErrorNotification>
       )}
-      <SimpleTable tableColumns={tableColumns} tableData={tableData} />
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          margin-top: 20px;
+        `}
+      >
+        <h3
+          css={(theme) => css`
+            ${theme.typography.subheading};
+            margin: 0;
+          `}
+        >
+          {selectedRows.length} File{selectedRows.length === 1 ? '' : 's'} Selected
+        </h3>
+        <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
+          {showTable ? 'Hide' : 'Show'} Table
+        </ExpandButton>
+      </div>
+      {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
     </div>
   );
 };
