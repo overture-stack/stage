@@ -19,19 +19,43 @@
  *
  */
 
-export type JbrowseButtonQueryNode = {
-  file_type: string;
-  file: {
-    index_file: null | { file_type: string };
-  };
+import { ReactElement } from 'react';
+
+export type TableColumn = { name: string; key: string };
+export type TableRecord = Record<string, string | number>;
+
+// this table is for displaying simple data without
+// setting up a TableContextProvider
+
+const SimpleTable = ({
+  tableColumns,
+  tableData,
+}: {
+  tableColumns: TableColumn[];
+  tableData: TableRecord[];
+}): ReactElement => {
+  return tableColumns.length && tableData.length ? (
+    <table>
+      <thead>
+        <tr>
+          {tableColumns.map((column) => (
+            <th key={column.key}>{column.name}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((row: TableRecord) => (
+          <tr key={row.file_id}>
+            {Object.entries(row).map(([key, value]) => {
+              return <td key={key}>{value}</td>;
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <></>
+  );
 };
 
-export type JbrowseSelectedFilesQueryNode = JbrowseButtonQueryNode & {
-  data_type: string;
-  donors: { hits: { edges: { node: { donor_id: string } }[] } };
-  file_access: string;
-  file_type: string;
-  file: { name: string; size: number };
-  id: string;
-  study_id: string;
-};
+export default SimpleTable;
