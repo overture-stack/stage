@@ -19,10 +19,10 @@
  *
  */
 
-import styled from '@emotion/styled';
 import { ReactElement } from 'react';
-import defaultTheme from './theme';
+import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import defaultTheme from './theme';
 
 export type TableColumn = { name: string; key: string };
 export type TableRecord = Record<string, string | number>;
@@ -85,9 +85,9 @@ const SimpleTable = ({
       <tbody>
         {tableData.map((row: TableRecord) => (
           <TrStyled key={row.file_id}>
-            {Object.entries(row).map(([key, value]) => {
-              return <TdStyled key={key}>{value}</TdStyled>;
-            })}
+            {Object.entries(row).map(([key, value]) => (
+              <TdStyled key={key}>{value}</TdStyled>
+            ))}
           </TrStyled>
         ))}
       </tbody>
