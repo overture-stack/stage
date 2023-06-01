@@ -27,6 +27,7 @@ import OrcidLogo from './orcid';
 import Illustration from './illustration';
 import Avatar from './avatar';
 import ChevronDown from './chevron_down';
+import Download from './download';
 import OvertureLogo from './overture_logo';
 import OvertureLogoWithText from './overture_logo_with_text';
 import OvertureUser from './overture_user';
@@ -44,6 +45,7 @@ export {
   Illustration,
   Avatar,
   ChevronDown,
+  Download,
   OvertureLogo,
   OvertureLogoWithText,
   OvertureUser,

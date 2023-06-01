@@ -19,272 +19,192 @@
  *
  */
 
-import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
+import {
+	Pagination,
+	Table,
+	TableContextProvider,
+	useArrangerTheme,
+	Toolbar,
+} from '@overture-stack/arranger-components';
+import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
+import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
 import urlJoin from 'url-join';
 
-import { PageContentProps } from './index';
-import StyledLink from '../../Link';
-import { DMSThemeInterface } from '../../theme';
-import { getConfig } from '../../../global/config';
+import { getConfig } from '@/global/config';
+import StyledLink from '@/components/Link';
+import { DMSThemeInterface } from '@/components/theme';
+import { Download } from '@/components/theme/icons';
 
-const Table = dynamic(
-  () => import('@arranger/components/dist/Arranger').then((comp) => comp.Table),
-  { ssr: false },
-) as any;
+const getTableConfigs = ({
+	apiHost,
+	customExporters,
+	theme,
+}: {
+	apiHost: string;
+	customExporters?: CustomExporterInput;
+	theme: DMSThemeInterface;
+}): UseThemeContextProps => ({
+	callerName: 'RepoTable',
+	components: {
+		Table: {
+			// functionality
+			hideLoader: true,
 
-const getTableStyle = (theme: DMSThemeInterface) => css`
-  border-radius: 5px;
-  background-color: ${theme.colors.white};
-  padding: 8px;
-  margin-bottom: 12px;
-  ${theme.shadow.default};
-  & .tableToolbar {
-    background-color: ${theme.colors.white};
-    padding: 10px 8px;
-    ${theme.typography.label};
-    font-weight: normal;
-    height: 32px;
-    & .group {
-      height: 32px;
-      & .buttonWrapper button,
-      & .dropDownHeader button {
-        align-items: center;
-        border-radius: 5px;
-        border: solid 1px ${theme.colors.grey_5};
-        height: 26px;
-        background-color: ${theme.colors.white};
-        color: ${theme.colors.accent_dark};
-        ${theme.typography.subheading2};
-        &:hover {
-          background-color: ${theme.colors.secondary_light};
-        }
-        &:focus {
-          outline: none;
-        }
-      }
-      & .buttonWrapper button:before {
-        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20'%3E%3Cpath fill='%23003055' fill-rule='evenodd' d='M1.32 17.162h17.162c.729 0 1.32.59 1.32 1.32 0 .73-.591 1.32-1.32 1.32H1.32c-.729 0-1.32-.59-1.32-1.32 0-.73.591-1.32 1.32-1.32zm4.93-8.87l2.232 2.227V1.512c0-.774.63-1.402 1.406-1.402.777 0 1.406.628 1.406 1.402v9.032l2.257-2.252c.55-.548 1.44-.548 1.989 0 .549.547.55 1.435 0 1.983l-4.976 4.963c-.366.365-.96.365-1.327 0l-4.975-4.963c-.549-.548-.549-1.435 0-1.983.55-.548 1.439-.548 1.988 0z'/%3E%3C/svg%3E%0A");
-        margin-top: 2px;
-        margin-right: 4px;
-      }
-      & .dropDownHeader button {
-        margin-right: 8px;
-      }
-      & .dropDownHeader button:after {
-        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23151c3d' fill-rule='evenodd' d='M9.952 3.342c.468-.456 1.228-.456 1.697 0 .234.228.351.526.351.825 0 .298-.117.597-.351.825l-4.8 4.666c-.469.456-1.23.456-1.697 0l-4.8-4.666c-.47-.456-.47-1.194 0-1.65.468-.456 1.228-.456 1.696 0L6 7.184l3.952-3.842z'/%3E%3C/svg%3E");
-        margin-top: 2px;
-        margin-left: -3px;
-      }
-      & .dropDownButton svg {
-        display: none;
-      }
-      & div.dropDownContent {
-        right: 7px !important;
-        border-radius: 5px;
-        ${theme.shadow.default};
-      }
-      & .dropDownContent {
-        max-width: 200px;
-        max-height: 285px;
-        overflow-y: scroll;
-        top: 82%;
+			// appearance
+			background: theme.colors.white,
+			borderColor: theme.colors.grey_3,
+			css: css`
+				${theme.shadow.default}
+			`,
 
-        ${theme.typography.label};
-        font-weight: normal;
+			// Child components
+			CountDisplay: {
+				fontColor: 'inherit',
+			},
+			DownloadButton: {
+				customExporters,
+				downloadUrl: urlJoin(apiHost, 'download'),
+				label: () => (
+					<>
+						<Download
+							fill={theme.colors.accent_dark}
+							style={css`
+								margin-right: 0.2rem;
 
-        /* left-orient checkboxes */
-        &.multiple {
-          .dropDownContentElement {
-            margin-left: 15px;
-            padding-left: 8px;
-            position: relative;
-          }
-          & .dropDownContentElement input[type='checkbox' i] {
-            position: absolute;
-            left: -17px;
-            bottom: 4px;
-          }
-        }
-      }
-    }
-  }
-  & .ReactTable {
-    background-color: ${theme.colors.white};
-    border: none;
-    &.rt-tr-group .rt-tr {
-      &.selected {
-        background-color: pink;
-      }
-    }
-    & .rt-tbody {
-      border: 1px solid ${theme.colors.grey_3};
-      border-right: none;
-      & .rt-td {
-        border-right: 1px solid ${theme.colors.grey_3};
-        ${theme.typography.data};
-        padding-bottom: 2px;
-        & div {
-          text-align: left !important;
-          vertical-align: middle;
-        }
-      }
-    }
-    & .rt-thead {
-      border-top: 1px solid ${theme.colors.grey_3};
-      border-left: 1px solid ${theme.colors.grey_3};
-      & .rt-tr .rt-th {
-        border-right: 1px solid ${theme.colors.grey_3};
-        padding: 6px 5px 2px;
-        &.-sort-asc {
-          box-shadow: inset 0 3px 0 0 ${theme.colors.secondary};
-        }
-        &.-sort-desc {
-          box-shadow: inset 0 -3px 0 0 ${theme.colors.secondary};
-        }
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-    & .rt-thead .rt-th {
-      ${theme.typography.data};
-      font-weight: bold;
-      text-align: left;
-      color: ${theme.colors.accent_dark};
-    }
-    & .rt-td .td-actions {
-      width: 100%;
-      display: inline-block;
-      text-align: center;
-    }
-    & .rt-tr-group {
-      border-bottom: none;
-      border-top: none;
-      &:hover {
-        background: ${theme.colors.grey_highlight};
-      }
-    }
-    & .rt-tr-group .rt-tr.-even {
-      &:hover {
-        background: ${theme.colors.grey_highlight};
-      }
-    }
-    & .rt-tr-group .rt-tr.-odd {
-      background-color: ${theme.colors.grey_1};
-      &:hover {
-        background: ${theme.colors.grey_highlight};
-      }
-    }
-    & .pagination-bottom {
-      & .-pagination {
-        padding: 0px;
-        height: 45px;
-        box-shadow: none;
-        border: none;
-        ${theme.typography.label};
-        font-weight: normal;
-        & .-pageJump {
-          border: none;
-          display: flex;
-          font-size: 13px;
-          justify-content: space-around;
-          & .-pagination_button {
-            cursor: pointer;
-            background-position: center;
-            background-color: ${theme.colors.white};
-            margin: 0 6px;
-            height: 24px;
-            width: 24px;
-            border-radius: 25px;
-            text-align: center;
-            padding-top: 3px;
-          }
-          & .-pagination_button.-current {
-            background-color: ${theme.colors.secondary_1};
-          }
-          & .-toStart,
-          & .-previous,
-          & .-next,
-          & .-toEnd {
-            font-weight: normal;
-          }
-          & .-toStart,
-          & .-toEnd {
-            letter-spacing: -2px;
-          }
-        }
-      }
-      & select {
-        padding: 5px 10px 5px 5px;
-        appearance: none;
-        width: 45px;
-        text-align: left;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23151c3d' fill-rule='evenodd' d='M9.952 3.342c.468-.456 1.228-.456 1.697 0 .234.228.351.526.351.825 0 .298-.117.597-.351.825l-4.8 4.666c-.469.456-1.23.456-1.697 0l-4.8-4.666c-.47-.456-.47-1.194 0-1.65.468-.456 1.228-.456 1.696 0L6 7.184l3.952-3.842z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: bottom 7px right 4px;
-      }
-    }
-  }
-`;
+								[disabled] & > path {
+									fill: ${theme.colors.grey_5};
+								}
+							`}
+						/>{' '}
+						Download
+					</>
+				),
+				ListWrapper: {
+					width: '11rem',
+				},
+			},
+			DropDown: {
+				arrowColor: '#151c3d',
+				arrowTransition: 'all 0s',
+				background: theme.colors.white,
+				borderColor: theme.colors.grey_5,
+				css: css`
+					${theme.typography.subheading2}
+					line-height: 1.3rem;
+				`,
+				fontColor: theme.colors.accent_dark,
+				disabledFontColor: theme.colors.grey_5,
+				hoverBackground: theme.colors.secondary_light,
 
-const RepoTable = (props: PageContentProps) => {
-  const {
-    NEXT_PUBLIC_ARRANGER_API,
-    NEXT_PUBLIC_ARRANGER_PROJECT_ID,
-    NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
-  } = getConfig();
-  const theme = useTheme();
-  const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
-    .filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
-    .map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
+				ListWrapper: {
+					background: theme.colors.white,
+					css: css`
+						${theme.shadow.default}
+					`,
+					fontColor: theme.colors.black,
+					fontSize: '0.7rem',
+					hoverBackground: theme.colors.secondary_light,
+				},
+			},
+			HeaderRow: {
+				borderColor: theme.colors.grey_3,
+				css: css`
+					${theme.typography.data}
+				`,
+				fontColor: theme.colors.accent_dark,
+				fontSize: '13px',
+				fontWeight: 'bold',
+				lineHeight: '1.7rem',
+			},
+			MaxRowsSelector: {
+				fontColor: 'inherit',
+			},
+			Row: {
+				css: css`
+					&:nth-of-type(2n-1) {
+						background-color: ${theme.colors.grey_1};
+					}
+				`,
+				hoverBackground: theme.colors.grey_highlight,
+				lineHeight: '1.5rem',
+				selectedBackground: 'pink',
+				verticalBorderColor: theme.colors.grey_3,
+			},
+			TableWrapper: {
+				margin: '0.5rem 0',
+			},
+		},
+	},
+});
 
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  const customExporters = [
-    { label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-    { label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-    { label: () => (
-      <span
-        css={css`
-          border-top: 1px solid ${theme.colors.grey_3};
-          margin-top: -3px;
-          padding-top: 7px;
-          white-space: pre-line;
-          width: 140px;
+const RepoTable = () => {
+	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const theme = useTheme();
 
-          a {
-            margin-left: 3px;
-          }
-        `}
-      >
-        To download files using a file manifest, please follow these
-        <StyledLink
-          css={css`
-            line-height: inherit;
-          `}
-          href="https://overture.bio/documentation/score/user-guide/download"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          instructions
-        </StyledLink>
-        .
-      </span>
-    ), },
-  ];
+	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
+		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
+		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
+	const customExporters = [
+		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
+		{
+			label: () => (
+				<span
+					css={css`
+						border-top: 1px solid ${theme.colors.grey_3};
+						margin-top: -3px;
+						padding-top: 7px;
+						white-space: pre-line;
 
-  return (
-    <div css={getTableStyle(theme)}>
-      <Table
-        {...props}
-        showFilterInput={false}
-        columnDropdownText={'Columns'}
-        exporter={customExporters}
-        downloadUrl={urlJoin(NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_PROJECT_ID, 'download')}
-        enableSelectedTableRowsExporterFilter
-      />
-    </div>
-  );
+						a {
+							margin-left: 3px;
+						}
+					`}
+				>
+					To download files using a file manifest, please follow these
+					<StyledLink
+						css={css`
+							line-height: inherit;
+						`}
+						href="https://overture.bio/documentation/score/user-guide/download"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						instructions
+					</StyledLink>
+					.
+				</span>
+			),
+		},
+	];
+
+	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
+
+	return useMemo(
+		() => (
+			<>
+				<article
+					css={css`
+						background-color: ${theme.colors.white};
+						border-radius: 5px;
+						margin-bottom: 12px;
+						padding: 8px;
+						${theme.shadow.default};
+					`}
+				>
+					<TableContextProvider>
+						<Toolbar />
+						<Table />
+						<Pagination />
+					</TableContextProvider>
+				</article>
+			</>
+		),
+		[],
+	);
 };
 
 export default RepoTable;
