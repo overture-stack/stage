@@ -26,9 +26,9 @@ import SQON from '@overture-stack/sqon-builder';
 import SimpleTable, { TableColumn, TableRecord } from '@/components/SimpleTable';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import ErrorNotification from '@/components/ErrorNotification';
+import ExpandButton from '@/components/ExpandButton';
 import { JbrowseSelectedFilesQueryNode } from './types';
 import { jbrowseAllowedFileTypes } from './utils';
-import ExpandButton from '@/components/ExpandButton';
 
 const arrangerFetcher = createArrangerFetcher({});
 
