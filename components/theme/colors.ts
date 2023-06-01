@@ -77,6 +77,9 @@ const error = {
 const warning = {
   warning: '#f2d021',
   warning_dark: '#e6c104',
+  warning_light: '#fff8e4',
+  warning_medium: '#fde8af',
+  warning_2: '#f5aa00',
 };
 
 export default {

@@ -21,3 +21,4 @@
 
 export { default as JbrowseLaunchButton } from './JbrowseLaunchButton';
 export { default as JbrowseWrapper } from './JbrowseWrapper';
+export { default as JbrowseSelectedFilesTable } from './JbrowseSelectedFilesTable';
