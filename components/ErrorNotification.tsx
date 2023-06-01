@@ -66,15 +66,15 @@ const getColors = ({ item, level, theme }: { item: string; level: ErrorLevel; th
 const getContainerStyles = (size: ErrorSize) =>
   ({
     [ERROR_SIZES.LG]: `
-      padding: 1rem 2rem;
+      padding: 1rem 60px 2rem 1rem;
       line-height: 26px;
     `,
     [ERROR_SIZES.MD]: `
-      padding: 1rem;
+      padding: 1rem 60px 1rem 1rem;
       line-height: 24px;
     `,
     [ERROR_SIZES.SM]: `
-      padding: 0.5rem;
+      padding: 0.5rem 60px 0.5rem 0.5rem;
       line-height: 20px;
       display: flex;
       align-items: center;
@@ -91,7 +91,6 @@ const ErrorContentContainer = styled('div')<{ level: ErrorLevel; size: ErrorSize
     background-color: ${getColors({ level, theme, item: 'background' })};
     color: ${theme.colors.black};
     ${getContainerStyles(size)};
-    max-width: 600px;
   `}
 `;
 
@@ -154,8 +153,8 @@ const ErrorNotification = ({
     <div
       className={className}
       css={css`
-        display: flex;
-        flex: 1;
+        max-width: 600px;
+        position: relative;
       `}
     >
       <ErrorContentContainer level={level} size={size}>
@@ -202,13 +201,20 @@ const ErrorNotification = ({
               {children}
             </div>
             {dismissible && (
-              <IconButton
-                onClick={(e: React.MouseEvent) => (onDismiss ? onDismiss() : () => null)}
-                Icon={DismissIcon}
-                height={12}
-                width={12}
-                fill={theme.colors.black}
-              />
+              <div
+                css={css`
+                  position: absolute;
+                  right: 24px;
+                `}
+              >
+                <IconButton
+                  onClick={(e: React.MouseEvent) => (onDismiss ? onDismiss() : () => null)}
+                  Icon={DismissIcon}
+                  height={12}
+                  width={12}
+                  fill={theme.colors.black}
+                />
+              </div>
             )}
           </div>
         )}

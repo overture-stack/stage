@@ -19,13 +19,52 @@
  *
  */
 
+import styled from '@emotion/styled';
 import { ReactElement } from 'react';
+import defaultTheme from './theme';
+import { css } from '@emotion/react';
 
 export type TableColumn = { name: string; key: string };
 export type TableRecord = Record<string, string | number>;
 
 // this table is for displaying simple data without
 // setting up a TableContextProvider
+
+const TableStyled = styled('table')`
+  ${({ theme }: { theme: typeof defaultTheme }) => css`
+    ${theme.typography.data};
+  `}
+`;
+
+const ThStyled = styled('th')`
+  ${({ theme }: { theme: typeof defaultTheme }) => css`
+    font-weight: bold;
+    color: ${theme.colors.accent_dark};
+    text-align: left;
+    border-left: 1px solid ${theme.colors.grey_3};
+    padding: 0 8px;
+  `};
+`;
+
+const TdStyled = styled('td')`
+  ${({ theme }: { theme: typeof defaultTheme }) => css`
+    position: relative;
+    padding: 2px 8px;
+    &:before {
+      position: absolute;
+      display: block;
+      content: ' ';
+      top: 2px;
+      bottom: 2px;
+      left: 0;
+      border-left: 1px solid ${theme.colors.grey_3};
+    }
+  `};
+`;
+
+const TrStyled = styled('tr')`
+  padding: 2px 0;
+`;
 
 const SimpleTable = ({
   tableColumns,
@@ -35,24 +74,24 @@ const SimpleTable = ({
   tableData: TableRecord[];
 }): ReactElement => {
   return tableColumns.length && tableData.length ? (
-    <table>
+    <TableStyled>
       <thead>
-        <tr>
+        <TrStyled>
           {tableColumns.map((column) => (
-            <th key={column.key}>{column.name}</th>
+            <ThStyled key={column.key}>{column.name}</ThStyled>
           ))}
-        </tr>
+        </TrStyled>
       </thead>
       <tbody>
         {tableData.map((row: TableRecord) => (
-          <tr key={row.file_id}>
+          <TrStyled key={row.file_id}>
             {Object.entries(row).map(([key, value]) => {
-              return <td key={key}>{value}</td>;
+              return <TdStyled key={key}>{value}</TdStyled>;
             })}
-          </tr>
+          </TrStyled>
         ))}
       </tbody>
-    </table>
+    </TableStyled>
   ) : (
     <></>
   );

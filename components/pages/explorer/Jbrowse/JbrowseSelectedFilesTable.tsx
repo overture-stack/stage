@@ -124,12 +124,17 @@ const JbrowseSelectedFilesTable = () => {
   }, [selectedRows]);
 
   return (
-    <>
+    <div
+      css={css`
+        margin-top: 20px;
+      `}
+    >
       {hasWarnings && (
         <ErrorNotification
           size="md"
           css={css`
             margin: 20px 0;
+            max-width: none;
           `}
           onDismiss={() => setHasWarnings(false)}
           dismissible
@@ -140,7 +145,7 @@ const JbrowseSelectedFilesTable = () => {
         </ErrorNotification>
       )}
       <SimpleTable tableColumns={tableColumns} tableData={tableData} />
-    </>
+    </div>
   );
 };
 

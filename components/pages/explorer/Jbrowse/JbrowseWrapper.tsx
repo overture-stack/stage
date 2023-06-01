@@ -29,7 +29,7 @@ const JbrowseWrapper = () => {
   return (
     <div
       css={css`
-        margin-top: 8px;
+        margin: 8px 0 10px 0;
         .MuiPaper-elevation12 {
           // elevation in MUI controls drop shadow
           box-shadow: none;
