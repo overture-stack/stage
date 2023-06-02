@@ -21,28 +21,30 @@
 
 import { css, useTheme } from '@emotion/react';
 import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
+import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 
 const JbrowseWrapper = () => {
-	const theme = useTheme();
+  const theme = useTheme();
 
-	return (
-		<div
-			css={css`
-				margin-top: 8px;
-				.MuiPaper-elevation12 {
-					// elevation in MUI controls drop shadow
-					box-shadow: none;
-				}
-			`}
-		>
-			<JbrowseLinear
-				configuration={{
-					theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
-				}}
-				selectedFiles={[]}
-			/>
-		</div>
-	);
+  return (
+    <div
+      css={css`
+        margin: 8px 0 10px 0;
+        .MuiPaper-elevation12 {
+          // elevation in MUI controls drop shadow
+          box-shadow: none;
+        }
+      `}
+    >
+      <JbrowseLinear
+        configuration={{
+          theme: { elevation: 0, palette: { secondary: { main: theme.colors.accent } } },
+        }}
+        selectedFiles={[]}
+      />
+      <JbrowseSelectedFilesTable />
+    </div>
+  );
 };
 
 export default JbrowseWrapper;

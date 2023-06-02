@@ -31,14 +31,33 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
 import { JbrowseButtonQueryNode } from './types';
-import { jbrowseAllowedFileTypes, jbrowseFileMetadataQuery, MAX_JBROWSE_FILES } from './utils';
+import { checkJbrowseCompatibility, jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
+
+const jbrowseFileMetadataQuery = `
+  query tableData($filters: JSON) {
+  file {
+    hits(filters: $filters) {
+      edges {
+        node {
+          file_type
+          file {
+            index_file {
+              file_type
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
   const { selectedRows } = useTableContext({
-    callerName: 'Repository - Jbrowse Launch Button',
+    callerName: 'Jbrowse Launch Button',
   });
   const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
@@ -57,8 +76,14 @@ const JbrowseLaunchButton = () => {
       .then(async ({ data }) => {
         // must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
         const jbrowseFileCount = data.file?.hits?.edges?.filter(
-          ({ node }: { node: JbrowseButtonQueryNode }) =>
-            jbrowseAllowedFileTypes.includes(node.file_type) && node.file.index_file !== null,
+          ({
+            node: {
+              file_type,
+              file: { index_file },
+            },
+          }: {
+            node: JbrowseButtonQueryNode;
+          }) => checkJbrowseCompatibility({ file_type, index_file }),
         ).length;
         const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
         setJbrowseEnabled(canEnableJbrowse);

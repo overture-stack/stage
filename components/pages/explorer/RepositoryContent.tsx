@@ -163,7 +163,9 @@ const getTableConfigs = ({
 
 const ContentDisplay = () => {
   const { activeTab } = useTabsContext();
-  const { isLoading } = useTableContext();
+  const { isLoading } = useTableContext({
+    callerName: 'Repository - Content Display',
+  });
 
   switch (activeTab) {
     case RepositoryTabNames.FILES:

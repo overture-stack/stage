@@ -25,3 +25,13 @@ export type JbrowseButtonQueryNode = {
     index_file: null | { file_type: string };
   };
 };
+
+export type JbrowseSelectedFilesQueryNode = JbrowseButtonQueryNode & {
+  data_type: string;
+  donors: { hits: { edges: { node: { donor_id: string } }[] } };
+  file_access: string;
+  file_type: string;
+  file: { name: string; size: number };
+  id: string;
+  study_id: string;
+};

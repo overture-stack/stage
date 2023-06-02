@@ -19,10 +19,11 @@
  *
  */
 
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { IconProps } from './types';
 
-const Error = ({ height, width, style }: IconProps) => {
+const Error = ({ height, width, style, fill }: IconProps) => {
+  const theme = useTheme();
   return (
     <svg
       css={css`
@@ -42,7 +43,7 @@ const Error = ({ height, width, style }: IconProps) => {
                 <g>
                   <g>
                     <path
-                      fill="#AD404E"
+                      fill={fill || theme.colors.error_dark}
                       d="M13 1.733c-.735 0-1.414.367-1.79 1.002L.283 21.197c-.377.636-.378 1.422 0 2.057.315.53.91 1.014 1.647 1.013h22.14c.736 0 1.332-.482 1.647-1.013.378-.635.377-1.42 0-2.057L14.79 2.735C14.413 2.1 13.736 1.733 13 1.733"
                       transform="translate(-399 -301) translate(367 271.17) translate(32 25) translate(0 5)"
                     />
