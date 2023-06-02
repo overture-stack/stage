@@ -149,6 +149,8 @@ const ErrorNotification = ({
 }) => {
   const theme = useTheme();
 
+  const clickHandler = (e: React.MouseEvent) => (onDismiss?.())}
+
   return (
     <div
       className={className}
@@ -208,7 +210,7 @@ const ErrorNotification = ({
                 `}
               >
                 <IconButton
-                  onClick={(e: React.MouseEvent) => (onDismiss ? onDismiss() : () => null)}
+                  onClick={clickHandler}
                   Icon={DismissIcon}
                   height={12}
                   width={12}
