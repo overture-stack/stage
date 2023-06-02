@@ -28,7 +28,7 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import ErrorNotification from '@/components/ErrorNotification';
 import ExpandButton from '@/components/ExpandButton';
 import { JbrowseSelectedFilesQueryNode } from './types';
-import { jbrowseAllowedFileTypes } from './utils';
+import { checkJbrowseCompatibility, jbrowseAllowedFileTypes } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -83,10 +83,11 @@ const JbrowseSelectedFilesTable = () => {
   });
   const [tableData, setTableData] = useState<TableRecord[]>([]);
   const [hasWarnings, setHasWarnings] = useState<boolean>(false);
+  const [showTable, setShowTable] = useState<boolean>(true);
 
   useEffect(() => {
     // check if any files are incompatible with Jbrowse
-    // get table data for compatible/visualized files
+    // then get table data for compatible/visualized files
     arrangerFetcher({
       endpoint: 'graphql/TableDataQuery',
       body: JSON.stringify({
@@ -98,21 +99,28 @@ const JbrowseSelectedFilesTable = () => {
     })
       .then(({ data }) => {
         // get data for table
-        const jbrowseCompatibleFiles = data.file?.hits?.edges
-          ?.filter(
-            ({ node }: { node: JbrowseSelectedFilesQueryNode }) =>
-              jbrowseAllowedFileTypes.includes(node.file_type) && node.file.index_file !== null,
-          )
-          .map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
-            data_type: node.data_type,
-            donor_id: node.donors.hits.edges[0].node.donor_id,
-            file_access: node.file_access,
-            file_id: node.id,
-            file_name: node.file.name,
-            file_size: node.file.size,
-            file_type: node.file_type,
-            study_id: node.study_id,
-          }));
+        const jbrowseCompatibleFiles =
+          data.file?.hits?.edges
+            ?.filter(
+              ({
+                node: {
+                  file_type,
+                  file: { index_file },
+                },
+              }: {
+                node: JbrowseSelectedFilesQueryNode;
+              }) => checkJbrowseCompatibility({ file_type, index_file }),
+            )
+            .map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
+              data_type: node.data_type,
+              donor_id: node.donors.hits.edges[0].node.donor_id,
+              file_access: node.file_access,
+              file_id: node.id,
+              file_name: node.file.name,
+              file_size: node.file.size,
+              file_type: node.file_type,
+              study_id: node.study_id,
+            })) || [];
         setTableData(jbrowseCompatibleFiles);
 
         // check for errors/incompatibility
@@ -123,8 +131,6 @@ const JbrowseSelectedFilesTable = () => {
         console.warn(err);
       });
   }, [selectedRows]);
-
-  const [showTable, setShowTable] = useState<boolean>(true);
 
   return (
     <div

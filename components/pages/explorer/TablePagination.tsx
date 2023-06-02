@@ -29,7 +29,9 @@ import {
 import { useTheme } from '@emotion/react';
 
 const TablePagination = () => {
-  const { isLoading, selectedRows } = useTableContext();
+  const { isLoading, selectedRows } = useTableContext({
+    callerName: 'Table Pagination',
+  });
   const theme = useTheme();
   const textCss = css`
     color: ${theme.colors.grey_6};
