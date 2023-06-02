@@ -57,7 +57,7 @@ const jbrowseFileMetadataQuery = `
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
   const { selectedRows } = useTableContext({
-    callerName: 'Repository - Jbrowse Launch Button',
+    callerName: 'Jbrowse Launch Button',
   });
   const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
