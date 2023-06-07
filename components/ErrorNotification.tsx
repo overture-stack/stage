@@ -149,7 +149,7 @@ const ErrorNotification = ({
 }) => {
   const theme = useTheme();
 
-  const clickHandler = (e: React.MouseEvent) => onDismiss?.();
+  const clickHandler = (e: React.MouseEvent) => (onDismiss?.())}
 
   return (
     <div
