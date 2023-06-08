@@ -30,17 +30,18 @@ import { find } from 'lodash';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
-import { JbrowseButtonQueryNode } from './types';
+import { JbrowseQueryNode } from './types';
 import { checkJbrowseCompatibility, jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
-const jbrowseFileMetadataQuery = `
+const jbrowseButtonQuery = `
   query tableData($filters: JSON) {
   file {
     hits(filters: $filters) {
       edges {
         node {
+          file_access
           file_type
           file {
             index_file {
@@ -55,101 +56,102 @@ const jbrowseFileMetadataQuery = `
 `;
 
 const JbrowseLaunchButton = () => {
-  const theme = useTheme();
-  const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse Launch Button',
-  });
-  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
-  const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
+	const theme = useTheme();
+	const { selectedRows } = useTableContext({
+		callerName: 'Jbrowse Launch Button',
+	});
+	const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
+	const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
 
-  useEffect(() => {
-    // check if conditions are met to launch jbrowse
-    arrangerFetcher({
-      endpoint: 'graphql/TableDataQuery',
-      body: JSON.stringify({
-        variables: {
-          filters: SQON.in('object_id', selectedRows),
-        },
-        query: jbrowseFileMetadataQuery,
-      }),
-    })
-      .then(async ({ data }) => {
-        // must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
-        const jbrowseFileCount = data.file?.hits?.edges?.filter(
-          ({
-            node: {
-              file_type,
-              file: { index_file },
-            },
-          }: {
-            node: JbrowseButtonQueryNode;
-          }) => checkJbrowseCompatibility({ file_type, index_file }),
-        ).length;
-        const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
-        setJbrowseEnabled(canEnableJbrowse);
-      })
-      .catch(async (err) => {
-        setJbrowseEnabled(false);
-        console.warn(err);
-      });
-  }, [selectedRows]);
+	useEffect(() => {
+		// check if conditions are met to launch jbrowse
+		arrangerFetcher({
+			endpoint: 'graphql/TableDataQuery',
+			body: JSON.stringify({
+				variables: {
+					filters: SQON.in('object_id', selectedRows),
+				},
+				query: jbrowseButtonQuery,
+			}),
+		})
+			.then(async ({ data }) => {
+				// must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
+				const jbrowseFileCount = data.file?.hits?.edges?.filter(
+					({
+						node: {
+							file_access,
+							file_type,
+							file: { index_file },
+						},
+					}: {
+						node: JbrowseQueryNode;
+					}) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+				).length;
+				const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
+				setJbrowseEnabled(canEnableJbrowse);
+			})
+			.catch(async (err) => {
+				setJbrowseEnabled(false);
+				console.error(err);
+			});
+	}, [selectedRows]);
 
-  return (
-    <CustomTooltip
-      disabled={jbrowseEnabled}
-      unmountHTMLWhenHide
-      arrow
-      html={
-        <div
-          css={css`
-            ${theme.typography.regular};
-            font-size: 12px;
-          `}
-        >
-          Please select 1 to {MAX_JBROWSE_FILES} files to launch JBrowse.
-          <br />
-          Supported file types: {jbrowseAllowedFileTypes.join(', ')}
-          <br />
-          Index files are required
-        </div>
-      }
-      position="right"
-    >
-      <ButtonWrapper>
-        <Button
-          css={css`
-            padding: 2px 10px;
-          `}
-          disabled={!jbrowseEnabled}
-          onClick={() => {
-            // go to jbrowse tab if open, otherwise add jbrowse tab
-            if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
-              handleChangeTab(RepositoryTabNames.JBROWSE);
-            } else {
-              handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
-            }
-          }}
-        >
-          <div
-            css={css`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <img
-              src="images/jbrowse-logo.png"
-              alt=""
-              width={16}
-              css={css`
-                margin-right: 0.3rem;
-              `}
-            />
-            <span>JBrowse</span>
-          </div>
-        </Button>
-      </ButtonWrapper>
-    </CustomTooltip>
-  );
+	return (
+		<CustomTooltip
+			disabled={jbrowseEnabled}
+			unmountHTMLWhenHide
+			arrow
+			html={
+				<div
+					css={css`
+						${theme.typography.regular};
+						font-size: 12px;
+					`}
+				>
+					Please select 1 to {MAX_JBROWSE_FILES} files to launch JBrowse.
+					<br />
+					Supported file types: {jbrowseAllowedFileTypes.join(', ')}
+					<br />
+					Index files are required
+				</div>
+			}
+			position="right"
+		>
+			<ButtonWrapper>
+				<Button
+					css={css`
+						padding: 2px 10px;
+					`}
+					disabled={!jbrowseEnabled}
+					onClick={() => {
+						// go to jbrowse tab if open, otherwise add jbrowse tab
+						if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
+							handleChangeTab(RepositoryTabNames.JBROWSE);
+						} else {
+							handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
+						}
+					}}
+				>
+					<div
+						css={css`
+							display: flex;
+							align-items: center;
+						`}
+					>
+						<img
+							src="images/jbrowse-logo.png"
+							alt=""
+							width={16}
+							css={css`
+								margin-right: 0.3rem;
+							`}
+						/>
+						<span>JBrowse</span>
+					</div>
+				</Button>
+			</ButtonWrapper>
+		</CustomTooltip>
+	);
 };
 
 export default JbrowseLaunchButton;

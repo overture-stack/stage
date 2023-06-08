@@ -44,10 +44,13 @@ export const jbrowseFileMetadataQuery = `
 
 // check if file is the right type for jbrowse
 // and that it has an index
+// MVP: restrict controlled access files
 export const checkJbrowseCompatibility = ({
-  file_type,
-  index_file,
+	file_access,
+	file_type,
+	index_file,
 }: {
-  file_type: string;
-  index_file: null | Record<string, any>;
-}) => jbrowseAllowedFileTypes.includes(file_type) && index_file !== null;
+	file_access: string;
+	file_type: string;
+	index_file: null | Record<string, any>;
+}) => jbrowseAllowedFileTypes.includes(file_type) && index_file !== null && file_access === 'open';
