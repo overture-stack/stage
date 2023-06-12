@@ -22,30 +22,32 @@
 import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import urlJoin from 'url-join';
+import { find } from 'lodash';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
 import SQON from '@overture-stack/sqon-builder';
-import { find } from 'lodash';
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
+import { Spinner } from '@/components/theme/icons';
+import ErrorNotification from '@/components/ErrorNotification';
 import {
-	JbrowseQueryNode,
-	JbrowseCompatibleFile,
-	JbrowseInput,
-	ScoreDownloadJbrowseInput,
-	ScoreDownloadResult,
-	ScoreDownloadParams,
+  JbrowseQueryNode,
+  JbrowseCompatibleFile,
+  JbrowseInput,
+  ScoreDownloadResult,
+  ScoreDownloadParams,
 } from './types';
 import { checkJbrowseCompatibility } from './utils';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 
+const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
 const jbrowseInputQuery = `
-query ($filters:JSON){
+query jbrowseInput($filters:JSON){
   file {
     hits (filters: $filters){
       total 
@@ -70,138 +72,153 @@ query ($filters:JSON){
 `;
 
 const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
+  external: 'true',
+  offset: '0',
+  'User-Agent': 'unknown',
 };
 
-const baseJbrowseInput = {
-	fileURI: '',
-	indexURI: '',
-};
+const getScoreDownloadUrls = (type: 'file' | 'index', files: JbrowseCompatibleFile[]) =>
+  Promise.all(
+    files.map((file: JbrowseCompatibleFile) => {
+      const length = file[`${type}Size`].toString();
+      const object_id = file[`${type}Id`];
+
+      const scoreDownloadParams: ScoreDownloadParams = {
+        ...baseScoreDownloadParams,
+        length,
+        object_id,
+      };
+      const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+
+      return fetch(
+        urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+        {
+          headers: { accept: '*/*' },
+          method: 'GET',
+        },
+      ).then((response) => response.json());
+    }),
+  );
+
+const getUrlFromResult = (results: ScoreDownloadResult[], targetId: string) =>
+  find(results, { objectId: targetId })?.parts[0].url || '';
 
 const JbrowseWrapper = () => {
-	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const theme = useTheme();
-	const { selectedRows } = useTableContext({
-		callerName: 'Jbrowse Display',
-	});
-	const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
-	const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
-	const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);
-	const [scoreDownloadInput, setScoreDownloadInput] = useState<ScoreDownloadJbrowseInput[]>([]);
+  const theme = useTheme();
+  const { selectedRows } = useTableContext({
+    callerName: 'Jbrowse Wrapper',
+  });
+  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(true);
+  const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
+  const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);
+  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(true);
+  const [jbrowseError, setJbrowseError] = useState<string>('');
 
-	useEffect(() => {
-		// check if any files in selectedRows are compatible with jbrowse.
-		// get the metadata for compatible files & indices, to use in score & jbrowse.
-		arrangerFetcher({
-			endpoint: 'graphql/TableDataQuery',
-			body: JSON.stringify({
-				variables: {
-					filters: SQON.in('object_id', selectedRows),
-				},
-				query: jbrowseInputQuery,
-			}),
-		})
-			.then(async ({ data }) => {
-				// get files with at least 1 file with an acceptable file type, and an index file
-				const nextJbrowseCompatibleFiles = data.file?.hits?.edges
-					?.filter(
-						({
-							node: {
-								file_access,
-								file_type,
-								file: { index_file },
-							},
-						}: {
-							node: JbrowseQueryNode;
-						}) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-					)
-					.map(
-						({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
-							fileId: node.object_id,
-							fileName: node.file.name,
-							fileSize: node.file.size,
-							fileType: node.file_type,
-							// files without an index were filtered out above this map.
-							// falsey handling is for typescript only.
-							indexId: node.file.index_file?.object_id || '',
-							indexSize: node.file.index_file?.size || 0,
-						}),
-					);
-				setJbrowseCompatibleFiles(nextJbrowseCompatibleFiles);
-				// setScoreDownloadInput(nextScoreDownloadInput);
-				// setJbrowseInput(nextJbrowseInput);
-			})
-			.catch(async (err) => {
-				setJbrowseEnabled(false);
-				console.error(err);
-			});
-	}, [selectedRows]);
+  const handleError = (error: Error) => {
+    setJbrowseEnabled(false);
+    setJbrowseError('Something went wrong.');
+    console.error(error);
+  };
 
-	useEffect(() => {
-		// get score signed URLs for compatible files & indices
-		Promise.all(
-			jbrowseCompatibleFiles.map((file: JbrowseCompatibleFile) => {
-				const scoreDownloadParams: ScoreDownloadParams = {
-					...baseScoreDownloadParams,
-					length: file.fileSize.toString(),
-					object_id: file.fileId,
-				};
-				const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+  useEffect(() => {
+    // check if any files in selectedRows are compatible with jbrowse.
 
-				return fetch(
-					urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, file.fileId, `?${urlParams}`),
-					{
-						headers: { accept: '*/*' },
-						method: 'GET',
-					},
-				).then((response) => response.json());
-			}),
-		)
-			.then((results: ScoreDownloadResult[]) => {
-				// put the result into jbrowseinput
-				console.log('results', results);
+    setJbrowseLoading(true);
 
-				const nextJbrowseInput: JbrowseInput[] = jbrowseCompatibleFiles.map(
-					({ fileId, fileName, fileType }) => ({
-						fileId,
-						fileName,
-						fileType,
-						fileURI: find(results, { objectId: fileId })?.parts[0].url || '',
-						indexURI: '',
-					}),
-				);
-				setJbrowseInput(nextJbrowseInput);
-			})
-			.catch((error: Error) => console.error(error));
-	}, [jbrowseCompatibleFiles]);
+    // fetch metadata from arranger for selected files
+    arrangerFetcher({
+      endpoint: 'graphql/TableDataQuery',
+      body: JSON.stringify({
+        variables: {
+          filters: SQON.in('object_id', selectedRows),
+        },
+        query: jbrowseInputQuery,
+      }),
+    })
+      .then(({ data }) => {
+        // create a list of files that are compatible with jbrowse
+        const nextJbrowseCompatibleFiles = data.file?.hits?.edges
+          ?.filter(
+            ({
+              node: {
+                file_access,
+                file_type,
+                file: { index_file },
+              },
+            }: {
+              node: JbrowseQueryNode;
+            }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+          )
+          .map(
+            ({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
+              fileId: node.object_id,
+              fileName: node.file.name,
+              fileSize: node.file.size,
+              fileType: node.file_type,
+              // files without an index were filtered out above this map.
+              // falsey handling is for typescript only.
+              indexId: node.file.index_file?.object_id || '',
+              indexSize: node.file.index_file?.size || 0,
+            }),
+          );
+        setJbrowseCompatibleFiles(nextJbrowseCompatibleFiles);
+      })
+      .catch((error: Error) => handleError(error));
+  }, [selectedRows]);
 
-	console.log('2. render: jbrowseInput', jbrowseInput);
-	console.log('-------------------------------------');
+  useEffect(() => {
+    // get score signed URLs for compatible files & indices
+    const getFileURLs = getScoreDownloadUrls('file', jbrowseCompatibleFiles);
+    const getIndexURLs = getScoreDownloadUrls('index', jbrowseCompatibleFiles);
 
-	return (
-		<div
-			css={css`
-				margin-top: 8px;
-				.MuiPaper-elevation12 {
-					// elevation in MUI controls drop shadow
-					box-shadow: none;
-				}
-			`}
-		>
-			<JbrowseLinear
-				configuration={{
-					theme: {
-						elevation: 0,
-						palette: { secondary: { main: theme.colors.accent } },
-					},
-				}}
-				selectedFiles={[]}
-			/>
-			<JbrowseSelectedFilesTable />
-		</div>
-	);
+    Promise.all([getFileURLs, getIndexURLs])
+      .then(([fileResults, indexResults]: ScoreDownloadResult[][]) =>
+        setJbrowseInput(
+          jbrowseCompatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
+            fileId,
+            fileName,
+            fileType,
+            fileURI: getUrlFromResult(fileResults, fileId),
+            indexURI: getUrlFromResult(indexResults, indexId),
+          })),
+        ),
+      )
+      .catch((error: Error) => handleError(error))
+      .finally(() => setJbrowseLoading(false));
+  }, [jbrowseCompatibleFiles]);
+
+  return (
+    <div
+      css={css`
+        margin-top: 8px;
+        .MuiPaper-elevation12 {
+          // elevation in MUI controls drop shadow
+          box-shadow: none;
+        }
+      `}
+    >
+      {jbrowseLoading ? (
+        <Spinner />
+      ) : jbrowseError ? (
+        <ErrorNotification size="md">{jbrowseError}</ErrorNotification>
+      ) : (
+        jbrowseEnabled && (
+          <>
+            <JbrowseLinear
+              configuration={{
+                theme: {
+                  elevation: 0,
+                  palette: { secondary: { main: theme.colors.accent } },
+                },
+              }}
+              selectedFiles={jbrowseInput}
+            />
+            <JbrowseSelectedFilesTable />
+          </>
+        )
+      )}
+    </div>
+  );
 };
 
 export default JbrowseWrapper;

@@ -67,117 +67,117 @@ query ($filters:JSON){
 `;
 
 const tableColumns: TableColumn[] = [
-	{ key: 'data_type', name: 'Data Type' },
-	{ key: 'donor_id', name: 'Donor ID' },
-	{ key: 'file_access', name: 'File Access' },
-	{ key: 'file_id', name: 'File ID' },
-	{ key: 'file_name', name: 'File Name' },
-	{ key: 'file_size', name: 'File Size' },
-	{ key: 'file_type', name: 'File Type' },
-	{ key: 'study_id', name: 'Study ID' },
+  { key: 'data_type', name: 'Data Type' },
+  { key: 'donor_id', name: 'Donor ID' },
+  { key: 'file_access', name: 'File Access' },
+  { key: 'file_id', name: 'File ID' },
+  { key: 'file_name', name: 'File Name' },
+  { key: 'file_size', name: 'File Size' },
+  { key: 'file_type', name: 'File Type' },
+  { key: 'study_id', name: 'Study ID' },
 ];
 
 const JbrowseSelectedFilesTable = () => {
-	const { selectedRows } = useTableContext({
-		callerName: 'JBrowse Selected Files Table',
-	});
-	const [tableData, setTableData] = useState<TableRecord[]>([]);
-	const [hasWarnings, setHasWarnings] = useState<boolean>(false);
-	const [showTable, setShowTable] = useState<boolean>(true);
+  const { selectedRows } = useTableContext({
+    callerName: 'JBrowse Selected Files Table',
+  });
+  const [tableData, setTableData] = useState<TableRecord[]>([]);
+  const [hasWarnings, setHasWarnings] = useState<boolean>(false);
+  const [showTable, setShowTable] = useState<boolean>(true);
 
-	useEffect(() => {
-		// check if any files are incompatible with Jbrowse
-		// then get table data for compatible/visualized files
-		arrangerFetcher({
-			endpoint: 'graphql/TableDataQuery',
-			body: JSON.stringify({
-				variables: {
-					filters: SQON.in('object_id', selectedRows),
-				},
-				query: jbrowseSelectedFilesTableQuery,
-			}),
-		})
-			.then(({ data }) => {
-				// get data for table
-				const jbrowseCompatibleFiles =
-					data.file?.hits?.edges
-						?.filter(
-							({
-								node: {
-									file_access,
-									file_type,
-									file: { index_file },
-								},
-							}: {
-								node: JbrowseSelectedFilesQueryNode;
-							}) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-						)
-						.map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
-							data_type: node.data_type,
-							donor_id: node.donors.hits.edges[0].node.donor_id,
-							file_access: node.file_access,
-							file_id: node.id,
-							file_name: node.file.name,
-							file_size: node.file.size,
-							file_type: node.file_type,
-							study_id: node.study_id,
-						})) || [];
-				setTableData(jbrowseCompatibleFiles);
+  useEffect(() => {
+    // check if any files are incompatible with Jbrowse
+    // then get table data for compatible/visualized files
+    arrangerFetcher({
+      endpoint: 'graphql/TableDataQuery',
+      body: JSON.stringify({
+        variables: {
+          filters: SQON.in('object_id', selectedRows),
+        },
+        query: jbrowseSelectedFilesTableQuery,
+      }),
+    })
+      .then(({ data }) => {
+        // get data for table
+        const jbrowseCompatibleFiles =
+          data.file?.hits?.edges
+            ?.filter(
+              ({
+                node: {
+                  file_access,
+                  file_type,
+                  file: { index_file },
+                },
+              }: {
+                node: JbrowseSelectedFilesQueryNode;
+              }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+            )
+            .map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
+              data_type: node.data_type,
+              donor_id: node.donors.hits.edges[0].node.donor_id,
+              file_access: node.file_access,
+              file_id: node.id,
+              file_name: node.file.name,
+              file_size: node.file.size,
+              file_type: node.file_type,
+              study_id: node.study_id,
+            })) || [];
+        setTableData(jbrowseCompatibleFiles);
 
-				// check for errors/incompatibility
-				const hasIncompatibleFiles = selectedRows.length > jbrowseCompatibleFiles.length;
-				setHasWarnings(hasIncompatibleFiles);
-			})
-			.catch(async (err) => {
-				console.warn(err);
-			});
-	}, [selectedRows]);
+        // check for errors/incompatibility
+        const hasIncompatibleFiles = selectedRows.length > jbrowseCompatibleFiles.length;
+        setHasWarnings(hasIncompatibleFiles);
+      })
+      .catch(async (err) => {
+        console.warn(err);
+      });
+  }, [selectedRows]);
 
-	return (
-		<div
-			css={css`
-				margin-top: 20px;
-			`}
-		>
-			{hasWarnings && (
-				<ErrorNotification
-					size="md"
-					css={css`
-						margin: 20px 0 10px;
-						max-width: none;
-					`}
-					onDismiss={() => setHasWarnings(false)}
-					dismissible
-					level="warning"
-				>
-					Some files selected are not supported by JBrowse. Supported file types:{' '}
-					{jbrowseAllowedFileTypes.join(', ')}. Index files are required.
-				</ErrorNotification>
-			)}
-			<div
-				css={css`
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					margin-bottom: 10px;
-					margin-top: 20px;
-				`}
-			>
-				<h3
-					css={(theme) => css`
-						${theme.typography.subheading};
-						margin: 0;
-					`}
-				>
-					{tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
-				</h3>
-				<ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
-					{showTable ? 'Hide' : 'Show'} Table
-				</ExpandButton>
-			</div>
-			{showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
-		</div>
-	);
+  return (
+    <div
+      css={css`
+        margin-top: 20px;
+      `}
+    >
+      {hasWarnings && (
+        <ErrorNotification
+          size="md"
+          css={css`
+            margin: 20px 0 10px;
+            max-width: none;
+          `}
+          onDismiss={() => setHasWarnings(false)}
+          dismissible
+          level="warning"
+        >
+          Some files selected are not supported by JBrowse. Supported file types:{' '}
+          {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
+        </ErrorNotification>
+      )}
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          margin-top: 20px;
+        `}
+      >
+        <h3
+          css={(theme) => css`
+            ${theme.typography.subheading};
+            margin: 0;
+          `}
+        >
+          {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
+        </h3>
+        <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
+          {showTable ? 'Hide' : 'Show'} Table
+        </ExpandButton>
+      </div>
+      {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
+    </div>
+  );
 };
 
 export default JbrowseSelectedFilesTable;
