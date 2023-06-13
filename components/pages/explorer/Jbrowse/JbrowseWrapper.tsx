@@ -200,7 +200,7 @@ const JbrowseWrapper = () => {
       {jbrowseLoading ? (
         <Spinner />
       ) : jbrowseError ? (
-        <ErrorNotification size="md">{jbrowseError}</ErrorNotification>
+        <ErrorNotification size="sm">{jbrowseError}</ErrorNotification>
       ) : (
         jbrowseEnabled && (
           <>

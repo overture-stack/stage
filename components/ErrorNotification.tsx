@@ -49,6 +49,20 @@ const getIconDimensions = (size: ErrorSize) =>
     [ERROR_SIZES.SM]: { width: 18, height: 18 },
   }[size]);
 
+const getDismissIconDimensions = (size: ErrorSize) =>
+  ({
+    [ERROR_SIZES.LG]: 12,
+    [ERROR_SIZES.MD]: 12,
+    [ERROR_SIZES.SM]: 9,
+  }[size]);
+
+const getFontSize = (size: ErrorSize) =>
+  ({
+    [ERROR_SIZES.LG]: { fontSize: '16px' },
+    [ERROR_SIZES.MD]: { fontSize: '16px' },
+    [ERROR_SIZES.SM]: { fontSize: '13px' },
+  }[size]);
+
 const getColors = ({ item, level, theme }: { item: string; level: ErrorLevel; theme: Theme }) =>
   ({
     [ERROR_LEVELS.ERROR]: {
@@ -166,6 +180,7 @@ const ErrorNotification = ({
               <ErrorIcon
                 {...getIconDimensions(size)}
                 style={css`
+                  line-height: 16px;
                   ${getIconStyle(size)}
                 `}
                 fill={getColors({ level, theme, item: 'icon' })}
@@ -198,6 +213,7 @@ const ErrorNotification = ({
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                ${getFontSize(size)}
               `}
             >
               {children}
@@ -206,14 +222,14 @@ const ErrorNotification = ({
               <div
                 css={css`
                   position: absolute;
-                  right: 24px;
+                  right: 16px;
                 `}
               >
                 <IconButton
                   onClick={clickHandler}
                   Icon={DismissIcon}
-                  height={12}
-                  width={12}
+                  height={getDismissIconDimensions(size)}
+                  width={getDismissIconDimensions(size)}
                   fill={theme.colors.black}
                 />
               </div>
