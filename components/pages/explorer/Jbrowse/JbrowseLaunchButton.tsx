@@ -76,7 +76,8 @@ const JbrowseLaunchButton = () => {
     })
       .then(async ({ data }) => {
         // must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
-        const jbrowseFileCount = data.file?.hits?.edges?.filter(
+        const resultData = data.file?.hits?.edges || [];
+        const jbrowseCompatibleFiles = resultData.filter(
           ({
             node: {
               file_access,
@@ -86,8 +87,17 @@ const JbrowseLaunchButton = () => {
           }: {
             node: JbrowseQueryNode;
           }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-        ).length;
-        const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
+        );
+        const jbrowseCompatibleFileCount = jbrowseCompatibleFiles.length;
+        // TEMP BAM LIMIT
+        const hasMultipleBams =
+          resultData.filter(
+            ({ node: { file_type } }: { node: JbrowseQueryNode }) => file_type === 'BAM',
+          ).length > 1;
+        const canEnableJbrowse =
+          jbrowseCompatibleFileCount > 0 &&
+          jbrowseCompatibleFileCount <= MAX_JBROWSE_FILES &&
+          !hasMultipleBams;
         setJbrowseEnabled(canEnableJbrowse);
       })
       .catch(async (err) => {
@@ -112,7 +122,10 @@ const JbrowseLaunchButton = () => {
           <br />
           Supported file types: {jbrowseAllowedFileTypes.join(', ')}
           <br />
-          Index files are required
+          {/* TEMP BAM LIMIT */}
+          Only 1 BAM file can be visualized at a time.
+          <br />
+          Index files are required.
         </div>
       }
       position="right"
