@@ -145,13 +145,13 @@ const getTableConfigs = ({
       },
       Row: {
         css: css`
-          &:nth-of-type(2n-1) {
+          &:nth-of-type(2n-1):not(.selected) {
             background-color: ${theme.colors.grey_1};
           }
         `,
         hoverBackground: theme.colors.grey_highlight,
         lineHeight: '1.5rem',
-        selectedBackground: 'pink',
+        selectedBackground: theme.colors.secondary_light,
         verticalBorderColor: theme.colors.grey_3,
       },
       TableWrapper: {
