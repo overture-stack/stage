@@ -184,22 +184,21 @@ const JbrowseWrapper = () => {
         ),
       )
       .catch((error: Error) => handleError(error))
-      .finally(() => setJbrowseLoading(false));
+      .finally(() => setTimeout(() => setJbrowseLoading(false), 1000));
   }, [jbrowseCompatibleFiles]);
 
   return (
     <div
       css={css`
         margin-top: 8px;
+        position: relative;
         .MuiPaper-elevation12 {
           // elevation in MUI controls drop shadow
           box-shadow: none;
         }
       `}
     >
-      {jbrowseLoading ? (
-        <Spinner />
-      ) : jbrowseError ? (
+      {jbrowseError ? (
         <ErrorNotification size="sm">{jbrowseError}</ErrorNotification>
       ) : (
         jbrowseEnabled && (
@@ -214,6 +213,25 @@ const JbrowseWrapper = () => {
               selectedFiles={jbrowseInput}
             />
             <JbrowseSelectedFilesTable />
+            {jbrowseLoading && (
+              <div
+                css={css`
+                  width: 100%;
+                  height: 100%;
+                  min-height: 500px;
+                  display: flex;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  background: rgba(255, 255, 255, 1);
+                  z-index: 999;
+                `}
+              >
+                <Spinner width={50} />
+              </div>
+            )}
           </>
         )
       )}
