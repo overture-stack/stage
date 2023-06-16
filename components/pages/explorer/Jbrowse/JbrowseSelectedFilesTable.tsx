@@ -126,10 +126,7 @@ const JbrowseSelectedFilesTable = () => {
 
         // check for errors/incompatibility
         const hasIncompatibleFiles = selectedRows.length > jbrowseCompatibleFiles.length;
-        // TEMP BAM LIMIT
-        const hasMultipleBams =
-          jbrowseCompatibleFiles.filter((file) => file.file_type === 'BAM').length > 1;
-        setHasWarnings(hasIncompatibleFiles || hasMultipleBams);
+        setHasWarnings(hasIncompatibleFiles);
       })
       .catch(async (err) => {
         console.warn(err);
@@ -137,8 +134,6 @@ const JbrowseSelectedFilesTable = () => {
   }, [selectedRows]);
 
   const incompatibleFilesCount = selectedRows.length - tableData.length;
-  // TEMP BAM LIMIT
-  const hasMultipleBams = tableData.filter((file) => file.file_type === 'BAM').length > 1;
 
   return (
     <div
@@ -157,44 +152,34 @@ const JbrowseSelectedFilesTable = () => {
           dismissible
           level="warning"
         >
-          {/* TEMP BAM LIMIT */}
-          {hasMultipleBams ? (
-            'Only one BAM file can be visualized at a time.'
-          ) : (
-            <>
-              {incompatibleFilesCount} file{incompatibleFilesCount === 1 ? '' : 's'} selected{' '}
-              {incompatibleFilesCount === 1 ? 'is' : 'are'} not supported by JBrowse. Supported file
-              types: {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
-            </>
-          )}
+          {incompatibleFilesCount} file{incompatibleFilesCount === 1 ? '' : 's'} selected{' '}
+          {incompatibleFilesCount === 1 ? 'is' : 'are'} not supported by JBrowse. Supported file
+          types: {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
         </ErrorNotification>
       )}
-      {!hasMultipleBams && (
-        <>
-          <div
-            css={css`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              margin-bottom: 10px;
-              margin-top: 20px;
-            `}
-          >
-            <h3
-              css={(theme) => css`
-                ${theme.typography.subheading};
-                margin: 0;
-              `}
-            >
-              {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
-            </h3>
-            <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
-              {showTable ? 'Hide' : 'Show'} Table
-            </ExpandButton>
-          </div>
-          {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
-        </>
-      )}
+
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          margin-top: 20px;
+        `}
+      >
+        <h3
+          css={(theme) => css`
+            ${theme.typography.subheading};
+            margin: 0;
+          `}
+        >
+          {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
+        </h3>
+        <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
+          {showTable ? 'Hide' : 'Show'} Table
+        </ExpandButton>
+      </div>
+      {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
     </div>
   );
 };

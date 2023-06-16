@@ -89,15 +89,8 @@ const JbrowseLaunchButton = () => {
           }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
         );
         const jbrowseCompatibleFileCount = jbrowseCompatibleFiles.length;
-        // TEMP BAM LIMIT
-        const hasMultipleBams =
-          resultData.filter(
-            ({ node: { file_type } }: { node: JbrowseQueryNode }) => file_type === 'BAM',
-          ).length > 1;
         const canEnableJbrowse =
-          jbrowseCompatibleFileCount > 0 &&
-          jbrowseCompatibleFileCount <= MAX_JBROWSE_FILES &&
-          !hasMultipleBams;
+          jbrowseCompatibleFileCount > 0 && jbrowseCompatibleFileCount <= MAX_JBROWSE_FILES;
         setJbrowseEnabled(canEnableJbrowse);
       })
       .catch(async (err) => {
@@ -121,9 +114,6 @@ const JbrowseLaunchButton = () => {
           Please select 1 to {MAX_JBROWSE_FILES} files to launch JBrowse.
           <br />
           Supported file types: {jbrowseAllowedFileTypes.join(', ')}
-          <br />
-          {/* TEMP BAM LIMIT */}
-          Only 1 BAM file can be visualized at a time.
           <br />
           Index files are required.
         </div>
