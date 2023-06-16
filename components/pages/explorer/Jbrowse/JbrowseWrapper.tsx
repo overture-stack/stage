@@ -127,7 +127,7 @@ const JbrowseWrapper = () => {
 
     // fetch metadata from arranger for selected files
     arrangerFetcher({
-      endpoint: 'graphql/TableDataQuery',
+      endpoint: 'graphql/JBrowseDataQuery',
       body: JSON.stringify({
         variables: {
           filters: SQON.in('object_id', selectedRows),
