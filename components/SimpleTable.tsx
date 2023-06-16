@@ -43,7 +43,6 @@ const TableStyled = styled('table')`
 const ThStyled = styled('th')`
   ${({ theme }: { theme: typeof defaultTheme }) => css`
     font-weight: bold;
-    color: ${theme.colors.accent_dark};
     text-align: left;
     border: 1px solid ${theme.colors.grey_3};
     padding: 6px 8px;
