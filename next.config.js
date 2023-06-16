@@ -47,6 +47,7 @@ module.exports = withPlugins([withTranspileModules], {
 		NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE: process.env.NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
 		NEXT_PUBLIC_ARRANGER_INDEX: process.env.NEXT_PUBLIC_ARRANGER_INDEX,
 		NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS: process.env.NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
+		NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
 		// using ASSET_PREFIX for the public runtime BASE_PATH because basePath in the top level config was not working
 		// with the dms reverse proxy setup
 		NEXT_PUBLIC_BASE_PATH: process.env.ASSET_PREFIX,

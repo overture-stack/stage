@@ -30,17 +30,18 @@ import { find } from 'lodash';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
-import { JbrowseButtonQueryNode } from './types';
+import { JbrowseQueryNode } from './types';
 import { checkJbrowseCompatibility, jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
-const jbrowseFileMetadataQuery = `
+const jbrowseButtonQuery = `
   query tableData($filters: JSON) {
   file {
     hits(filters: $filters) {
       edges {
         node {
+          file_access
           file_type
           file {
             index_file {
@@ -70,7 +71,7 @@ const JbrowseLaunchButton = () => {
         variables: {
           filters: SQON.in('object_id', selectedRows),
         },
-        query: jbrowseFileMetadataQuery,
+        query: jbrowseButtonQuery,
       }),
     })
       .then(async ({ data }) => {
@@ -78,19 +79,20 @@ const JbrowseLaunchButton = () => {
         const jbrowseFileCount = data.file?.hits?.edges?.filter(
           ({
             node: {
+              file_access,
               file_type,
               file: { index_file },
             },
           }: {
-            node: JbrowseButtonQueryNode;
-          }) => checkJbrowseCompatibility({ file_type, index_file }),
+            node: JbrowseQueryNode;
+          }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
         ).length;
         const canEnableJbrowse = jbrowseFileCount > 0 && jbrowseFileCount <= MAX_JBROWSE_FILES;
         setJbrowseEnabled(canEnableJbrowse);
       })
       .catch(async (err) => {
         setJbrowseEnabled(false);
-        console.warn(err);
+        console.error(err);
       });
   }, [selectedRows]);
 

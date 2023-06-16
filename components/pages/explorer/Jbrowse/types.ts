@@ -19,19 +19,76 @@
  *
  */
 
-export type JbrowseButtonQueryNode = {
+export type JbrowseQueryNode = {
   file_type: string;
+  object_id: string;
+  file_access: string;
   file: {
-    index_file: null | { file_type: string };
+    index_file: null | { object_id: string; size: number };
+    name: string;
+    size: number;
   };
 };
 
-export type JbrowseSelectedFilesQueryNode = JbrowseButtonQueryNode & {
+export type JbrowseSelectedFilesQueryNode = JbrowseQueryNode & {
   data_type: string;
   donors: { hits: { edges: { node: { donor_id: string } }[] } };
-  file_access: string;
   file_type: string;
   file: { name: string; size: number };
   id: string;
   study_id: string;
 };
+
+export type ScoreDownloadParams = {
+  'User-Agent': string;
+  external: string;
+  length: string;
+  object_id: string;
+  offset: string;
+};
+
+export type ScoreDownloadResult = {
+  objectId: string;
+  objectKey: string;
+  objectMd5: string;
+  objectSize: number;
+  uploadId: string;
+  parts: {
+    md5: string | null;
+    offset: number;
+    partNumber: number;
+    partSize: number;
+    url: string;
+  }[];
+};
+
+type JbrowseFileType = {
+  fileType: string;
+};
+
+type JbrowseFileSize = {
+  fileSize: number;
+};
+
+type JbrowseFileId = {
+  fileId: string;
+};
+
+type JbrowseFileName = {
+  fileName: string;
+};
+
+export type ScoreDownloadJbrowseInput = JbrowseFileSize &
+  JbrowseFileId & {
+    indexId: string;
+    indexSize: number;
+  };
+
+export type JbrowseInput = JbrowseFileType &
+  JbrowseFileName &
+  JbrowseFileId & {
+    fileURI: string;
+    indexURI: string;
+  };
+
+export type JbrowseCompatibleFile = ScoreDownloadJbrowseInput & JbrowseFileName & JbrowseFileType;

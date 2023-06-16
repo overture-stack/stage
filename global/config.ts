@@ -41,6 +41,7 @@ export const getConfig = () => {
 		NEXT_PUBLIC_LOGO_FILENAME: publicConfig.NEXT_PUBLIC_LOGO_FILENAME,
 		NEXT_PUBLIC_SSO_PROVIDERS: publicConfig.NEXT_PUBLIC_SSO_PROVIDERS || '',
 		NEXT_PUBLIC_UI_VERSION: publicConfig.NEXT_PUBLIC_UI_VERSION || '',
+		NEXT_PUBLIC_SCORE_API_URL: publicConfig.NEXT_PUBLIC_SCORE_API_URL || '',
 	} as {
 		NEXT_PUBLIC_EGO_API_ROOT: string;
 		NEXT_PUBLIC_EGO_CLIENT_ID: string;
@@ -56,5 +57,6 @@ export const getConfig = () => {
 		NEXT_PUBLIC_LOGO_FILENAME: string;
 		NEXT_PUBLIC_SSO_PROVIDERS: string;
 		NEXT_PUBLIC_UI_VERSION: string;
+		NEXT_PUBLIC_SCORE_API_URL: string;
 	};
 };

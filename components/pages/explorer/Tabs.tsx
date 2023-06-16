@@ -25,11 +25,11 @@ import { useTabsContext } from './TabsContext';
 import DismissIcon from '../../theme/icons/dismiss';
 import { useTheme } from '@emotion/react';
 
-const TabWrapper = styled('div')`
+const TabsContainer = styled('div')`
   margin: 10px 0 -8px 4px;
 `;
 
-const Tab = styled('button')`
+const TabWrapper = styled('div')`
   position: relative;
   display: inline-block;
   height: 32px;
@@ -43,10 +43,9 @@ const Tab = styled('button')`
   drop-shadow: none;
   background: transparent;
   color: ${({ theme }) => theme.colors.black};
-  ${({ theme }) => theme.typography.regular};
 `;
 
-const Content = styled('div')`
+const Tab = styled('div')`
   border-color: ${({ theme }) => theme.colors.grey_4};
   border-width: 1px 0 0 0;
   border-style: solid;
@@ -57,7 +56,6 @@ const Content = styled('div')`
   height: 100%;
   background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
     active ? theme?.colors.white : theme?.colors.grey_2};
-  font-size: 12px;
   &:before,
   &:after {
     content: ' ';
@@ -86,10 +84,21 @@ const Content = styled('div')`
   }
 `;
 
+const TabButton = styled('button')`
+  ${({ theme }) => theme.typography.regular};
+  background: transparent;
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding-top: 2px;
+  font-size: 12px;
+  cursor: pointer;
+`;
+
 const CloseButton = styled('button')`
   position: absolute;
-  top: 7px;
-  right: -2px;
+  top: 6px;
+  right: -5px;
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -99,28 +108,31 @@ const Tabs = () => {
   const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
   const theme = useTheme();
   return (
-    <TabWrapper>
+    <TabsContainer>
       {openTabs.map((tab) => (
-        <Tab
-          key={tab.name}
-          onClick={() => {
-            handleChangeTab(tab.name);
-          }}
-        >
-          <Content active={activeTab === tab.name}>{tab.name}</Content>
-          {tab.canClose && (
-            <CloseButton
-              onClick={(e) => {
-                e.stopPropagation(); // prevent switching to this tab
-                handleCloseTab(tab.name);
+        <TabWrapper key={tab.name}>
+          <Tab active={activeTab === tab.name}>
+            <TabButton
+              onClick={() => {
+                handleChangeTab(tab.name);
               }}
             >
-              <DismissIcon width={5} fill={theme.colors.black} />
-            </CloseButton>
-          )}
-        </Tab>
+              {tab.name}
+            </TabButton>
+            {tab.canClose && (
+              <CloseButton
+                onClick={(e) => {
+                  e.stopPropagation(); // prevent switching to this tab
+                  handleCloseTab(tab.name);
+                }}
+              >
+                <DismissIcon width={5} fill={theme.colors.black} />
+              </CloseButton>
+            )}
+          </Tab>
+        </TabWrapper>
       ))}
-    </TabWrapper>
+    </TabsContainer>
   );
 };
 

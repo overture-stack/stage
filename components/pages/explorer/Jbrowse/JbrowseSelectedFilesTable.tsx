@@ -38,11 +38,11 @@ query ($filters:JSON){
     hits (filters: $filters) {
       edges {
         node {
-          id
-          file_type
-          study_id
-          file_access
           data_type
+          file_access
+          file_type
+          id
+          study_id
           donors {
             hits {
               edges {
@@ -104,12 +104,13 @@ const JbrowseSelectedFilesTable = () => {
             ?.filter(
               ({
                 node: {
+                  file_access,
                   file_type,
                   file: { index_file },
                 },
               }: {
                 node: JbrowseSelectedFilesQueryNode;
-              }) => checkJbrowseCompatibility({ file_type, index_file }),
+              }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
             )
             .map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
               data_type: node.data_type,
@@ -168,7 +169,7 @@ const JbrowseSelectedFilesTable = () => {
             margin: 0;
           `}
         >
-          {selectedRows.length} File{selectedRows.length === 1 ? '' : 's'} Selected
+          {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
         </h3>
         <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
           {showTable ? 'Hide' : 'Show'} Table
