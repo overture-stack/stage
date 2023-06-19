@@ -108,14 +108,12 @@ const JbrowseWrapper = () => {
   const { selectedRows } = useTableContext({
     callerName: 'Jbrowse Wrapper',
   });
-  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(true);
   const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
   const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);
   const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(true);
   const [jbrowseError, setJbrowseError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setJbrowseEnabled(false);
     setJbrowseError('Something went wrong.');
     console.error(error);
   };
@@ -198,44 +196,40 @@ const JbrowseWrapper = () => {
         }
       `}
     >
-      {jbrowseLoading ? (
-        <Spinner />
-      ) : jbrowseError ? (
+      {jbrowseError ? (
         <ErrorNotification size="sm">{jbrowseError}</ErrorNotification>
       ) : (
-        jbrowseEnabled && (
-          <>
-            <JbrowseLinear
-              configuration={{
-                theme: {
-                  elevation: 0,
-                  palette: { secondary: { main: theme.colors.accent } },
-                },
-              }}
-              selectedFiles={jbrowseInput}
-            />
-            <JbrowseSelectedFilesTable />
-            {jbrowseLoading && (
-              <div
-                css={css`
-                  width: 100%;
-                  height: 100%;
-                  min-height: 500px;
-                  display: flex;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  background: rgba(255, 255, 255, 1);
-                  z-index: 999;
-                `}
-              >
-                <Spinner width={50} />
-              </div>
-            )}
-          </>
-        )
+        <>
+          <JbrowseLinear
+            configuration={{
+              theme: {
+                elevation: 0,
+                palette: { secondary: { main: theme.colors.accent } },
+              },
+            }}
+            selectedFiles={jbrowseInput}
+          />
+          <JbrowseSelectedFilesTable />
+          {jbrowseLoading && (
+            <div
+              css={css`
+                width: 100%;
+                height: 100%;
+                min-height: 500px;
+                display: flex;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 1);
+                z-index: 999;
+              `}
+            >
+              <Spinner width={50} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
