@@ -29,14 +29,18 @@ const spin = keyframes`
   }
 `;
 
+const defaultSize = 20;
+
 const Spinner = ({ fill, height, width }: IconProps) => {
+  const spinnerHeight = height || width || defaultSize;
+  const spinnerWidth = width || height || defaultSize;
   return (
     <svg
       viewBox={'0 0 20 20'}
-      width={width}
-      height={height}
+      width={spinnerHeight}
+      height={spinnerWidth}
       css={css`
-        height: ${height}px;
+        height: ${spinnerHeight || 20}px;
         animation: ${spin} 1.4s linear infinite;
       `}
     >
