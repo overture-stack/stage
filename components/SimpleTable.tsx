@@ -33,37 +33,37 @@ export type TableRecord = Record<string, string | number>;
 const TableStyled = styled('table')`
   ${({ theme }: { theme: typeof defaultTheme }) => css`
     ${theme.typography.data};
+    border: 1px solid ${theme.colors.grey_3};
+    cell-padding: 0;
+    border-collapse: collapse;
+    cell-spacing: 0;
   `}
 `;
 
 const ThStyled = styled('th')`
   ${({ theme }: { theme: typeof defaultTheme }) => css`
     font-weight: bold;
-    color: ${theme.colors.accent_dark};
     text-align: left;
-    border-left: 1px solid ${theme.colors.grey_3};
-    padding: 0 8px;
+    border: 1px solid ${theme.colors.grey_3};
+    padding: 6px 8px;
   `};
 `;
 
 const TdStyled = styled('td')`
   ${({ theme }: { theme: typeof defaultTheme }) => css`
     position: relative;
-    padding: 2px 8px;
-    &:before {
-      position: absolute;
-      display: block;
-      content: ' ';
-      top: 2px;
-      bottom: 2px;
-      left: 0;
-      border-left: 1px solid ${theme.colors.grey_3};
-    }
+    padding: 6px 8px;
+    border: 1px solid ${theme.colors.grey_3};
   `};
 `;
 
 const TrStyled = styled('tr')`
-  padding: 2px 0;
+  ${({ theme }: { theme: typeof defaultTheme }) => css`
+    padding: 2px 0;
+    &:nth-of-type(even) {
+      background: ${theme.colors.grey_1};
+    }
+  `};
 `;
 
 const SimpleTable = ({
@@ -74,24 +74,32 @@ const SimpleTable = ({
   tableData: TableRecord[];
 }): ReactElement => {
   return tableColumns.length && tableData.length ? (
-    <TableStyled>
-      <thead>
-        <TrStyled>
-          {tableColumns.map((column) => (
-            <ThStyled key={column.key}>{column.name}</ThStyled>
-          ))}
-        </TrStyled>
-      </thead>
-      <tbody>
-        {tableData.map((row: TableRecord) => (
-          <TrStyled key={row.file_id}>
-            {Object.entries(row).map(([key, value]) => (
-              <TdStyled key={key}>{value}</TdStyled>
+    <div
+      css={css`
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+      `}
+    >
+      <TableStyled>
+        <thead>
+          <TrStyled>
+            {tableColumns.map((column) => (
+              <ThStyled key={column.key}>{column.name}</ThStyled>
             ))}
           </TrStyled>
-        ))}
-      </tbody>
-    </TableStyled>
+        </thead>
+        <tbody>
+          {tableData.map((row: TableRecord) => (
+            <TrStyled key={row.file_id}>
+              {Object.entries(row).map(([key, value]) => (
+                <TdStyled key={key}>{value}</TdStyled>
+              ))}
+            </TrStyled>
+          ))}
+        </tbody>
+      </TableStyled>
+    </div>
   ) : (
     <></>
   );

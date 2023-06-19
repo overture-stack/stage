@@ -36,7 +36,7 @@ const Spinner = ({ fill, height, width }: IconProps) => {
       width={width}
       height={height}
       css={css`
-        height: 20px;
+        height: ${height}px;
         animation: ${spin} 1.4s linear infinite;
       `}
     >

@@ -99,7 +99,7 @@ const JbrowseSelectedFilesTable = () => {
     })
       .then(({ data }) => {
         // get data for table
-        const jbrowseCompatibleFiles =
+        const jbrowseCompatibleFiles: TableRecord[] =
           data.file?.hits?.edges
             ?.filter(
               ({
@@ -133,6 +133,8 @@ const JbrowseSelectedFilesTable = () => {
       });
   }, [selectedRows]);
 
+  const incompatibleFilesCount = selectedRows.length - tableData.length;
+
   return (
     <div
       css={css`
@@ -141,7 +143,7 @@ const JbrowseSelectedFilesTable = () => {
     >
       {hasWarnings && (
         <ErrorNotification
-          size="md"
+          size="sm"
           css={css`
             margin: 20px 0 10px;
             max-width: none;
@@ -150,10 +152,12 @@ const JbrowseSelectedFilesTable = () => {
           dismissible
           level="warning"
         >
-          Some files selected are not supported by JBrowse. Supported file types:{' '}
-          {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
+          {incompatibleFilesCount} file{incompatibleFilesCount === 1 ? '' : 's'} selected{' '}
+          {incompatibleFilesCount === 1 ? 'is' : 'are'} not supported by JBrowse. Supported file
+          types: {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
         </ErrorNotification>
       )}
+
       <div
         css={css`
           display: flex;
