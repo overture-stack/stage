@@ -218,11 +218,13 @@ const JbrowseWrapper = () => {
                 min-height: 500px;
                 display: flex;
                 position: absolute;
+                justify-content: center;
+                padding-top: 200px;
                 top: 0;
                 left: 0;
                 bottom: 0;
                 right: 0;
-                background: rgba(255, 255, 255, 1);
+                background: rgba(255, 255, 255, 0.8);
                 z-index: 999;
               `}
             >
