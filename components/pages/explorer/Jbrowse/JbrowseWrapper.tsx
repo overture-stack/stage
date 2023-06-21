@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { find } from 'lodash';
 import { useTableContext } from '@overture-stack/arranger-components';
-import { JbrowseLinear } from '@overture-stack/dms-jbrowse';
+import { JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
 import SQON from '@overture-stack/sqon-builder';
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
@@ -40,6 +40,8 @@ import {
 } from './types';
 import { checkJbrowseCompatibility } from './utils';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
+import { jbrowseAssemblyName, jbrowseAssemblyObject } from './assembly';
+import { jbrowseLinearDefaultSession } from './defaultSession';
 
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
@@ -201,12 +203,15 @@ const JbrowseWrapper = () => {
       ) : (
         <>
           <JbrowseLinear
+            assembly={jbrowseAssemblyObject}
+            assemblyName={jbrowseAssemblyName}
             configuration={{
               theme: {
                 elevation: 0,
                 palette: { secondary: { main: theme.colors.accent } },
               },
             }}
+            defaultSession={jbrowseLinearDefaultSession}
             selectedFiles={jbrowseInput}
           />
           <JbrowseSelectedFilesTable />
