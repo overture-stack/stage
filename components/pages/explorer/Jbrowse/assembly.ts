@@ -23,7 +23,8 @@ import urlJoin from 'url-join';
 import { getConfig } from '@/global/config';
 import { jbrowseAssemblyName, jbrowseAssemblyAlias } from './utils';
 
-const { NEXT_PUBLIC_JBROWSE_GENOME_URL_ROOT, NEXT_PUBLIC_JBROWSE_ALIASES_URL_ROOT } = getConfig();
+const { NEXT_PUBLIC_JBROWSE_GENOME_URL_ROOT, NEXT_PUBLIC_JBROWSE_GENOME_ALIASES_URL_ROOT } =
+  getConfig();
 
 export const jbrowseAssemblyObject = {
   name: jbrowseAssemblyName,
@@ -58,7 +59,7 @@ export const jbrowseAssemblyObject = {
       type: 'RefNameAliasAdapter',
       location: {
         uri: urlJoin(
-          NEXT_PUBLIC_JBROWSE_ALIASES_URL_ROOT,
+          NEXT_PUBLIC_JBROWSE_GENOME_ALIASES_URL_ROOT,
           jbrowseAssemblyAlias,
           `${jbrowseAssemblyName}_aliases.txt`,
         ),
