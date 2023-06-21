@@ -23,6 +23,9 @@ export const jbrowseAllowedFileTypes = ['BAM', 'VCF'];
 
 export const MAX_JBROWSE_FILES = 5;
 
+export const jbrowseAssemblyName = 'hg38';
+export const jbrowseAssemblyAlias = 'GRCh38';
+
 export const jbrowseFileMetadataQuery = `
   query tableData($filters: JSON) {
   file {
