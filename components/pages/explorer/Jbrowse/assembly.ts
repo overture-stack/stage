@@ -21,11 +21,9 @@
 
 import urlJoin from 'url-join';
 import { getConfig } from '@/global/config';
+import { jbrowseAssemblyName, jbrowseAssemblyAlias } from './utils';
 
 const { NEXT_PUBLIC_JBROWSE_GENOME_URL_ROOT, NEXT_PUBLIC_JBROWSE_ALIASES_URL_ROOT } = getConfig();
-
-export const jbrowseAssemblyName = 'hg38';
-const jbrowseAssemblyAlias = 'GRCh38';
 
 export const jbrowseAssemblyObject = {
   name: jbrowseAssemblyName,

@@ -40,7 +40,8 @@ import {
 } from './types';
 import { checkJbrowseCompatibility } from './utils';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
-import { jbrowseAssemblyName, jbrowseAssemblyObject } from './assembly';
+import { jbrowseAssemblyName } from './utils';
+import { jbrowseAssemblyObject } from './assembly';
 import { jbrowseLinearDefaultSession } from './defaultSession';
 
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();

@@ -17,6 +17,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { jbrowseAssemblyAlias } from './utils';
+
 export const jbrowseLinearDefaultSession = {
   name: 'New Session',
   view: {
@@ -31,21 +33,21 @@ export const jbrowseLinearDefaultSession = {
         start: 0,
         end: 133797422,
         reversed: false,
-        assemblyName: 'GRCh38',
+        assemblyName: jbrowseAssemblyAlias,
       },
     ],
     tracks: [
       {
         id: 'KnIV9-B7F',
         type: 'ReferenceSequenceTrack',
-        configuration: 'GRCh38-ReferenceSequenceTrack',
+        configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack`,
         minimized: false,
         displays: [
           {
             id: 'YzrpwrbY80',
             type: 'LinearReferenceSequenceDisplay',
             height: 100,
-            configuration: 'GRCh38-ReferenceSequenceTrack-LinearReferenceSequenceDisplay',
+            configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack-LinearReferenceSequenceDisplay`,
           },
         ],
       },
