@@ -35,190 +35,244 @@ spec:
 '''
 
 pipeline {
-  agent {
-    kubernetes {
-      yaml podSpec
-    }
-  }
-
-  environment {
-    gitHubRegistry = 'ghcr.io'
-    gitHubRepo = 'overture-stack/dms-ui'
-    githubImageName = "${gitHubRegistry}/${gitHubRepo}"
-
-    commit = sh(
-      returnStdout: true,
-      script: 'git describe --always'
-    ).trim()
-
-    version = sh(
-      returnStdout: true,
-      script: 'cat ./package.json | ' +
-        'grep "version" | ' +
-        'cut -d : -f2 | ' +
-        "sed \'s:[\",]::g\'"
-    ).trim()
-  }
-
-  options {
-    timeout(time: 30, unit: 'MINUTES')
-    timestamps()
-  }
-
-  stages {
-    stage('Run tests') {
-      steps {
-        container('node') {
-          sh 'npm ci'
-          sh 'npm run test'
+    agent {
+        kubernetes {
+            yaml podSpec
         }
-      }
     }
 
-    stage('Build images') {
-      steps {
-        container('docker') {
-          // DNS error if --network is default
-          sh "docker build \
-            --build-arg APP_COMMIT=${commit} \
-            --build-arg APP_VERSION=${version} \
-            --network=host \
-            -f Dockerfile \
-            -t dms-ui:${commit} ."
-        }
-      }
+    environment {
+        gitHubRegistry = 'ghcr.io'
+        gitHubRepo = 'overture-stack/dms-ui'
+        gitHubImageName = "${gitHubRegistry}/${gitHubRepo}"
+        DEPLOY_TO_DEV = false
+        PUBLISH_IMAGE = false
+
+        commit = sh(
+            returnStdout: true,
+            script: 'git describe --always'
+        ).trim()
+
+        version = sh(
+            returnStdout: true,
+            script:
+                'cat ./package.json | ' +
+                'grep "version" | ' +
+                'cut -d : -f2 | ' +
+                "sed \'s:[\",]::g\'"
+        ).trim()
+
+        slackNotificationsUrl = credentials('OvertureSlackJenkinsWebhookURL')
     }
 
-    stage('Publish Images') {
-      when {
-        anyOf {
-          branch 'develop'
-          branch 'main'
-          branch 'master'
-          branch 'arranger-rewrite'
-        }
-      }
-      steps {
-        container('docker') {
-          withCredentials([
-            usernamePassword(
-              credentialsId:'OvertureBioGithub',
-              passwordVariable: 'PASSWORD',
-              usernameVariable: 'USERNAME',
-            )
-          ]) {
-            sh "docker login ${gitHubRegistry} -u $USERNAME -p $PASSWORD"
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        timestamps()
+    }
 
-            script {
-              if (env.BRANCH_NAME ==~ /(main)/) { // push latest and version tags
-                sh "docker tag dms-ui:${commit} ${githubImageName}:${version}"
-                sh "docker push ${githubImageName}:${version}"
+    parameters {
+        booleanParam(
+            name: 'DEPLOY_TO_DEV',
+            defaultValue: "${env.DEPLOY_TO_DEV}",
+            description: 'Deploys your branch to overture-qa'
+        )
+        booleanParam(
+            name: 'PUBLISH_IMAGE',
+            defaultValue: "${env.PUBLISH_IMAGE ?: params.DEPLOY_TO_DEV}",
+            description: 'Publishes an image with {git commit} tag'
+        )
+    }
 
-                sh "docker tag dms-ui:${commit} ${githubImageName}:latest"
-                sh "docker push ${githubImageName}:latest"
-              } else if (env.BRANCH_NAME ==~ /(arranger-rewrite)/) {
-                // TODO: remove this fork path once branch is merged
-                sh "docker tag dms-ui:${commit} ${githubImageName}:arranger-rewrite-${commit}"
-                sh "docker push ${githubImageName}:arranger-rewrite-${commit}"
-
-                sh "docker tag dms-ui:${commit} ${githubImageName}:arranger-rewrite"
-                sh "docker push ${githubImageName}:arranger-rewrite"
-              } else { // push commit tags
-                sh "docker tag dms-ui:${commit} ${githubImageName}:${commit}"
-                sh "docker push ${githubImageName}:${commit}"
-              }
-
-              if (env.BRANCH_NAME ==~ /(develop)/) { // push edge tag
-                sh "docker tag dms-ui:${commit} ${githubImageName}:edge"
-                sh "docker push ${githubImageName}:edge"
-              }
+    stages {
+        stage('Run tests') {
+            steps {
+                container('node') {
+                    sh 'npm ci'
+                    sh 'npm run test'
+                }
             }
-          }
         }
-      }
-    }
 
-    stage('Deploy to overture-qa') {
-      when {
-        branch 'develop'
-      }
-      steps {
-        build(job: '/Overture.bio/provision/helm', parameters: [
-            string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${commit}"),
-            string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
-            string(name: 'OVERTURE_ENV', value: 'qa'),
-            string(name: 'OVERTURE_HELM_CHART_VERSION', value: ''), // use latest
-            string(name: 'OVERTURE_HELM_REPO_URL', value: 'https://overture-stack.github.io/charts-server/'),
-            string(name: 'OVERTURE_HELM_REUSE_VALUES', value: 'false'),
-            string(name: 'OVERTURE_RELEASE_NAME', value: 'dms-ui'),
-        ])
-      }
-    }
-
-    stage('Deploy to overture-staging') {
-      when {
-        anyOf {
-          branch 'main'
-          branch 'master'
+        stage('Build image') {
+            steps {
+                container('docker') {
+                    // DNS error if --network is default
+                    sh "docker build \
+                        --build-arg APP_COMMIT=${commit} \
+                        --build-arg APP_VERSION=${version} \
+                        --network=host \
+                        -f Dockerfile \
+                        -t dms-ui:${commit} ."
+                }
+            }
         }
-      }
-      steps {
-        build(job: '/Overture.bio/provision/helm', parameters: [
-            string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${version}"),
-            string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
-            string(name: 'OVERTURE_ENV', value: 'staging'),
-            string(name: 'OVERTURE_HELM_CHART_VERSION', value: ''), // use latest
-            string(name: 'OVERTURE_HELM_REPO_URL', value: 'https://overture-stack.github.io/charts-server/'),
-            string(name: 'OVERTURE_HELM_REUSE_VALUES', value: 'false'),
-            string(name: 'OVERTURE_RELEASE_NAME', value: 'dms-ui'),
-        ])
-      }
-    }
-  }
 
-  // TODO: remove "master" references after renaming the mainstream branch
+        stage('Publish tag to github') {
+            when {
+                branch 'main'
+            }
+            steps {
+                container('node') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'OvertureBioGithub',
+                            passwordVariable: 'GIT_PASSWORD',
+                            usernameVariable: 'GIT_USERNAME'
+                        ),
+                    ]) {
+                        script {
+                            // we still want to run the platform deploy even if this fails, hence try-catch
+                            try {
+                                sh "git tag ${version}"
+                                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${gitHubRepo} --tags"
+                                sh "curl \
+                                    -X POST \
+                                    -H 'Content-type: application/json' \
+                                    --data '{ \
+                                        \"text\":\"New DMS-UI published succesfully: v.${version}\
+                                        \n[Build ${env.BUILD_NUMBER}] (${env.BUILD_URL})\" \
+                                    }' \
+                                    ${slackNotificationsUrl}"
+                            } catch (err) {
+                                echo 'There was an error while publishing packages'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Publish Images') {
+            when {
+                anyOf {
+                    branch 'develop'
+                    branch 'main'
+                    expression { return params.PUBLISH_IMAGE }
+                }
+            }
+            steps {
+                container('docker') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId:'OvertureBioGithub',
+                            passwordVariable: 'PASSWORD',
+                            usernameVariable: 'USERNAME',
+                        )
+                    ]) {
+                        sh "docker login ${gitHubRegistry} -u $USERNAME -p $PASSWORD"
+
+                        script {
+                            if (env.BRANCH_NAME ==~ /(main)/) { // push latest and version tags
+                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:${version}"
+                                sh "docker push ${gitHubImageName}:${version}"
+
+                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:latest"
+                                sh "docker push ${gitHubImageName}:latest"
+                            } else { // push commit tags
+                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:${commit}"
+                                sh "docker push ${gitHubImageName}:${commit}"
+                            }
+
+                            if (env.BRANCH_NAME ==~ /(develop)/) { // push edge tag
+                                sh "docker tag dms-ui:${commit} ${gitHubImageName}:edge"
+                                sh "docker push ${gitHubImageName}:edge"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to overture-qa') {
+            when {
+                anyOf {
+                    branch 'develop'
+                    expression { return params.DEPLOY_TO_DEV }
+                }
+            }
+            steps {
+                build(job: '/Overture.bio/provision/helm', parameters: [
+                    string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${commit}"),
+                    string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
+                    string(name: 'OVERTURE_ENV', value: 'qa'),
+                    string(name: 'OVERTURE_HELM_CHART_VERSION', value: ''), // use latest
+                    string(name: 'OVERTURE_HELM_REPO_URL', value: 'https://overture-stack.github.io/charts-server/'),
+                    string(name: 'OVERTURE_HELM_REUSE_VALUES', value: 'false'),
+                    string(name: 'OVERTURE_RELEASE_NAME', value: 'dms-ui'),
+                ])
+            }
+        }
+
+        stage('Deploy to overture-staging') {
+            when {
+                anyOf {
+                    branch 'main'
+                }
+            }
+            steps {
+                build(job: '/Overture.bio/provision/helm', parameters: [
+                    string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${version}"),
+                    string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
+                    string(name: 'OVERTURE_ENV', value: 'staging'),
+                    string(name: 'OVERTURE_HELM_CHART_VERSION', value: ''), // use latest
+                    string(name: 'OVERTURE_HELM_REPO_URL', value: 'https://overture-stack.github.io/charts-server/'),
+                    string(name: 'OVERTURE_HELM_REUSE_VALUES', value: 'false'),
+                    string(name: 'OVERTURE_RELEASE_NAME', value: 'dms-ui'),
+                ])
+            }
+        }
+    }
 
     post {
-      fixed {
-        withCredentials([string(
-          credentialsId: 'OvertureSlackJenkinsWebhookURL',
-          variable: 'fixed_slackChannelURL'
-        )]) {
-          container('node') {
-            script {
-              if (env.BRANCH_NAME ==~ /(develop|main|master)/) {
-              sh "curl \
-                  -X POST \
-                  -H 'Content-type: application/json' \
-                  --data '{ \
-                    \"text\":\"Build Fixed: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
-                  }' \
-                  ${fixed_slackChannelURL}"
-              }
+        failure {
+            container('node') {
+                script {
+                    if (env.BRANCH_NAME ==~ /(develop|main|\S*[Tt]est\S*)/) {
+                        sh "curl \
+                            -X POST \
+                            -H 'Content-type: application/json' \
+                            --data '{ \
+                                \"text\":\"Build Failed: ${env.JOB_NAME} \
+                                \n[Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
+                            }' \
+                            ${slackNotificationsUrl}"
+                    }
+                }
             }
-          }
         }
-      }
 
-      unsuccessful {
-        withCredentials([string(
-          credentialsId: 'OvertureSlackJenkinsWebhookURL',
-          variable: 'failed_slackChannelURL'
-        )]) {
-          container('node') {
-            script {
-              if (env.BRANCH_NAME ==~ /(develop|main|master)/) {
-              sh "curl \
-                  -X POST \
-                  -H 'Content-type: application/json' \
-                  --data '{ \
-                    \"text\":\"Build Failed: ${env.JOB_NAME} [Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
-                  }' \
-                  ${failed_slackChannelURL}"
-              }
+        fixed {
+            container('node') {
+                script {
+                    if (env.BRANCH_NAME ==~ /(develop|main|\S*[Tt]est\S*)/) {
+                        sh "curl \
+                            -X POST \
+                            -H 'Content-type: application/json' \
+                            --data '{ \
+                                \"text\":\"Build Fixed: ${env.JOB_NAME} \
+                                \n[Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
+                            }' \
+                            ${slackNotificationsUrl}"
+                    }
+                }
             }
-          }
         }
-      }
+
+        success {
+            container('node') {
+                script {
+                    if (env.BRANCH_NAME ==~ /(\S*[Tt]est\S*)/) {
+                        sh "curl \
+                            -X POST \
+                            -H 'Content-type: application/json' \
+                            --data '{ \
+                                \"text\":\"Build Tested: ${env.JOB_NAME} \
+                                \n[Build ${env.BUILD_NUMBER}](${env.BUILD_URL}) \" \
+                            }' \
+                            ${slackNotificationsUrl}"
+                    }
+                }
+            }
+        }
     }
 }
