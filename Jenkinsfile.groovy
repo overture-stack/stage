@@ -45,8 +45,6 @@ pipeline {
         gitHubRegistry = 'ghcr.io'
         gitHubRepo = 'overture-stack/dms-ui'
         gitHubImageName = "${gitHubRegistry}/${gitHubRepo}"
-        DEPLOY_TO_DEV = false
-        PUBLISH_IMAGE = false
 
         commit = sh(
             returnStdout: true,
@@ -71,15 +69,10 @@ pipeline {
     }
 
     parameters {
-        booleanParam(
-            name: 'DEPLOY_TO_DEV',
-            defaultValue: "${env.DEPLOY_TO_DEV}",
-            description: 'Deploys your branch to overture-qa'
-        )
-        booleanParam(
-            name: 'PUBLISH_IMAGE',
-            defaultValue: "${env.PUBLISH_IMAGE ?: params.DEPLOY_TO_DEV}",
-            description: 'Publishes an image with {git commit} tag'
+        choice(
+            name: 'POST_BUILD',
+            choices: ['Nothing', 'Publish only', 'Publish and Deploy'],
+            description: 'What to do after building the images'
         )
     }
 
@@ -147,7 +140,7 @@ pipeline {
                 anyOf {
                     branch 'develop'
                     branch 'main'
-                    expression { return params.PUBLISH_IMAGE }
+                    expression { return params.POST_BUILD ==~ /.*Publish.*/ }
                 }
             }
             steps {
@@ -187,11 +180,11 @@ pipeline {
             when {
                 anyOf {
                     branch 'develop'
-                    expression { return params.DEPLOY_TO_DEV }
+                    expression { return params.POST_BUILD ==~ /.*Deploy.*/ }
                 }
             }
             steps {
-                build(job: '/Overture.bio/provision/helm', parameters: [
+                build(job: '/Overture.bio/provision/DeployWithHelm', parameters: [
                     string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${commit}"),
                     string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
                     string(name: 'OVERTURE_ENV', value: 'qa'),
@@ -210,7 +203,7 @@ pipeline {
                 }
             }
             steps {
-                build(job: '/Overture.bio/provision/helm', parameters: [
+                build(job: '/Overture.bio/provision/DeployWithHelm', parameters: [
                     string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${version}"),
                     string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
                     string(name: 'OVERTURE_ENV', value: 'staging'),

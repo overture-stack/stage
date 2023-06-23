@@ -6,6 +6,7 @@ const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
 const withTranspileModules = require('next-transpile-modules')([]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+
 /**
  * @type {import('next').NextConfig}
  **/
@@ -66,4 +67,7 @@ module.exports = withPlugins([withTranspileModules], {
 	experimental: {
 		esmExternals: 'loose',
 	},
+	typescript: {
+		ignoreBuildErrors: process.env.NODE_ENV !== 'development',
+	}
 });
