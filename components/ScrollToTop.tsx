@@ -22,7 +22,7 @@
 import { ReactNode, useRef } from 'react';
 import { useTheme, css } from '@emotion/react';
 
-const ScrollTopButton = ({
+const ScrollToTopButton = ({
 	bottomOffset,
 	leftOffset,
 	onClick,
@@ -35,7 +35,6 @@ const ScrollTopButton = ({
 	const buttonDiameter = 30;
 
 	return (
-		// checks if the facet panel is visible
 		<div
 			css={css`
 				position: fixed;
@@ -85,7 +84,7 @@ const ScrollToTop = ({
 		<>
 			<div className="scroll-top-ref" ref={scrollRef} />
 			{children}
-			<ScrollTopButton
+			<ScrollToTopButton
 				bottomOffset={buttonBottomOffset}
 				leftOffset={buttonLeftOffset}
 				onClick={executeScroll}
