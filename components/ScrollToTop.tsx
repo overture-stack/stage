@@ -34,7 +34,8 @@ const ScrollTopButton = ({
 	const theme = useTheme();
 	const buttonDiameter = 30;
 
-	return leftOffset ? ( // checks if the facet panel is visible
+	return (
+		// checks if the facet panel is visible
 		<div
 			css={css`
 				position: fixed;
@@ -65,10 +66,10 @@ const ScrollTopButton = ({
 				<img src="images/white_arrow.svg" width={16} alt="Scroll to top" />
 			</button>
 		</div>
-	) : null;
+	);
 };
 
-const ScrollTopWrapper = ({
+const ScrollToTop = ({
 	children,
 	buttonBottomOffset,
 	buttonLeftOffset,
@@ -82,7 +83,7 @@ const ScrollTopWrapper = ({
 
 	return (
 		<>
-			<div className="scroll-top-wrapper" ref={scrollRef} />
+			<div className="scroll-top-ref" ref={scrollRef} />
 			{children}
 			<ScrollTopButton
 				bottomOffset={buttonBottomOffset}
@@ -93,4 +94,4 @@ const ScrollTopWrapper = ({
 	);
 };
 
-export default ScrollTopWrapper;
+export default ScrollToTop;
