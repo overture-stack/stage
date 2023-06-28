@@ -46,7 +46,7 @@ const ScrollTopButton = ({
 				css={css`
 					border-radius: 50%;
 					background: ${theme.colors.accent};
-					border: none;
+					border: 0 none;
 					width: ${buttonDiameter}px;
 					height: ${buttonDiameter}px;
 					display: float;
@@ -62,8 +62,7 @@ const ScrollTopButton = ({
 				`}
 				onClick={onClick}
 			>
-				&uarr;
-				{/* temp - requested svg for arrow */}
+				<img src="images/white_arrow.svg" width={16} alt="Scroll to top" />
 			</button>
 		</div>
 	) : null;
