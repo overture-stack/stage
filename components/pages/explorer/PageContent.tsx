@@ -25,6 +25,7 @@ import { css, useTheme } from '@emotion/react';
 import Facets from './Facets';
 import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
+import ScrollTopWrapper from '@/components/ScrollTopWrapper';
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -70,7 +71,12 @@ const PageContent = () => {
 							overflow-y: scroll;
 						`}
 					>
-						<Facets />
+						<ScrollTopWrapper
+							buttonBottomOffset={theme.dimensions.footer.height}
+							buttonLeftOffset={sidebarWidth}
+						>
+							<Facets />
+						</ScrollTopWrapper>
 					</aside>
 					<div
 						css={css`

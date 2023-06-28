@@ -184,7 +184,7 @@ const Facets = () => {
 	return (
 		<div
 			css={css`
-				padding-bottom: 2rem;
+				padding-bottom: 3rem;
 			`}
 		>
 			<h2
