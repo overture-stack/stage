@@ -22,24 +22,17 @@
 import { ReactNode, useRef } from 'react';
 import { useTheme, css } from '@emotion/react';
 
-const ScrollToTopButton = ({
-	bottomOffset,
-	leftOffset,
-	onClick,
-}: {
-	bottomOffset: number;
-	leftOffset: number;
-	onClick: () => void;
-}) => {
+const ScrollToTopButton = ({ onClick }: { onClick: () => void }) => {
 	const theme = useTheme();
 	const buttonDiameter = 30;
 
 	return (
 		<div
 			css={css`
-				position: fixed;
-				bottom: ${bottomOffset + 10}px;
-				left: ${leftOffset - buttonDiameter - 20}px;
+				position: absolute;
+				bottom: 10px;
+				right: 20px;
+				z-index: 100;
 			`}
 		>
 			<button
@@ -68,28 +61,28 @@ const ScrollToTopButton = ({
 	);
 };
 
-const ScrollToTop = ({
-	children,
-	buttonBottomOffset,
-	buttonLeftOffset,
-}: {
-	children: ReactNode;
-	buttonBottomOffset: number;
-	buttonLeftOffset: number;
-}) => {
+const ScrollToTop = ({ children }: { children: ReactNode }) => {
 	const scrollRef = useRef<null | HTMLDivElement>(null);
 	const executeScroll = () => scrollRef?.current?.scrollIntoView();
 
 	return (
-		<>
-			<div className="scroll-top-ref" ref={scrollRef} />
-			{children}
-			<ScrollToTopButton
-				bottomOffset={buttonBottomOffset}
-				leftOffset={buttonLeftOffset}
-				onClick={executeScroll}
-			/>
-		</>
+		<div
+			css={css`
+				position: relative;
+				height: 100%;
+			`}
+		>
+			<div
+				css={css`
+					overflow-y: scroll;
+					height: 100%;
+				`}
+			>
+				<div className="scroll-top-ref" ref={scrollRef} />
+				{children}
+			</div>
+			<ScrollToTopButton onClick={executeScroll} />
+		</div>
 	);
 };
 
