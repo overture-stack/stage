@@ -46,7 +46,6 @@ const ScrollToTopButton = ({ onClick }: { onClick: () => void }) => {
 					align-items: center;
 					justify-content: center;
 					line-height: 1;
-					color: ${theme.colors.white};
 					box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 					cursor: pointer;
 					&:hover {
@@ -66,12 +65,14 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
 	const executeScroll = () => scrollRef?.current?.scrollIntoView();
 
 	return (
+		// wrapper for positioning scroll to top button on top of content
 		<div
 			css={css`
 				position: relative;
 				height: 100%;
 			`}
 		>
+			{/* wrapper for vertical scrolling */}
 			<div
 				css={css`
 					overflow-y: scroll;
