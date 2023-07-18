@@ -20,87 +20,82 @@
  */
 
 import { useMemo, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 
 import ScrollToTop from '@/components/ScrollToTop';
 import Facets from './Facets';
 import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
+import { Rnd } from 'react-rnd';
 
 const PageContent = () => {
-	const theme = useTheme();
-	const [showSidebar, setShowSidebar] = useState(true);
+  const theme = useTheme();
 
-	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
+  // dimensions for resizable sidebar
+  const sidebarDefaultWidth = theme.dimensions.facets.width || 0;
+  const [sidebarWidth, setSidebarWidth] = useState(sidebarDefaultWidth);
+  const sidebarHeight = '100%';
 
-	return useMemo(
-		() => (
-			<div
-				css={css`
-					flex: 1;
-					width: 100vw;
-				`}
-			>
-				<div
-					css={css`
-						display: flex;
-						flex-direction: row;
-						margin-left: 0;
-					`}
-				>
-					{/* WIP button to hide/show the sidebar
-            <button
-            css={css`
-              position: absolute;
-              top: 5px;
-            `}
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            Show
-          </button> */}
-					<aside
-						css={css`
-							flex: 0 0 ${sidebarWidth}px;
-							flex-direction: column;
-							background-color: ${theme.colors.white};
-							z-index: 1;
-							${theme.shadow.right};
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
-						`}
-					>
-						<ScrollToTop>
-							<Facets />
-						</ScrollToTop>
-					</aside>
-					<div
-						css={css`
-							display: flex;
-							flex-direction: column;
-							width: 100%;
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
-							overflow-y: scroll;
-						`}
-					>
-						<div
-							css={css`
-								flex: 8.5;
-								margin: 0 15px 0 15px;
-								max-width: calc(100vw - ${sidebarWidth + 10}px);
-							`}
-						>
-							<QueryBar />
-							<RepositoryContent />
-						</div>
-					</div>
-				</div>
-			</div>
-		),
-		[],
-	);
+  return useMemo(
+    () => (
+      <div style={{ position: 'relative' }}>
+        <Rnd
+          bounds="parent"
+          default={{
+            x: 0,
+            y: 0,
+            width: sidebarDefaultWidth,
+            height: sidebarHeight,
+          }}
+          disableDragging
+          enableResizing={{
+            bottom: false,
+            bottomLeft: false,
+            bottomRight: false,
+            left: false,
+            right: true,
+            top: false,
+            topLeft: false,
+            topRight: false,
+          }}
+          maxWidth="50%"
+          minWidth="5%"
+          maxHeight={sidebarHeight}
+          onResize={(e, direction, ref) => {
+            setSidebarWidth(ref.offsetWidth);
+          }}
+          size={{
+            width: sidebarWidth,
+            height: sidebarHeight,
+          }}
+          style={{
+            top: `-${theme.dimensions.navbar.height}px`,
+            bottom: theme.dimensions.footer.height,
+            boxShadow: theme.shadow.right.split('box-shadow: ')[1],
+            wordBreak: 'break-all',
+          }}
+        >
+          <ScrollToTop>
+            <Facets />
+          </ScrollToTop>
+        </Rnd>
+        <div
+          style={{
+            position: 'absolute',
+            left: sidebarWidth,
+            width: `calc(100% - ${sidebarWidth}px)`,
+            height: '100%',
+            padding: '0 15px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <QueryBar />
+          <RepositoryContent />
+        </div>
+      </div>
+    ),
+    [],
+  );
 };
 
 export default PageContent;
