@@ -26,7 +26,7 @@ import LinkedInLogo from './linkedin';
 import OrcidLogo from './orcid';
 import Illustration from './illustration';
 import Avatar from './avatar';
-import ChevronDown from './chevron_down';
+import Chevron from './chevron';
 import Download from './download';
 import OvertureLogo from './overture_logo';
 import OvertureLogoWithText from './overture_logo_with_text';
@@ -44,7 +44,7 @@ export {
   OrcidLogo,
   Illustration,
   Avatar,
-  ChevronDown,
+  Chevron,
   Download,
   OvertureLogo,
   OvertureLogoWithText,

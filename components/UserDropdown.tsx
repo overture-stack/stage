@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import defaultTheme from './theme';
-import { Avatar, ChevronDown } from './theme/icons';
+import { Avatar, Chevron } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { UserWithId } from '../global/types';
 import { InternalLink as Link } from './Link';
@@ -146,7 +146,7 @@ const UserDropdown = () => {
 
       <CurrentUser />
       {open ? (
-        <ChevronDown
+        <Chevron
           fill={fillColor}
           width={12}
           height={12}
@@ -155,7 +155,7 @@ const UserDropdown = () => {
           `}
         />
       ) : (
-        <ChevronDown
+        <Chevron
           fill={fillColor}
           width={12}
           height={12}
