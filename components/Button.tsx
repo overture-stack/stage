@@ -19,21 +19,55 @@
  *
  */
 
-import React, { ReactNode, ReactNodeArray } from 'react';
-import { css } from '@emotion/react';
+import React, { ReactNode } from 'react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import defaultTheme from './theme';
 import { Spinner } from './theme/icons';
 
+export type ButtonVariant = 'primary' | 'secondary' | 'text';
+export type ButtonSize = 'sm' | 'md';
+
+export const BUTTON_VARIANTS: {
+  PRIMARY: ButtonVariant;
+  SECONDARY: ButtonVariant;
+} = Object.freeze({
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+});
+
+export const BUTTON_SIZES: {
+  SM: ButtonSize;
+  MD: ButtonSize;
+} = Object.freeze({
+  SM: 'sm',
+  MD: 'md',
+});
+
+const getButtonTheme = (theme: typeof defaultTheme) => ({
+  [BUTTON_VARIANTS.PRIMARY]: {
+    color: theme.colors.white,
+    ['background-color']: theme.colors.accent,
+    ['border-color']: theme.colors.accent,
+  },
+  [BUTTON_VARIANTS.SECONDARY]: {
+    color: theme.colors.accent_dark,
+    ['background-color']: theme.colors.grey_1,
+    ['border-color']: theme.colors.grey_2,
+  },
+});
+
 const ButtonElement = styled('button')`
-  ${({ theme }: { theme: typeof defaultTheme }) => css`
-    color: ${theme.colors.white};
-    background-color: ${theme.colors.accent};
+  ${({ theme, variant }: { theme: typeof defaultTheme; variant: ButtonVariant }) => css`
     ${theme.typography.subheading2};
+    color: ${getButtonTheme(theme)[variant].color};
+    background-color: ${getButtonTheme(theme)[variant]['background-color']};
+    border-color: ${getButtonTheme(theme)[variant]['border-color']};
     line-height: 24px;
     border-radius: 5px;
-    border: 1px solid ${theme.colors.accent};
+    border-width: 1px;
+    border-style: solid;
     padding: 6px 15px;
     display: flex;
     justify-content: center;
@@ -56,7 +90,7 @@ const ButtonElement = styled('button')`
 const Button = React.forwardRef<
   HTMLButtonElement,
   {
-    children?: ReactNode | ReactNodeArray;
+    children?: ReactNode;
     disabled?: boolean;
     onClick?: (
       e: React.SyntheticEvent<HTMLButtonElement>,
@@ -64,6 +98,7 @@ const Button = React.forwardRef<
     isAsync?: boolean;
     className?: string;
     isLoading?: boolean;
+    variant?: ButtonVariant;
   }
 >(
   (
@@ -74,9 +109,11 @@ const Button = React.forwardRef<
       isAsync = false,
       className,
       isLoading: controlledLoadingState,
+      variant = BUTTON_VARIANTS.PRIMARY,
     },
     ref = React.createRef(),
   ) => {
+    const theme = useTheme();
     const [isLoading, setLoading] = React.useState(false);
 
     /**
@@ -96,6 +133,8 @@ const Button = React.forwardRef<
         onClick={isAsync ? onClickFn : onClick}
         disabled={disabled || shouldShowLoading}
         className={className}
+        variant={variant}
+        theme={theme}
       >
         <span
           css={css`
