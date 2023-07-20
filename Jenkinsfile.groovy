@@ -191,7 +191,7 @@ pipeline {
                 }
             }
             steps {
-                build(job: '/Overture.bio/provision/helm', parameters: [
+                build(job: '/Overture.bio/provision/DeployWithHelm', parameters: [
                     string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${commit}"),
                     string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
                     string(name: 'OVERTURE_ENV', value: 'qa'),
@@ -210,7 +210,7 @@ pipeline {
                 }
             }
             steps {
-                build(job: '/Overture.bio/provision/helm', parameters: [
+                build(job: '/Overture.bio/provision/DeployWithHelm', parameters: [
                     string(name: 'OVERTURE_ARGS_LINE', value: "--set-string image.tag=${version}"),
                     string(name: 'OVERTURE_CHART_NAME', value: 'dms-ui'),
                     string(name: 'OVERTURE_ENV', value: 'staging'),
