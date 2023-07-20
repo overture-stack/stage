@@ -21,6 +21,7 @@
 
 import { ReactNode, useRef } from 'react';
 import { useTheme, css } from '@emotion/react';
+import { Arrow } from './theme/icons';
 
 /*
  * ScrollToTop is a self-contained vertical scrolling area with a
@@ -78,7 +79,7 @@ const ScrollToTopButton = ({
 				`}
 				onClick={onClick}
 			>
-				<img src="images/white_arrow.svg" width={16} alt="Scroll to top" />
+				<Arrow />
 			</button>
 		</div>
 	);
