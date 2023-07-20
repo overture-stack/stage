@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2021 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2023 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,40 +19,32 @@
  *
  */
 
-import Arrow from './arrow';
-import GoogleLogo from './google';
-import FacebookLogo from './facebook';
-import GitHubLogo from './github';
-import LinkedInLogo from './linkedin';
-import OrcidLogo from './orcid';
-import Illustration from './illustration';
-import Avatar from './avatar';
-import ChevronDown from './chevron_down';
-import Download from './download';
-import OvertureLogo from './overture_logo';
-import OvertureLogoWithText from './overture_logo_with_text';
-import OvertureUser from './overture_user';
-import Checkmark from './checkmark';
-import Spinner from './spinner';
-import Error from './error';
-import Warning from './warning';
+import { css } from '@emotion/react';
 
-export {
-  Arrow,
-  GoogleLogo,
-  FacebookLogo,
-  GitHubLogo,
-  LinkedInLogo,
-  OrcidLogo,
-  Illustration,
-  Avatar,
-  ChevronDown,
-  Download,
-  OvertureLogo,
-  OvertureLogoWithText,
-  OvertureUser,
-  Checkmark,
-  Spinner,
-  Error,
-  Warning,
+import { IconProps } from './types';
+
+const Arrow = ({ fill, height, width, style }: IconProps) => {
+	return (
+		<svg
+			css={css`
+				${style};
+				height: ${height};
+				width: ${width};
+			`}
+			width={width}
+			height={height}
+			viewBox="0 0 19 19"
+			fill={fill}
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M13.0622 11.1228C13.5842 11.6435 14.4295 11.6432 14.9511 11.1228C15.4728 10.6025 15.4726 9.75914 14.9511 9.23899L10.2246 4.52436C9.87642 4.17728 9.31188 4.17747 8.96405 4.52436L4.23756 9.23899C3.71553 9.75971 3.71591 10.6027 4.23737 11.1228C4.75921 11.6432 5.60481 11.6432 6.12627 11.1228L8.27102 8.98315L8.27102 17.564C8.27102 18.2988 8.86886 18.8955 9.60647 18.8955C10.3443 18.8955 10.9421 18.2994 10.9421 17.564L10.9421 9.00742L13.0622 11.1228Z"
+				fill={fill}
+			/>
+		</svg>
+	);
 };
+
+export default Arrow;
