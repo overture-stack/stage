@@ -30,11 +30,11 @@ import { Arrow } from './theme/icons';
  * top of the page.
  * Example:
  * <div css={css`...`}>
- * // Ccontrol the size & placement with a wrapper div.
- *  <ScrollToTop>
- *    <p>Scrolling content...</p>
- *    <p>Lorem ipsum...</p>
- *   </ScrollToTop>
+ * // Control the size & placement with a wrapper div.
+ *   <ScrollToTop>
+ *     <p>Scrolling content...</p>
+ *     <p>Lorem ipsum...</p>
+ *    </ScrollToTop>
  * </div>
  *
  */
