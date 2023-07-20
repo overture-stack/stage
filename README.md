@@ -28,7 +28,7 @@ For more information about the DMS-UI, including setup and how to integrate Over
 
 ## Features
 
-- URL parametrisation support
+- URL parametrization support
 - Extensible layout, with primary and secondary menus
 - Reusable UI components
 - Theme customization
