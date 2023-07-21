@@ -19,6 +19,7 @@
  *
  */
 
+import Arrow from './arrow';
 import GoogleLogo from './google';
 import FacebookLogo from './facebook';
 import GitHubLogo from './github';
@@ -37,6 +38,7 @@ import Error from './error';
 import Warning from './warning';
 
 export {
+  Arrow,
   GoogleLogo,
   FacebookLogo,
   GitHubLogo,

@@ -22,6 +22,7 @@
 import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 
+import ScrollToTop from '@/components/ScrollToTop';
 import Facets from './Facets';
 import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
@@ -67,10 +68,11 @@ const PageContent = () => {
 							height: calc(
 								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
 							);
-							overflow-y: scroll;
 						`}
 					>
-						<Facets />
+						<ScrollToTop>
+							<Facets />
+						</ScrollToTop>
 					</aside>
 					<div
 						css={css`
