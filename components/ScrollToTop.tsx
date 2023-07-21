@@ -21,8 +21,33 @@
 
 import { ReactNode, useRef } from 'react';
 import { useTheme, css } from '@emotion/react';
+import { Arrow } from './theme/icons';
 
-const ScrollToTopButton = ({ onClick }: { onClick: () => void }) => {
+/*
+ * ScrollToTop is a self-contained vertical scrolling area with a
+ * floating "scroll to top" button at the bottom right.
+ * ScrollToTop scrolls to the top of its child components, not the
+ * top of the page.
+ * Example:
+ * <div css={css`...`}>
+ * // Control the size & placement with a wrapper div.
+ *   <ScrollToTop>
+ *     <p>Scrolling content...</p>
+ *     <p>Lorem ipsum...</p>
+ *    </ScrollToTop>
+ * </div>
+ *
+ */
+
+type ButtonZIndex = number;
+
+const ScrollToTopButton = ({
+	buttonZIndex = 100,
+	onClick,
+}: {
+	buttonZIndex?: ButtonZIndex;
+	onClick: () => void;
+}) => {
 	const theme = useTheme();
 	const buttonDiameter = 30;
 
@@ -32,7 +57,7 @@ const ScrollToTopButton = ({ onClick }: { onClick: () => void }) => {
 				position: absolute;
 				bottom: 10px;
 				right: 20px;
-				z-index: 100;
+				z-index: ${buttonZIndex};
 			`}
 		>
 			<button
@@ -54,13 +79,19 @@ const ScrollToTopButton = ({ onClick }: { onClick: () => void }) => {
 				`}
 				onClick={onClick}
 			>
-				<img src="images/white_arrow.svg" width={16} alt="Scroll to top" />
+				<Arrow />
 			</button>
 		</div>
 	);
 };
 
-const ScrollToTop = ({ children }: { children: ReactNode }) => {
+const ScrollToTop = ({
+	buttonZIndex,
+	children,
+}: {
+	buttonZIndex?: ButtonZIndex;
+	children: ReactNode;
+}) => {
 	const scrollRef = useRef<null | HTMLDivElement>(null);
 	const executeScroll = () => scrollRef?.current?.scrollIntoView();
 
@@ -82,7 +113,7 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
 				<div className="scroll-top-ref" ref={scrollRef} />
 				{children}
 			</div>
-			<ScrollToTopButton onClick={executeScroll} />
+			<ScrollToTopButton buttonZIndex={buttonZIndex} onClick={executeScroll} />
 		</div>
 	);
 };
