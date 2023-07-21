@@ -56,7 +56,7 @@ const getButtonTheme = (theme: typeof defaultTheme) => ({
     color: theme.colors.accent_dark,
     background: theme.colors.grey_2,
     'border-color': theme.colors.grey_3,
-    hover: { background: theme.colors.grey_4 },
+    hover: { background: theme.colors.white },
   },
 });
 

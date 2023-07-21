@@ -19,7 +19,7 @@
  *
  */
 
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { Rnd } from 'react-rnd';
 
@@ -31,6 +31,7 @@ import QueryBar from './QueryBar';
 
 const sidebarHeight = '100%';
 const sidebarToggleWidth = 28;
+const sidebarMinWidth = 150;
 
 const SidebarResizeWrapper = ({
   children,
@@ -80,7 +81,7 @@ const SidebarResizeWrapper = ({
         top: `-${theme.dimensions.navbar.height}px`,
         bottom: theme.dimensions.footer.height,
         boxShadow: theme.shadow.right.split('box-shadow: ')[1].replace(';', ''),
-        wordBreak: 'break-all',
+        wordWrap: 'break-word',
         display: sidebarVisible ? 'block' : 'none',
       }}
     >
@@ -131,6 +132,7 @@ const SidebarToggle = ({
           fill={theme.colors.accent}
           style={css`
             transform: rotate(-90deg);
+            margin-left: 2px;
           `}
           width={16}
           height={16}
@@ -146,7 +148,7 @@ const PageContent = () => {
   // setup resizable sidebar
   const sidebarDefaultWidth = theme.dimensions.facets.width || 0;
   const [sidebarWidth, setSidebarWidth] = useState<number>(sidebarDefaultWidth);
-  const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [sidebarVisible, setSidebarVisible] = useState<boolean>(true);
 
   const toggleSidebarVisible = () => {
     // toggle visibility with CSS display block/none
@@ -157,6 +159,14 @@ const PageContent = () => {
   };
 
   const contentOffset = sidebarVisible ? sidebarWidth : sidebarToggleWidth;
+
+  useEffect(() => {
+    // when the sidebar is resized to smaller than sidebarMinWidth,
+    // collapse the sidebar and reset the width
+    if (sidebarWidth < sidebarMinWidth) {
+      setSidebarVisible(false);
+    }
+  }, [sidebarWidth]);
 
   return useMemo(
     () => (
@@ -172,7 +182,7 @@ const PageContent = () => {
           sidebarWidth={sidebarWidth}
         >
           <ScrollToTop>
-            <Facets />
+            <Facets hidePanel={() => setSidebarVisible(false)} />
           </ScrollToTop>
         </SidebarResizeWrapper>
 
