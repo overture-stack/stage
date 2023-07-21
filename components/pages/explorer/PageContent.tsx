@@ -19,45 +19,25 @@
  *
  */
 
-import { useEffect, useMemo, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { useMemo } from 'react';
+import { css } from '@emotion/react';
 
 import ScrollToTop from '@/components/ScrollToTop';
 import Facets from './Facets';
 import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
-import {
-	sidebarToggleWidth,
-	sidebarMinWidth,
-	SidebarResizeWrapper,
-	SidebarToggle,
-} from './ResizeSidebar';
+import { SidebarResizeWrapper, SidebarToggle, useResizeSidebar } from './ResizeSidebar';
 
 const PageContent = () => {
-	const theme = useTheme();
-
-	// setup resizable sidebar
-	const sidebarDefaultWidth = theme.dimensions.facets.width || 0;
-	const [sidebarWidth, setSidebarWidth] = useState<number>(sidebarDefaultWidth);
-	const [sidebarVisible, setSidebarVisible] = useState<boolean>(true);
-
-	const toggleSidebarVisible = () => {
-		// toggle visibility with CSS display block/none
-		// rather than a JSX ternary statement
-		// in order to maintain the state of the facet panel
-		setSidebarVisible(!sidebarVisible);
-		setSidebarWidth(sidebarDefaultWidth);
-	};
-
-	const contentOffset = sidebarVisible ? sidebarWidth : sidebarToggleWidth;
-
-	useEffect(() => {
-		// when the sidebar is resized to smaller than sidebarMinWidth,
-		// collapse the sidebar
-		if (sidebarWidth < sidebarMinWidth) {
-			setSidebarVisible(false);
-		}
-	}, [sidebarWidth]);
+	const {
+		contentOffset,
+		setSidebarVisible,
+		setSidebarWidth,
+		sidebarDefaultWidth,
+		sidebarVisible,
+		sidebarWidth,
+		toggleSidebarVisible,
+	} = useResizeSidebar();
 
 	return useMemo(
 		() => (
