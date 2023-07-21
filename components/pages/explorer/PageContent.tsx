@@ -79,7 +79,7 @@ const SidebarResizeWrapper = ({
       style={{
         top: `-${theme.dimensions.navbar.height}px`,
         bottom: theme.dimensions.footer.height,
-        boxShadow: theme.shadow.right.split('box-shadow: ')[1],
+        boxShadow: theme.shadow.right.split('box-shadow: ')[1].replace(';', ''),
         wordBreak: 'break-all',
         display: sidebarVisible ? 'block' : 'none',
       }}

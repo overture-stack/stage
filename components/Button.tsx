@@ -26,7 +26,7 @@ import styled from '@emotion/styled';
 import defaultTheme from './theme';
 import { Spinner } from './theme/icons';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'text';
+export type ButtonVariant = 'primary' | 'secondary';
 export type ButtonSize = 'sm' | 'md';
 
 export const BUTTON_VARIANTS: {
@@ -48,41 +48,67 @@ export const BUTTON_SIZES: {
 const getButtonTheme = (theme: typeof defaultTheme) => ({
   [BUTTON_VARIANTS.PRIMARY]: {
     color: theme.colors.white,
-    ['background-color']: theme.colors.accent,
-    ['border-color']: theme.colors.accent,
+    background: theme.colors.accent,
+    'border-color': theme.colors.accent,
+    hover: { background: theme.colors.accent_dark },
   },
   [BUTTON_VARIANTS.SECONDARY]: {
     color: theme.colors.accent_dark,
-    ['background-color']: theme.colors.grey_1,
-    ['border-color']: theme.colors.grey_2,
+    background: theme.colors.grey_2,
+    'border-color': theme.colors.grey_3,
+    hover: { background: theme.colors.grey_4 },
+  },
+});
+
+const getButtonSizing = (theme: typeof defaultTheme) => ({
+  [BUTTON_SIZES.SM]: {
+    padding: '3px 8px',
+    'font-size': '11px',
+    'border-radius': '7px',
+    'line-height': '15px',
+  },
+  [BUTTON_SIZES.MD]: {
+    padding: '6px 15px',
+    'font-size': '14px',
+    'border-radius': '5px',
+    'line-height': '24px',
   },
 });
 
 const ButtonElement = styled('button')`
-  ${({ theme, variant }: { theme: typeof defaultTheme; variant: ButtonVariant }) => css`
+  ${({
+    size,
+    theme,
+    variant,
+  }: {
+    size: ButtonSize;
+    theme: typeof defaultTheme;
+    variant: ButtonVariant;
+  }) => css`
     ${theme.typography.subheading2};
+    font-size: ${getButtonSizing(theme)[size]['font-size']};
     color: ${getButtonTheme(theme)[variant].color};
-    background-color: ${getButtonTheme(theme)[variant]['background-color']};
+    background: ${getButtonTheme(theme)[variant].background};
     border-color: ${getButtonTheme(theme)[variant]['border-color']};
-    line-height: 24px;
-    border-radius: 5px;
+    line-height: ${getButtonSizing(theme)[size]['line-height']};
+    border-radius: ${getButtonSizing(theme)[size]['border-radius']};
     border-width: 1px;
     border-style: solid;
-    padding: 6px 15px;
     display: flex;
+    padding: ${getButtonSizing(theme)[size].padding};
     justify-content: center;
     align-items: center;
     cursor: pointer;
     position: relative;
     &:hover {
-      background-color: ${theme.colors.accent_dark};
+      background: ${getButtonTheme(theme)[variant].hover.background};
     }
     &:disabled,
     &:disabled:hover {
-      background-color: ${theme.colors.grey_4};
+      background-color: ${theme.colors.grey_6};
       cursor: not-allowed;
       color: ${theme.colors.white};
-      border: 1px solid ${theme.colors.grey_4};
+      border: 1px solid ${theme.colors.grey_6};
     }
   `}
 `;
@@ -99,6 +125,7 @@ const Button = React.forwardRef<
     className?: string;
     isLoading?: boolean;
     variant?: ButtonVariant;
+    size?: ButtonSize;
   }
 >(
   (
@@ -110,6 +137,7 @@ const Button = React.forwardRef<
       className,
       isLoading: controlledLoadingState,
       variant = BUTTON_VARIANTS.PRIMARY,
+      size = BUTTON_SIZES.MD,
     },
     ref = React.createRef(),
   ) => {
@@ -127,6 +155,9 @@ const Button = React.forwardRef<
       await onClick(event);
       setLoading(false);
     };
+
+    const loaderSize = size === BUTTON_SIZES.SM ? 10 : 20;
+
     return (
       <ButtonElement
         ref={ref}
@@ -135,6 +166,7 @@ const Button = React.forwardRef<
         className={className}
         variant={variant}
         theme={theme}
+        size={size}
       >
         <span
           css={css`
@@ -150,7 +182,7 @@ const Button = React.forwardRef<
             bottom: 1px;
           `}
         >
-          <Spinner height={20} width={20} />
+          <Spinner height={loaderSize} width={loaderSize} />
         </span>
       </ButtonElement>
     );
