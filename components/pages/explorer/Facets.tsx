@@ -23,6 +23,8 @@ import { Aggregations, useArrangerTheme } from '@overture-stack/arranger-compone
 import { css, useTheme } from '@emotion/react';
 
 import { DMSThemeInterface } from '../../theme';
+import Button from '@/components/Button';
+import { Chevron } from '@/components/theme/icons';
 
 const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 	callerName: 'Explorer-Facets',
@@ -177,7 +179,7 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 	},
 });
 
-const Facets = () => {
+const Facets = ({ hidePanel }: { hidePanel: () => void }) => {
 	const theme = useTheme();
 	useArrangerTheme(getAggregationsStyles(theme));
 
@@ -187,6 +189,23 @@ const Facets = () => {
 				padding-bottom: 3rem;
 			`}
 		>
+			<div
+				css={css`
+					padding: 10px;
+				`}
+			>
+				<Button variant="secondary" size="sm" onClick={hidePanel}>
+					<Chevron
+						style={css`
+							transform: rotate(90deg);
+							margin-right: 5px;
+						`}
+						width={8}
+						height={8}
+					/>
+					<span>Hide Bar</span>
+				</Button>
+			</div>
 			<h2
 				css={css`
 					${theme.typography.subheading}

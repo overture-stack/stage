@@ -19,87 +19,65 @@
  *
  */
 
-import { useMemo, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { useMemo } from 'react';
+import { css } from '@emotion/react';
 
 import ScrollToTop from '@/components/ScrollToTop';
 import Facets from './Facets';
 import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
+import { SidebarResizeWrapper, SidebarToggle, useResizeSidebar } from './ResizeSidebar';
 
 const PageContent = () => {
-	const theme = useTheme();
-	const [showSidebar, setShowSidebar] = useState(true);
-
-	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
+	const {
+		contentOffset,
+		setSidebarVisible,
+		setSidebarWidth,
+		sidebarDefaultWidth,
+		sidebarVisible,
+		sidebarWidth,
+		toggleSidebarVisible,
+	} = useResizeSidebar();
 
 	return useMemo(
 		() => (
 			<div
 				css={css`
-					flex: 1;
-					width: 100vw;
+					position: relative;
 				`}
 			>
+				<SidebarResizeWrapper
+					setSidebarWidth={setSidebarWidth}
+					sidebarDefaultWidth={sidebarDefaultWidth}
+					sidebarVisible={sidebarVisible}
+					sidebarWidth={sidebarWidth}
+				>
+					<ScrollToTop>
+						<Facets hidePanel={() => setSidebarVisible(false)} />
+					</ScrollToTop>
+				</SidebarResizeWrapper>
+
+				<SidebarToggle
+					sidebarVisible={sidebarVisible}
+					toggleSidebarVisible={toggleSidebarVisible}
+				/>
+
 				<div
 					css={css`
-						display: flex;
-						flex-direction: row;
-						margin-left: 0;
+						position: absolute;
+						left: ${contentOffset}px;
+						width: calc(100% - ${contentOffset}px);
+						height: 100%;
+						padding: 0 15px;
+						box-sizing: border-box;
 					`}
 				>
-					{/* WIP button to hide/show the sidebar
-            <button
-            css={css`
-              position: absolute;
-              top: 5px;
-            `}
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            Show
-          </button> */}
-					<aside
-						css={css`
-							flex: 0 0 ${sidebarWidth}px;
-							flex-direction: column;
-							background-color: ${theme.colors.white};
-							z-index: 1;
-							${theme.shadow.right};
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
-						`}
-					>
-						<ScrollToTop>
-							<Facets />
-						</ScrollToTop>
-					</aside>
-					<div
-						css={css`
-							display: flex;
-							flex-direction: column;
-							width: 100%;
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
-							overflow-y: scroll;
-						`}
-					>
-						<div
-							css={css`
-								flex: 8.5;
-								margin: 0 15px 0 15px;
-								max-width: calc(100vw - ${sidebarWidth + 10}px);
-							`}
-						>
-							<QueryBar />
-							<RepositoryContent />
-						</div>
-					</div>
+					<QueryBar />
+					<RepositoryContent />
 				</div>
 			</div>
 		),
-		[],
+		[sidebarVisible, sidebarWidth],
 	);
 };
 
