@@ -88,12 +88,21 @@ const ScrollToTopButton = ({
 const ScrollToTop = ({
 	buttonZIndex,
 	children,
+	scrollToTopOfPage = true,
 }: {
 	buttonZIndex?: ButtonZIndex;
 	children: ReactNode;
+	scrollToTopOfPage?: boolean;
 }) => {
 	const scrollRef = useRef<null | HTMLDivElement>(null);
-	const executeScroll = () => scrollRef?.current?.scrollIntoView();
+	const executeScroll = () => {
+		// scroll to top of ScrollToTop wrapper
+		scrollRef?.current?.scrollIntoView();
+		// optional - scroll the page to the top of the window too
+		if (scrollToTopOfPage) {
+			window.scrollTo(0, 0);
+		}
+	};
 
 	return (
 		// wrapper for positioning scroll to top button on top of content
