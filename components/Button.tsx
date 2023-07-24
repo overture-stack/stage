@@ -156,7 +156,7 @@ const Button = React.forwardRef<
       setLoading(false);
     };
 
-    const loaderSize = size === BUTTON_SIZES.SM ? 10 : 20;
+    const loaderSize = size === BUTTON_SIZES.SM ? 10 : 15;
 
     return (
       <ButtonElement
@@ -182,7 +182,7 @@ const Button = React.forwardRef<
             bottom: 1px;
           `}
         >
-          <Spinner height={loaderSize} width={loaderSize} />
+          <Spinner fill={theme.colors.white} height={loaderSize} width={loaderSize} />
         </span>
       </ButtonElement>
     );

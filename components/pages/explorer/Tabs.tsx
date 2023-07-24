@@ -23,10 +23,10 @@ import { DMSThemeInterface } from '@/components/theme';
 import styled from '@emotion/styled';
 import { useTabsContext } from './TabsContext';
 import DismissIcon from '../../theme/icons/dismiss';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 
 const TabsContainer = styled('div')`
-  margin: 10px 0 -8px 4px;
+  margin: 10px 0 -8px 2px;
 `;
 
 const TabWrapper = styled('div')`
@@ -34,13 +34,12 @@ const TabWrapper = styled('div')`
   display: inline-block;
   height: 32px;
   margin: 0 13px;
-  z-index: 100;
+  z-index: 2;
   box-sizing: border-box;
   min-width: 95px;
   padding: 0 0 1px 0;
   cursor: pointer;
   border: 0;
-  drop-shadow: none;
   background: transparent;
   color: ${({ theme }) => theme.colors.black};
 `;
@@ -126,7 +125,16 @@ const Tabs = () => {
                   handleCloseTab(tab.name);
                 }}
               >
-                <DismissIcon width={5} fill={theme.colors.black} />
+                <DismissIcon
+                  width={8}
+                  height={8}
+                  fill={theme.colors.black}
+                  style={css`
+                    position: absolute;
+                    top: 6px;
+                    right: 8px;
+                  `}
+                />
               </CloseButton>
             )}
           </Tab>
