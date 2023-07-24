@@ -34,9 +34,8 @@ const TableStyled = styled('table')`
   ${({ theme }: { theme: typeof defaultTheme }) => css`
     ${theme.typography.data};
     border: 1px solid ${theme.colors.grey_3};
-    cell-padding: 0;
     border-collapse: collapse;
-    cell-spacing: 0;
+    width: 100%;
   `}
 `;
 
