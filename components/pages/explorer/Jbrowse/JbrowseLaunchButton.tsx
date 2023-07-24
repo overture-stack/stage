@@ -62,8 +62,10 @@ const JbrowseLaunchButton = () => {
   });
   const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
+  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setJbrowseLoading(true);
     // check if conditions are met to launch jbrowse
     arrangerFetcher({
       endpoint: 'graphql/TableDataQuery',
@@ -96,6 +98,9 @@ const JbrowseLaunchButton = () => {
       .catch(async (err) => {
         setJbrowseEnabled(false);
         console.error(err);
+      })
+      .finally(() => {
+        setJbrowseLoading(false);
       });
   }, [selectedRows]);
 
@@ -122,6 +127,7 @@ const JbrowseLaunchButton = () => {
     >
       <ButtonWrapper>
         <Button
+          isLoading={jbrowseLoading}
           css={css`
             padding: 2px 10px;
           `}
