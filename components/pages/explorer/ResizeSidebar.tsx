@@ -77,6 +77,7 @@ export const SidebarResizeWrapper = ({
 				boxShadow: theme.shadow.right.replace('box-shadow: ', '').replace(';', ''),
 				wordWrap: 'break-word',
 				display: sidebarVisible ? 'block' : 'none',
+				zIndex: 5,
 			}}
 		>
 			{children}

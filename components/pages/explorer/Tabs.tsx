@@ -34,13 +34,12 @@ const TabWrapper = styled('div')`
   display: inline-block;
   height: 32px;
   margin: 0 13px;
-  z-index: 100;
+  z-index: 2;
   box-sizing: border-box;
   min-width: 95px;
   padding: 0 0 1px 0;
   cursor: pointer;
   border: 0;
-  drop-shadow: none;
   background: transparent;
   color: ${({ theme }) => theme.colors.black};
 `;
