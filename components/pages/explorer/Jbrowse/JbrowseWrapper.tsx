@@ -130,11 +130,11 @@ const Loader = () => (
 );
 
 const JbrowseEl = () => {
-  // assume 1-MAX compatibile files.
+  // assume 1-MAX compatible files.
   // minimum compatibility requirements are checked in JbrowseWrapper.
   const theme = useTheme();
   const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse Wrapper',
+    callerName: 'Jbrowse - Wrapper',
   });
   const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
   const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);

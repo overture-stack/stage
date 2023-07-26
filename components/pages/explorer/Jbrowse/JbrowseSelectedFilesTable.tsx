@@ -80,7 +80,7 @@ const tableColumns: TableColumn[] = [
 
 const JbrowseSelectedFilesTable = () => {
   const { selectedRows } = useTableContext({
-    callerName: 'JBrowse Selected Files Table',
+    callerName: 'JBrowse - Selected Files Table',
   });
   const [tableData, setTableData] = useState<TableRecord[]>([]);
   const [compatibilityWarnings, setCompatibilityWarnings] = useState<string[]>([]);
