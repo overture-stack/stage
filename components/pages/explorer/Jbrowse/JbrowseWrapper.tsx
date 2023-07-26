@@ -256,7 +256,7 @@ const JbrowseWrapper = () => {
 
   return jbrowseLoading ? (
     <Loader />
-  ) : !!jbrowseErrorText ? (
+  ) : jbrowseErrorText ? (
     <div
       css={css`
         padding-top: 8px;
