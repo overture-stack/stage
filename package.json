@@ -15,7 +15,7 @@
 		"@emotion/react": "^11.9.0",
 		"@emotion/styled": "^11.8.1",
 		"@overture-stack/arranger-components": "^3.0.0-beta.32",
-		"@overture-stack/dms-jbrowse-components": "^0.1.0-beta.2",
+		"@overture-stack/dms-jbrowse-components": "^0.1.0-beta.3",
 		"@overture-stack/sqon-builder": "^0.0.0",
 		"axios": "^0.27.2",
 		"jsonwebtoken": "^8.5.1",
