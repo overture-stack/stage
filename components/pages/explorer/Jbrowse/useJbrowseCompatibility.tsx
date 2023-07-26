@@ -47,7 +47,7 @@ const jbrowseButtonQuery = `
   }
 }
 `;
-const useEnableJbrowse = () => {
+const useJbrowseCompatibility = () => {
 	const { selectedRows } = useTableContext({
 		callerName: 'Jbrowse - Compatibility Check',
 	});
@@ -123,4 +123,4 @@ const useEnableJbrowse = () => {
 	};
 };
 
-export default useEnableJbrowse;
+export default useJbrowseCompatibility;

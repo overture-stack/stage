@@ -26,12 +26,12 @@ import { CustomTooltip } from '@/components/Tooltip';
 import { ButtonWrapper } from '../ActionBar';
 import { RepositoryTabNames } from '../RepositoryContent';
 import { useTabsContext } from '../TabsContext';
-import useEnableJbrowse from './useEnableJbrowse';
+import useJbrowseCompatibility from './useJbrowseCompatibility';
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
-  const { jbrowseEnabled, jbrowseErrorText, jbrowseLoading } = useEnableJbrowse();
+  const { jbrowseEnabled, jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
 
   return (
     <CustomTooltip
