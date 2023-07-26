@@ -131,7 +131,7 @@ const Tabs = () => {
                   fill={theme.colors.black}
                   style={css`
                     position: absolute;
-                    top: 6px;
+                    top: 6.5px;
                     right: 8px;
                   `}
                 />
