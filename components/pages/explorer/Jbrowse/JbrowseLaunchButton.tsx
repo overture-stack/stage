@@ -19,113 +19,19 @@
  *
  */
 
-import { CustomTooltip } from '@/components/Tooltip';
-import { useTableContext } from '@overture-stack/arranger-components';
-import { useTabsContext } from '../TabsContext';
 import { css, useTheme } from '@emotion/react';
-import { ButtonWrapper } from '../ActionBar';
-import Button from '@/components/Button';
-import { RepositoryTabNames } from '../RepositoryContent';
 import { find } from 'lodash';
-import createArrangerFetcher from '@/components/utils/arrangerFetcher';
-import { useEffect, useState } from 'react';
-import SQON from '@overture-stack/sqon-builder';
-import { JbrowseQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors, MAX_JBROWSE_FILES } from './utils';
-
-const arrangerFetcher = createArrangerFetcher({});
-
-const jbrowseButtonQuery = `
-  query tableData($filters: JSON) {
-  file {
-    hits(filters: $filters) {
-      edges {
-        node {
-          file_access
-          file_type
-          file {
-            index_file {
-              file_type
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
+import Button from '@/components/Button';
+import { CustomTooltip } from '@/components/Tooltip';
+import { ButtonWrapper } from '../ActionBar';
+import { RepositoryTabNames } from '../RepositoryContent';
+import { useTabsContext } from '../TabsContext';
+import useEnableJbrowse from './useEnableJbrowse';
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
-  const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse Launch Button',
-  });
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
-
-  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
-  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
-  const [jbrowseErrorText, setJbrowseErrorText] = useState<string>('');
-
-  const resolveJbrowse = (error: string) => {
-    setJbrowseErrorText(error);
-    setJbrowseLoading(false);
-    setJbrowseEnabled(!error);
-  };
-
-  useEffect(() => {
-    // check if conditions are met to launch jbrowse
-    setJbrowseLoading(true);
-    setJbrowseEnabled(false);
-
-    // check if # of selectedRows is in acceptable range
-    const selectedRowsCount = selectedRows.length;
-    const selectedRowsError: string =
-      selectedRowsCount === 0
-        ? jbrowseErrors.selectedFilesUnderLimit
-        : selectedRowsCount > MAX_JBROWSE_FILES
-        ? jbrowseErrors.selectedFilesOverLimit
-        : '';
-
-    if (selectedRowsError) {
-      resolveJbrowse(selectedRowsError);
-    } else {
-      // check if # of compatible files is in acceptable range
-      let compatibleFilesError = '';
-      arrangerFetcher({
-        endpoint: 'graphql/JbrowseButtonQuery',
-        body: JSON.stringify({
-          variables: {
-            filters: SQON.in('object_id', selectedRows),
-          },
-          query: jbrowseButtonQuery,
-        }),
-      })
-        .then(async ({ data }) => {
-          const resultData = data.file?.hits?.edges || [];
-          const jbrowseCompatibleFiles = resultData.filter(
-            ({
-              node: {
-                file_access,
-                file_type,
-                file: { index_file },
-              },
-            }: {
-              node: JbrowseQueryNode;
-            }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-          );
-          const jbrowseCompatibleFilesCount = jbrowseCompatibleFiles.length;
-          compatibleFilesError =
-            jbrowseCompatibleFilesCount === 0 ? jbrowseErrors.compatibleFilesUnderLimit : '';
-        })
-        .catch(async (err) => {
-          compatibleFilesError = jbrowseErrors.default;
-          console.error(err);
-        })
-        .finally(() => {
-          resolveJbrowse(compatibleFilesError);
-        });
-    }
-  }, [selectedRows]);
+  const { jbrowseEnabled, jbrowseErrorText, jbrowseLoading } = useEnableJbrowse();
 
   return (
     <CustomTooltip
