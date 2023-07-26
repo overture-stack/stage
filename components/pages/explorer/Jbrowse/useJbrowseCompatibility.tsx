@@ -102,9 +102,8 @@ const useJbrowseCompatibility = () => {
 							node: JbrowseQueryNode;
 						}) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
 					);
-					const jbrowseCompatibleFilesCount = jbrowseCompatibleFiles.length;
 					compatibleFilesError =
-						jbrowseCompatibleFilesCount === 0 ? jbrowseErrors.compatibleFilesUnderLimit : '';
+						jbrowseCompatibleFiles.length === 0 ? jbrowseErrors.compatibleFilesUnderLimit : '';
 				})
 				.catch(async (err: Error) => {
 					compatibleFilesError = jbrowseErrors.default;
