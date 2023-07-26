@@ -87,7 +87,7 @@ const getTableConfigs = ({
           border-width: 1px;
           line-height: 24px;
         `,
-        label: (
+        label: () => (
           <>
             <Download
               fill={theme.colors.white}
