@@ -141,7 +141,7 @@ const JbrowseSelectedFilesTable = () => {
       });
   }, [selectedRows]);
 
-  const incompatibleFilesCount = selectedRows.length - tableData.length;
+  const dismissWarnings = () => setCompatibilityWarnings([]);
 
   return (
     <div
@@ -156,7 +156,7 @@ const JbrowseSelectedFilesTable = () => {
             margin: 20px 0 10px;
             max-width: none;
           `}
-          onDismiss={() => setCompatibilityWarnings([])}
+          onDismiss={dismissWarnings}
           dismissible
           level="warning"
         >
