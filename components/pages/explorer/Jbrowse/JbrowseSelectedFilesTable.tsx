@@ -149,7 +149,7 @@ const JbrowseSelectedFilesTable = () => {
         margin-top: 20px;
       `}
     >
-      {!!compatibilityWarnings.length && (
+      {compatibilityWarnings.length > 0 && (
         <ErrorNotification
           size="sm"
           css={css`
