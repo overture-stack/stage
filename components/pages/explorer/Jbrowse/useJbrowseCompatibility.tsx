@@ -28,7 +28,7 @@ import { JbrowseQueryNode } from './types';
 
 const arrangerFetcher = createArrangerFetcher({});
 
-const jbrowseButtonQuery = `
+const jbrowseCompatibilityQuery = `
   query tableData($filters: JSON) {
   file {
     hits(filters: $filters) {
@@ -47,6 +47,7 @@ const jbrowseButtonQuery = `
   }
 }
 `;
+
 const useJbrowseCompatibility = () => {
 	const { selectedRows } = useTableContext({
 		callerName: 'Jbrowse - Compatibility Check',
@@ -81,17 +82,16 @@ const useJbrowseCompatibility = () => {
 			// check if # of compatible files is in acceptable range
 			let compatibleFilesError = '';
 			arrangerFetcher({
-				endpoint: 'graphql/JbrowseButtonQuery',
+				endpoint: 'graphql/JbrowseCompatibilityQuery',
 				body: JSON.stringify({
 					variables: {
 						filters: SQON.in('object_id', selectedRows),
 					},
-					query: jbrowseButtonQuery,
+					query: jbrowseCompatibilityQuery,
 				}),
 			})
 				.then(async ({ data }) => {
-					const resultData = data.file?.hits?.edges || [];
-					const jbrowseCompatibleFiles = resultData.filter(
+					const jbrowseCompatibleFiles = (data.file?.hits?.edges || []).filter(
 						({
 							node: {
 								file_access,
