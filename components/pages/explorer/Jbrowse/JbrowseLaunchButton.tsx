@@ -31,7 +31,7 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useEffect, useState } from 'react';
 import SQON from '@overture-stack/sqon-builder';
 import { JbrowseQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseAllowedFileTypes, MAX_JBROWSE_FILES } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -60,48 +60,71 @@ const JbrowseLaunchButton = () => {
   const { selectedRows } = useTableContext({
     callerName: 'Jbrowse Launch Button',
   });
-  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
+
+  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
+  const [jbrowseErrorText, setJbrowseErrorText] = useState<string>('');
+
+  const resolveJbrowse = (error: string) => {
+    setJbrowseErrorText(error);
+    setJbrowseLoading(false);
+    setJbrowseEnabled(!error);
+  };
 
   useEffect(() => {
-    setJbrowseLoading(true);
     // check if conditions are met to launch jbrowse
-    arrangerFetcher({
-      endpoint: 'graphql/TableDataQuery',
-      body: JSON.stringify({
-        variables: {
-          filters: SQON.in('object_id', selectedRows),
-        },
-        query: jbrowseButtonQuery,
-      }),
-    })
-      .then(async ({ data }) => {
-        // must have 1 to MAX_JBROWSE_FILES with an acceptable file type, and an index file
-        const resultData = data.file?.hits?.edges || [];
-        const jbrowseCompatibleFiles = resultData.filter(
-          ({
-            node: {
-              file_access,
-              file_type,
-              file: { index_file },
-            },
-          }: {
-            node: JbrowseQueryNode;
-          }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-        );
-        const jbrowseCompatibleFileCount = jbrowseCompatibleFiles.length;
-        const canEnableJbrowse =
-          jbrowseCompatibleFileCount > 0 && jbrowseCompatibleFileCount <= MAX_JBROWSE_FILES;
-        setJbrowseEnabled(canEnableJbrowse);
+    setJbrowseLoading(true);
+    setJbrowseEnabled(false);
+
+    // check if # of selectedRows is in acceptable range
+    const selectedRowsCount = selectedRows.length;
+    const selectedRowsError: string =
+      selectedRowsCount === 0
+        ? jbrowseErrors.selectedFilesUnderLimit
+        : selectedRowsCount > MAX_JBROWSE_FILES
+        ? jbrowseErrors.selectedFilesOverLimit
+        : '';
+
+    if (selectedRowsError) {
+      resolveJbrowse(selectedRowsError);
+    } else {
+      // check if # of compatible files is in acceptable range
+      let compatibleFilesError = '';
+      arrangerFetcher({
+        endpoint: 'graphql/JbrowseButtonQuery',
+        body: JSON.stringify({
+          variables: {
+            filters: SQON.in('object_id', selectedRows),
+          },
+          query: jbrowseButtonQuery,
+        }),
       })
-      .catch(async (err) => {
-        setJbrowseEnabled(false);
-        console.error(err);
-      })
-      .finally(() => {
-        setJbrowseLoading(false);
-      });
+        .then(async ({ data }) => {
+          const resultData = data.file?.hits?.edges || [];
+          const jbrowseCompatibleFiles = resultData.filter(
+            ({
+              node: {
+                file_access,
+                file_type,
+                file: { index_file },
+              },
+            }: {
+              node: JbrowseQueryNode;
+            }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+          );
+          const jbrowseCompatibleFilesCount = jbrowseCompatibleFiles.length;
+          compatibleFilesError =
+            jbrowseCompatibleFilesCount === 0 ? jbrowseErrors.compatibleFilesUnderLimit : '';
+        })
+        .catch(async (err) => {
+          compatibleFilesError = jbrowseErrors.default;
+          console.error(err);
+        })
+        .finally(() => {
+          resolveJbrowse(compatibleFilesError);
+        });
+    }
   }, [selectedRows]);
 
   return (
@@ -116,11 +139,7 @@ const JbrowseLaunchButton = () => {
             font-size: 12px;
           `}
         >
-          Please select 1 to {MAX_JBROWSE_FILES} files to launch JBrowse.
-          <br />
-          Supported file types: {jbrowseAllowedFileTypes.join(', ')}
-          <br />
-          Index files are required.
+          {jbrowseErrorText}
         </div>
       }
       position="right"
