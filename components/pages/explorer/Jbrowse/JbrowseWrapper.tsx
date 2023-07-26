@@ -136,20 +136,20 @@ const JbrowseEl = () => {
   const { selectedRows } = useTableContext({
     callerName: 'Jbrowse - Wrapper',
   });
-  const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
-  const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);
-  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(true);
-  const [jbrowseError, setJbrowseError] = useState<string>('');
+  const [compatibleFiles, setCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
+  const [inputFiles, setInputFiles] = useState<JbrowseInput[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setJbrowseError('Something went wrong.');
+    setError('Something went wrong.');
     console.error(error);
   };
 
   useEffect(() => {
     // step 1: get compatible files
 
-    setJbrowseLoading(true);
+    setLoading(true);
 
     // fetch metadata from arranger for selected files
     arrangerFetcher({
@@ -187,20 +187,20 @@ const JbrowseEl = () => {
               indexSize: node.file.index_file?.size || 0,
             }),
           );
-        setJbrowseCompatibleFiles(nextJbrowseCompatibleFiles);
+        setCompatibleFiles(nextJbrowseCompatibleFiles);
       })
       .catch((error: Error) => handleError(error));
   }, [selectedRows]);
 
   useEffect(() => {
     // step 2: get score signed URLs for compatible files & their indices
-    const getFileURLs = getScoreDownloadUrls('file', jbrowseCompatibleFiles);
-    const getIndexURLs = getScoreDownloadUrls('index', jbrowseCompatibleFiles);
+    const getFileURLs = getScoreDownloadUrls('file', compatibleFiles);
+    const getIndexURLs = getScoreDownloadUrls('index', compatibleFiles);
 
     Promise.all([getFileURLs, getIndexURLs])
       .then(([fileResults, indexResults]: ScoreDownloadResult[][]) =>
-        setJbrowseInput(
-          jbrowseCompatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
+        setInputFiles(
+          compatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
             fileId,
             fileName,
             fileType,
@@ -211,8 +211,8 @@ const JbrowseEl = () => {
       )
       .catch((error: Error) => handleError(error))
       // continue loading for 1 second to give jbrowse time to render.
-      .finally(() => setTimeout(() => setJbrowseLoading(false), 1000));
-  }, [jbrowseCompatibleFiles]);
+      .finally(() => setTimeout(() => setLoading(false), 1000));
+  }, [compatibleFiles]);
 
   return (
     <div
@@ -225,8 +225,8 @@ const JbrowseEl = () => {
         }
       `}
     >
-      {jbrowseError ? (
-        <ErrorNotification size="sm">{jbrowseError}</ErrorNotification>
+      {error ? (
+        <ErrorNotification size="sm">{error}</ErrorNotification>
       ) : (
         <>
           <JbrowseLinear
@@ -239,10 +239,10 @@ const JbrowseEl = () => {
               },
             }}
             defaultSession={jbrowseLinearDefaultSession}
-            selectedFiles={jbrowseInput}
+            selectedFiles={inputFiles}
           />
           <JbrowseSelectedFilesTable />
-          {jbrowseLoading && <Loader />}
+          {loading && <Loader />}
         </>
       )}
     </div>
