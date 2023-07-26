@@ -70,6 +70,7 @@ const PageContent = () => {
 						height: 100%;
 						padding: 0 15px;
 						box-sizing: border-box;
+						overflow-x: auto;
 					`}
 				>
 					<QueryBar />
