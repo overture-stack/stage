@@ -43,6 +43,7 @@ import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 import { jbrowseAssemblyName } from './utils';
 import { jbrowseAssemblyObject } from './assembly';
 import { jbrowseLinearDefaultSession } from './defaultSession';
+import useJbrowseCompatibility from './useJbrowseCompatibility';
 
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
@@ -106,25 +107,49 @@ const getScoreDownloadUrls = (type: 'file' | 'index', files: JbrowseCompatibleFi
 const getUrlFromResult = (results: ScoreDownloadResult[], targetId: string) =>
   find(results, { objectId: targetId })?.parts[0].url || '';
 
-const JbrowseWrapper = () => {
+const Loader = () => (
+  <div
+    css={css`
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      padding-top: 200px;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 999;
+    `}
+  >
+    <Spinner width={50} />
+  </div>
+);
+
+const JbrowseEl = () => {
+  // assume 1-MAX compatible files.
+  // minimum compatibility requirements are checked in JbrowseWrapper.
   const theme = useTheme();
   const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse Wrapper',
+    callerName: 'Jbrowse - Wrapper',
   });
-  const [jbrowseCompatibleFiles, setJbrowseCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
-  const [jbrowseInput, setJbrowseInput] = useState<JbrowseInput[]>([]);
-  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(true);
-  const [jbrowseError, setJbrowseError] = useState<string>('');
+  const [compatibleFiles, setCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
+  const [inputFiles, setInputFiles] = useState<JbrowseInput[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setJbrowseError('Something went wrong.');
+    setError('Something went wrong.');
     console.error(error);
   };
 
   useEffect(() => {
-    // check if any files in selectedRows are compatible with jbrowse.
+    // step 1: get compatible files
 
-    setJbrowseLoading(true);
+    setLoading(true);
 
     // fetch metadata from arranger for selected files
     arrangerFetcher({
@@ -137,9 +162,9 @@ const JbrowseWrapper = () => {
       }),
     })
       .then(({ data }) => {
-        // create a list of files that are compatible with jbrowse
-        const nextJbrowseCompatibleFiles = data.file?.hits?.edges
-          ?.filter(
+        // restructure compatible files list for jbrowse's API
+        const nextJbrowseCompatibleFiles = (data.file?.hits?.edges || [])
+          .filter(
             ({
               node: {
                 file_access,
@@ -156,26 +181,26 @@ const JbrowseWrapper = () => {
               fileName: node.file.name,
               fileSize: node.file.size,
               fileType: node.file_type,
-              // files without an index were filtered out above this map.
+              // files without an index were filtered out above.
               // falsey handling is for typescript only.
               indexId: node.file.index_file?.object_id || '',
               indexSize: node.file.index_file?.size || 0,
             }),
           );
-        setJbrowseCompatibleFiles(nextJbrowseCompatibleFiles);
+        setCompatibleFiles(nextJbrowseCompatibleFiles);
       })
       .catch((error: Error) => handleError(error));
   }, [selectedRows]);
 
   useEffect(() => {
-    // get score signed URLs for compatible files & indices
-    const getFileURLs = getScoreDownloadUrls('file', jbrowseCompatibleFiles);
-    const getIndexURLs = getScoreDownloadUrls('index', jbrowseCompatibleFiles);
+    // step 2: get score signed URLs for compatible files & their indices
+    const getFileURLs = getScoreDownloadUrls('file', compatibleFiles);
+    const getIndexURLs = getScoreDownloadUrls('index', compatibleFiles);
 
     Promise.all([getFileURLs, getIndexURLs])
       .then(([fileResults, indexResults]: ScoreDownloadResult[][]) =>
-        setJbrowseInput(
-          jbrowseCompatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
+        setInputFiles(
+          compatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
             fileId,
             fileName,
             fileType,
@@ -185,8 +210,9 @@ const JbrowseWrapper = () => {
         ),
       )
       .catch((error: Error) => handleError(error))
-      .finally(() => setTimeout(() => setJbrowseLoading(false), 1000));
-  }, [jbrowseCompatibleFiles]);
+      // continue loading for 1 second to give jbrowse time to render.
+      .finally(() => setTimeout(() => setLoading(false), 1000));
+  }, [compatibleFiles]);
 
   return (
     <div
@@ -199,8 +225,8 @@ const JbrowseWrapper = () => {
         }
       `}
     >
-      {jbrowseError ? (
-        <ErrorNotification size="sm">{jbrowseError}</ErrorNotification>
+      {error ? (
+        <ErrorNotification size="sm">{error}</ErrorNotification>
       ) : (
         <>
           <JbrowseLinear
@@ -213,33 +239,33 @@ const JbrowseWrapper = () => {
               },
             }}
             defaultSession={jbrowseLinearDefaultSession}
-            selectedFiles={jbrowseInput}
+            selectedFiles={inputFiles}
           />
           <JbrowseSelectedFilesTable />
-          {jbrowseLoading && (
-            <div
-              css={css`
-                width: 100%;
-                height: 100%;
-                min-height: 500px;
-                display: flex;
-                position: absolute;
-                justify-content: center;
-                padding-top: 200px;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                background: rgba(255, 255, 255, 0.8);
-                z-index: 999;
-              `}
-            >
-              <Spinner width={50} />
-            </div>
-          )}
+          {loading && <Loader />}
         </>
       )}
     </div>
+  );
+};
+
+const JbrowseWrapper = () => {
+  // handle compatibility check before trying to load jbrowse,
+  // in case the user comes to the jbrowse tab with an invalid selection.
+  const { jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
+
+  return jbrowseLoading ? (
+    <Loader />
+  ) : jbrowseErrorText ? (
+    <div
+      css={css`
+        padding-top: 8px;
+      `}
+    >
+      <ErrorNotification size="sm">{jbrowseErrorText}</ErrorNotification>
+    </div>
+  ) : (
+    <JbrowseEl />
   );
 };
 

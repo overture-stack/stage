@@ -21,6 +21,7 @@
 
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
+import { partition } from 'lodash';
 import { useTableContext } from '@overture-stack/arranger-components';
 import SQON from '@overture-stack/sqon-builder';
 import SimpleTable, { TableColumn, TableRecord } from '@/components/SimpleTable';
@@ -79,17 +80,17 @@ const tableColumns: TableColumn[] = [
 
 const JbrowseSelectedFilesTable = () => {
   const { selectedRows } = useTableContext({
-    callerName: 'JBrowse Selected Files Table',
+    callerName: 'JBrowse - Selected Files Table',
   });
   const [tableData, setTableData] = useState<TableRecord[]>([]);
-  const [hasWarnings, setHasWarnings] = useState<boolean>(false);
+  const [compatibilityWarnings, setCompatibilityWarnings] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<boolean>(true);
 
   useEffect(() => {
     // check if any files are incompatible with Jbrowse
     // then get table data for compatible/visualized files
     arrangerFetcher({
-      endpoint: 'graphql/TableDataQuery',
+      endpoint: 'graphql/JbrowseTableQuery',
       body: JSON.stringify({
         variables: {
           filters: SQON.in('object_id', selectedRows),
@@ -99,41 +100,48 @@ const JbrowseSelectedFilesTable = () => {
     })
       .then(({ data }) => {
         // get data for table
-        const jbrowseCompatibleFiles: TableRecord[] =
-          data.file?.hits?.edges
-            ?.filter(
-              ({
-                node: {
-                  file_access,
-                  file_type,
-                  file: { index_file },
-                },
-              }: {
-                node: JbrowseSelectedFilesQueryNode;
-              }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
-            )
-            .map(({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
-              data_type: node.data_type,
-              donor_id: node.donors.hits.edges[0].node.donor_id,
-              file_access: node.file_access,
-              file_id: node.id,
-              file_name: node.file.name,
-              file_size: node.file.size,
-              file_type: node.file_type,
-              study_id: node.study_id,
-            })) || [];
-        setTableData(jbrowseCompatibleFiles);
+        const [compatibleFiles, incompatibleFiles] = partition(
+          data.file?.hits?.edges || [],
+          ({
+            node: {
+              file_access,
+              file_type,
+              file: { index_file },
+            },
+          }: {
+            node: JbrowseSelectedFilesQueryNode;
+          }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+        );
 
-        // check for errors/incompatibility
-        const hasIncompatibleFiles = selectedRows.length > jbrowseCompatibleFiles.length;
-        setHasWarnings(hasIncompatibleFiles);
+        const nextTableData = compatibleFiles.map(
+          ({ node }: { node: JbrowseSelectedFilesQueryNode }) => ({
+            data_type: node.data_type,
+            donor_id: node.donors.hits.edges[0].node.donor_id,
+            file_access: node.file_access,
+            file_id: node.id,
+            file_name: node.file.name,
+            file_size: node.file.size,
+            file_type: node.file_type,
+            study_id: node.study_id,
+          }),
+        );
+        setTableData(nextTableData);
+
+        const warnings = incompatibleFiles.map(
+          ({
+            node: {
+              file: { name },
+            },
+          }) => name,
+        );
+        setCompatibilityWarnings(warnings);
       })
       .catch(async (err) => {
         console.warn(err);
       });
   }, [selectedRows]);
 
-  const incompatibleFilesCount = selectedRows.length - tableData.length;
+  const dismissWarnings = () => setCompatibilityWarnings([]);
 
   return (
     <div
@@ -141,20 +149,30 @@ const JbrowseSelectedFilesTable = () => {
         margin-top: 20px;
       `}
     >
-      {hasWarnings && (
+      {compatibilityWarnings.length > 0 && (
         <ErrorNotification
           size="sm"
           css={css`
             margin: 20px 0 10px;
             max-width: none;
           `}
-          onDismiss={() => setHasWarnings(false)}
+          onDismiss={dismissWarnings}
           dismissible
           level="warning"
         >
-          {incompatibleFilesCount} file{incompatibleFilesCount === 1 ? '' : 's'} selected{' '}
-          {incompatibleFilesCount === 1 ? 'is' : 'are'} not supported by JBrowse. Supported file
-          types: {jbrowseAllowedFileTypes.join(', ')}. Index files are required.
+          <div>
+            The following files are not compatible with JBrowse:
+            <ul
+              css={css`
+                margin: 0;
+                padding-left: 15px;
+              `}
+            >
+              {compatibilityWarnings.map((warning: string) => (
+                <li key={warning}>{warning}</li>
+              ))}
+            </ul>
+          </div>
         </ErrorNotification>
       )}
 

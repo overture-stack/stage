@@ -131,8 +131,8 @@ const Tabs = () => {
                   fill={theme.colors.black}
                   style={css`
                     position: absolute;
-                    top: 6px;
-                    right: 8px;
+                    top: 0.42rem;
+                    right: 0.5rem;
                   `}
                 />
               </CloseButton>

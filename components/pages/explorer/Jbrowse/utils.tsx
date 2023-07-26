@@ -26,6 +26,15 @@ export const MAX_JBROWSE_FILES = 5;
 export const jbrowseAssemblyName = 'hg38';
 export const jbrowseAssemblyAlias = 'GRCh38';
 
+export const jbrowseErrors = {
+  selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
+  selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
+  compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${jbrowseAllowedFileTypes.join(
+    ', ',
+  )}. Index files are required.`,
+  default: 'Something went wrong.',
+} as const;
+
 export const jbrowseFileMetadataQuery = `
   query tableData($filters: JSON) {
   file {

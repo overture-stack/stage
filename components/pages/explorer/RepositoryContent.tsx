@@ -78,6 +78,7 @@ const getTableConfigs = ({
         fontColor: theme.colors.white,
         borderColor: theme.colors.accent,
         hoverBackground: theme.colors.accent_dark,
+        fontWeight: 'bold',
         padding: '2px 10px',
         borderRadius: '5px',
         fontSize: '14px',
