@@ -38,7 +38,7 @@ import {
   ScoreDownloadResult,
   ScoreDownloadParams,
 } from './types';
-import { checkJbrowseCompatibility } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 import { jbrowseAssemblyName } from './utils';
 import { jbrowseAssemblyObject } from './assembly';
@@ -142,7 +142,7 @@ const JbrowseEl = () => {
   const [error, setError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setError('Something went wrong.');
+    setError(jbrowseErrors.default);
     console.error(error);
   };
 
