@@ -29,7 +29,6 @@ import SQON from '@overture-stack/sqon-builder';
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
-import { Spinner } from '@/components/theme/icons';
 import ErrorNotification from '@/components/ErrorNotification';
 import {
   JbrowseQueryNode,
@@ -38,12 +37,13 @@ import {
   ScoreDownloadResult,
   ScoreDownloadParams,
 } from './types';
-import { checkJbrowseCompatibility } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 import { jbrowseAssemblyName } from './utils';
 import { jbrowseAssemblyObject } from './assembly';
 import { jbrowseLinearDefaultSession } from './defaultSession';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
+import { OverlayLoader } from '@/components/Loader';
 
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
@@ -107,28 +107,6 @@ const getScoreDownloadUrls = (type: 'file' | 'index', files: JbrowseCompatibleFi
 const getUrlFromResult = (results: ScoreDownloadResult[], targetId: string) =>
   find(results, { objectId: targetId })?.parts[0].url || '';
 
-const Loader = () => (
-  <div
-    css={css`
-      width: 100%;
-      height: 100%;
-      min-height: 500px;
-      display: flex;
-      position: absolute;
-      justify-content: center;
-      padding-top: 200px;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.8);
-      z-index: 999;
-    `}
-  >
-    <Spinner width={50} />
-  </div>
-);
-
 const JbrowseEl = () => {
   // assume 1-MAX compatible files.
   // minimum compatibility requirements are checked in JbrowseWrapper.
@@ -142,7 +120,7 @@ const JbrowseEl = () => {
   const [error, setError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setError('Something went wrong.');
+    setError(jbrowseErrors.default);
     console.error(error);
   };
 
@@ -242,7 +220,7 @@ const JbrowseEl = () => {
             selectedFiles={inputFiles}
           />
           <JbrowseSelectedFilesTable />
-          {loading && <Loader />}
+          {loading && <OverlayLoader />}
         </>
       )}
     </div>
@@ -255,7 +233,7 @@ const JbrowseWrapper = () => {
   const { jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
 
   return jbrowseLoading ? (
-    <Loader />
+    <OverlayLoader />
   ) : jbrowseErrorText ? (
     <div
       css={css`

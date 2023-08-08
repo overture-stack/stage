@@ -29,7 +29,8 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import ErrorNotification from '@/components/ErrorNotification';
 import ExpandButton from '@/components/ExpandButton';
 import { JbrowseSelectedFilesQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseAllowedFileTypes } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
+import { OverlayLoader } from '@/components/Loader';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -85,8 +86,11 @@ const JbrowseSelectedFilesTable = () => {
   const [tableData, setTableData] = useState<TableRecord[]>([]);
   const [compatibilityWarnings, setCompatibilityWarnings] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
+    setLoading(true);
     // check if any files are incompatible with Jbrowse
     // then get table data for compatible/visualized files
     arrangerFetcher({
@@ -138,12 +142,32 @@ const JbrowseSelectedFilesTable = () => {
       })
       .catch(async (err) => {
         console.warn(err);
+        setError(jbrowseErrors.default);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [selectedRows]);
 
   const dismissWarnings = () => setCompatibilityWarnings([]);
 
-  return (
+  return loading ? (
+    <div
+      css={css`
+        position: relative;
+      `}
+    >
+      <OverlayLoader minHeight={200} />
+    </div>
+  ) : error ? (
+    <div
+      css={css`
+        padding-top: 8px;
+      `}
+    >
+      <ErrorNotification size="sm">{error}</ErrorNotification>
+    </div>
+  ) : (
     <div
       css={css`
         margin-top: 20px;
