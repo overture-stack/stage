@@ -129,7 +129,7 @@ const Footer = (): ReactElement => {
 
 					<li>
 						<StyledLink href="#" rel="noopener noreferrer" target="_blank">
-							<StyledLink>Terms of Use</StyledLink>
+							Terms of Use
 						</StyledLink>
 					</li>
 

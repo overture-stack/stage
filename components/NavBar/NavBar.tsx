@@ -47,7 +47,7 @@ const NavBar = (): ReactElement => {
 				display: flex;
 				justify-content: flex-start;
 				height: ${theme.dimensions.navbar.height}px;
-				background: ${theme.colors.primary} url(/images/navbar-bg.png) no-repeat;
+				background: ${theme.colors.primary} no-repeat;
 				background-size: 281px;
 				${theme.shadow.default};
 				position: sticky;
