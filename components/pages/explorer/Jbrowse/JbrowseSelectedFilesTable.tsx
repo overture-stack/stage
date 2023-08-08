@@ -31,6 +31,7 @@ import ExpandButton from '@/components/ExpandButton';
 import { JbrowseSelectedFilesQueryNode } from './types';
 import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
 import { Spinner } from '@/components/theme/icons';
+import { OverlayLoader } from '@/components/Loader';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -78,28 +79,6 @@ const tableColumns: TableColumn[] = [
   { key: 'file_type', name: 'File Type' },
   { key: 'study_id', name: 'Study ID' },
 ];
-
-const Loader = () => (
-  <div
-    css={css`
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-      display: flex;
-      position: absolute;
-      justify-content: center;
-      padding-top: 200px;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.8);
-      z-index: 999;
-    `}
-  >
-    <Spinner width={50} />
-  </div>
-);
 
 const JbrowseSelectedFilesTable = () => {
   const { selectedRows } = useTableContext({
@@ -173,71 +152,79 @@ const JbrowseSelectedFilesTable = () => {
 
   const dismissWarnings = () => setCompatibilityWarnings([]);
 
-  return loading ? (
-    <Loader />
-  ) : error ? (
+  return (
     <div
       css={css`
-        padding-top: 8px;
+        position: relative;
       `}
     >
-      <ErrorNotification size="sm">{error}</ErrorNotification>
-    </div>
-  ) : (
-    <div
-      css={css`
-        margin-top: 20px;
-      `}
-    >
-      {compatibilityWarnings.length > 0 && (
-        <ErrorNotification
-          size="sm"
+      {loading ? (
+        <OverlayLoader minHeight={200} />
+      ) : error ? (
+        <div
           css={css`
-            margin: 20px 0 10px;
-            max-width: none;
+            padding-top: 8px;
           `}
-          onDismiss={dismissWarnings}
-          dismissible
-          level="warning"
         >
-          <div>
-            The following files are not compatible with JBrowse:
-            <ul
+          <ErrorNotification size="sm">{error}</ErrorNotification>
+        </div>
+      ) : (
+        <div
+          css={css`
+            margin-top: 20px;
+          `}
+        >
+          {compatibilityWarnings.length > 0 && (
+            <ErrorNotification
+              size="sm"
               css={css`
+                margin: 20px 0 10px;
+                max-width: none;
+              `}
+              onDismiss={dismissWarnings}
+              dismissible
+              level="warning"
+            >
+              <div>
+                The following files are not compatible with JBrowse:
+                <ul
+                  css={css`
+                    margin: 0;
+                    padding-left: 15px;
+                  `}
+                >
+                  {compatibilityWarnings.map((warning: string) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </div>
+            </ErrorNotification>
+          )}
+
+          <div
+            css={css`
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 10px;
+              margin-top: 20px;
+            `}
+          >
+            <h3
+              css={(theme) => css`
+                ${theme.typography.subheading};
                 margin: 0;
-                padding-left: 15px;
               `}
             >
-              {compatibilityWarnings.map((warning: string) => (
-                <li key={warning}>{warning}</li>
-              ))}
-            </ul>
+              {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
+            </h3>
+            <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
+              {showTable ? 'Hide' : 'Show'} Table
+            </ExpandButton>
           </div>
-        </ErrorNotification>
+          {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
+        </div>
       )}
-
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 10px;
-          margin-top: 20px;
-        `}
-      >
-        <h3
-          css={(theme) => css`
-            ${theme.typography.subheading};
-            margin: 0;
-          `}
-        >
-          {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
-        </h3>
-        <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
-          {showTable ? 'Hide' : 'Show'} Table
-        </ExpandButton>
-      </div>
-      {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
     </div>
   );
 };

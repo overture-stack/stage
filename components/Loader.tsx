@@ -20,6 +20,7 @@
  */
 
 import { css } from '@emotion/react';
+import Spinner from './theme/icons/spinner';
 
 // TODO: this is a placeholder Loader
 const Loader = () => {
@@ -45,5 +46,27 @@ const Loader = () => {
     />
   );
 };
+
+export const OverlayLoader = ({ minHeight }: { minHeight?: number }) => (
+  <div
+    css={css`
+      width: 100%;
+      height: 100%;
+      min-height: ${minHeight || 500}px;
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      padding-top: 200px;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 999;
+    `}
+  >
+    <Spinner width={50} />
+  </div>
+);
 
 export default Loader;
