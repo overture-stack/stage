@@ -30,7 +30,6 @@ import ErrorNotification from '@/components/ErrorNotification';
 import ExpandButton from '@/components/ExpandButton';
 import { JbrowseSelectedFilesQueryNode } from './types';
 import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
-import { Spinner } from '@/components/theme/icons';
 import { OverlayLoader } from '@/components/Loader';
 
 const arrangerFetcher = createArrangerFetcher({});

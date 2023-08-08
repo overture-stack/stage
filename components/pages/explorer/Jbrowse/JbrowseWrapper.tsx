@@ -29,7 +29,6 @@ import SQON from '@overture-stack/sqon-builder';
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
-import { Spinner } from '@/components/theme/icons';
 import ErrorNotification from '@/components/ErrorNotification';
 import {
   JbrowseQueryNode,
