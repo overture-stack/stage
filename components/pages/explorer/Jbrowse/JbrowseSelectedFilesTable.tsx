@@ -151,79 +151,77 @@ const JbrowseSelectedFilesTable = () => {
 
   const dismissWarnings = () => setCompatibilityWarnings([]);
 
-  return (
+  return loading ? (
     <div
       css={css`
         position: relative;
       `}
     >
-      {loading ? (
-        <OverlayLoader minHeight={200} />
-      ) : error ? (
-        <div
+      <OverlayLoader minHeight={200} />
+    </div>
+  ) : error ? (
+    <div
+      css={css`
+        padding-top: 8px;
+      `}
+    >
+      <ErrorNotification size="sm">{error}</ErrorNotification>
+    </div>
+  ) : (
+    <div
+      css={css`
+        margin-top: 20px;
+      `}
+    >
+      {compatibilityWarnings.length > 0 && (
+        <ErrorNotification
+          size="sm"
           css={css`
-            padding-top: 8px;
+            margin: 20px 0 10px;
+            max-width: none;
           `}
+          onDismiss={dismissWarnings}
+          dismissible
+          level="warning"
         >
-          <ErrorNotification size="sm">{error}</ErrorNotification>
-        </div>
-      ) : (
-        <div
-          css={css`
-            margin-top: 20px;
-          `}
-        >
-          {compatibilityWarnings.length > 0 && (
-            <ErrorNotification
-              size="sm"
+          <div>
+            The following files are not compatible with JBrowse:
+            <ul
               css={css`
-                margin: 20px 0 10px;
-                max-width: none;
-              `}
-              onDismiss={dismissWarnings}
-              dismissible
-              level="warning"
-            >
-              <div>
-                The following files are not compatible with JBrowse:
-                <ul
-                  css={css`
-                    margin: 0;
-                    padding-left: 15px;
-                  `}
-                >
-                  {compatibilityWarnings.map((warning: string) => (
-                    <li key={warning}>{warning}</li>
-                  ))}
-                </ul>
-              </div>
-            </ErrorNotification>
-          )}
-
-          <div
-            css={css`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              margin-bottom: 10px;
-              margin-top: 20px;
-            `}
-          >
-            <h3
-              css={(theme) => css`
-                ${theme.typography.subheading};
                 margin: 0;
+                padding-left: 15px;
               `}
             >
-              {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
-            </h3>
-            <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
-              {showTable ? 'Hide' : 'Show'} Table
-            </ExpandButton>
+              {compatibilityWarnings.map((warning: string) => (
+                <li key={warning}>{warning}</li>
+              ))}
+            </ul>
           </div>
-          {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
-        </div>
+        </ErrorNotification>
       )}
+
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          margin-top: 20px;
+        `}
+      >
+        <h3
+          css={(theme) => css`
+            ${theme.typography.subheading};
+            margin: 0;
+          `}
+        >
+          {tableData.length} File{tableData.length === 1 ? '' : 's'} Selected
+        </h3>
+        <ExpandButton isOpen={showTable} onClick={() => setShowTable(!showTable)}>
+          {showTable ? 'Hide' : 'Show'} Table
+        </ExpandButton>
+      </div>
+      {showTable && <SimpleTable tableColumns={tableColumns} tableData={tableData} />}
     </div>
   );
 };
