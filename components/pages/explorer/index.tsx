@@ -19,20 +19,20 @@
  *
  */
 
-import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { ArrangerDataProvider } from '@overture-stack/arranger-components';
+import { useEffect, useState } from 'react';
 
-import ErrorNotification from '../../ErrorNotification';
-import Loader from '../../Loader';
-import PageLayout from '../../PageLayout';
-import createArrangerFetcher from '../../utils/arrangerFetcher';
-import sleep from '../../utils/sleep';
-import { getConfig } from '../../../global/config';
-import { RepoFiltersType } from './sqonTypes';
+import ErrorNotification from '@/components/ErrorNotification';
+import Loader from '@/components/Loader';
+import PageLayout from '@/components/PageLayout';
+import createArrangerFetcher from '@/components/utils/arrangerFetcher';
+import sleep from '@/components/utils/sleep';
+import { getConfig } from '@/global/config';
 
 import getConfigError from './getConfigError';
 import PageContent from './PageContent';
+import { RepoFiltersType } from './sqonTypes';
 
 export interface PageContentProps {
 	sqon: RepoFiltersType;
@@ -145,6 +145,13 @@ const RepositoryPage = () => {
 						colors: {
 							common: {
 								black: theme.colors.black,
+							},
+						},
+						components: {
+							Input: theme.components.Input, //shared style, for consistency,
+							Loader: {
+								Component: Loader,
+								size: '20px',
 							},
 						},
 					}}
