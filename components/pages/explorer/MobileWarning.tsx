@@ -21,6 +21,10 @@ const MobileWarning = () => {
 				left: 0;
 				right: 0;
 				z-index: 100;
+				display: none;
+				@media screen and (max-width: 1024px) {
+					display: block;
+				}
 			`}
 		>
 			<div
