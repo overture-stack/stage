@@ -19,13 +19,15 @@
  *
  */
 
-import { useMemo } from 'react';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 
 import ScrollToTop from '@/components/ScrollToTop';
+
+import { useMemo } from 'react';
 import Facets from './Facets';
-import RepositoryContent from './RepositoryContent';
+import MobileWarning from './MobileWarning';
 import QueryBar from './QueryBar';
+import RepositoryContent from './RepositoryContent';
 import { SidebarResizeWrapper, SidebarToggle, useResizeSidebar } from './ResizeSidebar';
 
 const PageContent = () => {
@@ -38,6 +40,7 @@ const PageContent = () => {
 		sidebarWidth,
 		toggleSidebarVisible,
 	} = useResizeSidebar();
+	const theme = useTheme();
 
 	return useMemo(
 		() => (
@@ -46,6 +49,7 @@ const PageContent = () => {
 					position: relative;
 				`}
 			>
+				<MobileWarning />
 				<SidebarResizeWrapper
 					setSidebarWidth={setSidebarWidth}
 					sidebarDefaultWidth={sidebarDefaultWidth}
