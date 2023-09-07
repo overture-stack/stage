@@ -24,6 +24,10 @@ import { SQONViewer, useArrangerTheme } from '@overture-stack/arranger-component
 import { Row } from 'react-grid-system';
 
 import { DMSThemeInterface } from '../../theme';
+import {
+	getVisualizationFocusCss,
+	useVisualizationFocusContext,
+} from './VisualizationFocusContext';
 
 const getCurrentSQONStyles = (theme: DMSThemeInterface) => ({
 	callerName: 'QueryBar',
@@ -97,6 +101,7 @@ const getCurrentSQONStyles = (theme: DMSThemeInterface) => ({
 const QueryBar = () => {
 	const theme = useTheme();
 	useArrangerTheme(getCurrentSQONStyles(theme));
+	const { hasVisualizationFocus } = useVisualizationFocusContext();
 
 	return (
 		<Row
@@ -107,6 +112,7 @@ const QueryBar = () => {
 				background-color: ${theme.colors.white};
 				border-radius: 5px;
 				${theme.shadow.default};
+				${getVisualizationFocusCss(hasVisualizationFocus)};
 			`}
 		>
 			<SQONViewer />
