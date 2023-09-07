@@ -29,9 +29,8 @@ const MobileWarning = () => {
 	const theme = useTheme();
 	const [showMobileWarning, setShowMobileWarning] = useState<boolean>(true);
 	const hideMobileWarning = () => setShowMobileWarning(false);
-	const { NEXT_PUBLIC_SHOW_MOBILE_WARNING } = getConfig();
 
-	return showMobileWarning && NEXT_PUBLIC_SHOW_MOBILE_WARNING ? (
+	return showMobileWarning ? (
 		<div
 			css={css`
 				background: ${theme.colors.warning_light};
