@@ -19,14 +19,15 @@
  *
  */
 
-import { useMemo } from 'react';
 import { css } from '@emotion/react';
+import { useMemo } from 'react';
 
 import ScrollToTop from '@/components/ScrollToTop';
 import Facets from './Facets';
-import RepositoryContent from './RepositoryContent';
 import QueryBar from './QueryBar';
+import RepositoryContent from './RepositoryContent';
 import { SidebarResizeWrapper, SidebarToggle, useResizeSidebar } from './ResizeSidebar';
+import { VisualizationFocusContextProvider } from './VisualizationFocusContext';
 
 const PageContent = () => {
 	const {
@@ -46,36 +47,38 @@ const PageContent = () => {
 					position: relative;
 				`}
 			>
-				<SidebarResizeWrapper
-					setSidebarWidth={setSidebarWidth}
-					sidebarDefaultWidth={sidebarDefaultWidth}
-					sidebarVisible={sidebarVisible}
-					sidebarWidth={sidebarWidth}
-				>
-					<ScrollToTop>
-						<Facets hidePanel={() => setSidebarVisible(false)} />
-					</ScrollToTop>
-				</SidebarResizeWrapper>
+				<VisualizationFocusContextProvider>
+					<SidebarResizeWrapper
+						setSidebarWidth={setSidebarWidth}
+						sidebarDefaultWidth={sidebarDefaultWidth}
+						sidebarVisible={sidebarVisible}
+						sidebarWidth={sidebarWidth}
+					>
+						<ScrollToTop>
+							<Facets hidePanel={() => setSidebarVisible(false)} />
+						</ScrollToTop>
+					</SidebarResizeWrapper>
 
-				<SidebarToggle
-					sidebarVisible={sidebarVisible}
-					toggleSidebarVisible={toggleSidebarVisible}
-				/>
+					<SidebarToggle
+						sidebarVisible={sidebarVisible}
+						toggleSidebarVisible={toggleSidebarVisible}
+					/>
 
-				<div
-					css={css`
-						position: absolute;
-						left: ${contentOffset}px;
-						width: calc(100% - ${contentOffset}px);
-						height: 100%;
-						padding: 0 15px;
-						box-sizing: border-box;
-						overflow-x: auto;
-					`}
-				>
-					<QueryBar />
-					<RepositoryContent />
-				</div>
+					<div
+						css={css`
+							position: absolute;
+							left: ${contentOffset}px;
+							width: calc(100% - ${contentOffset}px);
+							height: 100%;
+							padding: 0 15px;
+							box-sizing: border-box;
+							overflow-x: auto;
+						`}
+					>
+						<QueryBar />
+						<RepositoryContent />
+					</div>
+				</VisualizationFocusContextProvider>
 			</div>
 		),
 		[sidebarVisible, sidebarWidth],
