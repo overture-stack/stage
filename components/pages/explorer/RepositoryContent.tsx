@@ -30,11 +30,13 @@ import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import { getConfig } from '@/global/config';
 
+import { useEffect } from 'react';
 import ActionBar from './ActionBar';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
 import { TabsContextProvider, useTabsContext } from './TabsContext';
+import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
 export enum RepositoryTabNames {
 	FILES = 'Files',
@@ -159,8 +161,17 @@ const getTableConfigs = ({
 	},
 });
 
+const visualizationTabs = [RepositoryTabNames.JBROWSE];
+
 const ContentDisplay = () => {
 	const { activeTab, handleChangeTab } = useTabsContext();
+	const { setVisualizationFocus } = useVisualizationFocusContext();
+
+	// toggle visualization focus depending on the user's current tab
+	useEffect(() => {
+		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabNames);
+		setVisualizationFocus(isVisualizationActive);
+	}, [activeTab]);
 
 	switch (activeTab) {
 		case RepositoryTabNames.FILES: {

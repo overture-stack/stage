@@ -19,12 +19,16 @@
  *
  */
 
-import { Aggregations, useArrangerTheme } from '@overture-stack/arranger-components';
 import { css, useTheme } from '@emotion/react';
+import { Aggregations, useArrangerTheme } from '@overture-stack/arranger-components';
 
-import { DMSThemeInterface } from '../../theme';
 import Button from '@/components/Button';
 import { Chevron } from '@/components/theme/icons';
+import { DMSThemeInterface } from '../../theme';
+import {
+	getVisualizationFocusCss,
+	useVisualizationFocusContext,
+} from './VisualizationFocusContext';
 
 const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 	callerName: 'Explorer-Facets',
@@ -182,6 +186,7 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 const Facets = ({ hidePanel }: { hidePanel: () => void }) => {
 	const theme = useTheme();
 	useArrangerTheme(getAggregationsStyles(theme));
+	const { hasVisualizationFocus } = useVisualizationFocusContext();
 
 	return (
 		<div
@@ -206,18 +211,23 @@ const Facets = ({ hidePanel }: { hidePanel: () => void }) => {
 					<span>Hide Bar</span>
 				</Button>
 			</div>
-			<h2
+			<div
 				css={css`
-					${theme.typography.subheading}
-					padding: 6px 0 2px 8px;
-					margin: 0;
-					border-bottom: 1px solid ${theme.colors.grey_3};
+					${getVisualizationFocusCss(hasVisualizationFocus)};
 				`}
 			>
-				Filters
-			</h2>
-
-			<Aggregations />
+				<h2
+					css={css`
+						${theme.typography.subheading}
+						padding: 6px 0 2px 8px;
+						margin: 0;
+						border-bottom: 1px solid ${theme.colors.grey_3};
+					`}
+				>
+					Filters
+				</h2>
+				<Aggregations />
+			</div>
 		</div>
 	);
 };
