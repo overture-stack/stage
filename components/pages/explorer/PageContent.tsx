@@ -24,7 +24,6 @@ import { useMemo } from 'react';
 
 import ScrollToTop from '@/components/ScrollToTop';
 
-import { useMemo } from 'react';
 import { getConfig } from '../../../global/config';
 import Facets from './Facets';
 import MobileWarning from './MobileWarning';
@@ -53,7 +52,7 @@ const PageContent = () => {
 					position: relative;
 				`}
 			>
-        {NEXT_PUBLIC_SHOW_MOBILE_WARNING && <MobileWarning />}
+				{NEXT_PUBLIC_SHOW_MOBILE_WARNING && <MobileWarning />}
 				<VisualizationFocusContextProvider>
 					<SidebarResizeWrapper
 						setSidebarWidth={setSidebarWidth}
