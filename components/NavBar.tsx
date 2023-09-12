@@ -19,17 +19,17 @@
  *
  */
 
-import React from 'react';
 import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
+import React from 'react';
 
-import UserDropdown from './UserDropdown';
+import { getConfig } from '../global/config';
+import useAuthContext from '../global/hooks/useAuthContext';
+import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import { InternalLink as Link, StyledLinkAsButton } from './Link';
 import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
-import useAuthContext from '../global/hooks/useAuthContext';
-import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
-import { getConfig } from '../global/config';
+import UserDropdown from './UserDropdown';
 
 const NavBar: React.ComponentType = () => {
   const { token } = useAuthContext();
@@ -90,6 +90,10 @@ const NavBar: React.ComponentType = () => {
             <span
               css={css`
                 padding-left: 10px;
+                @media screen and (max-width: 570px) {
+                  font-size: 14px;
+                  line-height: 1;
+                }
               `}
             >
               {NEXT_PUBLIC_LAB_NAME}
@@ -129,6 +133,14 @@ const NavBar: React.ComponentType = () => {
                 color: ${theme.colors.accent_dark};
                 cursor: pointer;
                 ${router.pathname === EXPLORER_PATH ? activeLinkStyle : ''}
+                @media screen and (max-width: 570px) {
+                  padding-left: 6px;
+                  padding-right: 6px;
+                  font-size: 14px;
+                  line-height: 1;
+                  width: auto;
+                  flex-basis: auto;
+                }
               `}
             >
               Data Explorer

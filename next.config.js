@@ -61,6 +61,7 @@ module.exports = withPlugins([withTranspileModules], {
 		NEXT_PUBLIC_SSO_PROVIDERS: process.env.NEXT_PUBLIC_SSO_PROVIDERS,
 		// Optional features/functionalities
 		NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG,
+		NEXT_PUBLIC_SHOW_MOBILE_WARNING: process.env.NEXT_PUBLIC_SHOW_MOBILE_WARNING,
 	},
 	assetPrefix: process.env.ASSET_PREFIX || '',
 	optimizeFonts: false,
@@ -69,5 +70,5 @@ module.exports = withPlugins([withTranspileModules], {
 	},
 	typescript: {
 		ignoreBuildErrors: process.env.NODE_ENV !== 'development',
-	}
+	},
 });

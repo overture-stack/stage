@@ -23,7 +23,10 @@ import { css } from '@emotion/react';
 import { useMemo } from 'react';
 
 import ScrollToTop from '@/components/ScrollToTop';
+
+import { getConfig } from '../../../global/config';
 import Facets from './Facets';
+import MobileWarning from './MobileWarning';
 import QueryBar from './QueryBar';
 import RepositoryContent from './RepositoryContent';
 import { SidebarResizeWrapper, SidebarToggle, useResizeSidebar } from './ResizeSidebar';
@@ -40,6 +43,8 @@ const PageContent = () => {
 		toggleSidebarVisible,
 	} = useResizeSidebar();
 
+	const { NEXT_PUBLIC_SHOW_MOBILE_WARNING } = getConfig();
+
 	return useMemo(
 		() => (
 			<div
@@ -47,6 +52,7 @@ const PageContent = () => {
 					position: relative;
 				`}
 			>
+				{NEXT_PUBLIC_SHOW_MOBILE_WARNING && <MobileWarning />}
 				<VisualizationFocusContextProvider>
 					<SidebarResizeWrapper
 						setSidebarWidth={setSidebarWidth}
