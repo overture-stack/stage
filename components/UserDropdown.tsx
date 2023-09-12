@@ -22,6 +22,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { signOut } from "next-auth/react";
 
 import defaultTheme from './theme';
 import { Avatar, ChevronDown } from './theme/icons';
@@ -29,7 +30,8 @@ import useAuthContext from '../global/hooks/useAuthContext';
 import { UserWithId } from '../global/types';
 import { InternalLink as Link } from './Link';
 import { useRouter } from 'next/router';
-import { USER_PATH } from '../global/utils/constants';
+import { AUTH_PROVIDER, USER_PATH } from '../global/utils/constants';
+import { getConfig } from '@/global/config';
 
 const getDisplayName = (user?: UserWithId) => {
   const greeting = 'Hello';
@@ -98,6 +100,7 @@ const UserDropdown = () => {
   const node: any = useRef();
   const router = useRouter();
   const theme = useTheme();
+  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
 
   const handleClickOutside = (e: any) => {
     if (node.current.contains(e.target)) {
@@ -120,6 +123,15 @@ const UserDropdown = () => {
 
   const fillColor =
     router.pathname === USER_PATH ? theme.colors.accent2_dark : theme.colors.accent_dark;
+
+  const handleLogout = () => {
+    if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
+      logout()
+    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
+      signOut()
+    }
+    return false;
+  }
 
   return (
     <div
@@ -182,7 +194,7 @@ const UserDropdown = () => {
             </Link>
           </li>
           <li>
-            <StyledListLink onClick={() => logout()}>Logout</StyledListLink>
+            <StyledListLink onClick={handleLogout}>Logout</StyledListLink>
           </li>
         </ul>
       )}

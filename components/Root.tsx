@@ -31,10 +31,12 @@ const Root = ({
   children,
   egoJwt,
   pageContext,
+  session
 }: {
   children: React.ReactElement;
   egoJwt?: string;
   pageContext: ClientSideGetInitialPropsContext;
+  session: any;
 }) => {
   return (
     <>
@@ -58,7 +60,7 @@ const Root = ({
       `}
       </style>
 
-      <AuthProvider egoJwt={egoJwt}>
+      <AuthProvider egoJwt={egoJwt} session={session}>
         <PageContext.Provider value={pageContext}>
           <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
         </PageContext.Provider>

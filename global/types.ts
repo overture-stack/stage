@@ -43,6 +43,7 @@ export enum ProviderType {
   GITHUB = 'GITHUB',
   LINKEDIN = 'LINKEDIN',
   ORCID = 'ORCID',
+  KEYCLOAK = 'KEYCLOAK'
 }
 
 export interface User {

@@ -19,13 +19,14 @@
  *
  */
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { EGO_JWT_KEY, EXPLORER_PATH } from '../utils/constants';
+import { AUTH_PROVIDER, EGO_JWT_KEY, EXPLORER_PATH } from '../utils/constants';
 import { decodeToken, extractUser, isValidJwt } from '../utils/egoTokenUtils';
-import { UserWithId } from '../../global/types';
+import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
 import getInternalLink from '../utils/getInternalLink';
+import { getConfig } from '../config';
 
 type T_AuthContext = {
   token?: string;
@@ -48,14 +49,38 @@ if (process.env.NODE_ENV === 'development') {
 export const AuthProvider = ({
   egoJwt,
   children,
+  session
 }: {
   egoJwt?: string;
   children: React.ReactElement;
+  session: any;
 }) => {
   const router = useRouter();
+  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
   // TODO: typing this state as `string` causes a compiler error. the same setup exists in argo but does not cause
   // a type issue. using `any` for now
   const [token, setTokenState] = useState<any>(egoJwt);
+  const [user, setUser] = useState<UserWithId>();
+
+  useEffect(() => {
+    if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account){
+      const newUser: UserWithId = {
+        id: session?.user?.sub,
+        email: session?.user?.email,
+        type: UserType.USER,
+        status: UserStatus.APPROVED,
+        firstName: session?.user?.firstName,
+        lastName: session?.user?.lastName,
+        createdAt: 0,
+        lastLogin: 0,
+        providerType: ProviderType.KEYCLOAK,
+        providerSubjectId: "",
+        scope: session?.scopes
+      }
+      setUser(newUser);
+    }
+  }, [session])
+
   const removeToken = () => {
     localStorage.removeItem(EGO_JWT_KEY);
     setTokenState(null);
@@ -81,15 +106,26 @@ export const AuthProvider = ({
   }
 
   const fetchWithAuth: T_AuthContext['fetchWithAuth'] = (url, options) => {
+
+    let headers = { 
+      ...options?.headers, 
+      accept: '*/*',
+      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${token || ''}`}
+    };
+
     return fetch(url, {
       ...options,
-      headers: { ...options?.headers, accept: '*/*', Authorization: `Bearer ${token || ''}` },
+      headers,
       body: null,
     });
   };
 
-  const userInfo = token ? decodeToken(token) : null;
-  const user = userInfo ? extractUser(userInfo) : undefined;
+  if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
+    const userInfo = token ? decodeToken(token) : null;
+    if(userInfo) {
+      setUser(extractUser(userInfo));
+    }
+  }
   const authData = {
     token,
     logout,

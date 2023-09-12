@@ -21,49 +21,68 @@
 
 import Root from '../components/Root';
 import { AppContext } from 'next/app';
+import { getSession } from 'next-auth/react'
+import { SessionProvider } from 'next-auth/react';
 
-import { EGO_JWT_KEY, LOGIN_PATH } from '../global/utils/constants';
+import { AUTH_PROVIDER, EGO_JWT_KEY, LOGIN_PATH } from '../global/utils/constants';
 import { PageWithConfig } from '../global/utils/pages/types';
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import getInternalLink from '../global/utils/getInternalLink';
 import { isValidJwt } from '../global/utils/egoTokenUtils';
+import { getConfig } from '../global/config';
 
 const DMSApp = ({
   Component,
   pageProps,
   ctx,
+  session
 }: {
   Component: PageWithConfig;
   pageProps: { [k: string]: any };
   ctx: any;
+  session: any;
 }) => {
   const [initialToken, setInitialToken] = useState<string>();
+  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
   useEffect(() => {
-    const egoJwt = localStorage.getItem(EGO_JWT_KEY) || undefined;
-    if (isValidJwt(egoJwt)) {
-      setInitialToken(egoJwt);
-    } else {
-      setInitialToken(undefined);
-      // redirect to logout when token is expired/missing only if user is on a non-public page
-      if (!Component.isPublic) {
+
+    if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
+      const egoJwt = localStorage.getItem(EGO_JWT_KEY) || undefined;
+      if (isValidJwt(egoJwt)) {
+        setInitialToken(egoJwt);
+      } else {
+        setInitialToken(undefined);
+        // redirect to logout when token is expired/missing only if user is on a non-public page
+        if (!Component.isPublic) {
+          Router.push({
+            pathname: getInternalLink({ path: LOGIN_PATH }),
+            query: { session_expired: true },
+          });
+        }
+      }
+    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
+      if(!session && !Component.isPublic) {
         Router.push({
           pathname: getInternalLink({ path: LOGIN_PATH }),
           query: { session_expired: true },
         });
-      }
+    }
     }
   });
 
   return (
-    <Root pageContext={ctx} egoJwt={initialToken}>
-      <Component {...pageProps} />
-    </Root>
+    <SessionProvider session={session}>
+      <Root pageContext={ctx} egoJwt={initialToken} session={session}>
+        <Component {...pageProps} />
+      </Root>
+    </SessionProvider>
   );
 };
 
 DMSApp.getInitialProps = async ({ ctx, Component }: AppContext & { Component: PageWithConfig }) => {
   const pageProps = await Component.getInitialProps({ ...ctx });
+  const session = await getSession(ctx)
   return {
     ctx: {
       pathname: ctx.pathname,
@@ -71,6 +90,7 @@ DMSApp.getInitialProps = async ({ ctx, Component }: AppContext & { Component: Pa
       asPath: ctx.asPath,
     },
     pageProps,
+    session
   };
 };
 

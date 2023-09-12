@@ -23,7 +23,7 @@ import urlJoin from 'url-join';
 
 import { getConfig } from '../config';
 
-const { NEXT_PUBLIC_EGO_API_ROOT } = getConfig();
+const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } = getConfig();
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
@@ -37,3 +37,17 @@ const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms/';
 export const DMS_HELP_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'user-guide');
 export const DMS_INSTALLATION_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'installation');
 export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuration/prereq/emails');
+
+// keycloak
+export const KEYCLOAK_URL_ISSUER = urlJoin(NEXT_PUBLIC_KEYCLOAK_HOST, 'realms', NEXT_PUBLIC_KEYCLOAK_REALM)
+export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token')
+
+export const AUTH_PROVIDER = {
+    EGO: 'ego',
+    KEYCLOAK: 'keycloak'
+}
+
+export const INTERNAL_API_PROXY = {
+    ARRANGER: '/api/arranger',
+    PROTECTED_ARRANGER: '/api/protected/arranger',
+}

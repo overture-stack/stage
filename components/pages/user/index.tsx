@@ -30,6 +30,8 @@ import defaultTheme from '../../theme';
 import useAuthContext from '../../../global/hooks/useAuthContext';
 import AuthenticatedBadge from './AuthenticatedBadge';
 import ApiTokenInfo from './ApiTokenInfo';
+import { getConfig } from '@/global/config';
+import { AUTH_PROVIDER } from '@/global/utils/constants';
 
 const StyledPageLayout = styled(PageLayout)`
   ${({ theme }: { theme: typeof defaultTheme }) =>
@@ -76,6 +78,7 @@ const UserEmail = styled('div')`
 
 const UserComponent = () => {
   const { user } = useAuthContext();
+  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
   return (
     <StyledPageLayout subtitle="User Profile & Token">
       <FlexDiv
@@ -109,7 +112,8 @@ const UserComponent = () => {
               </FlexDiv>
               <AuthenticatedBadge provider={user.providerType} />
             </UserInfoContainer>
-            <ApiTokenInfo />
+            {/* API token is avaiable only on EGO */}
+            {NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO  && <ApiTokenInfo />}
           </FlexDiv>
         )}
       </FlexDiv>
