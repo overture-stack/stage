@@ -40,7 +40,7 @@ import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
 export enum RepositoryTabNames {
 	FILES = 'Files',
-	JBROWSE = 'JBrowse',
+	GENOME_VIEWER = 'Genome Viewer',
 }
 
 const getTableConfigs = ({
@@ -161,7 +161,7 @@ const getTableConfigs = ({
 	},
 });
 
-const visualizationTabs = [RepositoryTabNames.JBROWSE];
+const visualizationTabs = [RepositoryTabNames.GENOME_VIEWER];
 
 const ContentDisplay = () => {
 	const { activeTab, handleChangeTab } = useTabsContext();
@@ -183,7 +183,7 @@ const ContentDisplay = () => {
 			);
 		}
 
-		case RepositoryTabNames.JBROWSE: {
+		case RepositoryTabNames.GENOME_VIEWER: {
 			return <JbrowseWrapper />;
 		}
 
