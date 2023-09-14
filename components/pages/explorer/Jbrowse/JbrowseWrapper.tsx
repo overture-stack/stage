@@ -19,31 +19,30 @@
  *
  */
 
-import { useEffect, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
-import urlJoin from 'url-join';
-import { find } from 'lodash';
-import { useTableContext } from '@overture-stack/arranger-components';
-import { JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
-import SQON from '@overture-stack/sqon-builder';
+import ErrorNotification from '@/components/ErrorNotification';
+import { OverlayLoader } from '@/components/Loader';
+import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
-import createArrangerFetcher from '@/components/utils/arrangerFetcher';
-import ErrorNotification from '@/components/ErrorNotification';
+import { css, useTheme } from '@emotion/react';
+import { useTableContext } from '@overture-stack/arranger-components';
+import { JbrowseCircular, JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
+import SQON from '@overture-stack/sqon-builder';
+import { find } from 'lodash';
+import { useEffect, useState } from 'react';
+import urlJoin from 'url-join';
+import { jbrowseAssemblyObject } from './assembly';
+import { jbrowseCircularDefaultSession, jbrowseLinearDefaultSession } from './defaultSession';
+import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 import {
-  JbrowseQueryNode,
   JbrowseCompatibleFile,
   JbrowseInput,
-  ScoreDownloadResult,
+  JbrowseQueryNode,
   ScoreDownloadParams,
+  ScoreDownloadResult,
 } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
-import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
-import { jbrowseAssemblyName } from './utils';
-import { jbrowseAssemblyObject } from './assembly';
-import { jbrowseLinearDefaultSession } from './defaultSession';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
-import { OverlayLoader } from '@/components/Loader';
+import { checkJbrowseCompatibility, jbrowseAssemblyName, jbrowseErrors } from './utils';
 
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
@@ -207,6 +206,18 @@ const JbrowseEl = () => {
         <ErrorNotification size="sm">{error}</ErrorNotification>
       ) : (
         <>
+          <JbrowseCircular
+            assembly={jbrowseAssemblyObject}
+            assemblyName={jbrowseAssemblyName}
+            configuration={{
+              theme: {
+                elevation: 0,
+                palette: { secondary: { main: theme.colors.accent } },
+              },
+            }}
+            defaultSession={jbrowseCircularDefaultSession}
+            selectedFiles={inputFiles}
+          />
           <JbrowseLinear
             assembly={jbrowseAssemblyObject}
             assemblyName={jbrowseAssemblyName}

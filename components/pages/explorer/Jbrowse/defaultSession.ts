@@ -19,38 +19,46 @@
 
 import { jbrowseAssemblyAlias } from './utils';
 
+export const jbrowseCircularDefaultSession = {
+	name: 'New Session',
+	view: {
+		id: 'circularView',
+		type: 'CircularView',
+	},
+};
+
 export const jbrowseLinearDefaultSession = {
-  name: 'New Session',
-  view: {
-    id: 'linearGenomeView',
-    minimized: false,
-    type: 'LinearGenomeView',
-    offsetPx: 191980240,
-    bpPerPx: 0.1554251851851852,
-    displayedRegions: [
-      {
-        refName: '10',
-        start: 0,
-        end: 133797422,
-        reversed: false,
-        assemblyName: jbrowseAssemblyAlias,
-      },
-    ],
-    tracks: [
-      {
-        id: 'KnIV9-B7F',
-        type: 'ReferenceSequenceTrack',
-        configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack`,
-        minimized: false,
-        displays: [
-          {
-            id: 'YzrpwrbY80',
-            type: 'LinearReferenceSequenceDisplay',
-            height: 100,
-            configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack-LinearReferenceSequenceDisplay`,
-          },
-        ],
-      },
-    ],
-  },
+	name: 'New Session',
+	view: {
+		id: 'linearGenomeView',
+		minimized: false,
+		type: 'LinearGenomeView',
+		offsetPx: 191980240,
+		bpPerPx: 0.1554251851851852,
+		displayedRegions: [
+			{
+				refName: '10',
+				start: 0,
+				end: 133797422,
+				reversed: false,
+				assemblyName: jbrowseAssemblyAlias,
+			},
+		],
+		tracks: [
+			{
+				id: 'KnIV9-B7F',
+				type: 'ReferenceSequenceTrack',
+				configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack`,
+				minimized: false,
+				displays: [
+					{
+						id: 'YzrpwrbY80',
+						type: 'LinearReferenceSequenceDisplay',
+						height: 100,
+						configuration: `${jbrowseAssemblyAlias}-ReferenceSequenceTrack-LinearReferenceSequenceDisplay`,
+					},
+				],
+			},
+		],
+	},
 };
