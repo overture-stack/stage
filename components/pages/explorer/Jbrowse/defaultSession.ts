@@ -19,6 +19,14 @@
 
 import { jbrowseAssemblyAlias } from './utils';
 
+export const jbrowseCircularDefaultSession = {
+  name: 'New Session',
+  view: {
+    id: 'circularView',
+    type: 'CircularView',
+  },
+};
+
 export const jbrowseLinearDefaultSession = {
   name: 'New Session',
   view: {
