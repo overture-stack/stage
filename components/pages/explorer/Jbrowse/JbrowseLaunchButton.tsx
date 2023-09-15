@@ -19,10 +19,10 @@
  *
  */
 
-import { css, useTheme } from '@emotion/react';
-import { find } from 'lodash';
 import Button from '@/components/Button';
 import { CustomTooltip } from '@/components/Tooltip';
+import { css, useTheme } from '@emotion/react';
+import { find } from 'lodash';
 import { ButtonWrapper } from '../ActionBar';
 import { RepositoryTabNames } from '../RepositoryContent';
 import { useTabsContext } from '../TabsContext';
@@ -59,10 +59,10 @@ const JbrowseLaunchButton = () => {
           disabled={!jbrowseEnabled}
           onClick={() => {
             // go to jbrowse tab if open, otherwise add jbrowse tab
-            if (find(openTabs, { name: RepositoryTabNames.JBROWSE })) {
-              handleChangeTab(RepositoryTabNames.JBROWSE);
+            if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
+              handleChangeTab(RepositoryTabNames.GENOME_VIEWER);
             } else {
-              handleOpenTab({ name: RepositoryTabNames.JBROWSE, canClose: true });
+              handleOpenTab({ name: RepositoryTabNames.GENOME_VIEWER, canClose: true });
             }
           }}
         >
@@ -72,15 +72,7 @@ const JbrowseLaunchButton = () => {
               align-items: center;
             `}
           >
-            <img
-              src="images/jbrowse-logo.png"
-              alt=""
-              width={16}
-              css={css`
-                margin-right: 0.3rem;
-              `}
-            />
-            <span>JBrowse</span>
+            <span>{RepositoryTabNames.GENOME_VIEWER}</span>
           </div>
         </Button>
       </ButtonWrapper>

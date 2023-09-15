@@ -93,11 +93,13 @@ const TabButton = styled('button')`
 	padding-top: 2px;
 	font-size: 12px;
 	cursor: pointer;
+	${({ withCloseButton }: { withCloseButton?: boolean }) =>
+		`padding-right: ${withCloseButton ? 18 : 0}px`}
 `;
 
 const CloseButton = styled('button')`
 	position: absolute;
-	top: 6px;
+	top: 5px;
 	right: -5px;
 	border: 0;
 	background: transparent;
@@ -116,6 +118,7 @@ const Tabs = () => {
 							onClick={() => {
 								handleChangeTab(tab.name);
 							}}
+							withCloseButton={tab.canClose}
 						>
 							{tab.name}
 						</TabButton>

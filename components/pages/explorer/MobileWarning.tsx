@@ -22,7 +22,6 @@
 import IconButton from '@/components/IconButton';
 import { css, useTheme } from '@emotion/react';
 import { useState } from 'react';
-import { getConfig } from '../../../global/config';
 import { Dismiss as DismissIcon, Error as ErrorIcon } from '../../theme/icons';
 
 const MobileWarning = () => {
@@ -46,7 +45,7 @@ const MobileWarning = () => {
 				z-index: 100;
 				display: none;
 				@media screen and (max-width: 1024px) {
-					display: block;
+					display: flex;
 				}
 			`}
 		>
