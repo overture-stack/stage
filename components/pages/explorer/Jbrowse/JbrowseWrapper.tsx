@@ -43,7 +43,6 @@ import {
 } from './types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { checkJbrowseCompatibility, jbrowseAssemblyName, jbrowseErrors } from './utils';
-
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
 

@@ -32,6 +32,7 @@ import { getConfig } from '@/global/config';
 
 import { useEffect } from 'react';
 import ActionBar from './ActionBar';
+import { getDropdownTheme } from './Jbrowse/JbrowseLaunchButton';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
@@ -72,19 +73,6 @@ const getTableConfigs = ({
 			DownloadButton: {
 				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
-				background: theme.colors.accent,
-				fontColor: theme.colors.white,
-				borderColor: theme.colors.accent,
-				hoverBackground: theme.colors.accent_dark,
-				fontWeight: 'bold',
-				padding: '2px 10px',
-				borderRadius: '5px',
-				fontSize: '14px',
-				css: css`
-					${theme.typography.baseFont}
-					border-width: 1px;
-					line-height: 24px;
-				`,
 				label: () => (
 					<>
 						<Download
@@ -100,35 +88,9 @@ const getTableConfigs = ({
 						Download
 					</>
 				),
-				ListWrapper: {
-					width: '11rem',
-				},
 			},
-			DropDown: {
-				arrowColor: theme.colors.white,
-				arrowTransition: 'all 0s',
-				background: theme.colors.accent,
-				borderColor: theme.colors.accent,
-				css: css`
-					${theme.typography.subheading2}
-					border-width: 1px;
-					line-height: 24px;
-				`,
-				fontColor: theme.colors.white,
-				disabledFontColor: theme.colors.grey_5,
-				hoverBackground: theme.colors.accent_dark,
-				fontSize: '14px',
-				padding: '2px 10px',
-				ListWrapper: {
-					background: theme.colors.white,
-					css: css`
-						${theme.shadow.default},
-					`,
-					fontColor: theme.colors.black,
-					fontSize: '0.7rem',
-					hoverBackground: theme.colors.grey_2,
-				},
-			},
+			DropDown: getDropdownTheme(theme),
+
 			HeaderRow: {
 				borderColor: theme.colors.grey_3,
 				css: css`
