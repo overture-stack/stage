@@ -19,10 +19,12 @@
  *
  */
 
+import { JbrowseFileAccess, JbrowseFileTypes } from './utils';
+
 export type JbrowseQueryNode = {
-  file_type: string;
+  file_type: JbrowseFileTypes;
   object_id: string;
-  file_access: string;
+  file_access: JbrowseFileAccess;
   file: {
     index_file: null | { object_id: string; size: number };
     name: string;

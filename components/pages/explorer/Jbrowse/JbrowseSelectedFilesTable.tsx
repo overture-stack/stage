@@ -19,18 +19,18 @@
  *
  */
 
-import { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
-import { partition } from 'lodash';
-import { useTableContext } from '@overture-stack/arranger-components';
-import SQON from '@overture-stack/sqon-builder';
-import SimpleTable, { TableColumn, TableRecord } from '@/components/SimpleTable';
-import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import ErrorNotification from '@/components/ErrorNotification';
 import ExpandButton from '@/components/ExpandButton';
+import { OverlayLoader } from '@/components/Loader';
+import SimpleTable, { TableColumn, TableRecord } from '@/components/SimpleTable';
+import createArrangerFetcher from '@/components/utils/arrangerFetcher';
+import { css } from '@emotion/react';
+import { useTableContext } from '@overture-stack/arranger-components';
+import SQON from '@overture-stack/sqon-builder';
+import { partition } from 'lodash';
+import { useEffect, useState } from 'react';
 import { JbrowseSelectedFilesQueryNode } from './types';
 import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
-import { OverlayLoader } from '@/components/Loader';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -114,7 +114,13 @@ const JbrowseSelectedFilesTable = () => {
             },
           }: {
             node: JbrowseSelectedFilesQueryNode;
-          }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+          }) =>
+            checkJbrowseCompatibility({
+              file_access,
+              file_type,
+              index_file,
+              jbrowseType: 'jbrowseLinear',
+            }),
         );
 
         const nextTableData = compatibleFiles.map(
@@ -142,7 +148,7 @@ const JbrowseSelectedFilesTable = () => {
       })
       .catch(async (err) => {
         console.warn(err);
-        setError(jbrowseErrors.default);
+        setError(jbrowseErrors('jbrowseLinear').default);
       })
       .finally(() => {
         setLoading(false);

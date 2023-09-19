@@ -28,135 +28,152 @@ import { find } from 'lodash';
 import { useTabsContext } from '../TabsContext';
 import { RepositoryTabKeys, RepositoryTabNames } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
+import { jbrowseDict, JbrowseTitles } from './utils';
 
 export const getDropdownTheme = (theme: Theme) => ({
-	arrowColor: theme.colors.white,
-	arrowTransition: 'all 0s',
-	background: theme.colors.accent,
-	borderColor: theme.colors.accent,
-	css: css`
-		${theme.typography.subheading2}
-		border-width: 1px;
-		line-height: 24px;
-	`,
-	fontColor: theme.colors.white,
-	disabledFontColor: theme.colors.grey_5,
-	hoverBackground: theme.colors.accent_dark,
-	fontSize: '14px',
-	padding: '2px 10px',
-	ListWrapper: {
-		background: theme.colors.white,
-		css: css`
-			${theme.shadow.default},
-		`,
-		fontColor: theme.colors.black,
-		fontSize: '0.7rem',
-		hoverBackground: theme.colors.grey_2,
-	},
+  arrowColor: theme.colors.white,
+  arrowTransition: 'all 0s',
+  background: theme.colors.accent,
+  borderColor: theme.colors.accent,
+  css: css`
+    ${theme.typography.subheading2}
+    border-width: 1px;
+    line-height: 24px;
+  `,
+  fontColor: theme.colors.white,
+  disabledFontColor: theme.colors.grey_5,
+  hoverBackground: theme.colors.accent_dark,
+  fontSize: '14px',
+  padding: '2px 10px',
+  ListWrapper: {
+    background: theme.colors.white,
+    css: css`
+      ${theme.shadow.default},
+    `,
+    fontColor: theme.colors.black,
+    fontSize: '0.7rem',
+    hoverBackground: theme.colors.grey_2,
+  },
 });
 
-const jbrowseOptions: Record<string, RepositoryTabKeys> = {
-	'Linear View': RepositoryTabKeys.JBROWSE_LINEAR,
-	'Circular View': RepositoryTabKeys.JBROWSE_CIRCULAR,
-};
-
 const JbrowseLaunchButton = () => {
-	const theme = useTheme();
-	const { handleChangeTab, handleCloseTab, handleOpenTab, openTabs } = useTabsContext();
-	const { jbrowseEnabled, jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
+  const theme = useTheme();
+  const { handleChangeTab, handleCloseTab, handleOpenTab, openTabs } = useTabsContext();
+  const {
+    jbrowseCircularEnabled,
+    jbrowseLinearEnabled,
+    jbrowseCircularError,
+    jbrowseLinearError,
+    jbrowseLoading,
+  } = useJbrowseCompatibility();
 
-	const dropdownTheme = getDropdownTheme(theme);
+  const dropdownTheme = getDropdownTheme(theme);
 
-	const handleJbrowseSelect = (
-		jbrowseOptionKey: RepositoryTabKeys,
-		closeDropDownFn: () => void,
-	) => {
-		if (find(openTabs, { key: jbrowseOptionKey })) {
-			// if selected option has a tab open, go to that tab
-			handleChangeTab(jbrowseOptionKey);
-		} else {
-			if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
-				// if there's another jbrowse tab open, close it
-				handleCloseTab(find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })?.key || '');
-			}
-			handleOpenTab({
-				name: RepositoryTabNames.GENOME_VIEWER,
-				key: jbrowseOptionKey,
-				canClose: true,
-			});
-		}
-		closeDropDownFn();
-	};
+  const handleJbrowseSelect = (
+    jbrowseOptionKey: RepositoryTabKeys,
+    closeDropDownFn: () => void,
+  ) => {
+    if (find(openTabs, { key: jbrowseOptionKey })) {
+      // if selected option has a tab open, go to that tab
+      handleChangeTab(jbrowseOptionKey);
+    } else {
+      if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
+        // if there's another jbrowse tab open, close it
+        handleCloseTab(find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })?.key || '');
+      }
+      handleOpenTab({
+        name: RepositoryTabNames.GENOME_VIEWER,
+        key: jbrowseOptionKey,
+        canClose: true,
+      });
+    }
+    closeDropDownFn();
+  };
 
-	return (
-		<>
-			<MultiSelectDropDown
-				theme={{
-					...dropdownTheme,
-					width: '140px',
-					height: '30px',
-					ListWrapper: {
-						...dropdownTheme.ListWrapper,
-						css: css`
-							left: -2px;
-							right: auto;
-							width: 9em;
-						`,
-					},
-				}}
-				buttonAriaLabelClosed="Open Genome Viewer menu"
-				buttonAriaLabelOpen="Close Genome Viewer menu"
-				className="genome-viewer-dropdown"
-				disabled={false}
-				itemSelectionLegend="Select one of the genome viewer options"
-				items={Object.keys(jbrowseOptions)}
-				itemToString={(itemLabel, closeDropDownFn) => (
-					<CustomTooltip
-						css={css`
-							width: 100%;
-							button {
-								width: 100%;
-							}
-						`}
-						disabled={jbrowseEnabled}
-						unmountHTMLWhenHide
-						html={
-							<div
-								css={css`
-									${theme.typography.regular};
-									font-size: 12px;
-								`}
-							>
-								{jbrowseErrorText}
-							</div>
-						}
-						position="bottom"
-					>
-						<TransparentButton
-							onClick={() => handleJbrowseSelect(jbrowseOptions[itemLabel], closeDropDownFn)}
-						>
-							{itemLabel}
-						</TransparentButton>
-					</CustomTooltip>
-				)}
-			>
-				<div
-					css={css`
-						width: 105px;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-					`}
-				>
-					{jbrowseLoading ? (
-						<Spinner fill={theme.colors.white} />
-					) : (
-						RepositoryTabNames.GENOME_VIEWER
-					)}
-				</div>
-			</MultiSelectDropDown>
-		</>
-	);
+  return (
+    <>
+      <MultiSelectDropDown
+        theme={{
+          ...dropdownTheme,
+          width: '140px',
+          height: '30px',
+          ListWrapper: {
+            ...dropdownTheme.ListWrapper,
+            css: css`
+              left: -2px;
+              right: auto;
+              width: 9em;
+            `,
+          },
+        }}
+        buttonAriaLabelClosed="Open Genome Viewer menu"
+        buttonAriaLabelOpen="Close Genome Viewer menu"
+        className="genome-viewer-dropdown"
+        itemSelectionLegend="Select one of the genome viewer options"
+        items={jbrowseDict.map(({ title }) => title)}
+        itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => (
+          <CustomTooltip
+            css={css`
+              width: 100%;
+              button {
+                width: 100%;
+              }
+            `}
+            disabled={
+              (itemLabel === 'Linear View' && !jbrowseLinearError) ||
+              (itemLabel === 'Circular View' && !jbrowseCircularError)
+            }
+            unmountHTMLWhenHide
+            html={
+              <div
+                css={css`
+                  ${theme.typography.regular};
+                  font-size: 12px;
+                `}
+              >
+                {(itemLabel === 'Linear View' && jbrowseLinearError) ||
+                  (itemLabel === 'Circular View' && jbrowseCircularError)}
+              </div>
+            }
+            position="bottom"
+          >
+            <TransparentButton
+              onClick={() => {
+                const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
+                tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
+              }}
+              disabled={
+                (itemLabel === 'Linear View' && !jbrowseLinearEnabled) ||
+                (itemLabel === 'Circular View' && !jbrowseCircularEnabled)
+              }
+              css={css`
+                :disabled {
+                  color: ${theme.colors.grey_4};
+                }
+              `}
+            >
+              {itemLabel}
+            </TransparentButton>
+          </CustomTooltip>
+        )}
+      >
+        <div
+          css={css`
+            width: 105px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          {jbrowseLoading ? (
+            <Spinner fill={theme.colors.white} />
+          ) : (
+            RepositoryTabNames.GENOME_VIEWER
+          )}
+        </div>
+      </MultiSelectDropDown>
+    </>
+  );
 };
 
 export default JbrowseLaunchButton;

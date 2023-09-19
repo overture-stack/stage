@@ -118,7 +118,7 @@ const JbrowseEl = () => {
   const [error, setError] = useState<string>('');
 
   const handleError = (error: Error) => {
-    setError(jbrowseErrors.default);
+    setError(jbrowseErrors('jbrowseLinear').default);
     console.error(error);
   };
 
@@ -149,7 +149,13 @@ const JbrowseEl = () => {
               },
             }: {
               node: JbrowseQueryNode;
-            }) => checkJbrowseCompatibility({ file_access, file_type, index_file }),
+            }) =>
+              checkJbrowseCompatibility({
+                file_access,
+                file_type,
+                index_file,
+                jbrowseType: 'jbrowseLinear',
+              }),
           )
           .map(
             ({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
@@ -222,7 +228,7 @@ const JbrowseEl = () => {
             assemblyName={jbrowseAssemblyName}
             configuration={{
               theme: {
-                elevation: 0,
+                elevation: 0, // remove dropshadow
                 palette: { secondary: { main: theme.colors.accent } },
               },
             }}
@@ -240,17 +246,19 @@ const JbrowseEl = () => {
 const JbrowseWrapper = () => {
   // handle compatibility check before trying to load jbrowse,
   // in case the user comes to the jbrowse tab with an invalid selection.
-  const { jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
+  const { jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
+
+  // TODO check tabs context to see if linear or circular
 
   return jbrowseLoading ? (
     <OverlayLoader />
-  ) : jbrowseErrorText ? (
+  ) : jbrowseLinearError ? (
     <div
       css={css`
         padding-top: 8px;
       `}
     >
-      <ErrorNotification size="sm">{jbrowseErrorText}</ErrorNotification>
+      <ErrorNotification size="sm">{jbrowseLinearError}</ErrorNotification>
     </div>
   ) : (
     <JbrowseEl />
