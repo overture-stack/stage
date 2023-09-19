@@ -19,6 +19,7 @@
  *
  */
 
+import { Spinner } from '@/components/theme/icons';
 import { CustomTooltip } from '@/components/Tooltip';
 import { css, Theme, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
@@ -92,6 +93,8 @@ const JbrowseLaunchButton = () => {
 			<MultiSelectDropDown
 				theme={{
 					...dropdownTheme,
+					width: '140px',
+					height: '30px',
 					ListWrapper: {
 						...dropdownTheme.ListWrapper,
 						css: css`
@@ -137,7 +140,20 @@ const JbrowseLaunchButton = () => {
 					</CustomTooltip>
 				)}
 			>
-				Genome Viewer
+				<div
+					css={css`
+						width: 105px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+					`}
+				>
+					{jbrowseLoading ? (
+						<Spinner fill={theme.colors.white} />
+					) : (
+						RepositoryTabNames.GENOME_VIEWER
+					)}
+				</div>
 			</MultiSelectDropDown>
 		</>
 	);
