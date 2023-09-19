@@ -31,6 +31,7 @@ import SQON from '@overture-stack/sqon-builder';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
 import urlJoin from 'url-join';
+import { useTabsContext } from '../TabsContext';
 import { jbrowseAssemblyObject } from './assembly';
 import { jbrowseCircularDefaultSession, jbrowseLinearDefaultSession } from './defaultSession';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
@@ -42,7 +43,12 @@ import {
   ScoreDownloadResult,
 } from './types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
-import { checkJbrowseCompatibility, jbrowseAssemblyName, jbrowseErrors } from './utils';
+import {
+  checkJbrowseCompatibility,
+  jbrowseAssemblyName,
+  jbrowseErrors,
+  JbrowseTypes,
+} from './utils';
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -112,13 +118,16 @@ const JbrowseEl = () => {
   const { selectedRows } = useTableContext({
     callerName: 'Jbrowse - Wrapper',
   });
+  const { activeTab } = useTabsContext();
   const [compatibleFiles, setCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
   const [inputFiles, setInputFiles] = useState<JbrowseInput[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
+  const activeJbrowseType = activeTab as JbrowseTypes;
+
   const handleError = (error: Error) => {
-    setError(jbrowseErrors('jbrowseLinear').default);
+    setError(jbrowseErrors(activeJbrowseType).default);
     console.error(error);
   };
 
@@ -154,7 +163,7 @@ const JbrowseEl = () => {
                 file_access,
                 file_type,
                 index_file,
-                jbrowseType: 'jbrowseLinear',
+                jbrowseType: activeJbrowseType,
               }),
           )
           .map(
@@ -211,30 +220,34 @@ const JbrowseEl = () => {
         <ErrorNotification size="sm">{error}</ErrorNotification>
       ) : (
         <>
-          <JbrowseCircular
-            assembly={jbrowseAssemblyObject}
-            assemblyName={jbrowseAssemblyName}
-            configuration={{
-              theme: {
-                elevation: 0,
-                palette: { secondary: { main: theme.colors.accent } },
-              },
-            }}
-            defaultSession={jbrowseCircularDefaultSession}
-            selectedFiles={inputFiles}
-          />
-          <JbrowseLinear
-            assembly={jbrowseAssemblyObject}
-            assemblyName={jbrowseAssemblyName}
-            configuration={{
-              theme: {
-                elevation: 0, // remove dropshadow
-                palette: { secondary: { main: theme.colors.accent } },
-              },
-            }}
-            defaultSession={jbrowseLinearDefaultSession}
-            selectedFiles={inputFiles}
-          />
+          {activeJbrowseType === 'jbrowseCircular' && (
+            <JbrowseCircular
+              assembly={jbrowseAssemblyObject}
+              assemblyName={jbrowseAssemblyName}
+              configuration={{
+                theme: {
+                  elevation: 0,
+                  palette: { secondary: { main: theme.colors.accent } },
+                },
+              }}
+              defaultSession={jbrowseCircularDefaultSession}
+              selectedFiles={inputFiles}
+            />
+          )}
+          {activeJbrowseType === 'jbrowseLinear' && (
+            <JbrowseLinear
+              assembly={jbrowseAssemblyObject}
+              assemblyName={jbrowseAssemblyName}
+              configuration={{
+                theme: {
+                  elevation: 0, // remove dropshadow
+                  palette: { secondary: { main: theme.colors.accent } },
+                },
+              }}
+              defaultSession={jbrowseLinearDefaultSession}
+              selectedFiles={inputFiles}
+            />
+          )}
           <JbrowseSelectedFilesTable />
           {loading && <OverlayLoader />}
         </>

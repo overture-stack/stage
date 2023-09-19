@@ -29,8 +29,9 @@ import { useTableContext } from '@overture-stack/arranger-components';
 import SQON from '@overture-stack/sqon-builder';
 import { partition } from 'lodash';
 import { useEffect, useState } from 'react';
+import { useTabsContext } from '../TabsContext';
 import { JbrowseSelectedFilesQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors, JbrowseTypes } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -83,11 +84,14 @@ const JbrowseSelectedFilesTable = () => {
   const { selectedRows } = useTableContext({
     callerName: 'JBrowse - Selected Files Table',
   });
+  const { activeTab } = useTabsContext();
   const [tableData, setTableData] = useState<TableRecord[]>([]);
   const [compatibilityWarnings, setCompatibilityWarnings] = useState<string[]>([]);
   const [showTable, setShowTable] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+
+  const activeJbrowseType = activeTab as JbrowseTypes;
 
   useEffect(() => {
     setLoading(true);
@@ -119,7 +123,7 @@ const JbrowseSelectedFilesTable = () => {
               file_access,
               file_type,
               index_file,
-              jbrowseType: 'jbrowseLinear',
+              jbrowseType: activeJbrowseType,
             }),
         );
 
@@ -148,7 +152,7 @@ const JbrowseSelectedFilesTable = () => {
       })
       .catch(async (err) => {
         console.warn(err);
-        setError(jbrowseErrors('jbrowseLinear').default);
+        setError(jbrowseErrors(activeJbrowseType).default);
       })
       .finally(() => {
         setLoading(false);

@@ -23,8 +23,9 @@ import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { useTableContext } from '@overture-stack/arranger-components';
 import SQON from '@overture-stack/sqon-builder';
 import { useEffect, useState } from 'react';
+import { useTabsContext } from '../TabsContext';
 import { JbrowseQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors, MAX_JBROWSE_FILES } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors, JbrowseTypes, MAX_JBROWSE_FILES } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -52,12 +53,14 @@ const useJbrowseCompatibility = () => {
   const { selectedRows } = useTableContext({
     callerName: 'Jbrowse - Compatibility Check',
   });
+  const { activeTab } = useTabsContext();
   const [jbrowseCircularEnabled, setJbrowseCircularEnabled] = useState<boolean>(false);
   const [jbrowseLinearEnabled, setJbrowseLinearEnabled] = useState<boolean>(false);
-  const [jbrowseEnabled, setJbrowseEnabled] = useState<boolean>(false);
   const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
   const [jbrowseCircularError, setJbrowseCircularError] = useState<string>('');
   const [jbrowseLinearError, setJbrowseLinearError] = useState<string>('');
+
+  const activeJbrowseType = activeTab as JbrowseTypes;
 
   const resolveJbrowse = ({
     linearError = '',
@@ -83,9 +86,9 @@ const useJbrowseCompatibility = () => {
     const selectedRowsCount = selectedRows.length;
     const selectedRowsError: string =
       selectedRowsCount === 0
-        ? jbrowseErrors('jbrowseLinear').selectedFilesUnderLimit
+        ? jbrowseErrors(activeJbrowseType).selectedFilesUnderLimit
         : selectedRowsCount > MAX_JBROWSE_FILES
-        ? jbrowseErrors('jbrowseLinear').selectedFilesOverLimit
+        ? jbrowseErrors(activeJbrowseType).selectedFilesOverLimit
         : '';
 
     if (selectedRowsError) {
@@ -117,16 +120,16 @@ const useJbrowseCompatibility = () => {
                 file_access,
                 file_type,
                 index_file,
-                jbrowseType: 'jbrowseLinear',
+                jbrowseType: activeJbrowseType,
               }),
           );
           compatibleFilesError =
             jbrowseCompatibleFiles.length === 0
-              ? jbrowseErrors('jbrowseLinear').compatibleFilesUnderLimit
+              ? jbrowseErrors(activeJbrowseType).compatibleFilesUnderLimit
               : '';
         })
         .catch(async (err: Error) => {
-          compatibleFilesError = jbrowseErrors('jbrowseLinear').default;
+          compatibleFilesError = jbrowseErrors(activeJbrowseType).default;
           console.error(err);
         })
         .finally(() => {

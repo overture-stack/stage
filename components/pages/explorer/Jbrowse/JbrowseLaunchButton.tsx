@@ -90,6 +90,14 @@ const JbrowseLaunchButton = () => {
     closeDropDownFn();
   };
 
+  console.log({
+    jbrowseCircularEnabled,
+    jbrowseLinearEnabled,
+    jbrowseCircularError,
+    jbrowseLinearError,
+    jbrowseLoading,
+  });
+
   return (
     <>
       <MultiSelectDropDown
