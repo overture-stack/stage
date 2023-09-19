@@ -19,15 +19,13 @@
  *
  */
 
-import Button from '@/components/Button';
 import { CustomTooltip } from '@/components/Tooltip';
 import { css, Theme, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
-import { ButtonWrapper } from '../ActionBar';
-import { RepositoryTabNames } from '../RepositoryContent';
 import { useTabsContext } from '../TabsContext';
+import { RepositoryTabKeys, RepositoryTabNames } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 
 export const getDropdownTheme = (theme: Theme) => ({
@@ -56,12 +54,38 @@ export const getDropdownTheme = (theme: Theme) => ({
 	},
 });
 
+const jbrowseOptions: Record<string, RepositoryTabKeys> = {
+	'Linear View': RepositoryTabKeys.JBROWSE_LINEAR,
+	'Circular View': RepositoryTabKeys.JBROWSE_CIRCULAR,
+};
+
 const JbrowseLaunchButton = () => {
 	const theme = useTheme();
-	const { handleChangeTab, handleOpenTab, openTabs } = useTabsContext();
+	const { handleChangeTab, handleCloseTab, handleOpenTab, openTabs } = useTabsContext();
 	const { jbrowseEnabled, jbrowseErrorText, jbrowseLoading } = useJbrowseCompatibility();
 
 	const dropdownTheme = getDropdownTheme(theme);
+
+	const handleJbrowseSelect = (
+		jbrowseOptionKey: RepositoryTabKeys,
+		closeDropDownFn: () => void,
+	) => {
+		if (find(openTabs, { key: jbrowseOptionKey })) {
+			// if selected option has a tab open, go to that tab
+			handleChangeTab(jbrowseOptionKey);
+		} else {
+			if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
+				// if there's another jbrowse tab open, close it
+				handleCloseTab(find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })?.key || '');
+			}
+			handleOpenTab({
+				name: RepositoryTabNames.GENOME_VIEWER,
+				key: jbrowseOptionKey,
+				canClose: true,
+			});
+		}
+		closeDropDownFn();
+	};
 
 	return (
 		<>
@@ -72,9 +96,8 @@ const JbrowseLaunchButton = () => {
 						...dropdownTheme.ListWrapper,
 						css: css`
 							left: -2px;
-							right: auto !important;
+							right: auto;
 							width: 9em;
-							overflow: hidden;
 						`,
 					},
 				}}
@@ -83,69 +106,39 @@ const JbrowseLaunchButton = () => {
 				className="genome-viewer-dropdown"
 				disabled={false}
 				itemSelectionLegend="Select one of the genome viewer options"
-				items={['Linear View', 'Circular View']}
-				itemToString={(itemLabel, closeDropDownFn) => {
-					// on click... close dropdown
-					return (
-						<TransparentButton
-							css={css`
+				items={Object.keys(jbrowseOptions)}
+				itemToString={(itemLabel, closeDropDownFn) => (
+					<CustomTooltip
+						css={css`
+							width: 100%;
+							button {
 								width: 100%;
-							`}
-							onClick={() => {
-								// set linear or clinical
-								// close the dropdown
-							}}
+							}
+						`}
+						disabled={jbrowseEnabled}
+						unmountHTMLWhenHide
+						html={
+							<div
+								css={css`
+									${theme.typography.regular};
+									font-size: 12px;
+								`}
+							>
+								{jbrowseErrorText}
+							</div>
+						}
+						position="bottom"
+					>
+						<TransparentButton
+							onClick={() => handleJbrowseSelect(jbrowseOptions[itemLabel], closeDropDownFn)}
 						>
 							{itemLabel}
 						</TransparentButton>
-					);
-				}}
+					</CustomTooltip>
+				)}
 			>
 				Genome Viewer
 			</MultiSelectDropDown>
-			<CustomTooltip
-				disabled={jbrowseEnabled}
-				unmountHTMLWhenHide
-				arrow
-				html={
-					<div
-						css={css`
-							${theme.typography.regular};
-							font-size: 12px;
-						`}
-					>
-						{jbrowseErrorText}
-					</div>
-				}
-				position="right"
-			>
-				<ButtonWrapper>
-					<Button
-						isLoading={jbrowseLoading}
-						css={css`
-							padding: 2px 10px;
-						`}
-						disabled={!jbrowseEnabled}
-						onClick={() => {
-							// go to jbrowse tab if open, otherwise add jbrowse tab
-							if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
-								handleChangeTab(RepositoryTabNames.GENOME_VIEWER);
-							} else {
-								handleOpenTab({ name: RepositoryTabNames.GENOME_VIEWER, canClose: true });
-							}
-						}}
-					>
-						<div
-							css={css`
-								display: flex;
-								align-items: center;
-							`}
-						>
-							<span>{RepositoryTabNames.GENOME_VIEWER}</span>
-						</div>
-					</Button>
-				</ButtonWrapper>
-			</CustomTooltip>
 		</>
 	);
 };

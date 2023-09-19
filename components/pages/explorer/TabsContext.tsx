@@ -22,18 +22,19 @@
 import { findIndex } from 'lodash';
 import { createContext, PropsWithChildren, ReactElement, useContext, useState } from 'react';
 
-import { RepositoryTabNames } from './RepositoryContent';
+import { RepositoryTabKeys, RepositoryTabNames } from './types';
 
 export type TabRecord = {
 	name: string;
+	key: string;
 	canClose: boolean;
 };
 
 export interface TabsContextInterface {
 	activeTab: string | null;
 	handleOpenTab: (tab: TabRecord) => void;
-	handleChangeTab: (tabName: string) => void;
-	handleCloseTab: (tabName: string) => void;
+	handleChangeTab: (tabKey: string) => void;
+	handleCloseTab: (tabKey: string) => void;
 	openTabs: TabRecord[] | [];
 }
 
@@ -42,31 +43,34 @@ export const TabsContext = createContext<TabsContextInterface>({
 	openTabs: [],
 } as TabsContextInterface);
 
+// tab KEYS are unique
+// tab names can be used multiple times
+
 export const TabsContextProvider = ({
-	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false }],
+	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
 	children,
 }: PropsWithChildren<{
 	defaultTabs?: TabRecord[];
 }>): ReactElement<TabsContextInterface> => {
 	const [openTabs, setOpenTabs] = useState<TabRecord[]>(defaultTabs);
-	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.name || null);
+	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null);
 
 	const handleOpenTab = (tab: TabRecord) => {
 		setOpenTabs(openTabs.concat(tab));
-		setActiveTab(tab.name);
+		setActiveTab(tab.key);
 	};
 
-	const handleCloseTab = (tabName: string) => {
+	const handleCloseTab = (tabKey: string) => {
 		// if removed tab was active, set active tab to previous tab in the list
-		if (activeTab === tabName) {
-			const nextActiveTab = openTabs[findIndex(openTabs, { name: tabName }) - 1 || 0]?.name || null;
+		if (activeTab === tabKey) {
+			const nextActiveTab = openTabs[findIndex(openTabs, { key: tabKey }) - 1 || 0]?.key || null;
 			handleChangeTab(nextActiveTab);
 		}
-		const nextOpenTabs = openTabs.filter((openTab) => openTab.name !== tabName);
+		const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
 		setOpenTabs(nextOpenTabs);
 	};
-	const handleChangeTab = (tabName: string | null) => {
-		setActiveTab(tabName);
+	const handleChangeTab = (tabKey: string | null) => {
+		setActiveTab(tabKey);
 	};
 
 	const contextValues = {

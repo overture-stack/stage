@@ -37,12 +37,8 @@ import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
 import { TabsContextProvider, useTabsContext } from './TabsContext';
+import { RepositoryTabNames } from './types';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
-
-export enum RepositoryTabNames {
-	FILES = 'Files',
-	GENOME_VIEWER = 'Genome Viewer',
-}
 
 const getTableConfigs = ({
 	apiHost,
@@ -90,7 +86,6 @@ const getTableConfigs = ({
 				),
 			},
 			DropDown: getDropdownTheme(theme),
-
 			HeaderRow: {
 				borderColor: theme.colors.grey_3,
 				css: css`

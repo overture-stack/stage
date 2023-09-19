@@ -19,50 +19,13 @@
  *
  */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
-import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
-import { useTabsContext } from './TabsContext';
-import { RepositoryTabNames } from './types';
+export enum RepositoryTabNames {
+	FILES = 'Files',
+	GENOME_VIEWER = 'Genome Viewer',
+}
 
-export const ButtonWrapper = styled('div')`
-	margin-left: 0.3rem;
-	margin-bottom: 0.3rem;
-`;
-
-const ActionBar = () => {
-	const { activeTab } = useTabsContext();
-
-	return (
-		<div
-			className="buttons"
-			css={css`
-				display: flex;
-				list-style: none;
-				margin: 0 0 0 -0.3rem;
-				justify-content: space-between;
-				align-items: center;
-				padding: 0;
-			`}
-		>
-			<JbrowseLaunchButton />
-			<div
-				css={css`
-					display: flex;
-				`}
-			>
-				{activeTab === RepositoryTabNames.FILES && (
-					<ButtonWrapper>
-						<ColumnsSelectButton />
-					</ButtonWrapper>
-				)}
-				<ButtonWrapper>
-					<DownloadButton />
-				</ButtonWrapper>
-			</div>
-		</div>
-	);
-};
-
-export default ActionBar;
+export enum RepositoryTabKeys {
+	FILES = 'files',
+	JBROWSE_CIRCULAR = 'jbrowse-circular',
+	JBROWSE_LINEAR = 'jbrowse-linear',
+}
