@@ -73,6 +73,11 @@ const JbrowseLaunchButton = () => {
           ...dropdownTheme,
           width: '140px',
           height: '30px',
+          css: css`
+            .genome-viewer-dropdown * {
+              overflow: hidden !important;
+            }
+          `,
           ListWrapper: {
             ...dropdownTheme.ListWrapper,
             css: css`
