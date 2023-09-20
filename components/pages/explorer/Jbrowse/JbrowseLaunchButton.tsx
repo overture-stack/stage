@@ -78,7 +78,7 @@ const JbrowseLaunchButton = () => {
       // if selected option has a tab open, go to that tab
       handleChangeTab(jbrowseOptionKey);
     } else if (alternateJbrowseTab) {
-      // another jbrowse tab is open, but different type
+      // update existing jbrowse tab if available - only 1 jbrowse tab open at a time
       handleUpdateTab(alternateJbrowseTab.key, { key: jbrowseOptionKey });
       handleChangeTab(jbrowseOptionKey);
     } else {
