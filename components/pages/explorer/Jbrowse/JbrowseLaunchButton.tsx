@@ -67,17 +67,20 @@ const JbrowseLaunchButton = () => {
   const dropdownTheme = getDropdownTheme(theme);
 
   return (
-    <>
+    <div
+      css={css`
+        .genome-viewer-dropdown * {
+          // stops scrollbar on dropdown
+          // positions tooltip properly
+          overflow: hidden !important;
+        }
+      `}
+    >
       <MultiSelectDropDown
         theme={{
           ...dropdownTheme,
           width: '140px',
           height: '30px',
-          css: css`
-            .genome-viewer-dropdown * {
-              overflow: hidden !important;
-            }
-          `,
           ListWrapper: {
             ...dropdownTheme.ListWrapper,
             css: css`
@@ -100,6 +103,7 @@ const JbrowseLaunchButton = () => {
                 width: 100%;
               }
             `}
+            arrow
             disabled={
               (itemLabel === 'Linear View' && !jbrowseLinearError) ||
               (itemLabel === 'Circular View' && !jbrowseCircularError)
@@ -116,7 +120,7 @@ const JbrowseLaunchButton = () => {
                   (itemLabel === 'Circular View' && jbrowseCircularError)}
               </div>
             }
-            position="bottom"
+            position="left"
           >
             <TransparentButton
               onClick={() => {
@@ -153,7 +157,7 @@ const JbrowseLaunchButton = () => {
           )}
         </div>
       </MultiSelectDropDown>
-    </>
+    </div>
   );
 };
 
