@@ -27,6 +27,11 @@ export type JbrowseTypes = 'jbrowseCircular' | 'jbrowseLinear';
 export type JbrowseTitles = 'Circular View' | 'Linear View';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
+export enum JbrowseTypeNames {
+  JBROWSE_CIRCULAR = 'jbrowseCircular',
+  JBROWSE_LINEAR = 'jbrowseLinear',
+}
+
 export const jbrowseDict: {
   allowedFileTypes: JbrowseFileTypes[];
   jbrowseType: JbrowseTypes;
@@ -36,14 +41,14 @@ export const jbrowseDict: {
 }[] = [
   {
     allowedFileTypes: ['VCF'],
-    jbrowseType: 'jbrowseCircular',
+    jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
     tabKey: RepositoryTabKeys.JBROWSE_CIRCULAR,
     tabName: RepositoryTabNames.GENOME_VIEWER,
     title: 'Circular View',
   },
   {
     allowedFileTypes: ['BAM', 'VCF'],
-    jbrowseType: 'jbrowseLinear',
+    jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
     tabKey: RepositoryTabKeys.JBROWSE_LINEAR,
     tabName: RepositoryTabNames.GENOME_VIEWER,
     title: 'Linear View',

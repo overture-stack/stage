@@ -47,6 +47,7 @@ import {
   checkJbrowseCompatibility,
   jbrowseAssemblyName,
   jbrowseErrors,
+  JbrowseTypeNames,
   JbrowseTypes,
 } from './utils';
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
@@ -205,6 +206,19 @@ const JbrowseEl = () => {
       .finally(() => setTimeout(() => setLoading(false), 1000));
   }, [compatibleFiles]);
 
+  const jbrowseProps = {
+    assembly: jbrowseAssemblyObject,
+    assemblyName: jbrowseAssemblyName,
+    configuration: {
+      theme: {
+        elevation: 0,
+        palette: { secondary: { main: theme.colors.accent } },
+      },
+    },
+    defaultSession: jbrowseCircularDefaultSession,
+    selectedFiles: inputFiles,
+  };
+
   return (
     <div
       css={css`
@@ -220,33 +234,11 @@ const JbrowseEl = () => {
         <ErrorNotification size="sm">{error}</ErrorNotification>
       ) : (
         <>
-          {activeJbrowseType === 'jbrowseCircular' && (
-            <JbrowseCircular
-              assembly={jbrowseAssemblyObject}
-              assemblyName={jbrowseAssemblyName}
-              configuration={{
-                theme: {
-                  elevation: 0,
-                  palette: { secondary: { main: theme.colors.accent } },
-                },
-              }}
-              defaultSession={jbrowseCircularDefaultSession}
-              selectedFiles={inputFiles}
-            />
+          {activeJbrowseType === JbrowseTypeNames.JBROWSE_CIRCULAR && (
+            <JbrowseCircular {...jbrowseProps} defaultSession={jbrowseCircularDefaultSession} />
           )}
-          {activeJbrowseType === 'jbrowseLinear' && (
-            <JbrowseLinear
-              assembly={jbrowseAssemblyObject}
-              assemblyName={jbrowseAssemblyName}
-              configuration={{
-                theme: {
-                  elevation: 0, // remove dropshadow
-                  palette: { secondary: { main: theme.colors.accent } },
-                },
-              }}
-              defaultSession={jbrowseLinearDefaultSession}
-              selectedFiles={inputFiles}
-            />
+          {activeJbrowseType === JbrowseTypeNames.JBROWSE_LINEAR && (
+            <JbrowseLinear {...jbrowseProps} defaultSession={jbrowseLinearDefaultSession} />
           )}
           <JbrowseSelectedFilesTable />
           {loading && <OverlayLoader />}
@@ -259,19 +251,22 @@ const JbrowseEl = () => {
 const JbrowseWrapper = () => {
   // handle compatibility check before trying to load jbrowse,
   // in case the user comes to the jbrowse tab with an invalid selection.
-  const { jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
+  const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
+  const { activeTab } = useTabsContext();
 
-  // TODO check tabs context to see if linear or circular
+  const errorDisplay =
+    (activeTab === JbrowseTypeNames.JBROWSE_LINEAR && jbrowseLinearError) ||
+    (activeTab === JbrowseTypeNames.JBROWSE_CIRCULAR && jbrowseCircularError);
 
   return jbrowseLoading ? (
     <OverlayLoader />
-  ) : jbrowseLinearError ? (
+  ) : errorDisplay ? (
     <div
       css={css`
         padding-top: 8px;
       `}
     >
-      <ErrorNotification size="sm">{jbrowseLinearError}</ErrorNotification>
+      <ErrorNotification size="sm">{errorDisplay}</ErrorNotification>
     </div>
   ) : (
     <JbrowseEl />
