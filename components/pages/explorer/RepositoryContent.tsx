@@ -30,9 +30,9 @@ import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import { getConfig } from '@/global/config';
 
+import { getDropdownTheme } from '@/components/theme/getDropdownTheme';
 import { useEffect } from 'react';
 import ActionBar from './ActionBar';
-import { getDropdownTheme } from './Jbrowse/JbrowseLaunchButton';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
@@ -41,176 +41,176 @@ import { RepositoryTabKeys } from './types';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
 const getTableConfigs = ({
-  apiHost,
-  customExporters,
-  theme,
+	apiHost,
+	customExporters,
+	theme,
 }: {
-  apiHost: string;
-  customExporters?: CustomExporterInput;
-  theme: DMSThemeInterface;
+	apiHost: string;
+	customExporters?: CustomExporterInput;
+	theme: DMSThemeInterface;
 }): UseThemeContextProps => ({
-  callerName: 'RepositoryContent',
-  components: {
-    Table: {
-      // functionality
-      hideLoader: true,
+	callerName: 'RepositoryContent',
+	components: {
+		Table: {
+			// functionality
+			hideLoader: true,
 
-      // appearance
-      background: theme.colors.white,
-      borderColor: theme.colors.grey_3,
-      css: css`
-        ${theme.shadow.default}
-      `,
+			// appearance
+			background: theme.colors.white,
+			borderColor: theme.colors.grey_3,
+			css: css`
+				${theme.shadow.default}
+			`,
 
-      // Child components
-      CountDisplay: {
-        fontColor: 'inherit',
-      },
-      DownloadButton: {
-        customExporters,
-        downloadUrl: urlJoin(apiHost, 'download'),
-        label: () => (
-          <>
-            <Download
-              fill={theme.colors.white}
-              style={css`
-                margin-right: 0.2rem;
+			// Child components
+			CountDisplay: {
+				fontColor: 'inherit',
+			},
+			DownloadButton: {
+				customExporters,
+				downloadUrl: urlJoin(apiHost, 'download'),
+				label: () => (
+					<>
+						<Download
+							fill={theme.colors.white}
+							style={css`
+								margin-right: 0.2rem;
 
-                [disabled] & > path {
-                  fill: ${theme.colors.grey_5};
-                }
-              `}
-            />{' '}
-            Download
-          </>
-        ),
-      },
-      DropDown: getDropdownTheme(theme),
-      HeaderRow: {
-        borderColor: theme.colors.grey_3,
-        css: css`
-          ${theme.typography.data}
-        `,
-        fontColor: theme.colors.accent_dark,
-        fontSize: '13px',
-        fontWeight: 'bold',
-        lineHeight: '2rem',
-        sortingHighlightColor: theme.colors.secondary,
-      },
-      MaxRowsSelector: {
-        fontColor: 'inherit',
-      },
-      Row: {
-        css: css`
-          &:nth-of-type(2n-1):not(.selected) {
-            background-color: ${theme.colors.grey_1};
-          }
-        `,
-        hoverBackground: theme.colors.grey_highlight,
-        lineHeight: '1.5rem',
-        selectedBackground: theme.colors.secondary_light,
-        verticalBorderColor: theme.colors.grey_3,
-      },
-      TableWrapper: {
-        margin: '0.5rem 0',
-      },
-    },
-  },
+								[disabled] & > path {
+									fill: ${theme.colors.grey_5};
+								}
+							`}
+						/>{' '}
+						Download
+					</>
+				),
+			},
+			DropDown: getDropdownTheme(theme),
+			HeaderRow: {
+				borderColor: theme.colors.grey_3,
+				css: css`
+					${theme.typography.data}
+				`,
+				fontColor: theme.colors.accent_dark,
+				fontSize: '13px',
+				fontWeight: 'bold',
+				lineHeight: '2rem',
+				sortingHighlightColor: theme.colors.secondary,
+			},
+			MaxRowsSelector: {
+				fontColor: 'inherit',
+			},
+			Row: {
+				css: css`
+					&:nth-of-type(2n-1):not(.selected) {
+						background-color: ${theme.colors.grey_1};
+					}
+				`,
+				hoverBackground: theme.colors.grey_highlight,
+				lineHeight: '1.5rem',
+				selectedBackground: theme.colors.secondary_light,
+				verticalBorderColor: theme.colors.grey_3,
+			},
+			TableWrapper: {
+				margin: '0.5rem 0',
+			},
+		},
+	},
 });
 
 const visualizationTabs: RepositoryTabKeys[] = [
-  RepositoryTabKeys.JBROWSE_CIRCULAR,
-  RepositoryTabKeys.JBROWSE_LINEAR,
+	RepositoryTabKeys.JBROWSE_CIRCULAR,
+	RepositoryTabKeys.JBROWSE_LINEAR,
 ];
 
 const ContentDisplay = () => {
-  const { activeTab, handleChangeTab } = useTabsContext();
-  const { setVisualizationFocus } = useVisualizationFocusContext();
+	const { activeTab, handleChangeTab } = useTabsContext();
+	const { setVisualizationFocus } = useVisualizationFocusContext();
 
-  // toggle visualization focus depending on the user's current tab
-  useEffect(() => {
-    const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabKeys);
-    setVisualizationFocus(isVisualizationActive);
-  }, [activeTab]);
+	// toggle visualization focus depending on the user's current tab
+	useEffect(() => {
+		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabKeys);
+		setVisualizationFocus(isVisualizationActive);
+	}, [activeTab]);
 
-  if (activeTab === RepositoryTabKeys.FILES) {
-    return (
-      <>
-        <Table />
-        <TablePagination />
-      </>
-    );
-  } else if (visualizationTabs.includes(activeTab as RepositoryTabKeys)) {
-    return <JbrowseWrapper />;
-  } else {
-    handleChangeTab(RepositoryTabKeys.FILES);
-    return null;
-  }
+	if (activeTab === RepositoryTabKeys.FILES) {
+		return (
+			<>
+				<Table />
+				<TablePagination />
+			</>
+		);
+	} else if (visualizationTabs.includes(activeTab as RepositoryTabKeys)) {
+		return <JbrowseWrapper />;
+	} else {
+		handleChangeTab(RepositoryTabKeys.FILES);
+		return null;
+	}
 };
 
 const RepositoryContent = () => {
-  const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
-  const theme = useTheme();
+	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const theme = useTheme();
 
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
-    .filter((field: string) => field.trim()) // break it into arrays, and ensure there's no empty field names
-    .map((fieldName: string) => fieldName.replace(/['"]+/g, '').trim());
-  const customExporters = [
-    { label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-    { label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-    {
-      label: () => (
-        <span
-          css={css`
-            border-top: 1px solid ${theme.colors.grey_3};
-            margin-top: -3px;
-            padding-top: 7px;
-            white-space: pre-line;
+	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
+		.filter((field: string) => field.trim()) // break it into arrays, and ensure there's no empty field names
+		.map((fieldName: string) => fieldName.replace(/['"]+/g, '').trim());
+	const customExporters = [
+		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
+		{
+			label: () => (
+				<span
+					css={css`
+						border-top: 1px solid ${theme.colors.grey_3};
+						margin-top: -3px;
+						padding-top: 7px;
+						white-space: pre-line;
 
-            a {
-              margin-left: 3px;
-            }
-          `}
-        >
-          To download files using a file manifest, please follow these
-          <StyledLink
-            css={css`
-              line-height: inherit;
-            `}
-            href="https://overture.bio/documentation/score/user-guide/download"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            instructions
-          </StyledLink>
-          .
-        </span>
-      ),
-    },
-  ];
+						a {
+							margin-left: 3px;
+						}
+					`}
+				>
+					To download files using a file manifest, please follow these
+					<StyledLink
+						css={css`
+							line-height: inherit;
+						`}
+						href="https://overture.bio/documentation/score/user-guide/download"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						instructions
+					</StyledLink>
+					.
+				</span>
+			),
+		},
+	];
 
-  useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
+	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
 
-  return (
-    <article
-      css={css`
-        background-color: ${theme.colors.white};
-        border-radius: 5px;
-        margin-bottom: 12px;
-        padding: 8px;
-        ${theme.shadow.default};
-      `}
-    >
-      <TableContextProvider>
-        <TabsContextProvider>
-          <ActionBar />
-          <Tabs />
-          <ContentDisplay />
-        </TabsContextProvider>
-      </TableContextProvider>
-    </article>
-  );
+	return (
+		<article
+			css={css`
+				background-color: ${theme.colors.white};
+				border-radius: 5px;
+				margin-bottom: 12px;
+				padding: 8px;
+				${theme.shadow.default};
+			`}
+		>
+			<TableContextProvider>
+				<TabsContextProvider>
+					<ActionBar />
+					<Tabs />
+					<ContentDisplay />
+				</TabsContextProvider>
+			</TableContextProvider>
+		</article>
+	);
 };
 
 export default RepositoryContent;

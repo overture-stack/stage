@@ -19,9 +19,10 @@
  *
  */
 
+import { getDropdownTheme } from '@/components/theme/getDropdownTheme';
 import { Spinner } from '@/components/theme/icons';
 import { CustomTooltip } from '@/components/Tooltip';
-import { css, Theme, useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
@@ -29,32 +30,6 @@ import { useTabsContext } from '../TabsContext';
 import { RepositoryTabKeys, RepositoryTabNames } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { jbrowseDict, JbrowseTitles } from './utils';
-
-export const getDropdownTheme = (theme: Theme) => ({
-  arrowColor: theme.colors.white,
-  arrowTransition: 'all 0s',
-  background: theme.colors.accent,
-  borderColor: theme.colors.accent,
-  css: css`
-    ${theme.typography.subheading2}
-    border-width: 1px;
-    line-height: 24px;
-  `,
-  fontColor: theme.colors.white,
-  disabledFontColor: theme.colors.grey_5,
-  hoverBackground: theme.colors.accent_dark,
-  fontSize: '14px',
-  padding: '2px 10px',
-  ListWrapper: {
-    background: theme.colors.white,
-    css: css`
-      ${theme.shadow.default},
-    `,
-    fontColor: theme.colors.black,
-    fontSize: '0.7rem',
-    hoverBackground: theme.colors.grey_2,
-  },
-});
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
@@ -66,8 +41,6 @@ const JbrowseLaunchButton = () => {
     jbrowseLinearError,
     jbrowseLoading,
   } = useJbrowseCompatibility();
-
-  const dropdownTheme = getDropdownTheme(theme);
 
   const handleJbrowseSelect = (
     jbrowseOptionKey: RepositoryTabKeys,
@@ -90,6 +63,8 @@ const JbrowseLaunchButton = () => {
     }
     closeDropDownFn();
   };
+
+  const dropdownTheme = getDropdownTheme(theme);
 
   return (
     <>
