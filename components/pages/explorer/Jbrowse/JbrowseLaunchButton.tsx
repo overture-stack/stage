@@ -58,7 +58,7 @@ export const getDropdownTheme = (theme: Theme) => ({
 
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
-  const { handleChangeTab, handleCloseTab, handleOpenTab, openTabs } = useTabsContext();
+  const { handleChangeTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
   const {
     jbrowseCircularEnabled,
     jbrowseLinearEnabled,
@@ -73,14 +73,15 @@ const JbrowseLaunchButton = () => {
     jbrowseOptionKey: RepositoryTabKeys,
     closeDropDownFn: () => void,
   ) => {
+    const alternateJbrowseTab = find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER });
     if (find(openTabs, { key: jbrowseOptionKey })) {
       // if selected option has a tab open, go to that tab
       handleChangeTab(jbrowseOptionKey);
+    } else if (alternateJbrowseTab) {
+      // another jbrowse tab is open, but different type
+      handleUpdateTab(alternateJbrowseTab.key, { key: jbrowseOptionKey });
+      handleChangeTab(jbrowseOptionKey);
     } else {
-      if (find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })) {
-        // if there's another jbrowse tab open, close it
-        handleCloseTab(find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER })?.key || '');
-      }
       handleOpenTab({
         name: RepositoryTabNames.GENOME_VIEWER,
         key: jbrowseOptionKey,
@@ -89,14 +90,6 @@ const JbrowseLaunchButton = () => {
     }
     closeDropDownFn();
   };
-
-  console.log({
-    jbrowseCircularEnabled,
-    jbrowseLinearEnabled,
-    jbrowseCircularError,
-    jbrowseLinearError,
-    jbrowseLoading,
-  });
 
   return (
     <>

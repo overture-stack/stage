@@ -31,7 +31,7 @@ import { partition } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTabsContext } from '../TabsContext';
 import { JbrowseSelectedFilesQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors, JbrowseTypes } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors, JbrowseTypeNames } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -91,7 +91,7 @@ const JbrowseSelectedFilesTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
-  const activeJbrowseType = activeTab as JbrowseTypes;
+  const activeJbrowseType = activeTab as JbrowseTypeNames;
 
   useEffect(() => {
     setLoading(true);

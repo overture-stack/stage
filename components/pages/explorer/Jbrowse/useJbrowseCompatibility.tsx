@@ -130,7 +130,7 @@ const useJbrowseCompatibility = () => {
                 }),
             ).length;
 
-          resolveJbrowse({
+          const errorsUnderLimit = {
             ...(getCompatibleFilesCount(JbrowseTypeNames.JBROWSE_LINEAR) === 0
               ? {
                   linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR)
@@ -143,13 +143,16 @@ const useJbrowseCompatibility = () => {
                     .compatibleFilesUnderLimit,
                 }
               : {}),
-          });
+          };
+
+          resolveJbrowse(errorsUnderLimit);
         })
         .catch(async (err: Error) => {
-          resolveJbrowse({
+          const errorsDefault = {
             circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).default,
             linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).default,
-          });
+          };
+          resolveJbrowse(errorsDefault);
           console.error(err);
         });
     }

@@ -25,63 +25,73 @@ import { createContext, PropsWithChildren, ReactElement, useContext, useState } 
 import { RepositoryTabKeys, RepositoryTabNames } from './types';
 
 export type TabRecord = {
-	name: string;
-	key: string;
-	canClose: boolean;
+  name: string;
+  key: string;
+  canClose: boolean;
 };
 
 export interface TabsContextInterface {
-	activeTab: string | null;
-	handleOpenTab: (tab: TabRecord) => void;
-	handleChangeTab: (tabKey: string) => void;
-	handleCloseTab: (tabKey: string) => void;
-	openTabs: TabRecord[] | [];
+  activeTab: string | null;
+  handleChangeTab: (tabKey: string) => void;
+  handleCloseTab: (tabKey: string) => void;
+  handleOpenTab: (tab: TabRecord) => void;
+  handleUpdateTab: (tabKey: string, updateObject: Partial<TabRecord>) => void;
+  openTabs: TabRecord[] | [];
 }
 
 export const TabsContext = createContext<TabsContextInterface>({
-	activeTab: null,
-	openTabs: [],
+  activeTab: null,
+  openTabs: [],
 } as TabsContextInterface);
 
 // tab KEYS are unique
 // tab names can be used multiple times
 
 export const TabsContextProvider = ({
-	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
-	children,
+  defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
+  children,
 }: PropsWithChildren<{
-	defaultTabs?: TabRecord[];
+  defaultTabs?: TabRecord[];
 }>): ReactElement<TabsContextInterface> => {
-	const [openTabs, setOpenTabs] = useState<TabRecord[]>(defaultTabs);
-	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null);
+  const [openTabs, setOpenTabs] = useState<TabRecord[]>(defaultTabs);
+  const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null);
 
-	const handleOpenTab = (tab: TabRecord) => {
-		setOpenTabs(openTabs.concat(tab));
-		setActiveTab(tab.key);
-	};
+  const handleOpenTab = (tab: TabRecord) => {
+    setOpenTabs(openTabs.concat(tab));
+    setActiveTab(tab.key);
+  };
 
-	const handleCloseTab = (tabKey: string) => {
-		// if removed tab was active, set active tab to previous tab in the list
-		if (activeTab === tabKey) {
-			const nextActiveTab = openTabs[findIndex(openTabs, { key: tabKey }) - 1 || 0]?.key || null;
-			handleChangeTab(nextActiveTab);
-		}
-		const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
-		setOpenTabs(nextOpenTabs);
-	};
-	const handleChangeTab = (tabKey: string | null) => {
-		setActiveTab(tabKey);
-	};
+  const handleCloseTab = (tabKey: string) => {
+    // if removed tab was active, set active tab to previous tab in the list
+    if (activeTab === tabKey) {
+      const nextActiveTab = openTabs[findIndex(openTabs, { key: tabKey }) - 1 || 0]?.key || null;
+      handleChangeTab(nextActiveTab);
+    }
+    const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
+    setOpenTabs(nextOpenTabs);
+  };
 
-	const contextValues = {
-		activeTab,
-		handleOpenTab,
-		handleChangeTab,
-		handleCloseTab,
-		openTabs,
-	};
+  const handleUpdateTab = (tabKey: string, updateObject: Partial<TabRecord>) => {
+    const nextOpenTabs = openTabs.map((tab) =>
+      tab.key === tabKey ? { ...tab, ...updateObject } : tab,
+    );
+    setOpenTabs(nextOpenTabs);
+  };
 
-	return <TabsContext.Provider value={contextValues}>{children}</TabsContext.Provider>;
+  const handleChangeTab = (tabKey: string | null) => {
+    setActiveTab(tabKey);
+  };
+
+  const contextValues = {
+    activeTab,
+    handleChangeTab,
+    handleCloseTab,
+    handleOpenTab,
+    handleUpdateTab,
+    openTabs,
+  };
+
+  return <TabsContext.Provider value={contextValues}>{children}</TabsContext.Provider>;
 };
 
 export const useTabsContext = (): TabsContextInterface => useContext(TabsContext);

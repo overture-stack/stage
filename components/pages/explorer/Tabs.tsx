@@ -27,125 +27,125 @@ import DismissIcon from '@/components/theme/icons/dismiss';
 import { useTabsContext } from './TabsContext';
 
 const TabsContainer = styled('div')`
-	margin: 10px 0 -8px 2px;
+  margin: 10px 0 -8px 2px;
 `;
 
 const TabWrapper = styled('div')`
-	position: relative;
-	display: inline-block;
-	height: 32px;
-	margin: 0 13px;
-	z-index: 2;
-	box-sizing: border-box;
-	min-width: 95px;
-	padding: 0 0 1px 0;
-	cursor: pointer;
-	border: 0;
-	background: transparent;
-	color: ${({ theme }) => theme.colors.black};
+  position: relative;
+  display: inline-block;
+  height: 32px;
+  margin: 0 13px;
+  z-index: 2;
+  box-sizing: border-box;
+  min-width: 95px;
+  padding: 0 0 1px 0;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Tab = styled('div')`
-	border-color: ${({ theme }) => theme.colors.grey_4};
-	border-width: 1px 0 0 0;
-	border-style: solid;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
-		active ? theme?.colors.white : theme?.colors.grey_2};
-	&:before,
-	&:after {
-		content: ' ';
-		display: block;
-		background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
-			active ? theme?.colors.white : theme?.colors.grey_2};
-		border-color: ${({ theme }) => theme.colors.grey_4};
-		border-style: solid;
-		z-index: -1;
-		width: 20px;
-		height: 100%;
-		position: absolute;
-		top: -1px;
-	}
-	:before {
-		left: -10px;
-		transform: skew(350deg);
-		border-radius: 8px 8px 8px 0;
-		border-width: 1px 0 0 1px;
-	}
-	&:after {
-		right: -10px;
-		transform: skew(-350deg);
-		border-radius: 8px 8px 0;
-		border-width: 1px 1px 0 0;
-	}
+  border-color: ${({ theme }) => theme.colors.grey_4};
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
+    active ? theme?.colors.white : theme?.colors.grey_2};
+  &:before,
+  &:after {
+    content: ' ';
+    display: block;
+    background: ${({ active, theme }: { active?: boolean; theme?: DMSThemeInterface }) =>
+      active ? theme?.colors.white : theme?.colors.grey_2};
+    border-color: ${({ theme }) => theme.colors.grey_4};
+    border-style: solid;
+    z-index: -1;
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    top: -1px;
+  }
+  :before {
+    left: -10px;
+    transform: skew(350deg);
+    border-radius: 8px 8px 8px 0;
+    border-width: 1px 0 0 1px;
+  }
+  &:after {
+    right: -10px;
+    transform: skew(-350deg);
+    border-radius: 8px 8px 0;
+    border-width: 1px 1px 0 0;
+  }
 `;
 
 const TabButton = styled('button')`
-	${({ theme }) => theme.typography.regular};
-	background: transparent;
-	border: none;
-	height: 100%;
-	width: 100%;
-	padding-top: 2px;
-	font-size: 12px;
-	cursor: pointer;
-	${({ withCloseButton }: { withCloseButton?: boolean }) =>
-		`padding-right: ${withCloseButton ? 18 : 0}px`}
+  ${({ theme }) => theme.typography.regular};
+  background: transparent;
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding-top: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  ${({ withCloseButton }: { withCloseButton?: boolean }) =>
+    `padding-right: ${withCloseButton ? 18 : 0}px`}
 `;
 
 const CloseButton = styled('button')`
-	position: absolute;
-	top: 5px;
-	right: -5px;
-	border: 0;
-	background: transparent;
-	cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: -5px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 `;
 
 const Tabs = () => {
-	const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
-	const theme = useTheme();
-	return (
-		<TabsContainer>
-			{openTabs.map((tab) => (
-				<TabWrapper key={tab.name}>
-					<Tab active={activeTab === tab.name}>
-						<TabButton
-							onClick={() => {
-								handleChangeTab(tab.name);
-							}}
-							withCloseButton={tab.canClose}
-						>
-							{tab.name}
-						</TabButton>
-						{tab.canClose && (
-							<CloseButton
-								onClick={(e) => {
-									e.stopPropagation(); // prevent switching to this tab
-									handleCloseTab(tab.name);
-								}}
-							>
-								<DismissIcon
-									width={8}
-									height={8}
-									fill={theme.colors.black}
-									style={css`
-										position: absolute;
-										top: 0.42rem;
-										right: 0.5rem;
-									`}
-								/>
-							</CloseButton>
-						)}
-					</Tab>
-				</TabWrapper>
-			))}
-		</TabsContainer>
-	);
+  const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
+  const theme = useTheme();
+  return (
+    <TabsContainer>
+      {openTabs.map((tab) => (
+        <TabWrapper key={tab.key}>
+          <Tab active={activeTab === tab.key}>
+            <TabButton
+              onClick={() => {
+                handleChangeTab(tab.key);
+              }}
+              withCloseButton={tab.canClose}
+            >
+              {tab.name}
+            </TabButton>
+            {tab.canClose && (
+              <CloseButton
+                onClick={(e) => {
+                  e.stopPropagation(); // prevent switching to this tab
+                  handleCloseTab(tab.key);
+                }}
+              >
+                <DismissIcon
+                  width={8}
+                  height={8}
+                  fill={theme.colors.black}
+                  style={css`
+                    position: absolute;
+                    top: 0.42rem;
+                    right: 0.5rem;
+                  `}
+                />
+              </CloseButton>
+            )}
+          </Tab>
+        </TabWrapper>
+      ))}
+    </TabsContainer>
+  );
 };
 
 export default Tabs;

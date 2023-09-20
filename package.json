@@ -54,7 +54,7 @@
 		"trailingComma": "all",
 		"semi": true,
 		"singleQuote": true,
-		"useTabs": true
+		"useTabs": false
 	},
 	"overrides": {
 		"node-fetch": "^2.6.1",
