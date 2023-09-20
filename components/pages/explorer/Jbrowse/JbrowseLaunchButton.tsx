@@ -78,7 +78,7 @@ const JbrowseLaunchButton = () => {
             css: css`
               left: -2px;
               right: auto;
-              width: 9em;
+              width: 7em;
             `,
           },
         }}
