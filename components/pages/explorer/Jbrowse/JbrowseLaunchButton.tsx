@@ -34,13 +34,7 @@ import { jbrowseDict, JbrowseTitles } from './utils';
 const JbrowseLaunchButton = () => {
   const theme = useTheme();
   const { handleChangeTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
-  const {
-    jbrowseCircularEnabled,
-    jbrowseLinearEnabled,
-    jbrowseCircularError,
-    jbrowseLinearError,
-    jbrowseLoading,
-  } = useJbrowseCompatibility();
+  const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
   const handleJbrowseSelect = (
     jbrowseOptionKey: RepositoryTabKeys,
@@ -95,52 +89,50 @@ const JbrowseLaunchButton = () => {
         className="genome-viewer-dropdown"
         itemSelectionLegend="Select one of the genome viewer options"
         items={jbrowseDict.map(({ title }) => title)}
-        itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => (
-          <CustomTooltip
-            css={css`
-              width: 100%;
-              button {
-                width: 100%;
-              }
-            `}
-            arrow
-            disabled={
-              (itemLabel === 'Linear View' && !jbrowseLinearError) ||
-              (itemLabel === 'Circular View' && !jbrowseCircularError)
-            }
-            unmountHTMLWhenHide
-            html={
-              <div
-                css={css`
-                  ${theme.typography.regular};
-                  font-size: 12px;
-                `}
-              >
-                {(itemLabel === 'Linear View' && jbrowseLinearError) ||
-                  (itemLabel === 'Circular View' && jbrowseCircularError)}
-              </div>
-            }
-            position="left"
-          >
-            <TransparentButton
-              onClick={() => {
-                const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
-                tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
-              }}
-              disabled={
-                (itemLabel === 'Linear View' && !jbrowseLinearEnabled) ||
-                (itemLabel === 'Circular View' && !jbrowseCircularEnabled)
-              }
+        itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => {
+          const error =
+            (itemLabel === 'Linear View' && jbrowseLinearError) ||
+            (itemLabel === 'Circular View' && jbrowseCircularError);
+          return (
+            <CustomTooltip
               css={css`
-                :disabled {
-                  color: ${theme.colors.grey_4};
+                width: 100%;
+                button {
+                  width: 100%;
                 }
               `}
+              arrow
+              disabled={!error}
+              unmountHTMLWhenHide
+              html={
+                <div
+                  css={css`
+                    ${theme.typography.regular};
+                    font-size: 12px;
+                  `}
+                >
+                  {error}
+                </div>
+              }
+              position="left"
             >
-              {itemLabel}
-            </TransparentButton>
-          </CustomTooltip>
-        )}
+              <TransparentButton
+                onClick={() => {
+                  const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
+                  tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
+                }}
+                disabled={jbrowseLoading || !!error}
+                css={css`
+                  :disabled {
+                    color: ${theme.colors.grey_4};
+                  }
+                `}
+              >
+                {itemLabel}
+              </TransparentButton>
+            </CustomTooltip>
+          );
+        }}
       >
         <div
           css={css`

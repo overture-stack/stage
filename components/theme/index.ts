@@ -27,7 +27,7 @@ import typography from './typography';
 
 const defaultTheme = {
 	colors,
-	components: components(colors),
+	components: components(colors, shadow, typography),
 	typography,
 	shadow,
 	dimensions,

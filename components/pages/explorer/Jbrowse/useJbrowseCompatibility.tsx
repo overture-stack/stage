@@ -25,11 +25,11 @@ import SQON from '@overture-stack/sqon-builder';
 import { useEffect, useState } from 'react';
 import { JbrowseQueryNode } from './types';
 import {
-  checkJbrowseCompatibility,
-  jbrowseErrors,
-  JbrowseTypeNames,
-  JbrowseTypes,
-  MAX_JBROWSE_FILES,
+	checkJbrowseCompatibility,
+	jbrowseErrors,
+	JbrowseTypeNames,
+	JbrowseTypes,
+	MAX_JBROWSE_FILES,
 } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
@@ -55,116 +55,108 @@ const jbrowseCompatibilityQuery = `
 `;
 
 const useJbrowseCompatibility = () => {
-  const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse - Compatibility Check',
-  });
-  const [jbrowseCircularEnabled, setJbrowseCircularEnabled] = useState<boolean>(false);
-  const [jbrowseLinearEnabled, setJbrowseLinearEnabled] = useState<boolean>(false);
-  const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
-  const [jbrowseCircularError, setJbrowseCircularError] = useState<string>('');
-  const [jbrowseLinearError, setJbrowseLinearError] = useState<string>('');
+	const { selectedRows } = useTableContext({
+		callerName: 'Jbrowse - Compatibility Check',
+	});
+	const [jbrowseLoading, setJbrowseLoading] = useState<boolean>(false);
+	const [jbrowseCircularError, setJbrowseCircularError] = useState<string>('');
+	const [jbrowseLinearError, setJbrowseLinearError] = useState<string>('');
 
-  const resolveJbrowse = ({
-    circularError = '',
-    linearError = '',
-  }: {
-    circularError?: string;
-    linearError?: string;
-  }) => {
-    setJbrowseCircularError(circularError);
-    setJbrowseCircularEnabled(!circularError);
+	const resolveJbrowse = ({
+		circularError = '',
+		linearError = '',
+	}: {
+		circularError?: string;
+		linearError?: string;
+	}) => {
+		setJbrowseCircularError(circularError);
+		setJbrowseLinearError(linearError);
+		setJbrowseLoading(false);
+	};
 
-    setJbrowseLinearError(linearError);
-    setJbrowseLinearEnabled(!linearError);
+	useEffect(() => {
+		// check if conditions are met to launch jbrowse
+		setJbrowseLoading(true);
+		setJbrowseCircularError('');
+		setJbrowseLinearError('');
 
-    setJbrowseLoading(false);
-  };
+		// check if # of selectedRows is in acceptable range
+		const selectedRowsCount = selectedRows.length;
 
-  useEffect(() => {
-    // check if conditions are met to launch jbrowse
-    setJbrowseLoading(true);
-    setJbrowseCircularEnabled(false);
-    setJbrowseLinearEnabled(false);
+		if (selectedRowsCount === 0) {
+			resolveJbrowse({
+				circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).selectedFilesUnderLimit,
+				linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).selectedFilesUnderLimit,
+			});
+		} else if (selectedRowsCount > MAX_JBROWSE_FILES) {
+			resolveJbrowse({
+				circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).selectedFilesOverLimit,
+				linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).selectedFilesOverLimit,
+			});
+		} else {
+			// check if # of compatible files is in acceptable range
+			arrangerFetcher({
+				endpoint: 'graphql/JbrowseCompatibilityQuery',
+				body: JSON.stringify({
+					variables: {
+						filters: SQON.in('object_id', selectedRows),
+					},
+					query: jbrowseCompatibilityQuery,
+				}),
+			})
+				.then(async ({ data }) => {
+					const getCompatibleFilesCount = (jbrowseType: JbrowseTypes) =>
+						(data.file?.hits?.edges || []).filter(
+							({
+								node: {
+									file_access,
+									file_type,
+									file: { index_file },
+								},
+							}: {
+								node: JbrowseQueryNode;
+							}) =>
+								checkJbrowseCompatibility({
+									file_access,
+									file_type,
+									index_file,
+									jbrowseType,
+								}),
+						).length;
 
-    // check if # of selectedRows is in acceptable range
-    const selectedRowsCount = selectedRows.length;
+					const errorsUnderLimit = {
+						...(getCompatibleFilesCount(JbrowseTypeNames.JBROWSE_LINEAR) === 0
+							? {
+									linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR)
+										.compatibleFilesUnderLimit,
+							  }
+							: {}),
+						...(getCompatibleFilesCount(JbrowseTypeNames.JBROWSE_CIRCULAR) === 0
+							? {
+									circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR)
+										.compatibleFilesUnderLimit,
+							  }
+							: {}),
+					};
 
-    if (selectedRowsCount === 0) {
-      resolveJbrowse({
-        circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).selectedFilesUnderLimit,
-        linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).selectedFilesUnderLimit,
-      });
-    } else if (selectedRowsCount > MAX_JBROWSE_FILES) {
-      resolveJbrowse({
-        circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).selectedFilesOverLimit,
-        linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).selectedFilesOverLimit,
-      });
-    } else {
-      // check if # of compatible files is in acceptable range
-      arrangerFetcher({
-        endpoint: 'graphql/JbrowseCompatibilityQuery',
-        body: JSON.stringify({
-          variables: {
-            filters: SQON.in('object_id', selectedRows),
-          },
-          query: jbrowseCompatibilityQuery,
-        }),
-      })
-        .then(async ({ data }) => {
-          const getCompatibleFilesCount = (jbrowseType: JbrowseTypes) =>
-            (data.file?.hits?.edges || []).filter(
-              ({
-                node: {
-                  file_access,
-                  file_type,
-                  file: { index_file },
-                },
-              }: {
-                node: JbrowseQueryNode;
-              }) =>
-                checkJbrowseCompatibility({
-                  file_access,
-                  file_type,
-                  index_file,
-                  jbrowseType,
-                }),
-            ).length;
+					resolveJbrowse(errorsUnderLimit);
+				})
+				.catch(async (err: Error) => {
+					const errorsDefault = {
+						circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).default,
+						linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).default,
+					};
+					resolveJbrowse(errorsDefault);
+					console.error(err);
+				});
+		}
+	}, [selectedRows]);
 
-          const errorsUnderLimit = {
-            ...(getCompatibleFilesCount(JbrowseTypeNames.JBROWSE_LINEAR) === 0
-              ? {
-                  linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR)
-                    .compatibleFilesUnderLimit,
-                }
-              : {}),
-            ...(getCompatibleFilesCount(JbrowseTypeNames.JBROWSE_CIRCULAR) === 0
-              ? {
-                  circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR)
-                    .compatibleFilesUnderLimit,
-                }
-              : {}),
-          };
-
-          resolveJbrowse(errorsUnderLimit);
-        })
-        .catch(async (err: Error) => {
-          const errorsDefault = {
-            circularError: jbrowseErrors(JbrowseTypeNames.JBROWSE_CIRCULAR).default,
-            linearError: jbrowseErrors(JbrowseTypeNames.JBROWSE_LINEAR).default,
-          };
-          resolveJbrowse(errorsDefault);
-          console.error(err);
-        });
-    }
-  }, [selectedRows]);
-
-  return {
-    jbrowseCircularEnabled,
-    jbrowseCircularError,
-    jbrowseLinearEnabled,
-    jbrowseLinearError,
-    jbrowseLoading,
-  };
+	return {
+		jbrowseCircularError,
+		jbrowseLinearError,
+		jbrowseLoading,
+	};
 };
 
 export default useJbrowseCompatibility;
