@@ -19,66 +19,57 @@
  *
  */
 
+import { Values } from '@/global/utils/typeUtils';
 import { findIndex } from 'lodash';
-import { createContext, PropsWithChildren, ReactElement, useContext, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useState } from 'react';
 
-import { RepositoryTabKeys, RepositoryTabNames } from './types';
-
-export type TabRecord = {
+export type TabRecord<TabKey extends string> = {
 	name: string;
-	key: string;
+	key: TabKey;
 	canClose: boolean;
 };
 
-export interface TabsContextInterface {
-	activeTab: string | null;
-	handleChangeTab: (tabKey: string) => void;
-	handleCloseTab: (tabKey: string) => void;
-	handleOpenTab: (tab: TabRecord) => void;
-	handleUpdateTab: (tabKey: string, updateObject: Partial<TabRecord>) => void;
-	openTabs: TabRecord[] | [];
+export interface TabsContextInterface<TabKey extends string> {
+	activeTab?: TabKey;
+	handleChangeTab: (tabKey: TabKey) => void;
+	handleCloseTab: (tabKey: TabKey) => void;
+	handleOpenTab: (tab: TabRecord<TabKey>) => void;
+	handleUpdateTab: (tabKey: TabKey, updateObject: Partial<TabRecord<TabKey>>) => void;
+	openTabs: TabRecord<TabKey>[];
 }
 
-export const TabsContext = createContext<TabsContextInterface>({
-	activeTab: null,
-	openTabs: [],
-} as TabsContextInterface);
-
-// tab KEYS are unique
-// tab names can be used multiple times
-
-export const TabsContextProvider = ({
-	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
+const TabContextGenerator = <TabKey extends string>({
+	defaultTabs,
 	children,
 }: PropsWithChildren<{
-	defaultTabs?: TabRecord[];
-}>): ReactElement<TabsContextInterface> => {
-	const [openTabs, setOpenTabs] = useState<TabRecord[]>(defaultTabs);
-	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null);
+	defaultTabs: TabRecord<TabKey>[];
+}>) => {
+	const [openTabs, setOpenTabs] = useState<TabRecord<TabKey>[]>(defaultTabs);
+	const [activeTab, setActiveTab] = useState<TabKey | undefined>(defaultTabs[0]?.key);
 
-	const handleOpenTab = (tab: TabRecord) => {
+	const handleOpenTab = (tab: TabRecord<TabKey>) => {
 		setOpenTabs(openTabs.concat(tab));
 		setActiveTab(tab.key);
 	};
 
-	const handleCloseTab = (tabKey: string) => {
+	const handleCloseTab = (tabKey: TabKey) => {
 		// if removed tab was active, set active tab to previous tab in the list
 		if (activeTab === tabKey) {
-			const nextActiveTab = openTabs[findIndex(openTabs, { key: tabKey }) - 1 || 0]?.key || null;
+			const nextActiveTab = openTabs[findIndex(openTabs, (i) => i.key === tabKey) - 1 || 0]?.key;
 			handleChangeTab(nextActiveTab);
 		}
 		const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
 		setOpenTabs(nextOpenTabs);
 	};
 
-	const handleUpdateTab = (tabKey: string, updateObject: Partial<TabRecord>) => {
+	const handleUpdateTab = (tabKey: TabKey, updateObject: Partial<TabRecord<TabKey>>) => {
 		const nextOpenTabs = openTabs.map((tab) =>
 			tab.key === tabKey ? { ...tab, ...updateObject } : tab,
 		);
 		setOpenTabs(nextOpenTabs);
 	};
 
-	const handleChangeTab = (tabKey: string | null) => {
+	const handleChangeTab = (tabKey?: TabKey) => {
 		setActiveTab(tabKey);
 	};
 
@@ -90,8 +81,24 @@ export const TabsContextProvider = ({
 		handleUpdateTab,
 		openTabs,
 	};
+	const TabsContext = createContext<TabsContextInterface<TabKey>>(contextValues);
 
-	return <TabsContext.Provider value={contextValues}>{children}</TabsContext.Provider>;
+	return {
+		provider: <TabsContext.Provider value={contextValues}>{children}</TabsContext.Provider>,
+		context: TabsContext,
+	};
 };
 
-export const useTabsContext = (): TabsContextInterface => useContext(TabsContext);
+const DMSTabKeys = {
+	FILES: 'files',
+	JBROWSE_CIRCULAR: 'jbrowseCircular',
+	JBROWSE_LINEAR: 'jbrowseLinear',
+};
+type DMSTabKeys = Values<typeof DMSTabKeys>;
+
+const MainTabsContext = TabContextGenerator<DMSTabKeys>({
+	defaultTabs: [{ name: DMSTabKeys.FILES, canClose: false, key: DMSTabKeys.FILES }],
+});
+
+export const TabsContextProvider = MainTabsContext.provider;
+export const useTabsContext = () => useContext(MainTabsContext.context);
