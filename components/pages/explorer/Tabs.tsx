@@ -107,7 +107,7 @@ const CloseButton = styled('button')`
 `;
 
 const Tabs = () => {
-	const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
+	const { activeTab, openTabs, handleCloseTab, handleSwitchTab } = useTabsContext();
 	const theme = useTheme();
 	return (
 		<TabsContainer>
@@ -116,7 +116,7 @@ const Tabs = () => {
 					<Tab active={activeTab === tab.key}>
 						<TabButton
 							onClick={() => {
-								handleChangeTab(tab.key);
+								handleSwitchTab(tab.key);
 							}}
 							withCloseButton={tab.canClose}
 						>

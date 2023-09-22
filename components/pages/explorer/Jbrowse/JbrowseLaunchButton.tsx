@@ -32,125 +32,125 @@ import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { jbrowseDict, JbrowseTitles } from './utils';
 
 const JbrowseLaunchButton = () => {
-  const theme = useTheme();
-  const { handleChangeTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
-  const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
+	const theme = useTheme();
+	const { handleSwitchTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
+	const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
-  const handleJbrowseSelect = (
-    jbrowseOptionKey: RepositoryTabKeys,
-    closeDropDownFn: () => void,
-  ) => {
-    const alternateJbrowseTab = find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER });
-    if (find(openTabs, { key: jbrowseOptionKey })) {
-      // if selected option has a tab open, go to that tab
-      handleChangeTab(jbrowseOptionKey);
-    } else if (alternateJbrowseTab) {
-      // update existing jbrowse tab if available - only 1 jbrowse tab open at a time
-      handleUpdateTab(alternateJbrowseTab.key, { key: jbrowseOptionKey });
-      handleChangeTab(jbrowseOptionKey);
-    } else {
-      handleOpenTab({
-        name: RepositoryTabNames.GENOME_VIEWER,
-        key: jbrowseOptionKey,
-        canClose: true,
-      });
-    }
-    closeDropDownFn();
-  };
+	const handleJbrowseSelect = (
+		jbrowseOptionKey: RepositoryTabKeys,
+		closeDropDownFn: () => void,
+	) => {
+		const alternateJbrowseTab = find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER });
+		if (find(openTabs, { key: jbrowseOptionKey })) {
+			// if selected option has a tab open, go to that tab
+			handleSwitchTab(jbrowseOptionKey);
+		} else if (alternateJbrowseTab) {
+			// update existing jbrowse tab if available - only 1 jbrowse tab open at a time
+			handleUpdateTab(alternateJbrowseTab.key, { key: jbrowseOptionKey });
+			handleSwitchTab(jbrowseOptionKey);
+		} else {
+			handleOpenTab({
+				name: RepositoryTabNames.GENOME_VIEWER,
+				key: jbrowseOptionKey,
+				canClose: true,
+			});
+		}
+		closeDropDownFn();
+	};
 
-  const dropdownTheme = getDropdownTheme(theme);
+	const dropdownTheme = getDropdownTheme(theme);
 
-  return (
-    <div
-      css={css`
-        .genome-viewer-dropdown * {
-          // stops scrollbar on dropdown
-          // positions tooltip properly
-          overflow: hidden !important;
-        }
-      `}
-    >
-      <MultiSelectDropDown
-        theme={{
-          ...dropdownTheme,
-          width: '140px',
-          height: '30px',
-          ListWrapper: {
-            ...dropdownTheme.ListWrapper,
-            css: css`
-              left: -2px;
-              right: auto;
-              width: 7em;
-            `,
-          },
-        }}
-        buttonAriaLabelClosed="Open Genome Viewer menu"
-        buttonAriaLabelOpen="Close Genome Viewer menu"
-        className="genome-viewer-dropdown"
-        itemSelectionLegend="Select one of the genome viewer options"
-        items={jbrowseDict.map(({ title }) => title)}
-        itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => {
-          const error =
-            (itemLabel === 'Linear View' && jbrowseLinearError) ||
-            (itemLabel === 'Circular View' && jbrowseCircularError);
-          return (
-            <CustomTooltip
-              css={css`
-                width: 100%;
-                button {
-                  width: 100%;
-                }
-              `}
-              arrow
-              disabled={!error}
-              unmountHTMLWhenHide
-              html={
-                <div
-                  css={css`
-                    ${theme.typography.regular};
-                    font-size: 12px;
-                  `}
-                >
-                  {error}
-                </div>
-              }
-              position="left"
-            >
-              <TransparentButton
-                onClick={() => {
-                  const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
-                  tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
-                }}
-                disabled={jbrowseLoading || !!error}
-                css={css`
-                  :disabled {
-                    color: ${theme.colors.grey_4};
-                  }
-                `}
-              >
-                {itemLabel}
-              </TransparentButton>
-            </CustomTooltip>
-          );
-        }}
-      >
-        <div
-          css={css`
-            width: 105px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          `}
-        >
-          {jbrowseLoading ? (
-            <Spinner fill={theme.colors.white} />
-          ) : (
-            RepositoryTabNames.GENOME_VIEWER
-          )}
-        </div>
-      </MultiSelectDropDown>
-    </div>
-  );
+	return (
+		<div
+			css={css`
+				.genome-viewer-dropdown * {
+					// stops scrollbar on dropdown
+					// positions tooltip properly
+					overflow: hidden !important;
+				}
+			`}
+		>
+			<MultiSelectDropDown
+				theme={{
+					...dropdownTheme,
+					width: '140px',
+					height: '30px',
+					ListWrapper: {
+						...dropdownTheme.ListWrapper,
+						css: css`
+							left: -2px;
+							right: auto;
+							width: 7em;
+						`,
+					},
+				}}
+				buttonAriaLabelClosed="Open Genome Viewer menu"
+				buttonAriaLabelOpen="Close Genome Viewer menu"
+				className="genome-viewer-dropdown"
+				itemSelectionLegend="Select one of the genome viewer options"
+				items={jbrowseDict.map(({ title }) => title)}
+				itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => {
+					const error =
+						(itemLabel === 'Linear View' && jbrowseLinearError) ||
+						(itemLabel === 'Circular View' && jbrowseCircularError);
+					return (
+						<CustomTooltip
+							css={css`
+								width: 100%;
+								button {
+									width: 100%;
+								}
+							`}
+							arrow
+							disabled={!error}
+							unmountHTMLWhenHide
+							html={
+								<div
+									css={css`
+										${theme.typography.regular};
+										font-size: 12px;
+									`}
+								>
+									{error}
+								</div>
+							}
+							position="left"
+						>
+							<TransparentButton
+								onClick={() => {
+									const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
+									tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
+								}}
+								disabled={jbrowseLoading || !!error}
+								css={css`
+									:disabled {
+										color: ${theme.colors.grey_4};
+									}
+								`}
+							>
+								{itemLabel}
+							</TransparentButton>
+						</CustomTooltip>
+					);
+				}}
+			>
+				<div
+					css={css`
+						width: 105px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+					`}
+				>
+					{jbrowseLoading ? (
+						<Spinner fill={theme.colors.white} />
+					) : (
+						RepositoryTabNames.GENOME_VIEWER
+					)}
+				</div>
+			</MultiSelectDropDown>
+		</div>
+	);
 };
 
 export default JbrowseLaunchButton;
