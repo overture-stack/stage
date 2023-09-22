@@ -19,12 +19,12 @@
  *
  */
 
-export enum RepositoryTabNames {
+export const enum RepositoryTabName {
 	FILES = 'Files',
 	GENOME_VIEWER = 'Genome Viewer',
 }
 
-export enum RepositoryTabKeys {
+export const enum RepositoryTabKey {
 	FILES = 'files',
 	JBROWSE_CIRCULAR = 'jbrowseCircular',
 	JBROWSE_LINEAR = 'jbrowseLinear',

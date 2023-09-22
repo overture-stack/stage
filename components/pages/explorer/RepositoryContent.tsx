@@ -37,7 +37,7 @@ import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
 import { TabsContextProvider, useTabsContext } from './TabsContext';
-import { RepositoryTabKeys } from './types';
+import { RepositoryTabKey } from './types';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
 const getTableConfigs = ({
@@ -118,9 +118,9 @@ const getTableConfigs = ({
 	},
 });
 
-const visualizationTabs: RepositoryTabKeys[] = [
-	RepositoryTabKeys.JBROWSE_CIRCULAR,
-	RepositoryTabKeys.JBROWSE_LINEAR,
+const visualizationTabs: RepositoryTabKey[] = [
+	RepositoryTabKey.JBROWSE_CIRCULAR,
+	RepositoryTabKey.JBROWSE_LINEAR,
 ];
 
 const ContentDisplay = () => {
@@ -129,21 +129,21 @@ const ContentDisplay = () => {
 
 	// toggle visualization focus depending on the user's current tab
 	useEffect(() => {
-		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabKeys);
+		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabKey);
 		setVisualizationFocus(isVisualizationActive);
 	}, [activeTab]);
 
-	if (activeTab === RepositoryTabKeys.FILES) {
+	if (activeTab === RepositoryTabKey.FILES) {
 		return (
 			<>
 				<Table />
 				<TablePagination />
 			</>
 		);
-	} else if (visualizationTabs.includes(activeTab as RepositoryTabKeys)) {
+	} else if (visualizationTabs.includes(activeTab as RepositoryTabKey)) {
 		return <JbrowseWrapper />;
 	} else {
-		handleSwitchTab(RepositoryTabKeys.FILES);
+		handleSwitchTab(RepositoryTabKey.FILES);
 		return null;
 	}
 };

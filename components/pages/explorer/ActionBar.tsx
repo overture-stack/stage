@@ -24,44 +24,44 @@ import styled from '@emotion/styled';
 import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
 import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
 import { useTabsContext } from './TabsContext';
-import { RepositoryTabKeys } from './types';
+import { RepositoryTabKey } from './types';
 
 export const ButtonWrapper = styled('div')`
-  margin-left: 0.3rem;
-  margin-bottom: 0.3rem;
+	margin-left: 0.3rem;
+	margin-bottom: 0.3rem;
 `;
 
 const ActionBar = () => {
-  const { activeTab } = useTabsContext();
+	const { activeTab } = useTabsContext();
 
-  return (
-    <div
-      className="buttons"
-      css={css`
-        display: flex;
-        list-style: none;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0;
-      `}
-    >
-      <JbrowseLaunchButton />
-      <div
-        css={css`
-          display: flex;
-        `}
-      >
-        {activeTab === RepositoryTabKeys.FILES && (
-          <ButtonWrapper>
-            <ColumnsSelectButton />
-          </ButtonWrapper>
-        )}
-        <ButtonWrapper>
-          <DownloadButton />
-        </ButtonWrapper>
-      </div>
-    </div>
-  );
+	return (
+		<div
+			className="buttons"
+			css={css`
+				display: flex;
+				list-style: none;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0;
+			`}
+		>
+			<JbrowseLaunchButton />
+			<div
+				css={css`
+					display: flex;
+				`}
+			>
+				{activeTab === RepositoryTabKey.FILES && (
+					<ButtonWrapper>
+						<ColumnsSelectButton />
+					</ButtonWrapper>
+				)}
+				<ButtonWrapper>
+					<DownloadButton />
+				</ButtonWrapper>
+			</div>
+		</div>
+	);
 };
 
 export default ActionBar;

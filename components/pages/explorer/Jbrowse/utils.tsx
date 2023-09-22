@@ -20,7 +20,7 @@
  */
 
 import { find } from 'lodash';
-import { RepositoryTabKeys, RepositoryTabNames } from '../types';
+import { RepositoryTabKey, RepositoryTabName } from '../types';
 
 export type JbrowseFileTypes = 'BAM' | 'VCF';
 export type JbrowseTypes = 'jbrowseCircular' | 'jbrowseLinear';
@@ -28,31 +28,31 @@ export type JbrowseTitles = 'Circular View' | 'Linear View';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
 export enum JbrowseTypeNames {
-  JBROWSE_CIRCULAR = 'jbrowseCircular',
-  JBROWSE_LINEAR = 'jbrowseLinear',
+	JBROWSE_CIRCULAR = 'jbrowseCircular',
+	JBROWSE_LINEAR = 'jbrowseLinear',
 }
 
 export const jbrowseDict: {
-  allowedFileTypes: JbrowseFileTypes[];
-  jbrowseType: JbrowseTypes;
-  tabKey: RepositoryTabKeys;
-  tabName: RepositoryTabNames;
-  title: JbrowseTitles;
+	allowedFileTypes: JbrowseFileTypes[];
+	jbrowseType: JbrowseTypes;
+	tabKey: RepositoryTabKey;
+	tabName: RepositoryTabName;
+	title: JbrowseTitles;
 }[] = [
-  {
-    allowedFileTypes: ['VCF'],
-    jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
-    tabKey: RepositoryTabKeys.JBROWSE_CIRCULAR,
-    tabName: RepositoryTabNames.GENOME_VIEWER,
-    title: 'Circular View',
-  },
-  {
-    allowedFileTypes: ['BAM', 'VCF'],
-    jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
-    tabKey: RepositoryTabKeys.JBROWSE_LINEAR,
-    tabName: RepositoryTabNames.GENOME_VIEWER,
-    title: 'Linear View',
-  },
+	{
+		allowedFileTypes: ['VCF'],
+		jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
+		tabKey: RepositoryTabKey.JBROWSE_CIRCULAR,
+		tabName: RepositoryTabName.GENOME_VIEWER,
+		title: 'Circular View',
+	},
+	{
+		allowedFileTypes: ['BAM', 'VCF'],
+		jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
+		tabKey: RepositoryTabKey.JBROWSE_LINEAR,
+		tabName: RepositoryTabName.GENOME_VIEWER,
+		title: 'Linear View',
+	},
 ];
 
 export const MAX_JBROWSE_FILES = 5;
@@ -61,13 +61,13 @@ export const jbrowseAssemblyName = 'hg38';
 export const jbrowseAssemblyAlias = 'GRCh38';
 
 export const jbrowseErrors = (jbrowseType: JbrowseTypes) => ({
-  selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
-  selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
-  compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${find(
-    jbrowseDict,
-    { jbrowseType },
-  )?.allowedFileTypes.join(', ')}. Index files are required.`,
-  default: 'Something went wrong.',
+	selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
+	selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
+	compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${find(
+		jbrowseDict,
+		{ jbrowseType },
+	)?.allowedFileTypes.join(', ')}. Index files are required.`,
+	default: 'Something went wrong.',
 });
 
 export const jbrowseFileMetadataQuery = `
@@ -93,16 +93,16 @@ export const jbrowseFileMetadataQuery = `
 // and that it has an index
 // MVP: restrict controlled access files
 export const checkJbrowseCompatibility = ({
-  file_access,
-  file_type,
-  index_file,
-  jbrowseType,
+	file_access,
+	file_type,
+	index_file,
+	jbrowseType,
 }: {
-  file_access: JbrowseFileAccess;
-  file_type: JbrowseFileTypes;
-  index_file: null | Record<string, any>;
-  jbrowseType: JbrowseTypes;
+	file_access: JbrowseFileAccess;
+	file_type: JbrowseFileTypes;
+	index_file: null | Record<string, any>;
+	jbrowseType: JbrowseTypes;
 }) =>
-  find(jbrowseDict, { jbrowseType })?.allowedFileTypes.includes(file_type) &&
-  index_file !== null &&
-  file_access === 'open';
+	find(jbrowseDict, { jbrowseType })?.allowedFileTypes.includes(file_type) &&
+	index_file !== null &&
+	file_access === 'open';

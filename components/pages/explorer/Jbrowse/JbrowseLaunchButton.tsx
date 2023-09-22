@@ -27,7 +27,7 @@ import { TransparentButton } from '@overture-stack/arranger-components/dist/Butt
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
 import { useTabsContext } from '../TabsContext';
-import { RepositoryTabKeys, RepositoryTabNames } from '../types';
+import { RepositoryTabKey, RepositoryTabName } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { jbrowseDict, JbrowseTitles } from './utils';
 
@@ -36,11 +36,8 @@ const JbrowseLaunchButton = () => {
 	const { handleSwitchTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
 	const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
-	const handleJbrowseSelect = (
-		jbrowseOptionKey: RepositoryTabKeys,
-		closeDropDownFn: () => void,
-	) => {
-		const alternateJbrowseTab = find(openTabs, { name: RepositoryTabNames.GENOME_VIEWER });
+	const handleJbrowseSelect = (jbrowseOptionKey: RepositoryTabKey, closeDropDownFn: () => void) => {
+		const alternateJbrowseTab = find(openTabs, { name: RepositoryTabName.GENOME_VIEWER });
 		if (find(openTabs, { key: jbrowseOptionKey })) {
 			// if selected option has a tab open, go to that tab
 			handleSwitchTab(jbrowseOptionKey);
@@ -50,7 +47,7 @@ const JbrowseLaunchButton = () => {
 			handleSwitchTab(jbrowseOptionKey);
 		} else {
 			handleOpenTab({
-				name: RepositoryTabNames.GENOME_VIEWER,
+				name: RepositoryTabName.GENOME_VIEWER,
 				key: jbrowseOptionKey,
 				canClose: true,
 			});
@@ -142,11 +139,7 @@ const JbrowseLaunchButton = () => {
 						justify-content: center;
 					`}
 				>
-					{jbrowseLoading ? (
-						<Spinner fill={theme.colors.white} />
-					) : (
-						RepositoryTabNames.GENOME_VIEWER
-					)}
+					{jbrowseLoading ? <Spinner fill={theme.colors.white} /> : RepositoryTabName.GENOME_VIEWER}
 				</div>
 			</MultiSelectDropDown>
 		</div>

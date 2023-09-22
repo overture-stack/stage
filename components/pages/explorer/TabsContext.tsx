@@ -22,7 +22,7 @@
 import { findIndex } from 'lodash';
 import { createContext, PropsWithChildren, ReactElement, useContext, useState } from 'react';
 
-import { RepositoryTabKeys, RepositoryTabNames } from './types';
+import { RepositoryTabKey, RepositoryTabName } from './types';
 
 export type TabRecord = {
 	name: string;
@@ -48,7 +48,7 @@ export const TabsContext = createContext<TabsContextInterface>({
 // tab names can be used multiple times
 
 export const TabsContextProvider = ({
-	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
+	defaultTabs = [{ name: RepositoryTabName.FILES, canClose: false, key: RepositoryTabKey.FILES }],
 	children,
 }: PropsWithChildren<{
 	defaultTabs?: TabRecord[];
