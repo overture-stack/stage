@@ -20,12 +20,12 @@
  */
 
 export enum RepositoryTabNames {
-  FILES = 'Files',
-  GENOME_VIEWER = 'Genome Viewer',
+	FILES = 'Files',
+	GENOME_VIEWER = 'Genome Viewer',
 }
 
 export enum RepositoryTabKeys {
-  FILES = 'files',
-  JBROWSE_CIRCULAR = 'jbrowseCircular',
-  JBROWSE_LINEAR = 'jbrowseLinear',
+	FILES = 'files',
+	JBROWSE_CIRCULAR = 'jbrowseCircular',
+	JBROWSE_LINEAR = 'jbrowseLinear',
 }

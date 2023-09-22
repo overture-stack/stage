@@ -32,7 +32,7 @@ export type TabRecord = {
 
 export interface TabsContextInterface {
 	activeTab: string | null;
-	handleChangeTab: (tabKey: string) => void;
+	handleSwitchTab: (tabKey: string) => void;
 	handleCloseTab: (tabKey: string) => void;
 	handleOpenTab: (tab: TabRecord) => void;
 	handleUpdateTab: (tabKey: string, updateObject: Partial<TabRecord>) => void;
@@ -54,7 +54,7 @@ export const TabsContextProvider = ({
 	defaultTabs?: TabRecord[];
 }>): ReactElement<TabsContextInterface> => {
 	const [openTabs, setOpenTabs] = useState<TabRecord[]>(defaultTabs);
-	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null);
+	const [activeTab, setActiveTab] = useState<string | null>(defaultTabs[0]?.key || null); // change to repo keys or undefined
 
 	const handleOpenTab = (tab: TabRecord) => {
 		setOpenTabs(openTabs.concat(tab));
@@ -65,7 +65,7 @@ export const TabsContextProvider = ({
 		// if removed tab was active, set active tab to previous tab in the list
 		if (activeTab === tabKey) {
 			const nextActiveTab = openTabs[findIndex(openTabs, { key: tabKey }) - 1 || 0]?.key || null;
-			handleChangeTab(nextActiveTab);
+			handleSwitchTab(nextActiveTab);
 		}
 		const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
 		setOpenTabs(nextOpenTabs);
@@ -78,13 +78,13 @@ export const TabsContextProvider = ({
 		setOpenTabs(nextOpenTabs);
 	};
 
-	const handleChangeTab = (tabKey: string | null) => {
+	const handleSwitchTab = (tabKey: string | null) => {
 		setActiveTab(tabKey);
 	};
 
 	const contextValues = {
 		activeTab,
-		handleChangeTab,
+		handleSwitchTab,
 		handleCloseTab,
 		handleOpenTab,
 		handleUpdateTab,

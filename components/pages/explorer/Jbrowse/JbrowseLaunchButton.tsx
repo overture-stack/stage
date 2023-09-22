@@ -71,14 +71,17 @@ const JbrowseLaunchButton = () => {
       `}
     >
       <MultiSelectDropDown
-        align="left"
         theme={{
           ...dropdownTheme,
           width: '140px',
           height: '30px',
           ListWrapper: {
             ...dropdownTheme.ListWrapper,
-            width: '7em',
+            css: css`
+              left: -2px;
+              right: auto;
+              width: 7em;
+            `,
           },
         }}
         buttonAriaLabelClosed="Open Genome Viewer menu"

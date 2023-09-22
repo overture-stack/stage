@@ -124,7 +124,7 @@ const visualizationTabs: RepositoryTabKeys[] = [
 ];
 
 const ContentDisplay = () => {
-	const { activeTab, handleChangeTab } = useTabsContext();
+	const { activeTab, handleSwitchTab } = useTabsContext();
 	const { setVisualizationFocus } = useVisualizationFocusContext();
 
 	// toggle visualization focus depending on the user's current tab
@@ -143,7 +143,7 @@ const ContentDisplay = () => {
 	} else if (visualizationTabs.includes(activeTab as RepositoryTabKeys)) {
 		return <JbrowseWrapper />;
 	} else {
-		handleChangeTab(RepositoryTabKeys.FILES);
+		handleSwitchTab(RepositoryTabKeys.FILES);
 		return null;
 	}
 };
