@@ -19,6 +19,7 @@
  *
  */
 
+import { Values } from '@/global/utils/typeUtils';
 import { find } from 'lodash';
 import { RepositoryTabKey, RepositoryTabName } from '../types';
 
@@ -27,10 +28,11 @@ export type JbrowseTypes = 'jbrowseCircular' | 'jbrowseLinear';
 export type JbrowseTitles = 'Circular View' | 'Linear View';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
-export enum JbrowseTypeNames {
-	JBROWSE_CIRCULAR = 'jbrowseCircular',
-	JBROWSE_LINEAR = 'jbrowseLinear',
-}
+export const JbrowseTypeNames = {
+	JBROWSE_CIRCULAR: 'jbrowseCircular',
+	JBROWSE_LINEAR: 'jbrowseLinear',
+} as const;
+export type JbrowseTypeName = Values<typeof JbrowseTypeNames>;
 
 export const jbrowseDict: {
 	allowedFileTypes: JbrowseFileTypes[];
