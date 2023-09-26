@@ -29,9 +29,8 @@ import { useTableContext } from '@overture-stack/arranger-components';
 import SQON from '@overture-stack/sqon-builder';
 import { partition } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useTabsContext } from '../TabsContext';
 import { JbrowseSelectedFilesQueryNode } from './types';
-import { checkJbrowseCompatibility, jbrowseErrors } from './utils';
+import { checkJbrowseCompatibility, jbrowseErrors, JbrowseTypeName } from './utils';
 
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -80,11 +79,10 @@ const tableColumns: TableColumn[] = [
 	{ key: 'study_id', name: 'Study ID' },
 ];
 
-const JbrowseSelectedFilesTable = () => {
+const JbrowseSelectedFilesTable = ({ activeTab }: { activeTab: JbrowseTypeName }) => {
 	const { selectedRows } = useTableContext({
 		callerName: 'JBrowse - Selected Files Table',
 	});
-	const { activeTab = '' } = useTabsContext();
 	const [tableData, setTableData] = useState<TableRecord[]>([]);
 	const [compatibilityWarnings, setCompatibilityWarnings] = useState<string[]>([]);
 	const [showTable, setShowTable] = useState<boolean>(true);

@@ -26,14 +26,14 @@ import { css, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
-import { useTabsContext } from '../TabsContext';
+import { useRepositoryTabsContext } from '../RepositoryTabsContext';
 import { RepositoryTabKey, RepositoryTabName } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { jbrowseDict, JbrowseTitles } from './utils';
 
 const JbrowseLaunchButton = () => {
 	const theme = useTheme();
-	const { handleSwitchTab, handleUpdateTab, handleOpenTab, openTabs } = useTabsContext();
+	const { handleSwitchTab, handleUpdateTab, handleOpenTab, openTabs } = useRepositoryTabsContext();
 	const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
 	const handleJbrowseSelect = (jbrowseOptionKey: RepositoryTabKey, closeDropDownFn: () => void) => {

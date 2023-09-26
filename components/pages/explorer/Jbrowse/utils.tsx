@@ -24,7 +24,6 @@ import { find } from 'lodash';
 import { RepositoryTabKey, RepositoryTabName } from '../types';
 
 export type JbrowseFileTypes = 'BAM' | 'VCF';
-export type JbrowseTypes = 'jbrowseCircular' | 'jbrowseLinear';
 export type JbrowseTitles = 'Circular View' | 'Linear View';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
@@ -34,9 +33,13 @@ export const JbrowseTypeNames = {
 } as const;
 export type JbrowseTypeName = Values<typeof JbrowseTypeNames>;
 
+// custom type guard. returns true if input is a jbrowse type name.
+export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
+	!!input && Object.values(JbrowseTypeNames).includes(input as JbrowseTypeName);
+
 export const jbrowseDict: {
 	allowedFileTypes: JbrowseFileTypes[];
-	jbrowseType: JbrowseTypes;
+	jbrowseType: JbrowseTypeName;
 	tabKey: RepositoryTabKey;
 	tabName: RepositoryTabName;
 	title: JbrowseTitles;
@@ -62,7 +65,7 @@ export const MAX_JBROWSE_FILES = 5;
 export const jbrowseAssemblyName = 'hg38';
 export const jbrowseAssemblyAlias = 'GRCh38';
 
-export const jbrowseErrors = (jbrowseType: JbrowseTypes) => ({
+export const jbrowseErrors = (jbrowseType: JbrowseTypeName) => ({
 	selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
 	selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
 	compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${find(
@@ -103,7 +106,7 @@ export const checkJbrowseCompatibility = ({
 	file_access: JbrowseFileAccess;
 	file_type: JbrowseFileTypes;
 	index_file: null | Record<string, any>;
-	jbrowseType: JbrowseTypes;
+	jbrowseType: JbrowseTypeName;
 }) =>
 	find(jbrowseDict, { jbrowseType })?.allowedFileTypes.includes(file_type) &&
 	index_file !== null &&

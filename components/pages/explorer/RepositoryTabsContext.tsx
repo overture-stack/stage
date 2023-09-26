@@ -19,49 +19,20 @@
  *
  */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
-import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
-import { useRepositoryTabsContext } from './RepositoryTabsContext';
-import { RepositoryTabKey } from './types';
+import { Values } from '@/global/utils/typeUtils';
+import { useContext } from 'react';
+import { TabContextGenerator } from './TabsContextGenerator';
 
-export const ButtonWrapper = styled('div')`
-	margin-left: 0.3rem;
-	margin-bottom: 0.3rem;
-`;
+const RepositoryTabKeys = {
+	FILES: 'files',
+	JBROWSE_CIRCULAR: 'jbrowseCircular',
+	JBROWSE_LINEAR: 'jbrowseLinear',
+} as const;
+type RepositoryTabKeys = Values<typeof RepositoryTabKeys>;
 
-const ActionBar = () => {
-	const { activeTab } = useRepositoryTabsContext();
+const RepositoryTabsContext = TabContextGenerator<RepositoryTabKeys>({
+	defaultTabs: [{ name: RepositoryTabKeys.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
+});
 
-	return (
-		<div
-			className="buttons"
-			css={css`
-				display: flex;
-				list-style: none;
-				justify-content: space-between;
-				align-items: center;
-				padding: 0;
-			`}
-		>
-			<JbrowseLaunchButton />
-			<div
-				css={css`
-					display: flex;
-				`}
-			>
-				{activeTab === RepositoryTabKey.FILES && (
-					<ButtonWrapper>
-						<ColumnsSelectButton />
-					</ButtonWrapper>
-				)}
-				<ButtonWrapper>
-					<DownloadButton />
-				</ButtonWrapper>
-			</div>
-		</div>
-	);
-};
-
-export default ActionBar;
+export const RepositoryTabsContextProvider = RepositoryTabsContext.provider;
+export const useRepositoryTabsContext = () => useContext(RepositoryTabsContext.context);

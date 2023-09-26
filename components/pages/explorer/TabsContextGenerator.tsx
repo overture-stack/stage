@@ -19,9 +19,11 @@
  *
  */
 
-import { Values } from '@/global/utils/typeUtils';
 import { findIndex } from 'lodash';
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useState } from 'react';
+
+// this file creates a generic context component for handling tabs.
+// you can use it to create a custom tab context (example: RepositoryTabsContext)
 
 export type TabRecord<TabKey extends string> = {
 	name: string;
@@ -38,12 +40,11 @@ export interface TabsContextInterface<TabKey extends string> {
 	openTabs: TabRecord<TabKey>[];
 }
 
-const TabContextGenerator = <TabKey extends string>({
+export const TabContextGenerator = <TabKey extends string>({
 	defaultTabs,
-	children,
-}: PropsWithChildren<{
+}: {
 	defaultTabs: TabRecord<TabKey>[];
-}>) => {
+}) => {
 	const [openTabs, setOpenTabs] = useState<TabRecord<TabKey>[]>(defaultTabs);
 	const [activeTab, setActiveTab] = useState<TabKey | undefined>(defaultTabs[0]?.key);
 
@@ -84,21 +85,9 @@ const TabContextGenerator = <TabKey extends string>({
 	const TabsContext = createContext<TabsContextInterface<TabKey>>(contextValues);
 
 	return {
-		provider: <TabsContext.Provider value={contextValues}>{children}</TabsContext.Provider>,
+		provider: (props: PropsWithChildren<{}>) => (
+			<TabsContext.Provider value={contextValues}>{props.children}</TabsContext.Provider>
+		),
 		context: TabsContext,
 	};
 };
-
-const DMSTabKeys = {
-	FILES: 'files',
-	JBROWSE_CIRCULAR: 'jbrowseCircular',
-	JBROWSE_LINEAR: 'jbrowseLinear',
-};
-type DMSTabKeys = Values<typeof DMSTabKeys>;
-
-const MainTabsContext = TabContextGenerator<DMSTabKeys>({
-	defaultTabs: [{ name: DMSTabKeys.FILES, canClose: false, key: DMSTabKeys.FILES }],
-});
-
-export const TabsContextProvider = MainTabsContext.provider;
-export const useTabsContext = () => useContext(MainTabsContext.context);

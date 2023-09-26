@@ -34,9 +34,10 @@ import { getDropdownTheme } from '@/components/theme/getDropdownTheme';
 import { useEffect } from 'react';
 import ActionBar from './ActionBar';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
+import { isJbrowseTypeName } from './Jbrowse/utils';
+import { RepositoryTabsContextProvider, useRepositoryTabsContext } from './RepositoryTabsContext';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
-import { TabsContextProvider, useTabsContext } from './TabsContext';
 import { RepositoryTabKey } from './types';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
@@ -118,18 +119,13 @@ const getTableConfigs = ({
 	},
 });
 
-const visualizationTabs: RepositoryTabKey[] = [
-	RepositoryTabKey.JBROWSE_CIRCULAR,
-	RepositoryTabKey.JBROWSE_LINEAR,
-];
-
 const ContentDisplay = () => {
-	const { activeTab, handleSwitchTab } = useTabsContext();
+	const { activeTab, handleSwitchTab } = useRepositoryTabsContext();
 	const { setVisualizationFocus } = useVisualizationFocusContext();
 
 	// toggle visualization focus depending on the user's current tab
 	useEffect(() => {
-		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabKey);
+		const isVisualizationActive = isJbrowseTypeName(activeTab);
 		setVisualizationFocus(isVisualizationActive);
 	}, [activeTab]);
 
@@ -140,8 +136,8 @@ const ContentDisplay = () => {
 				<TablePagination />
 			</>
 		);
-	} else if (visualizationTabs.includes(activeTab as RepositoryTabKey)) {
-		return <JbrowseWrapper />;
+	} else if (isJbrowseTypeName(activeTab)) {
+		return <JbrowseWrapper activeTab={activeTab} />;
 	} else {
 		handleSwitchTab(RepositoryTabKey.FILES);
 		return null;
@@ -203,11 +199,11 @@ const RepositoryContent = () => {
 			`}
 		>
 			<TableContextProvider>
-				<TabsContextProvider>
+				<RepositoryTabsContextProvider>
 					<ActionBar />
 					<Tabs />
 					<ContentDisplay />
-				</TabsContextProvider>
+				</RepositoryTabsContextProvider>
 			</TableContextProvider>
 		</article>
 	);

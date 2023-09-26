@@ -27,8 +27,8 @@ import { JbrowseQueryNode } from './types';
 import {
 	checkJbrowseCompatibility,
 	jbrowseErrors,
+	JbrowseTypeName,
 	JbrowseTypeNames,
-	JbrowseTypes,
 	MAX_JBROWSE_FILES,
 } from './utils';
 
@@ -105,7 +105,7 @@ const useJbrowseCompatibility = () => {
 				}),
 			})
 				.then(async ({ data }) => {
-					const getCompatibleFilesCount = (jbrowseType: JbrowseTypes) =>
+					const getCompatibleFilesCount = (jbrowseType: JbrowseTypeName) =>
 						(data.file?.hits?.edges || []).filter(
 							({
 								node: {

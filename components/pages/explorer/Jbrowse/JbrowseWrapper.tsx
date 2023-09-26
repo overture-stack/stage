@@ -31,24 +31,23 @@ import SQON from '@overture-stack/sqon-builder';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
 import urlJoin from 'url-join';
-import { useTabsContext } from '../TabsContext';
 import { jbrowseAssemblyObject } from './assembly';
 import { jbrowseCircularDefaultSession, jbrowseLinearDefaultSession } from './defaultSession';
 import JbrowseSelectedFilesTable from './JbrowseSelectedFilesTable';
 import {
-  JbrowseCompatibleFile,
-  JbrowseInput,
-  JbrowseQueryNode,
-  ScoreDownloadParams,
-  ScoreDownloadResult,
+	JbrowseCompatibleFile,
+	JbrowseInput,
+	JbrowseQueryNode,
+	ScoreDownloadParams,
+	ScoreDownloadResult,
 } from './types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import {
-  checkJbrowseCompatibility,
-  jbrowseAssemblyName,
-  jbrowseErrors,
-  JbrowseTypeNames,
-  JbrowseTypes,
+	checkJbrowseCompatibility,
+	jbrowseAssemblyName,
+	jbrowseErrors,
+	JbrowseTypeName,
+	JbrowseTypeNames,
 } from './utils';
 const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
@@ -81,196 +80,192 @@ query jbrowseInput($filters:JSON){
 `;
 
 const baseScoreDownloadParams = {
-  external: 'true',
-  offset: '0',
-  'User-Agent': 'unknown',
+	external: 'true',
+	offset: '0',
+	'User-Agent': 'unknown',
 };
 
 const getScoreDownloadUrls = (type: 'file' | 'index', files: JbrowseCompatibleFile[]) =>
-  Promise.all(
-    files.map((file: JbrowseCompatibleFile) => {
-      const length = file[`${type}Size`].toString();
-      const object_id = file[`${type}Id`];
+	Promise.all(
+		files.map((file: JbrowseCompatibleFile) => {
+			const length = file[`${type}Size`].toString();
+			const object_id = file[`${type}Id`];
 
-      const scoreDownloadParams: ScoreDownloadParams = {
-        ...baseScoreDownloadParams,
-        length,
-        object_id,
-      };
-      const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+			const scoreDownloadParams: ScoreDownloadParams = {
+				...baseScoreDownloadParams,
+				length,
+				object_id,
+			};
+			const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-      return fetch(
-        urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
-        {
-          headers: { accept: '*/*' },
-          method: 'GET',
-        },
-      ).then((response) => response.json());
-    }),
-  );
+			return fetch(
+				urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+				{
+					headers: { accept: '*/*' },
+					method: 'GET',
+				},
+			).then((response) => response.json());
+		}),
+	);
 
 const getUrlFromResult = (results: ScoreDownloadResult[], targetId: string) =>
-  find(results, { objectId: targetId })?.parts[0].url || '';
+	find(results, { objectId: targetId })?.parts[0].url || '';
 
-const JbrowseEl = () => {
-  // assume 1-MAX compatible files.
-  // minimum compatibility requirements are checked in JbrowseWrapper.
-  const theme = useTheme();
-  const { selectedRows } = useTableContext({
-    callerName: 'Jbrowse - Wrapper',
-  });
-  const { activeTab } = useTabsContext();
-  const [compatibleFiles, setCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
-  const [inputFiles, setInputFiles] = useState<JbrowseInput[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+const JbrowseEl = ({ activeTab: activeJbrowseType }: { activeTab: JbrowseTypeName }) => {
+	// assume 1-MAX compatible files.
+	// minimum compatibility requirements are checked in JbrowseWrapper.
+	const theme = useTheme();
+	const { selectedRows } = useTableContext({
+		callerName: 'Jbrowse - Wrapper',
+	});
+	const [compatibleFiles, setCompatibleFiles] = useState<JbrowseCompatibleFile[]>([]);
+	const [inputFiles, setInputFiles] = useState<JbrowseInput[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string>('');
 
-  const activeJbrowseType = activeTab as JbrowseTypes;
+	const handleError = (error: Error) => {
+		setError(jbrowseErrors(activeJbrowseType).default);
+		console.error(error);
+	};
 
-  const handleError = (error: Error) => {
-    setError(jbrowseErrors(activeJbrowseType).default);
-    console.error(error);
-  };
+	useEffect(() => {
+		// step 1: get compatible files
 
-  useEffect(() => {
-    // step 1: get compatible files
+		setLoading(true);
 
-    setLoading(true);
+		// fetch metadata from arranger for selected files
+		arrangerFetcher({
+			endpoint: 'graphql/JBrowseDataQuery',
+			body: JSON.stringify({
+				variables: {
+					filters: SQON.in('object_id', selectedRows),
+				},
+				query: jbrowseInputQuery,
+			}),
+		})
+			.then(({ data }) => {
+				// restructure compatible files list for jbrowse's API
+				const nextJbrowseCompatibleFiles = (data.file?.hits?.edges || [])
+					.filter(
+						({
+							node: {
+								file_access,
+								file_type,
+								file: { index_file },
+							},
+						}: {
+							node: JbrowseQueryNode;
+						}) =>
+							checkJbrowseCompatibility({
+								file_access,
+								file_type,
+								index_file,
+								jbrowseType: activeJbrowseType,
+							}),
+					)
+					.map(
+						({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
+							fileId: node.object_id,
+							fileName: node.file.name,
+							fileSize: node.file.size,
+							fileType: node.file_type,
+							// files without an index were filtered out above.
+							// falsey handling is for typescript only.
+							indexId: node.file.index_file?.object_id || '',
+							indexSize: node.file.index_file?.size || 0,
+						}),
+					);
+				setCompatibleFiles(nextJbrowseCompatibleFiles);
+			})
+			.catch((error: Error) => handleError(error));
+	}, [selectedRows]);
 
-    // fetch metadata from arranger for selected files
-    arrangerFetcher({
-      endpoint: 'graphql/JBrowseDataQuery',
-      body: JSON.stringify({
-        variables: {
-          filters: SQON.in('object_id', selectedRows),
-        },
-        query: jbrowseInputQuery,
-      }),
-    })
-      .then(({ data }) => {
-        // restructure compatible files list for jbrowse's API
-        const nextJbrowseCompatibleFiles = (data.file?.hits?.edges || [])
-          .filter(
-            ({
-              node: {
-                file_access,
-                file_type,
-                file: { index_file },
-              },
-            }: {
-              node: JbrowseQueryNode;
-            }) =>
-              checkJbrowseCompatibility({
-                file_access,
-                file_type,
-                index_file,
-                jbrowseType: activeJbrowseType,
-              }),
-          )
-          .map(
-            ({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
-              fileId: node.object_id,
-              fileName: node.file.name,
-              fileSize: node.file.size,
-              fileType: node.file_type,
-              // files without an index were filtered out above.
-              // falsey handling is for typescript only.
-              indexId: node.file.index_file?.object_id || '',
-              indexSize: node.file.index_file?.size || 0,
-            }),
-          );
-        setCompatibleFiles(nextJbrowseCompatibleFiles);
-      })
-      .catch((error: Error) => handleError(error));
-  }, [selectedRows]);
+	useEffect(() => {
+		// step 2: get score signed URLs for compatible files & their indices
+		const getFileURLs = getScoreDownloadUrls('file', compatibleFiles);
+		const getIndexURLs = getScoreDownloadUrls('index', compatibleFiles);
 
-  useEffect(() => {
-    // step 2: get score signed URLs for compatible files & their indices
-    const getFileURLs = getScoreDownloadUrls('file', compatibleFiles);
-    const getIndexURLs = getScoreDownloadUrls('index', compatibleFiles);
+		Promise.all([getFileURLs, getIndexURLs])
+			.then(([fileResults, indexResults]: ScoreDownloadResult[][]) =>
+				setInputFiles(
+					compatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
+						fileId,
+						fileName,
+						fileType,
+						fileURI: getUrlFromResult(fileResults, fileId),
+						indexURI: getUrlFromResult(indexResults, indexId),
+					})),
+				),
+			)
+			.catch((error: Error) => handleError(error))
+			// continue loading for 1 second to give jbrowse time to render.
+			.finally(() => setTimeout(() => setLoading(false), 1000));
+	}, [compatibleFiles]);
 
-    Promise.all([getFileURLs, getIndexURLs])
-      .then(([fileResults, indexResults]: ScoreDownloadResult[][]) =>
-        setInputFiles(
-          compatibleFiles.map(({ fileId, fileName, fileType, indexId }) => ({
-            fileId,
-            fileName,
-            fileType,
-            fileURI: getUrlFromResult(fileResults, fileId),
-            indexURI: getUrlFromResult(indexResults, indexId),
-          })),
-        ),
-      )
-      .catch((error: Error) => handleError(error))
-      // continue loading for 1 second to give jbrowse time to render.
-      .finally(() => setTimeout(() => setLoading(false), 1000));
-  }, [compatibleFiles]);
+	const jbrowseProps = {
+		assembly: jbrowseAssemblyObject,
+		assemblyName: jbrowseAssemblyName,
+		configuration: {
+			theme: {
+				elevation: 0,
+				palette: { secondary: { main: theme.colors.accent } },
+			},
+		},
+		defaultSession: jbrowseCircularDefaultSession,
+		selectedFiles: inputFiles,
+	};
 
-  const jbrowseProps = {
-    assembly: jbrowseAssemblyObject,
-    assemblyName: jbrowseAssemblyName,
-    configuration: {
-      theme: {
-        elevation: 0,
-        palette: { secondary: { main: theme.colors.accent } },
-      },
-    },
-    defaultSession: jbrowseCircularDefaultSession,
-    selectedFiles: inputFiles,
-  };
-
-  return (
-    <div
-      css={css`
-        margin-top: 8px;
-        position: relative;
-        .MuiPaper-elevation12 {
-          // elevation in MUI controls drop shadow
-          box-shadow: none;
-        }
-      `}
-    >
-      {error ? (
-        <ErrorNotification size="sm">{error}</ErrorNotification>
-      ) : (
-        <>
-          {activeJbrowseType === JbrowseTypeNames.JBROWSE_CIRCULAR && (
-            <JbrowseCircular {...jbrowseProps} defaultSession={jbrowseCircularDefaultSession} />
-          )}
-          {activeJbrowseType === JbrowseTypeNames.JBROWSE_LINEAR && (
-            <JbrowseLinear {...jbrowseProps} defaultSession={jbrowseLinearDefaultSession} />
-          )}
-          <JbrowseSelectedFilesTable />
-          {loading && <OverlayLoader />}
-        </>
-      )}
-    </div>
-  );
+	return (
+		<div
+			css={css`
+				margin-top: 8px;
+				position: relative;
+				.MuiPaper-elevation12 {
+					// elevation in MUI controls drop shadow
+					box-shadow: none;
+				}
+			`}
+		>
+			{error ? (
+				<ErrorNotification size="sm">{error}</ErrorNotification>
+			) : (
+				<>
+					{activeJbrowseType === JbrowseTypeNames.JBROWSE_CIRCULAR && (
+						<JbrowseCircular {...jbrowseProps} defaultSession={jbrowseCircularDefaultSession} />
+					)}
+					{activeJbrowseType === JbrowseTypeNames.JBROWSE_LINEAR && (
+						<JbrowseLinear {...jbrowseProps} defaultSession={jbrowseLinearDefaultSession} />
+					)}
+					<JbrowseSelectedFilesTable activeTab={activeJbrowseType} />
+					{loading && <OverlayLoader />}
+				</>
+			)}
+		</div>
+	);
 };
 
-const JbrowseWrapper = () => {
-  // handle compatibility check before trying to load jbrowse,
-  // in case the user comes to the jbrowse tab with an invalid selection.
-  const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
-  const { activeTab } = useTabsContext();
+const JbrowseWrapper = ({ activeTab }: { activeTab: JbrowseTypeName }) => {
+	// handle compatibility check before trying to load jbrowse,
+	// in case the user comes to the jbrowse tab with an invalid selection.
+	const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
-  const errorDisplay =
-    (activeTab === JbrowseTypeNames.JBROWSE_LINEAR && jbrowseLinearError) ||
-    (activeTab === JbrowseTypeNames.JBROWSE_CIRCULAR && jbrowseCircularError);
+	const errorDisplay =
+		(activeTab === JbrowseTypeNames.JBROWSE_LINEAR && jbrowseLinearError) ||
+		(activeTab === JbrowseTypeNames.JBROWSE_CIRCULAR && jbrowseCircularError);
 
-  return jbrowseLoading ? (
-    <OverlayLoader />
-  ) : errorDisplay ? (
-    <div
-      css={css`
-        padding-top: 8px;
-      `}
-    >
-      <ErrorNotification size="sm">{errorDisplay}</ErrorNotification>
-    </div>
-  ) : (
-    <JbrowseEl />
-  );
+	return jbrowseLoading ? (
+		<OverlayLoader />
+	) : errorDisplay ? (
+		<div
+			css={css`
+				padding-top: 8px;
+			`}
+		>
+			<ErrorNotification size="sm">{errorDisplay}</ErrorNotification>
+		</div>
+	) : (
+		<JbrowseEl activeTab={activeTab} />
+	);
 };
 
 export default JbrowseWrapper;

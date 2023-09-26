@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import DismissIcon from '@/components/theme/icons/dismiss';
-import { useTabsContext } from './TabsContext';
+import { useRepositoryTabsContext } from './RepositoryTabsContext';
 
 const TabsContainer = styled('div')`
 	margin: 10px 0 -8px 2px;
@@ -107,7 +107,7 @@ const CloseButton = styled('button')`
 `;
 
 const Tabs = () => {
-	const { activeTab, openTabs, handleCloseTab, handleSwitchTab } = useTabsContext();
+	const { activeTab, openTabs, handleCloseTab, handleSwitchTab } = useRepositoryTabsContext();
 	const theme = useTheme();
 	return (
 		<TabsContainer>
