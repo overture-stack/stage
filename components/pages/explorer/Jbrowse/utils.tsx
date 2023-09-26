@@ -33,7 +33,7 @@ export const JbrowseTypeNames = {
 } as const;
 export type JbrowseTypeName = Values<typeof JbrowseTypeNames>;
 
-// custom type guard. returns true if input is a jbrowse type name.
+// custom type guard. returns true if input is a JbrowseTypeName.
 export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
 	!!input && Object.values(JbrowseTypeNames).includes(input as JbrowseTypeName);
 

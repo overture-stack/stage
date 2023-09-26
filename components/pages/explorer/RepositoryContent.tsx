@@ -137,7 +137,7 @@ const ContentDisplay = () => {
 			</>
 		);
 	} else if (isJbrowseTypeName(activeTab)) {
-		return <JbrowseWrapper activeTab={activeTab} />;
+		return <JbrowseWrapper activeJbrowseType={activeTab} />;
 	} else {
 		handleSwitchTab(RepositoryTabKey.FILES);
 		return null;

@@ -111,7 +111,7 @@ const getScoreDownloadUrls = (type: 'file' | 'index', files: JbrowseCompatibleFi
 const getUrlFromResult = (results: ScoreDownloadResult[], targetId: string) =>
 	find(results, { objectId: targetId })?.parts[0].url || '';
 
-const JbrowseEl = ({ activeTab: activeJbrowseType }: { activeTab: JbrowseTypeName }) => {
+const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }) => {
 	// assume 1-MAX compatible files.
 	// minimum compatibility requirements are checked in JbrowseWrapper.
 	const theme = useTheme();
@@ -236,7 +236,7 @@ const JbrowseEl = ({ activeTab: activeJbrowseType }: { activeTab: JbrowseTypeNam
 					{activeJbrowseType === JbrowseTypeNames.JBROWSE_LINEAR && (
 						<JbrowseLinear {...jbrowseProps} defaultSession={jbrowseLinearDefaultSession} />
 					)}
-					<JbrowseSelectedFilesTable activeTab={activeJbrowseType} />
+					<JbrowseSelectedFilesTable activeJbrowseType={activeJbrowseType} />
 					{loading && <OverlayLoader />}
 				</>
 			)}
@@ -244,14 +244,14 @@ const JbrowseEl = ({ activeTab: activeJbrowseType }: { activeTab: JbrowseTypeNam
 	);
 };
 
-const JbrowseWrapper = ({ activeTab }: { activeTab: JbrowseTypeName }) => {
+const JbrowseWrapper = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }) => {
 	// handle compatibility check before trying to load jbrowse,
 	// in case the user comes to the jbrowse tab with an invalid selection.
 	const { jbrowseCircularError, jbrowseLinearError, jbrowseLoading } = useJbrowseCompatibility();
 
 	const errorDisplay =
-		(activeTab === JbrowseTypeNames.JBROWSE_LINEAR && jbrowseLinearError) ||
-		(activeTab === JbrowseTypeNames.JBROWSE_CIRCULAR && jbrowseCircularError);
+		(activeJbrowseType === JbrowseTypeNames.JBROWSE_LINEAR && jbrowseLinearError) ||
+		(activeJbrowseType === JbrowseTypeNames.JBROWSE_CIRCULAR && jbrowseCircularError);
 
 	return jbrowseLoading ? (
 		<OverlayLoader />
@@ -264,7 +264,7 @@ const JbrowseWrapper = ({ activeTab }: { activeTab: JbrowseTypeName }) => {
 			<ErrorNotification size="sm">{errorDisplay}</ErrorNotification>
 		</div>
 	) : (
-		<JbrowseEl activeTab={activeTab} />
+		<JbrowseEl activeJbrowseType={activeJbrowseType} />
 	);
 };
 

@@ -79,7 +79,11 @@ const tableColumns: TableColumn[] = [
 	{ key: 'study_id', name: 'Study ID' },
 ];
 
-const JbrowseSelectedFilesTable = ({ activeTab }: { activeTab: JbrowseTypeName }) => {
+const JbrowseSelectedFilesTable = ({
+	activeJbrowseType,
+}: {
+	activeJbrowseType: JbrowseTypeName;
+}) => {
 	const { selectedRows } = useTableContext({
 		callerName: 'JBrowse - Selected Files Table',
 	});
@@ -119,7 +123,7 @@ const JbrowseSelectedFilesTable = ({ activeTab }: { activeTab: JbrowseTypeName }
 							file_access,
 							file_type,
 							index_file,
-							jbrowseType: activeTab,
+							jbrowseType: activeJbrowseType,
 						}),
 				);
 
@@ -148,7 +152,7 @@ const JbrowseSelectedFilesTable = ({ activeTab }: { activeTab: JbrowseTypeName }
 			})
 			.catch(async (err) => {
 				console.warn(err);
-				setError(jbrowseErrors(activeTab).default);
+				setError(jbrowseErrors(activeJbrowseType).default);
 			})
 			.finally(() => {
 				setLoading(false);
