@@ -24,7 +24,6 @@ import { find } from 'lodash';
 import { RepositoryTabKey, RepositoryTabName } from '../types';
 
 export type JbrowseFileTypes = 'BAM' | 'VCF';
-export type JbrowseTitles = 'Circular View' | 'Linear View';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
 export const JbrowseTypeNames = {
@@ -32,6 +31,12 @@ export const JbrowseTypeNames = {
 	JBROWSE_LINEAR: 'jbrowseLinear',
 } as const;
 export type JbrowseTypeName = Values<typeof JbrowseTypeNames>;
+
+export const JbrowseTitles = {
+	JBROWSE_CIRCULAR: 'Circular View',
+	JBROWSE_LINEAR: 'Linear View',
+} as const;
+export type JbrowseTitle = Values<typeof JbrowseTitles>;
 
 // custom type guard. returns true if input is a JbrowseTypeName.
 export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
@@ -42,21 +47,21 @@ export const jbrowseDict: {
 	jbrowseType: JbrowseTypeName;
 	tabKey: RepositoryTabKey;
 	tabName: RepositoryTabName;
-	title: JbrowseTitles;
+	title: JbrowseTitle;
 }[] = [
 	{
 		allowedFileTypes: ['VCF'],
 		jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
 		tabKey: RepositoryTabKey.JBROWSE_CIRCULAR,
 		tabName: RepositoryTabName.GENOME_VIEWER,
-		title: 'Circular View',
+		title: JbrowseTitles.JBROWSE_CIRCULAR,
 	},
 	{
 		allowedFileTypes: ['BAM', 'VCF'],
 		jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
 		tabKey: RepositoryTabKey.JBROWSE_LINEAR,
 		tabName: RepositoryTabName.GENOME_VIEWER,
-		title: 'Linear View',
+		title: JbrowseTitles.JBROWSE_LINEAR,
 	},
 ];
 

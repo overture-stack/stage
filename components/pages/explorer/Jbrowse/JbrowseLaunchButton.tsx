@@ -29,7 +29,7 @@ import { find } from 'lodash';
 import { useRepositoryTabsContext } from '../RepositoryTabsContext';
 import { RepositoryTabKey, RepositoryTabName } from '../types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
-import { jbrowseDict, JbrowseTitles } from './utils';
+import { jbrowseDict, JbrowseTitle, JbrowseTitles } from './utils';
 
 const JbrowseLaunchButton = () => {
 	const theme = useTheme();
@@ -86,10 +86,10 @@ const JbrowseLaunchButton = () => {
 				className="genome-viewer-dropdown"
 				itemSelectionLegend="Select one of the genome viewer options"
 				items={jbrowseDict.map(({ title }) => title)}
-				itemToString={(itemLabel: JbrowseTitles, closeDropDownFn) => {
+				itemToString={(itemLabel: JbrowseTitle, closeDropDownFn) => {
 					const error =
-						(itemLabel === 'Linear View' && jbrowseLinearError) ||
-						(itemLabel === 'Circular View' && jbrowseCircularError);
+						(itemLabel === JbrowseTitles.JBROWSE_LINEAR && jbrowseLinearError) ||
+						(itemLabel === JbrowseTitles.JBROWSE_LINEAR && jbrowseCircularError);
 					return (
 						<CustomTooltip
 							css={css`
