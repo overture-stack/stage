@@ -23,7 +23,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
 import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
-import { RepositoryTabKeys, useRepositoryTabsContext } from './NewContext';
+import { RepositoryTabKeys, useRepositoryTabsContext } from './RepositoryTabsContext';
 
 export const ButtonWrapper = styled('div')`
 	margin-left: 0.3rem;

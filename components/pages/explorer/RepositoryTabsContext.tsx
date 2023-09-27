@@ -46,10 +46,10 @@ export type RepositoryTabRecord = {
 
 export interface RepositoryTabsContextInterface {
 	activeTab?: RepositoryTabKey;
-	handleSwitchTab: (tabKey: RepositoryTabKey) => void;
-	handleCloseTab: (tabKey: RepositoryTabKey) => void;
+	handleSwitchTab: (tabKey?: RepositoryTabKey) => void;
+	handleCloseTab: (tabKey?: RepositoryTabKey) => void;
 	handleOpenTab: (tab: RepositoryTabRecord) => void;
-	handleUpdateTab: (tabKey: RepositoryTabKey, updateObject: Partial<RepositoryTabRecord>) => void;
+	handleUpdateTab: (tabKey?: RepositoryTabKey, updateObject?: Partial<RepositoryTabRecord>) => void;
 	openTabs: RepositoryTabRecord[];
 }
 
@@ -57,11 +57,10 @@ export const RepositoryTabsContext = createContext<RepositoryTabsContextInterfac
 	activeTab: undefined,
 	openTabs: [],
 } as unknown as RepositoryTabsContextInterface);
-export const useRepositoryTabsContext = () => useContext(RepositoryTabsContext);
 
 export const RepositoryTabsContextProvider = ({
-	children,
 	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
+	children,
 }: PropsWithChildren<{
 	defaultTabs?: RepositoryTabRecord[];
 }>) => {
@@ -73,7 +72,7 @@ export const RepositoryTabsContextProvider = ({
 		setActiveTab(tab.key);
 	};
 
-	const handleCloseTab = (tabKey: RepositoryTabKey) => {
+	const handleCloseTab = (tabKey?: RepositoryTabKey) => {
 		// if removed tab was active, set active tab to previous tab in the list
 		if (activeTab === tabKey) {
 			const nextActiveTab = openTabs[findIndex(openTabs, (i) => i.key === tabKey) - 1 || 0]?.key;
@@ -84,8 +83,8 @@ export const RepositoryTabsContextProvider = ({
 	};
 
 	const handleUpdateTab = (
-		tabKey: RepositoryTabKey,
-		updateObject: Partial<RepositoryTabRecord>,
+		tabKey?: RepositoryTabKey,
+		updateObject?: Partial<RepositoryTabRecord>,
 	) => {
 		const nextOpenTabs = openTabs.map((tab) =>
 			tab.key === tabKey ? { ...tab, ...updateObject } : tab,
@@ -93,20 +92,18 @@ export const RepositoryTabsContextProvider = ({
 		setOpenTabs(nextOpenTabs);
 	};
 
-	const handleSwitchTab = (tabKey: RepositoryTabKey) => {
+	const handleSwitchTab = (tabKey?: RepositoryTabKey) => {
 		setActiveTab(tabKey);
 	};
 
 	const contextValues = {
 		activeTab,
+		handleSwitchTab,
 		handleCloseTab,
 		handleOpenTab,
-		handleSwitchTab,
 		handleUpdateTab,
 		openTabs,
 	};
-
-	const RepositoryTabsContext = createContext<RepositoryTabsContextInterface>(contextValues);
 
 	return (
 		<RepositoryTabsContext.Provider value={contextValues}>
@@ -114,3 +111,6 @@ export const RepositoryTabsContextProvider = ({
 		</RepositoryTabsContext.Provider>
 	);
 };
+
+export const useRepositoryTabsContext = (): RepositoryTabsContextInterface =>
+	useContext(RepositoryTabsContext);

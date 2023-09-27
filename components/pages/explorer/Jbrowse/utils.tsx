@@ -26,7 +26,7 @@ import {
 	RepositoryTabKeys,
 	RepositoryTabName,
 	RepositoryTabNames,
-} from '../NewContext';
+} from '../RepositoryTabsContext';
 
 export type JbrowseFileTypes = 'BAM' | 'VCF';
 export type JbrowseFileAccess = 'open' | 'controlled';

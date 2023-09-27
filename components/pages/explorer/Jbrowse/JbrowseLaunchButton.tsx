@@ -26,7 +26,11 @@ import { css, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
-import { RepositoryTabKey, RepositoryTabNames, useRepositoryTabsContext } from '../NewContext';
+import {
+	RepositoryTabKey,
+	RepositoryTabNames,
+	useRepositoryTabsContext,
+} from '../RepositoryTabsContext';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import { jbrowseDict, JbrowseTitle, JbrowseTitles } from './utils';
 

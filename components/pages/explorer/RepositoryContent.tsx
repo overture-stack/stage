@@ -39,7 +39,7 @@ import {
 	RepositoryTabKeys,
 	RepositoryTabsContextProvider,
 	useRepositoryTabsContext,
-} from './NewContext';
+} from './RepositoryTabsContext';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
