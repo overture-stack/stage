@@ -35,10 +35,13 @@ import { useEffect } from 'react';
 import ActionBar from './ActionBar';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
 import { isJbrowseTypeName } from './Jbrowse/utils';
-import { RepositoryTabsContextProvider, useRepositoryTabsContext } from './RepositoryTabsContext';
+import {
+	RepositoryTabKeys,
+	RepositoryTabsContextProvider,
+	useRepositoryTabsContext,
+} from './NewContext';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
-import { RepositoryTabKey } from './types';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
 
 const getTableConfigs = ({
@@ -123,13 +126,17 @@ const ContentDisplay = () => {
 	const { activeTab, handleSwitchTab } = useRepositoryTabsContext();
 	const { setVisualizationFocus } = useVisualizationFocusContext();
 
+	const test = useRepositoryTabsContext();
+
+	console.log(handleSwitchTab);
+
 	// toggle visualization focus depending on the user's current tab
 	useEffect(() => {
 		const isVisualizationActive = isJbrowseTypeName(activeTab);
 		setVisualizationFocus(isVisualizationActive);
 	}, [activeTab]);
 
-	if (activeTab === RepositoryTabKey.FILES) {
+	if (activeTab === RepositoryTabKeys.FILES) {
 		return (
 			<>
 				<Table />
@@ -139,7 +146,7 @@ const ContentDisplay = () => {
 	} else if (isJbrowseTypeName(activeTab)) {
 		return <JbrowseWrapper activeJbrowseType={activeTab} />;
 	} else {
-		handleSwitchTab(RepositoryTabKey.FILES);
+		handleSwitchTab(RepositoryTabKeys.FILES);
 		return null;
 	}
 };

@@ -28,7 +28,7 @@ import {
 	RepositoryTabNames,
 } from '../NewContext';
 
-export type JbrowseFileType = 'BAM' | 'VCF';
+export type JbrowseFileTypes = 'BAM' | 'VCF';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
 export const JbrowseTypeNames = {
@@ -48,7 +48,7 @@ export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
 	!!input && Object.values(JbrowseTypeNames).includes(input as JbrowseTypeName);
 
 export const jbrowseDict: {
-	allowedFileTypes: JbrowseFileType[];
+	allowedFileTypes: JbrowseFileTypes[];
 	jbrowseType: JbrowseTypeName;
 	tabKey: RepositoryTabKey;
 	tabName: RepositoryTabName;
@@ -114,7 +114,7 @@ export const checkJbrowseCompatibility = ({
 	jbrowseType,
 }: {
 	file_access: JbrowseFileAccess;
-	file_type: JbrowseFileType;
+	file_type: JbrowseFileTypes;
 	index_file: null | Record<string, any>;
 	jbrowseType: JbrowseTypeName;
 }) =>

@@ -23,8 +23,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ColumnsSelectButton, DownloadButton } from '@overture-stack/arranger-components';
 import JbrowseLaunchButton from './Jbrowse/JbrowseLaunchButton';
-import { useRepositoryTabsContext } from './RepositoryTabsContext';
-import { RepositoryTabKey } from './types';
+import { RepositoryTabKeys, useRepositoryTabsContext } from './NewContext';
 
 export const ButtonWrapper = styled('div')`
 	margin-left: 0.3rem;
@@ -51,7 +50,7 @@ const ActionBar = () => {
 					display: flex;
 				`}
 			>
-				{activeTab === RepositoryTabKey.FILES && (
+				{activeTab === RepositoryTabKeys.FILES && (
 					<ButtonWrapper>
 						<ColumnsSelectButton />
 					</ButtonWrapper>

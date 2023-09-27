@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import DismissIcon from '@/components/theme/icons/dismiss';
-import { useRepositoryTabsContext } from './RepositoryTabsContext';
+import { useRepositoryTabsContext } from './NewContext';
 
 const TabsContainer = styled('div')`
 	margin: 10px 0 -8px 2px;
