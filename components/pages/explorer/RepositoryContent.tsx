@@ -126,10 +126,6 @@ const ContentDisplay = () => {
 	const { activeTab, handleSwitchTab } = useRepositoryTabsContext();
 	const { setVisualizationFocus } = useVisualizationFocusContext();
 
-	const test = useRepositoryTabsContext();
-
-	console.log(handleSwitchTab);
-
 	// toggle visualization focus depending on the user's current tab
 	useEffect(() => {
 		const isVisualizationActive = isJbrowseTypeName(activeTab);
