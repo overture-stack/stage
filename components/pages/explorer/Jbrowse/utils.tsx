@@ -21,9 +21,14 @@
 
 import { Values } from '@/global/utils/typeUtils';
 import { find } from 'lodash';
-import { RepositoryTabKey, RepositoryTabName } from '../types';
+import {
+	RepositoryTabKey,
+	RepositoryTabKeys,
+	RepositoryTabName,
+	RepositoryTabNames,
+} from '../NewContext';
 
-export type JbrowseFileTypes = 'BAM' | 'VCF';
+export type JbrowseFileType = 'BAM' | 'VCF';
 export type JbrowseFileAccess = 'open' | 'controlled';
 
 export const JbrowseTypeNames = {
@@ -43,7 +48,7 @@ export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
 	!!input && Object.values(JbrowseTypeNames).includes(input as JbrowseTypeName);
 
 export const jbrowseDict: {
-	allowedFileTypes: JbrowseFileTypes[];
+	allowedFileTypes: JbrowseFileType[];
 	jbrowseType: JbrowseTypeName;
 	tabKey: RepositoryTabKey;
 	tabName: RepositoryTabName;
@@ -52,15 +57,15 @@ export const jbrowseDict: {
 	{
 		allowedFileTypes: ['VCF'],
 		jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
-		tabKey: RepositoryTabKey.JBROWSE_CIRCULAR,
-		tabName: RepositoryTabName.GENOME_VIEWER,
+		tabKey: RepositoryTabKeys.JBROWSE_CIRCULAR,
+		tabName: RepositoryTabNames.GENOME_VIEWER,
 		title: JbrowseTitles.JBROWSE_CIRCULAR,
 	},
 	{
 		allowedFileTypes: ['BAM', 'VCF'],
 		jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
-		tabKey: RepositoryTabKey.JBROWSE_LINEAR,
-		tabName: RepositoryTabName.GENOME_VIEWER,
+		tabKey: RepositoryTabKeys.JBROWSE_LINEAR,
+		tabName: RepositoryTabNames.GENOME_VIEWER,
 		title: JbrowseTitles.JBROWSE_LINEAR,
 	},
 ];
@@ -109,7 +114,7 @@ export const checkJbrowseCompatibility = ({
 	jbrowseType,
 }: {
 	file_access: JbrowseFileAccess;
-	file_type: JbrowseFileTypes;
+	file_type: JbrowseFileType;
 	index_file: null | Record<string, any>;
 	jbrowseType: JbrowseTypeName;
 }) =>

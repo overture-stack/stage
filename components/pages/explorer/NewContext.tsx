@@ -19,13 +19,17 @@
  *
  */
 
-export const enum RepositoryTabName {
-	FILES = 'Files',
-	GENOME_VIEWER = 'Genome Viewer',
-}
+import { Values } from '@/global/utils/typeUtils';
 
-export const enum RepositoryTabKey {
-	FILES = 'files',
-	JBROWSE_CIRCULAR = 'jbrowseCircular',
-	JBROWSE_LINEAR = 'jbrowseLinear',
-}
+export const RepositoryTabKeys = {
+	FILES: 'files',
+	JBROWSE_CIRCULAR: 'jbrowseCircular',
+	JBROWSE_LINEAR: 'jbrowseLinear',
+} as const;
+export type RepositoryTabKey = Values<typeof RepositoryTabKeys>;
+
+export const RepositoryTabNames = {
+	FILES: 'Files',
+	GENOME_VIEWER: 'Genome Viewer',
+};
+export type RepositoryTabName = Values<typeof RepositoryTabNames>;
