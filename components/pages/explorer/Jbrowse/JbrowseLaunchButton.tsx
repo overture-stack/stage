@@ -26,6 +26,8 @@ import { css, useTheme } from '@emotion/react';
 import { TransparentButton } from '@overture-stack/arranger-components/dist/Button';
 import { MultiSelectDropDown } from '@overture-stack/arranger-components/dist/DropDown';
 import { find } from 'lodash';
+import { MouseEventHandler } from 'react';
+
 import {
 	RepositoryTabKey,
 	RepositoryTabNames,
@@ -60,10 +62,12 @@ const JbrowseLaunchButton = () => {
 
 	const dropdownTheme = getDropdownTheme(theme);
 
-	const handleJbrowseOption = (itemLabel: JbrowseTitle, closeDropDownFn: () => void) => {
-		const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
-		tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
-	};
+	const handleJbrowseOption =
+		(itemLabel: JbrowseTitle, closeDropDownFn: () => void) =>
+		(event: MouseEventHandler<HTMLButtonElement>) => {
+			const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
+			tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
+		};
 
 	return (
 		<div
@@ -122,7 +126,7 @@ const JbrowseLaunchButton = () => {
 							position="left"
 						>
 							<TransparentButton
-								onClick={() => handleJbrowseOption(itemLabel, closeDropDownFn)}
+								onClick={handleJbrowseOption(itemLabel, closeDropDownFn)}
 								disabled={jbrowseLoading || !!error}
 								css={css`
 									:disabled {
