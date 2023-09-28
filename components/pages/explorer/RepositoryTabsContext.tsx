@@ -56,7 +56,11 @@ export interface RepositoryTabsContextInterface {
 export const RepositoryTabsContext = createContext<RepositoryTabsContextInterface>({
 	activeTab: undefined,
 	openTabs: [],
-} as unknown as RepositoryTabsContextInterface);
+	handleSwitchTab: () => {},
+	handleCloseTab: () => {},
+	handleOpenTab: () => {},
+	handleUpdateTab: () => {},
+});
 
 export const RepositoryTabsContextProvider = ({
 	defaultTabs = [{ name: RepositoryTabNames.FILES, canClose: false, key: RepositoryTabKeys.FILES }],
@@ -67,33 +71,39 @@ export const RepositoryTabsContextProvider = ({
 	const [openTabs, setOpenTabs] = useState<RepositoryTabRecord[]>(defaultTabs);
 	const [activeTab, setActiveTab] = useState<RepositoryTabKey | undefined>(defaultTabs[0]?.key);
 
-	const handleOpenTab = (tab: RepositoryTabRecord) => {
-		setOpenTabs(openTabs.concat(tab));
-		setActiveTab(tab.key);
+	const handleOpenTab = (tab?: RepositoryTabRecord) => {
+		if (tab) {
+			setOpenTabs(openTabs.concat(tab));
+			setActiveTab(tab.key);
+		}
 	};
 
 	const handleCloseTab = (tabKey?: RepositoryTabKey) => {
 		// if removed tab was active, set active tab to previous tab in the list
-		if (activeTab === tabKey) {
-			const nextActiveTab = openTabs[findIndex(openTabs, (i) => i.key === tabKey) - 1 || 0]?.key;
-			handleSwitchTab(nextActiveTab);
+		if (tabKey) {
+			if (activeTab === tabKey) {
+				const nextActiveTab = openTabs[findIndex(openTabs, (i) => i.key === tabKey) - 1 || 0]?.key;
+				handleSwitchTab(nextActiveTab);
+			}
+			const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
+			setOpenTabs(nextOpenTabs);
 		}
-		const nextOpenTabs = openTabs.filter((openTab) => openTab.key !== tabKey);
-		setOpenTabs(nextOpenTabs);
 	};
 
 	const handleUpdateTab = (
 		tabKey?: RepositoryTabKey,
 		updateObject?: Partial<RepositoryTabRecord>,
 	) => {
-		const nextOpenTabs = openTabs.map((tab) =>
-			tab.key === tabKey ? { ...tab, ...updateObject } : tab,
-		);
-		setOpenTabs(nextOpenTabs);
+		if (tabKey && updateObject) {
+			const nextOpenTabs = openTabs.map((tab) =>
+				tab.key === tabKey ? { ...tab, ...updateObject } : tab,
+			);
+			setOpenTabs(nextOpenTabs);
+		}
 	};
 
 	const handleSwitchTab = (tabKey?: RepositoryTabKey) => {
-		setActiveTab(tabKey);
+		tabKey && setActiveTab(tabKey);
 	};
 
 	const contextValues = {
