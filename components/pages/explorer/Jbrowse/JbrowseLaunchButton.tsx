@@ -60,6 +60,11 @@ const JbrowseLaunchButton = () => {
 
 	const dropdownTheme = getDropdownTheme(theme);
 
+	const handleJbrowseOption = (itemLabel: JbrowseTitle, closeDropDownFn: () => void) => {
+		const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
+		tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
+	};
+
 	return (
 		<div
 			css={css`
@@ -89,7 +94,7 @@ const JbrowseLaunchButton = () => {
 				className="genome-viewer-dropdown"
 				itemSelectionLegend="Select one of the genome viewer options"
 				items={jbrowseDict.map(({ title }) => title)}
-				itemToString={(itemLabel: JbrowseTitle, closeDropDownFn) => {
+				itemToString={(itemLabel: JbrowseTitle, closeDropDownFn: () => void) => {
 					const error =
 						(itemLabel === JbrowseTitles.JBROWSE_LINEAR && jbrowseLinearError) ||
 						(itemLabel === JbrowseTitles.JBROWSE_LINEAR && jbrowseCircularError);
@@ -117,10 +122,7 @@ const JbrowseLaunchButton = () => {
 							position="left"
 						>
 							<TransparentButton
-								onClick={() => {
-									const { tabKey } = find(jbrowseDict, { title: itemLabel }) || {};
-									tabKey && handleJbrowseSelect(tabKey, closeDropDownFn);
-								}}
+								onClick={() => handleJbrowseOption(itemLabel, closeDropDownFn)}
 								disabled={jbrowseLoading || !!error}
 								css={css`
 									:disabled {
