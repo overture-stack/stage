@@ -54,7 +54,6 @@ export interface RepositoryTabsContextInterface {
 }
 
 export const RepositoryTabsContext = createContext<RepositoryTabsContextInterface>({
-	activeTab: undefined,
 	openTabs: [],
 	handleSwitchTab: () => {},
 	handleCloseTab: () => {},
