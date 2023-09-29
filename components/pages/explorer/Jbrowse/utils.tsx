@@ -19,21 +19,71 @@
  *
  */
 
-export const jbrowseAllowedFileTypes = ['BAM', 'VCF'];
+import { Values } from '@/global/utils/typeUtils';
+import { find } from 'lodash';
+import {
+	RepositoryTabKey,
+	RepositoryTabKeys,
+	RepositoryTabName,
+	RepositoryTabNames,
+} from '../RepositoryTabsContext';
+
+export type JbrowseFileTypes = 'BAM' | 'VCF';
+export type JbrowseFileAccess = 'open' | 'controlled';
+
+export const JbrowseTypeNames = {
+	JBROWSE_CIRCULAR: 'jbrowseCircular',
+	JBROWSE_LINEAR: 'jbrowseLinear',
+} as const;
+export type JbrowseTypeName = Values<typeof JbrowseTypeNames>;
+
+export const JbrowseTitles = {
+	JBROWSE_CIRCULAR: 'Circular View',
+	JBROWSE_LINEAR: 'Linear View',
+} as const;
+export type JbrowseTitle = Values<typeof JbrowseTitles>;
+
+// custom type guard. returns true if input is a JbrowseTypeName.
+export const isJbrowseTypeName = (input?: string): input is JbrowseTypeName =>
+	!!input && Object.values(JbrowseTypeNames).includes(input as JbrowseTypeName);
+
+export const jbrowseDict: {
+	allowedFileTypes: JbrowseFileTypes[];
+	jbrowseType: JbrowseTypeName;
+	tabKey: RepositoryTabKey;
+	tabName: RepositoryTabName;
+	title: JbrowseTitle;
+}[] = [
+	{
+		allowedFileTypes: ['VCF'],
+		jbrowseType: JbrowseTypeNames.JBROWSE_CIRCULAR,
+		tabKey: RepositoryTabKeys.JBROWSE_CIRCULAR,
+		tabName: RepositoryTabNames.GENOME_VIEWER,
+		title: JbrowseTitles.JBROWSE_CIRCULAR,
+	},
+	{
+		allowedFileTypes: ['BAM', 'VCF'],
+		jbrowseType: JbrowseTypeNames.JBROWSE_LINEAR,
+		tabKey: RepositoryTabKeys.JBROWSE_LINEAR,
+		tabName: RepositoryTabNames.GENOME_VIEWER,
+		title: JbrowseTitles.JBROWSE_LINEAR,
+	},
+];
 
 export const MAX_JBROWSE_FILES = 5;
 
 export const jbrowseAssemblyName = 'hg38';
 export const jbrowseAssemblyAlias = 'GRCh38';
 
-export const jbrowseErrors = {
-  selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
-  selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
-  compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${jbrowseAllowedFileTypes.join(
-    ', ',
-  )}. Index files are required.`,
-  default: 'Something went wrong.',
-} as const;
+export const jbrowseErrors = (jbrowseType: JbrowseTypeName) => ({
+	selectedFilesUnderLimit: `0 files have been selected. Please select 1-${MAX_JBROWSE_FILES} files to launch JBrowse.`,
+	selectedFilesOverLimit: `Too many files have been selected. A maximum of ${MAX_JBROWSE_FILES} files may be selected at once.`,
+	compatibleFilesUnderLimit: `Please select 1 to ${MAX_JBROWSE_FILES} files to launch JBrowse. Supported file types: ${find(
+		jbrowseDict,
+		{ jbrowseType },
+	)?.allowedFileTypes.join(', ')}. Index files are required.`,
+	default: 'Something went wrong.',
+});
 
 export const jbrowseFileMetadataQuery = `
   query tableData($filters: JSON) {
@@ -58,11 +108,16 @@ export const jbrowseFileMetadataQuery = `
 // and that it has an index
 // MVP: restrict controlled access files
 export const checkJbrowseCompatibility = ({
-  file_access,
-  file_type,
-  index_file,
+	file_access,
+	file_type,
+	index_file,
+	jbrowseType,
 }: {
-  file_access: string;
-  file_type: string;
-  index_file: null | Record<string, any>;
-}) => jbrowseAllowedFileTypes.includes(file_type) && index_file !== null && file_access === 'open';
+	file_access: JbrowseFileAccess;
+	file_type: JbrowseFileTypes;
+	index_file: null | Record<string, any>;
+	jbrowseType: JbrowseTypeName;
+}) =>
+	find(jbrowseDict, { jbrowseType })?.allowedFileTypes.includes(file_type) &&
+	index_file !== null &&
+	file_access === 'open';

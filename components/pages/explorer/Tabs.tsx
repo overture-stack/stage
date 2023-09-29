@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import DismissIcon from '@/components/theme/icons/dismiss';
-import { useTabsContext } from './TabsContext';
+import { useRepositoryTabsContext } from './RepositoryTabsContext';
 
 const TabsContainer = styled('div')`
 	margin: 10px 0 -8px 2px;
@@ -107,16 +107,16 @@ const CloseButton = styled('button')`
 `;
 
 const Tabs = () => {
-	const { activeTab, openTabs, handleCloseTab, handleChangeTab } = useTabsContext();
+	const { activeTab, openTabs, handleCloseTab, handleSwitchTab } = useRepositoryTabsContext();
 	const theme = useTheme();
 	return (
 		<TabsContainer>
 			{openTabs.map((tab) => (
-				<TabWrapper key={tab.name}>
-					<Tab active={activeTab === tab.name}>
+				<TabWrapper key={tab.key}>
+					<Tab active={activeTab === tab.key}>
 						<TabButton
 							onClick={() => {
-								handleChangeTab(tab.name);
+								handleSwitchTab(tab.key);
 							}}
 							withCloseButton={tab.canClose}
 						>
@@ -126,7 +126,7 @@ const Tabs = () => {
 							<CloseButton
 								onClick={(e) => {
 									e.stopPropagation(); // prevent switching to this tab
-									handleCloseTab(tab.name);
+									handleCloseTab(tab.key);
 								}}
 							>
 								<DismissIcon

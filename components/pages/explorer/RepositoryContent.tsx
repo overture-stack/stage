@@ -30,18 +30,19 @@ import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import { getConfig } from '@/global/config';
 
+import { getDropdownTheme } from '@/components/theme/getDropdownTheme';
 import { useEffect } from 'react';
 import ActionBar from './ActionBar';
 import JbrowseWrapper from './Jbrowse/JbrowseWrapper';
+import { isJbrowseTypeName } from './Jbrowse/utils';
+import {
+	RepositoryTabKeys,
+	RepositoryTabsContextProvider,
+	useRepositoryTabsContext,
+} from './RepositoryTabsContext';
 import TablePagination from './TablePagination';
 import Tabs from './Tabs';
-import { TabsContextProvider, useTabsContext } from './TabsContext';
 import { useVisualizationFocusContext } from './VisualizationFocusContext';
-
-export enum RepositoryTabNames {
-	FILES = 'Files',
-	GENOME_VIEWER = 'Genome Viewer',
-}
 
 const getTableConfigs = ({
 	apiHost,
@@ -72,19 +73,6 @@ const getTableConfigs = ({
 			DownloadButton: {
 				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
-				background: theme.colors.accent,
-				fontColor: theme.colors.white,
-				borderColor: theme.colors.accent,
-				hoverBackground: theme.colors.accent_dark,
-				fontWeight: 'bold',
-				padding: '2px 10px',
-				borderRadius: '5px',
-				fontSize: '14px',
-				css: css`
-					${theme.typography.baseFont}
-					border-width: 1px;
-					line-height: 24px;
-				`,
 				label: () => (
 					<>
 						<Download
@@ -100,35 +88,8 @@ const getTableConfigs = ({
 						Download
 					</>
 				),
-				ListWrapper: {
-					width: '11rem',
-				},
 			},
-			DropDown: {
-				arrowColor: theme.colors.white,
-				arrowTransition: 'all 0s',
-				background: theme.colors.accent,
-				borderColor: theme.colors.accent,
-				css: css`
-					${theme.typography.subheading2}
-					border-width: 1px;
-					line-height: 24px;
-				`,
-				fontColor: theme.colors.white,
-				disabledFontColor: theme.colors.grey_5,
-				hoverBackground: theme.colors.accent_dark,
-				fontSize: '14px',
-				padding: '2px 10px',
-				ListWrapper: {
-					background: theme.colors.white,
-					css: css`
-						${theme.shadow.default},
-					`,
-					fontColor: theme.colors.black,
-					fontSize: '0.7rem',
-					hoverBackground: theme.colors.grey_2,
-				},
-			},
+			DropDown: getDropdownTheme(theme),
 			HeaderRow: {
 				borderColor: theme.colors.grey_3,
 				css: css`
@@ -161,36 +122,28 @@ const getTableConfigs = ({
 	},
 });
 
-const visualizationTabs = [RepositoryTabNames.GENOME_VIEWER];
-
 const ContentDisplay = () => {
-	const { activeTab, handleChangeTab } = useTabsContext();
+	const { activeTab, handleSwitchTab } = useRepositoryTabsContext();
 	const { setVisualizationFocus } = useVisualizationFocusContext();
 
 	// toggle visualization focus depending on the user's current tab
 	useEffect(() => {
-		const isVisualizationActive = visualizationTabs.includes(activeTab as RepositoryTabNames);
+		const isVisualizationActive = isJbrowseTypeName(activeTab);
 		setVisualizationFocus(isVisualizationActive);
 	}, [activeTab]);
 
-	switch (activeTab) {
-		case RepositoryTabNames.FILES: {
-			return (
-				<>
-					<Table />
-					<TablePagination />
-				</>
-			);
-		}
-
-		case RepositoryTabNames.GENOME_VIEWER: {
-			return <JbrowseWrapper />;
-		}
-
-		default: {
-			handleChangeTab(RepositoryTabNames.FILES);
-			return null;
-		}
+	if (activeTab === RepositoryTabKeys.FILES) {
+		return (
+			<>
+				<Table />
+				<TablePagination />
+			</>
+		);
+	} else if (isJbrowseTypeName(activeTab)) {
+		return <JbrowseWrapper activeJbrowseType={activeTab} />;
+	} else {
+		handleSwitchTab(RepositoryTabKeys.FILES);
+		return null;
 	}
 };
 
@@ -249,11 +202,11 @@ const RepositoryContent = () => {
 			`}
 		>
 			<TableContextProvider>
-				<TabsContextProvider>
+				<RepositoryTabsContextProvider>
 					<ActionBar />
 					<Tabs />
 					<ContentDisplay />
-				</TabsContextProvider>
+				</RepositoryTabsContextProvider>
 			</TableContextProvider>
 		</article>
 	);
