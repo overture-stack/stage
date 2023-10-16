@@ -54,6 +54,7 @@ module.exports = withPlugins([withTranspileModules], {
 		NEXT_PUBLIC_LAB_NAME: process.env.NEXT_PUBLIC_LAB_NAME,
 		NEXT_PUBLIC_LOGO_FILENAME: process.env.NEXT_PUBLIC_LOGO_FILENAME,
 		NEXT_PUBLIC_SSO_PROVIDERS: process.env.NEXT_PUBLIC_SSO_PROVIDERS,
+		NEXT_PUBLIC_TOKEN_ENCRYPTION_SECRET: process.env.NEXT_PUBLIC_TOKEN_ENCRYPTION_SECRET,
 		// Optional features/functionalities
 		NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG,
 		// Keycloak auth

@@ -21,8 +21,7 @@
 
 import Root from '../components/Root';
 import { AppContext } from 'next/app';
-import { getSession } from 'next-auth/react'
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, getSession } from 'next-auth/react';
 
 import { AUTH_PROVIDER, LOGIN_PATH } from '../global/utils/constants';
 import { PageWithConfig } from '../global/utils/pages/types';
@@ -31,6 +30,7 @@ import Router from 'next/router';
 import getInternalLink from '../global/utils/getInternalLink';
 import { isValidJwt } from '../global/utils/egoTokenUtils';
 import { getConfig } from '../global/config';
+import { decryptContent } from '@/global/utils/crypt';
 
 const DMSApp = ({
   Component,
@@ -47,7 +47,7 @@ const DMSApp = ({
   useEffect(() => {
 
     if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
-      if((!session || !isValidJwt(session?.account?.accessToken)) && !Component.isPublic) {
+      if((!session || !isValidJwt(decryptContent(session?.account?.accessToken))) && !Component.isPublic) {
         // redirect to logout when token is expired/missing only if user is on a non-public page
         Router.push({
           pathname: getInternalLink({ path: LOGIN_PATH }),

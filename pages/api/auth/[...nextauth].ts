@@ -9,6 +9,7 @@ import axios from 'axios';
 import { getConfig } from '@/global/config';
 import { KEYCLOAK_URL_TOKEN, KEYCLOAK_URL_ISSUER, AUTH_PROVIDER } from '@/global/utils/constants';
 import { decodeToken, extractUser } from '@/global/utils/egoTokenUtils';
+import { encryptContent } from "@/global/utils/crypt";
 
 
 const { NEXT_PUBLIC_KEYCLOAK_CLIENT_ID, 
@@ -144,14 +145,14 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
             if(token.account.provider == AUTH_PROVIDER.EGO){
               const { egoToken, scope, ...profileWithoutEgoToken } = token.profile;
               session.account = {
-                accessToken: egoToken,
+                accessToken: encryptContent(egoToken),
                 provider: token?.account?.provider
               }
               session.scopes = scope
               session.user = {...profileWithoutEgoToken}
             } else if(token.account.provider == AUTH_PROVIDER.KEYCLOAK) {
               session.account = {
-                accessToken: token?.account?.access_token,
+                accessToken: encryptContent(token?.account?.access_token),
                 provider: token?.account?.provider
               }
               session.user.firstName = token?.profile?.given_name
@@ -169,8 +170,7 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
         // Encrypted JWT (JWE) stored in the session cookie.
         strategy: "jwt" as SessionStrategy,
         // Seconds - How long until an idle session expires and is no longer valid.
-        maxAge: 60 * 60, // 1 hour
-        raw: true
+        maxAge: 60 * 60 // 1 hour
     },
     debug: false
   }

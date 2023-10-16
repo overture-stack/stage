@@ -22,10 +22,10 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { AUTH_PROVIDER, EXPLORER_PATH } from '../utils/constants';
+import { AUTH_PROVIDER } from '../utils/constants';
 import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
-import getInternalLink from '../utils/getInternalLink';
 import { getConfig } from '../config';
+import { decryptContent } from '../utils/crypt';
 
 type T_AuthContext = {
   user?: UserWithId;
@@ -51,6 +51,7 @@ export const AuthProvider = ({
   const router = useRouter();
   const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
   const [user, setUser] = useState<UserWithId>();
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
     if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account){
@@ -68,13 +69,14 @@ export const AuthProvider = ({
         scope: session?.scopes
       }
       setUser(newUser);
+      setToken(decryptContent(session?.account?.accessToken));
     } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user){
       const newUser: UserWithId = {
         ...session?.user,
         scope: session?.scopes
       }
       setUser(newUser);
-
+      setToken(decryptContent(session?.account?.accessToken));
     }
   }, [session])
 
@@ -83,7 +85,7 @@ export const AuthProvider = ({
     let headers = { 
       ...options?.headers, 
       accept: '*/*',
-      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${session?.account?.accessToken || ''}`}
+      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${token}`}
     };
 
     return fetch(url, {

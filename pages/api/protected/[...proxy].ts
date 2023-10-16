@@ -6,6 +6,7 @@ import httpProxy from "http-proxy";
 import { getAuthOptions } from '../auth/[...nextauth]';
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
+import { decryptContent } from '@/global/utils/crypt';
 
 const proxy = httpProxy.createProxyServer()
 
@@ -40,7 +41,7 @@ export default async function handler(
     const session = await getServerSession(req, res, getAuthOptions(req));
 
     if(session?.account?.accessToken) {
-        req.headers['Authentication'] = "Bearer " + session?.account?.accessToken
+        req.headers['Authentication'] = "Bearer " + decryptContent(session?.account?.accessToken)
     }
 
     // Don't forward cookies to the API:
