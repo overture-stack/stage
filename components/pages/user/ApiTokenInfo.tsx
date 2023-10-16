@@ -145,7 +145,7 @@ const getErrorMessage = ({ type, statusCode }: ErrorResponse) => {
 };
 
 const ApiTokenInfo = () => {
-  const { user, token, fetchWithAuth } = useAuthContext();
+  const { user, fetchWithAuth } = useAuthContext();
   const [existingApiToken, setExistingApiToken] = useState<ApiToken | null>(null);
   const [isCopyingToken, setIsCopyingToken] = React.useState(false);
   const [copySuccess, setCopySuccess] = React.useState(false);
@@ -297,7 +297,7 @@ const ApiTokenInfo = () => {
           console.warn(err.message);
         });
     }
-  }, [token]);
+  }, []);
 
   const userEffectiveScopes = (user?.scope || [])
     .map((s) => parseScope(s))

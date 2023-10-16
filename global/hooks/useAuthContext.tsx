@@ -22,22 +22,17 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { AUTH_PROVIDER, EGO_JWT_KEY, EXPLORER_PATH } from '../utils/constants';
-import { decodeToken, extractUser, isValidJwt } from '../utils/egoTokenUtils';
+import { AUTH_PROVIDER, EXPLORER_PATH } from '../utils/constants';
 import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
 import getInternalLink from '../utils/getInternalLink';
 import { getConfig } from '../config';
 
 type T_AuthContext = {
-  token?: string;
-  logout: () => void;
   user?: UserWithId;
   fetchWithAuth: typeof fetch;
 };
 
 const AuthContext = createContext<T_AuthContext>({
-  token: undefined,
-  logout: () => {},
   user: undefined,
   fetchWithAuth: fetch,
 });
@@ -47,19 +42,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export const AuthProvider = ({
-  egoJwt,
   children,
   session
 }: {
-  egoJwt?: string;
   children: React.ReactElement;
   session: any;
 }) => {
   const router = useRouter();
   const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
-  // TODO: typing this state as `string` causes a compiler error. the same setup exists in argo but does not cause
-  // a type issue. using `any` for now
-  const [token, setTokenState] = useState<any>(egoJwt);
   const [user, setUser] = useState<UserWithId>();
 
   useEffect(() => {
@@ -78,39 +68,22 @@ export const AuthProvider = ({
         scope: session?.scopes
       }
       setUser(newUser);
+    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user){
+      const newUser: UserWithId = {
+        ...session?.user,
+        scope: session?.scopes
+      }
+      setUser(newUser);
+
     }
   }, [session])
-
-  const removeToken = () => {
-    localStorage.removeItem(EGO_JWT_KEY);
-    setTokenState(null);
-  };
-
-  const logout = () => {
-    removeToken();
-    router.push(getInternalLink({ path: EXPLORER_PATH }));
-  };
-
-  if (!token) {
-    if (isValidJwt(egoJwt)) {
-      setTokenState(egoJwt);
-    }
-  } else {
-    if (!isValidJwt(token)) {
-      if (egoJwt && token === egoJwt) {
-        removeToken();
-      }
-    } else if (!egoJwt) {
-      setTokenState(null);
-    }
-  }
 
   const fetchWithAuth: T_AuthContext['fetchWithAuth'] = (url, options) => {
 
     let headers = { 
       ...options?.headers, 
       accept: '*/*',
-      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${token || ''}`}
+      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${session?.account?.accessToken || ''}`}
     };
 
     return fetch(url, {
@@ -120,15 +93,7 @@ export const AuthProvider = ({
     });
   };
 
-  if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
-    const userInfo = token ? decodeToken(token) : null;
-    if(userInfo) {
-      setUser(extractUser(userInfo));
-    }
-  }
   const authData = {
-    token,
-    logout,
     user,
     fetchWithAuth,
   };

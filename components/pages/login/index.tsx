@@ -59,8 +59,10 @@ const LoginButton = ({
     if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
       window.location.href = url;
       return false;
+    } else if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
+      signIn(AUTH_PROVIDER.KEYCLOAK, { callbackUrl: EXPLORER_PATH })
     } else {
-      signIn("keycloak", { callbackUrl: EXPLORER_PATH })
+      return false;
     }
   }
 

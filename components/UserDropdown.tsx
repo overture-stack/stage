@@ -96,7 +96,6 @@ const StyledListLink = styled('a')`
 
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);
-  const { logout } = useAuthContext();
   const node: any = useRef();
   const router = useRouter();
   const theme = useTheme();
@@ -125,9 +124,7 @@ const UserDropdown = () => {
     router.pathname === USER_PATH ? theme.colors.accent2_dark : theme.colors.accent_dark;
 
   const handleLogout = () => {
-    if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
-      logout()
-    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
+    if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO || NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
       signOut()
     }
     return false;

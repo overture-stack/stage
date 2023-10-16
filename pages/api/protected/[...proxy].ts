@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next"
 import httpProxy from "http-proxy";
 
 
-import { authOptions } from "../auth/[...nextauth]"
+import { getAuthOptions } from '../auth/[...nextauth]';
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
@@ -30,14 +30,14 @@ export default async function handler(
     let path = req.url;
     let target = "";
     if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_ARRANGER)){
-        path = req?.url?.replace(/^\/api\/arranger\//, '') || "";;
+        path = req?.url?.replace(/^\/api\/protected\/arranger\//, '') || "";;
         target = NEXT_PUBLIC_ARRANGER_API;
     } else {
         return res.status(404).end()
     }
     req.url = path;
 
-    const session = await getServerSession(req, res, authOptions);
+    const session = await getServerSession(req, res, getAuthOptions(req));
 
     if(session?.account?.accessToken) {
         req.headers['Authentication'] = "Bearer " + session?.account?.accessToken
