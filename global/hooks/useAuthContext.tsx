@@ -20,21 +20,17 @@
  */
 
 import React, { createContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 
 import { AUTH_PROVIDER } from '../utils/constants';
 import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
 import { getConfig } from '../config';
-import { decryptContent } from '../utils/crypt';
 
 type T_AuthContext = {
   user?: UserWithId;
-  fetchWithAuth: typeof fetch;
 };
 
 const AuthContext = createContext<T_AuthContext>({
-  user: undefined,
-  fetchWithAuth: fetch,
+  user: undefined
 });
 
 if (process.env.NODE_ENV === 'development') {
@@ -48,15 +44,13 @@ export const AuthProvider = ({
   children: React.ReactElement;
   session: any;
 }) => {
-  const router = useRouter();
   const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
   const [user, setUser] = useState<UserWithId>();
-  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
     if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account){
       const newUser: UserWithId = {
-        id: session?.user?.sub,
+        id: session?.user?.id,
         email: session?.user?.email,
         type: UserType.USER,
         status: UserStatus.APPROVED,
@@ -69,35 +63,17 @@ export const AuthProvider = ({
         scope: session?.scopes
       }
       setUser(newUser);
-      setToken(decryptContent(session?.account?.accessToken));
     } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user){
       const newUser: UserWithId = {
         ...session?.user,
         scope: session?.scopes
       }
       setUser(newUser);
-      setToken(decryptContent(session?.account?.accessToken));
     }
   }, [session])
 
-  const fetchWithAuth: T_AuthContext['fetchWithAuth'] = (url, options) => {
-
-    let headers = { 
-      ...options?.headers, 
-      accept: '*/*',
-      ...(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) && {Authorization: `Bearer ${token}`}
-    };
-
-    return fetch(url, {
-      ...options,
-      headers,
-      body: null,
-    });
-  };
-
   const authData = {
-    user,
-    fetchWithAuth,
+    user
   };
 
   return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;

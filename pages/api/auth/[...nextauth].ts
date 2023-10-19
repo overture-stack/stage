@@ -7,57 +7,18 @@ import urlJoin from 'url-join';
 import axios from 'axios';
 
 import { getConfig } from '@/global/config';
-import { KEYCLOAK_URL_TOKEN, KEYCLOAK_URL_ISSUER, AUTH_PROVIDER } from '@/global/utils/constants';
+import { KEYCLOAK_URL_ISSUER, AUTH_PROVIDER, KEYCLOAK_URL_TOKEN } from '@/global/utils/constants';
 import { decodeToken, extractUser } from '@/global/utils/egoTokenUtils';
 import { encryptContent } from "@/global/utils/crypt";
+import { permissionBodyParams, scopesFromPermissions } from "@/global/utils/keycloakUtils";
 
 
 const { NEXT_PUBLIC_KEYCLOAK_CLIENT_ID, 
   NEXT_PUBLIC_KEYCLOAK_CLIENT_SECRET, 
   NEXT_PUBLIC_KEYCLOAK_SECRET,
-  NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE,
   NEXT_PUBLIC_EGO_API_ROOT,
   NEXT_PUBLIC_EGO_CLIENT_ID
 } = getConfig();
-
-const bodyParams = () => {
-  return new URLSearchParams({
-    'grant_type': 'urn:ietf:params:oauth:grant-type:uma-ticket',
-    'audience': NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE,
-    'response_mode': 'permissions'
-  });
-}
-
-const headerWithBearer = (accessToken: string) => {
-  return {
-    'content-type': 'application/x-www-form-urlencoded',
-    'authorization': 'Bearer ' + accessToken,
-    'accept': '*/*'
-  }
-}
-
-const fetchPermissions = async (accessToken: string) => {
-  const { data } = await axios.post(
-    KEYCLOAK_URL_TOKEN, 
-    bodyParams(),
-  {
-    headers: headerWithBearer(accessToken)
-  });
-  return data;
-}
-
-type Permission = {
-  rsid: string;
-  rsname: string;
-  scopes: string[];
-};
-
-const scopesFromPermissions = (permissions: Permission[]) => {
-  return permissions
-    .filter(p => p.scopes)
-    .flatMap(p => p.scopes.flatMap(s => [p.rsname + "." + s]))
-
-}
 
 const egoLoginUrl = urlJoin(
   NEXT_PUBLIC_EGO_API_ROOT,
@@ -67,12 +28,27 @@ const egoLoginUrl = urlJoin(
 const fetchEgoToken = async (login_nonce: string) => {
   const { data } = await axios.post(
     egoLoginUrl, 
-    bodyParams(),
+    null,
   {
     headers: { 'Accept': '*/*', 'Cookie': `LOGIN_NONCE=${login_nonce}`},
   });
 
   return data;
+}
+
+export const fetchScopes = async (accessToken: string) => {
+  const { data } = await axios.post(
+      KEYCLOAK_URL_TOKEN, 
+      permissionBodyParams(),
+  {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'authorization': 'Bearer ' + accessToken,
+        'accept': '*/*'
+      }
+  });
+
+  return (data) ? scopesFromPermissions(data) : [];
 }
 
 export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRequest) => {
@@ -122,6 +98,9 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
         clientId: NEXT_PUBLIC_EGO_CLIENT_ID,
       } as OAuthConfig<any>
     ],
+    pages: {
+      signIn: '/login'
+    },
     callbacks: {
         async jwt({ token, user, account, profile, trigger }: any) {
 
@@ -132,9 +111,7 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
               } else if(account?.provider == AUTH_PROVIDER.KEYCLOAK){
                 token.account = account
                 token.profile = profile
-      
-                const permissions = await fetchPermissions(token.account.access_token);
-                token.permissions = permissions
+                token.scopes = await fetchScopes(token.account.access_token);
               }
             }
   
@@ -160,7 +137,7 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
               session.user.emailVerified = token?.profile?.email_verified
               session.user.id = token?.sub
               if(!session.user.email) session.user.email = token?.profile?.email
-              session.scopes = scopesFromPermissions(token?.permissions);
+              session.scopes = token?.scopes;
             }
   
             return session

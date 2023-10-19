@@ -21,6 +21,15 @@ export const config = {
 	},
 }
 
+const convertToRegexPath = (path: string) => {
+    const escapedPath = path.replaceAll('/', '\\/');
+    return new RegExp(`^${escapedPath}\\/?`)
+}
+
+const replacePath = (url: string, path: string, ) => {
+    return url?.replace(convertToRegexPath(path), '') || "";
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -29,7 +38,7 @@ export default async function handler(
     let path = req.url;
     let target = "";
     if(req.url?.startsWith(INTERNAL_API_PROXY.ARRANGER)){
-        path = req?.url?.replace(/^\/api\/arranger\//, '') || "";;
+        path = replacePath(req?.url, INTERNAL_API_PROXY.ARRANGER);
         target = NEXT_PUBLIC_ARRANGER_API;
     } else {
         return res.status(404).end()
@@ -38,6 +47,8 @@ export default async function handler(
 
     // Don't forward cookies to the API:
     req.headers.cookie = ''
+
+    console.info(`proxy without authentication - proxing to target:${target} path:${path}`)
 
     proxy.web(req, res, {
         target ,

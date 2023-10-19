@@ -183,6 +183,18 @@ const LoginPage = () => {
               </ErrorNotification>
             </div>
           )}
+          {query.error && (
+            <div
+              css={css`
+                height: 70px;
+                margin: 1rem 0;
+              `}
+            >
+              <ErrorNotification size="md" title="Login error">
+                Please try again.
+              </ErrorNotification>
+            </div>
+          )}
           <span
             css={(theme) => css`
               display: block;

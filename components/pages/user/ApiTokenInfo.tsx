@@ -28,7 +28,7 @@ import { Tooltip, TooltipProps } from 'react-tippy';
 import { parseExpiry, getDayValue } from '../../../global/utils/apiToken';
 import { getConfig } from '../../../global/config';
 import useAuthContext from '../../../global/hooks/useAuthContext';
-import { EGO_API_KEY_ENDPOINT } from '../../../global/utils/constants';
+import { AUTH_PROVIDER, INTERNAL_API_PROXY } from '../../../global/utils/constants';
 
 import Button from '../../Button';
 import StyledLink from '../../Link';
@@ -40,6 +40,8 @@ import ErrorNotification from '../../ErrorNotification';
 
 import sleep from '../../utils/sleep';
 import DMSAdminContact, { GenericHelpMessage } from '../../DMSAdminContact';
+import { scopesFromPermissions, permissionBodyParams } from '@/global/utils/keycloakUtils';
+import urlJoin from 'url-join';
 
 interface ApiToken {
   expiryDate: string;
@@ -145,34 +147,59 @@ const getErrorMessage = ({ type, statusCode }: ErrorResponse) => {
 };
 
 const ApiTokenInfo = () => {
-  const { user, fetchWithAuth } = useAuthContext();
+  const { user } = useAuthContext();
   const [existingApiToken, setExistingApiToken] = useState<ApiToken | null>(null);
   const [isCopyingToken, setIsCopyingToken] = React.useState(false);
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [requestError, setRequestError] = React.useState<ErrorResponse | null>(null);
   const theme = useTheme();
+  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
+
+  const apiKeyEndpoint = (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) 
+  ? INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT
+  : INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT;
+
+  const getUserScopes = async (userId: string) => {
+
+    return (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) ? 
+      await fetch(urlJoin(INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT), {
+        method: 'POST',
+        body: permissionBodyParams()
+      }).then((res) => {
+        if (res.status !== 200) {
+          setRequestError({ type: ApiTokenErrorType.SCOPES_ERROR, statusCode: res.status });
+          throw new Error(`${res.status}: ${ApiTokenErrorType.SCOPES_ERROR}`);
+        }
+        return res.json();
+      }).then((permissions) => scopesFromPermissions(permissions))
+      .catch((err: Error) => {
+        console.warn(err);
+        return err;
+      })
+    : await fetch(
+      urlJoin(INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT, `?userId=${userId}`),
+      { method: 'GET' }
+    )
+      .then((res) => {
+        if (res.status !== 200) {
+          setRequestError({ type: ApiTokenErrorType.SCOPES_ERROR, statusCode: res.status });
+          throw new Error(`${res.status}: ${ApiTokenErrorType.SCOPES_ERROR}`);
+        }
+        return res.json();
+      })
+      .then((json) => json.scopes)
+      .catch((err: Error) => {
+        console.warn(err);
+        return err;
+      });
+  }
 
   // still need to display any errors for the generate request, as permissions may have changed in between
   // the time a user signed in and when they attempted to generate a token
   const generateApiToken = async () => {
-    const { NEXT_PUBLIC_EGO_API_ROOT } = getConfig();
     if (user) {
-      const scopesResult = await fetchWithAuth(
-        `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes?userId=${user.id}`,
-        { method: 'GET' },
-      )
-        .then((res) => {
-          if (res.status !== 200) {
-            setRequestError({ type: ApiTokenErrorType.SCOPES_ERROR, statusCode: res.status });
-            throw new Error(`${res.status}: ${ApiTokenErrorType.SCOPES_ERROR}`);
-          }
-          return res.json();
-        })
-        .then((json) => json.scopes)
-        .catch((err: Error) => {
-          console.warn(err);
-          return err;
-        });
+      
+      const scopesResult = await getUserScopes(user?.id);
 
       // prevent api token request if scopes request fails
       if (!Array.isArray(scopesResult)) {
@@ -186,13 +213,14 @@ const ApiTokenInfo = () => {
       if (filteredScopes.length) {
         const scopeParams = filteredScopes.map((f: ScopeObj) => `${f.policy}.${f.accessLevel}`);
 
-        const apiKeyUrl = new URL(EGO_API_KEY_ENDPOINT);
+        const searchParam = new URLSearchParams({ user_id: user.id });
         scopeParams.map((param) =>
-          apiKeyUrl.searchParams.append('scopes', encodeURIComponent(param)),
+          searchParam.append('scopes', encodeURIComponent(param)),
         );
-        apiKeyUrl.searchParams.append('user_id', user.id);
 
-        return fetchWithAuth(apiKeyUrl.href, { method: 'POST' })
+        const fullUrlApiKeyService = urlJoin(apiKeyEndpoint, `?${searchParam}`);
+
+        return fetch(fullUrlApiKeyService, { method: 'POST' })
           .then((res) => {
             if (res.status !== 200) {
               setRequestError({
@@ -221,7 +249,7 @@ const ApiTokenInfo = () => {
   const revokeApiToken = async () => {
     return (
       existingApiToken &&
-      fetchWithAuth(`${EGO_API_KEY_ENDPOINT}?apiKey=${existingApiToken.name}`, {
+      fetch(urlJoin(apiKeyEndpoint, `?apiKey=${existingApiToken.name}`), {
         method: 'DELETE',
       })
         .then((res) => {
@@ -259,14 +287,15 @@ const ApiTokenInfo = () => {
 
   useEffect(() => {
     if (user) {
-      const fetchApiKeysUrl = new URL(EGO_API_KEY_ENDPOINT);
-      fetchApiKeysUrl.searchParams.append('sort', 'isRevoked');
-      // sort by asc will get isRevoked=false first
-      fetchApiKeysUrl.searchParams.append('sortOrder', 'ASC');
-      fetchApiKeysUrl.searchParams.append('user_id', user.id);
-      fetchApiKeysUrl.searchParams.append('limit', '1000');
-
-      fetchWithAuth(fetchApiKeysUrl.href, { method: 'GET' })
+      
+      const searchParam = new URLSearchParams({
+        'sort': 'isRevoked',
+        'sortOrder': 'ASC',
+        'user_id': user.id,
+        'limit': '1000'
+      });
+      
+      fetch(urlJoin(apiKeyEndpoint, `?${searchParam}`), { method: 'GET' })
         .then((res) => {
           if (res.status !== 200) {
             setRequestError({ type: ApiTokenErrorType.FETCH_TOKENS_ERROR, statusCode: res.status });
@@ -294,8 +323,9 @@ const ApiTokenInfo = () => {
           }
         })
         .catch((err: Error) => {
-          console.warn(err.message);
+          console.warn("Error: " + err.message);
         });
+      // }
     }
   }, []);
 

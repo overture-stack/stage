@@ -27,6 +27,7 @@ const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOA
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
+export const EGO_SCOPES_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes`;
 
 export const EXPLORER_PATH = '/explorer';
 export const USER_PATH = '/user';
@@ -41,6 +42,7 @@ export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuratio
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(NEXT_PUBLIC_KEYCLOAK_HOST, 'realms', NEXT_PUBLIC_KEYCLOAK_REALM)
 export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token')
+export const KEYCLOAK_API_KEY_ENDPOINT = urlJoin(KEYCLOAK_URL_ISSUER, 'apikey/api_key')
 
 export const AUTH_PROVIDER = {
     EGO: 'ego',
@@ -50,4 +52,8 @@ export const AUTH_PROVIDER = {
 export const INTERNAL_API_PROXY = {
     ARRANGER: '/api/arranger',
     PROTECTED_ARRANGER: '/api/protected/arranger',
+    PROTECTED_EGO_APIKEY_ENDPOINT: '/api/protected/ego/apikey',
+    PROTECTED_EGO_API_SCOPES_ENDPOINT: '/api/protected/ego/scopes',
+    PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: '/api/protected/keycloak/apikey',
+    PROTECTED_KEYCLOAK_TOKEN_ENDPOINT: '/api/protected/keycloak/token'
 }

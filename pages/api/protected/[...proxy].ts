@@ -5,7 +5,7 @@ import httpProxy from "http-proxy";
 
 import { getAuthOptions } from '../auth/[...nextauth]';
 import { getConfig } from '@/global/config';
-import { INTERNAL_API_PROXY } from '@/global/utils/constants';
+import { INTERNAL_API_PROXY, KEYCLOAK_API_KEY_ENDPOINT, KEYCLOAK_URL_TOKEN, EGO_API_KEY_ENDPOINT, EGO_SCOPES_ENDPOINT } from '@/global/utils/constants';
 import { decryptContent } from '@/global/utils/crypt';
 
 const proxy = httpProxy.createProxyServer()
@@ -23,6 +23,15 @@ export const config = {
 	},
 }
 
+const convertToRegexPath = (path: string) => {
+    const escapedPath = path.replaceAll('/', '\\/');
+    return new RegExp(`^${escapedPath}\\/?`)
+}
+
+const replacePath = (url: string, path: string, ) => {
+    return url?.replace(convertToRegexPath(path), '') || "";
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -31,8 +40,20 @@ export default async function handler(
     let path = req.url;
     let target = "";
     if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_ARRANGER)){
-        path = req?.url?.replace(/^\/api\/protected\/arranger\//, '') || "";;
+        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_ARRANGER);
         target = NEXT_PUBLIC_ARRANGER_API;
+    } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT)){
+        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT);
+        target = EGO_API_KEY_ENDPOINT;
+    } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT)){
+        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT);
+        target = EGO_SCOPES_ENDPOINT;
+    } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT)){
+        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT);
+        target = KEYCLOAK_API_KEY_ENDPOINT;
+    } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT)){
+        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT);
+        target = KEYCLOAK_URL_TOKEN;
     } else {
         return res.status(404).end()
     }
@@ -40,8 +61,10 @@ export default async function handler(
 
     const session = await getServerSession(req, res, getAuthOptions(req));
 
+    console.info(`protected proxy - proxing to target:${target} path:${path}`)
+
     if(session?.account?.accessToken) {
-        req.headers['Authentication'] = "Bearer " + decryptContent(session?.account?.accessToken)
+        req.headers['Authorization'] = "Bearer " + decryptContent(session?.account?.accessToken)
     }
 
     // Don't forward cookies to the API:
