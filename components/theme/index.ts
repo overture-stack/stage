@@ -25,10 +25,10 @@ import shadow from './shadow';
 import dimensions from './dimensions';
 
 const defaultTheme = {
-  colors,
-  typography,
-  shadow,
-  dimensions,
+	colors,
+	typography,
+	shadow,
+	dimensions,
 };
 
 export default defaultTheme;

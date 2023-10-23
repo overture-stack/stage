@@ -4,25 +4,21 @@
 <img align="right" width="120vw" src="productDMS.svg" alt="arranger-logo"/>
 </div>
 
-The DMS-UI is a React-based user interface designed to prop up browser-accessible data portals. Although the DMS-UI can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices. 
+The DMS-UI is a React-based user interface designed to prop up browser-accessible data portals. Although the DMS-UI can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
 
 The DMS-UI is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 For more information about the DMS-UI, including setup and how to integrate Overture microservices Arranger and Ego, see our [official DMS-UI user documentation](https://www.overture.bio/documentation/dmsui/)
 
-
 <!--Blockqoute-->
 
 </br>
 
-> 
 > <div>
 > <img align="left" src="ov-logo.png" height="90"/>
 > </div>
-> 
-> *The DMS-UI is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery.*
-> 
-> 
+>
+> _The DMS-UI is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
 
 <!--Blockqoute-->
 
@@ -83,7 +79,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Connect with us on [Slack](https://overture-bio.slack.com/)
 - Add or Upvote a [feature request](https://github.com/overture-stack/dms-ui/issues?q=is%3Aopen+is%3Aissue+label%3Anew-feature+sort%3Areactions-%2B1-desc)
 
-## Related Products 
+## Related Products
 
 <div>
   <img align="right" alt="Overture overview" src="https://www.overture.bio/static/124ca0fede460933c64fe4e50465b235/a6d66/system-diagram.png" width="45%" hspace="5">
@@ -97,18 +93,16 @@ See the links below for additional information on our other research software to
 
 </br>
 
-|Software|Description|
-|---|---|
-|[Ego](https://www.overture.bio/products/ego/)|An authorization and user management service|
-|[Ego UI](https://www.overture.bio/products/ego-ui/)|A UI for managing Ego authentication and authorization services|
-|[Score](https://www.overture.bio/products/score/)| Transfer data to and from any cloud-based storage system|
-|[Song](https://www.overture.bio/products/song/)|Catalog and manage metadata associated to file data spread across cloud storage systems|
-|[Maestro](https://www.overture.bio/products/maestro/)|Organizing your distributed data into a centralized Elasticsearch index|
-|[Arranger](https://www.overture.bio/products/arranger/)|A search API with reusable UI components that build into configurable and functional data portals|
-|[DMS-UI](https://github.com/overture-stack/dms-ui)|A simple web browser UI that integrates Ego and Arranger|
+| Software                                                | Description                                                                                       |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [Ego](https://www.overture.bio/products/ego/)           | An authorization and user management service                                                      |
+| [Ego UI](https://www.overture.bio/products/ego-ui/)     | A UI for managing Ego authentication and authorization services                                   |
+| [Score](https://www.overture.bio/products/score/)       | Transfer data to and from any cloud-based storage system                                          |
+| [Song](https://www.overture.bio/products/song/)         | Catalog and manage metadata associated to file data spread across cloud storage systems           |
+| [Maestro](https://www.overture.bio/products/maestro/)   | Organizing your distributed data into a centralized Elasticsearch index                           |
+| [Arranger](https://www.overture.bio/products/arranger/) | A search API with reusable UI components that build into configurable and functional data portals |
+| [DMS-UI](https://github.com/overture-stack/dms-ui)      | A simple web browser UI that integrates Ego and Arranger                                          |
 
 ## Acknowledgements
 
 Overture is supported by grant #U24CA253529 from the National Cancer Institute at the US National Institutes of Health, and additional funding from Genome Canada, the Canada Foundation for Innovation, the Canadian Institutes of Health Research, Canarie, and the Ontario Institute for Cancer Research.
-
-

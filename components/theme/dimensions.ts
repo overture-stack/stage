@@ -20,18 +20,18 @@
  */
 
 const dimensions = {
-  navbar: {
-    height: 50,
-  },
-  footer: {
-    height: 47,
-  },
-  facets: {
-    width: 250,
-  },
-  labIcon: {
-    height: 30,
-  },
+	navbar: {
+		height: 50,
+	},
+	footer: {
+		height: 47,
+	},
+	facets: {
+		width: 250,
+	},
+	labIcon: {
+		height: 30,
+	},
 };
 
 export default dimensions;
