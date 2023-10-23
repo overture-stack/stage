@@ -23,21 +23,21 @@ import React from 'react';
 import { ClientSideGetInitialPropsContext } from '../utils/pages/types';
 
 export const PageContext = React.createContext<ClientSideGetInitialPropsContext>({
-  pathname: '',
-  query: {},
-  asPath: '',
+	pathname: '',
+	query: {},
+	asPath: '',
 });
 
 if (process.env.NODE_ENV === 'development') {
-  PageContext.displayName = 'PageContext';
+	PageContext.displayName = 'PageContext';
 }
 
 export default function usePageContext(): ClientSideGetInitialPropsContext {
-  const pageContext = React.useContext(PageContext);
-  return pageContext;
+	const pageContext = React.useContext(PageContext);
+	return pageContext;
 }
 
 export const usePageQuery = <T extends { [k: string]: string }>() => {
-  const { query } = usePageContext();
-  return query as T;
+	const { query } = usePageContext();
+	return query as T;
 };

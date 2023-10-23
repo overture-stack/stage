@@ -28,18 +28,18 @@ import { ClientSideGetInitialPropsContext } from '../global/utils/pages/types';
 import defaultTheme from './theme';
 
 const Root = ({
-  children,
-  pageContext,
-  session
+	children,
+	pageContext,
+	session,
 }: {
-  children: React.ReactElement;
-  pageContext: ClientSideGetInitialPropsContext;
-  session: any;
+	children: React.ReactElement;
+	pageContext: ClientSideGetInitialPropsContext;
+	session: any;
 }) => {
-  return (
-    <>
-      <style>
-        {`
+	return (
+		<>
+			<style>
+				{`
         body {
           margin: 0;
           position: absolute;
@@ -56,15 +56,15 @@ const Root = ({
           right: 0px;
         }
       `}
-      </style>
+			</style>
 
-      <AuthProvider session={session}>
-        <PageContext.Provider value={pageContext}>
-          <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
-        </PageContext.Provider>
-      </AuthProvider>
-    </>
-  );
+			<AuthProvider session={session}>
+				<PageContext.Provider value={pageContext}>
+					<ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
+				</PageContext.Provider>
+			</AuthProvider>
+		</>
+	);
 };
 
 export default Root;

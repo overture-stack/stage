@@ -28,50 +28,50 @@ import PageHead from './Head';
 import ErrorNotification from './ErrorNotification';
 
 const PageLayout = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => {
-  return (
-    <>
-      <PageHead subtitle={subtitle}></PageHead>
-      <div
-        css={(theme) => css`
-          display: grid;
-          grid-template-rows: ${theme.dimensions.navbar.height}px 1fr ${theme.dimensions.footer
-              .height}px;
-          height: 100%;
-          ${theme.typography.regular}
-          color: ${theme.colors.black};
-        `}
-      >
-        <NavBar />
-        {children}
-        <Footer />
-      </div>
-    </>
-  );
+	return (
+		<>
+			<PageHead subtitle={subtitle}></PageHead>
+			<div
+				css={(theme) => css`
+					display: grid;
+					grid-template-rows: ${theme.dimensions.navbar.height}px 1fr ${theme.dimensions.footer
+							.height}px;
+					height: 100%;
+					${theme.typography.regular}
+					color: ${theme.colors.black};
+				`}
+			>
+				<NavBar />
+				{children}
+				<Footer />
+			</div>
+		</>
+	);
 };
 
 export const ErrorPageLayout = ({
-  children,
-  subtitle,
-  errorTitle,
+	children,
+	subtitle,
+	errorTitle,
 }: {
-  children: ReactNode;
-  subtitle: string;
-  errorTitle: string;
+	children: ReactNode;
+	subtitle: string;
+	errorTitle: string;
 }) => {
-  return (
-    <PageLayout subtitle={subtitle}>
-      <ErrorNotification
-        size="lg"
-        title={errorTitle}
-        css={css`
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        `}
-      >
-        {children}
-      </ErrorNotification>
-    </PageLayout>
-  );
+	return (
+		<PageLayout subtitle={subtitle}>
+			<ErrorNotification
+				size="lg"
+				title={errorTitle}
+				css={css`
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+				`}
+			>
+				{children}
+			</ErrorNotification>
+		</PageLayout>
+	);
 };
 export default PageLayout;

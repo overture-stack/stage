@@ -25,10 +25,10 @@ import ExplorerPage from './explorer';
 import { createPage } from '../global/utils/pages';
 
 const HomePage = createPage({
-  getInitialProps: async () => {},
-  isPublic: true,
+	getInitialProps: async () => {},
+	isPublic: true,
 })(() => {
-  return <ExplorerPage />;
+	return <ExplorerPage />;
 });
 
 export default HomePage;

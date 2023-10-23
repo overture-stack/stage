@@ -26,59 +26,59 @@ import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/typ
 import { getConfig } from '../config';
 
 type T_AuthContext = {
-  user?: UserWithId;
+	user?: UserWithId;
 };
 
 const AuthContext = createContext<T_AuthContext>({
-  user: undefined
+	user: undefined,
 });
 
 if (process.env.NODE_ENV === 'development') {
-  AuthContext.displayName = 'AuthContext';
+	AuthContext.displayName = 'AuthContext';
 }
 
 export const AuthProvider = ({
-  children,
-  session
+	children,
+	session,
 }: {
-  children: React.ReactElement;
-  session: any;
+	children: React.ReactElement;
+	session: any;
 }) => {
-  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
-  const [user, setUser] = useState<UserWithId>();
+	const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
+	const [user, setUser] = useState<UserWithId>();
 
-  useEffect(() => {
-    if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account){
-      const newUser: UserWithId = {
-        id: session?.user?.id,
-        email: session?.user?.email,
-        type: UserType.USER,
-        status: UserStatus.APPROVED,
-        firstName: session?.user?.firstName,
-        lastName: session?.user?.lastName,
-        createdAt: 0,
-        lastLogin: 0,
-        providerType: ProviderType.KEYCLOAK,
-        providerSubjectId: "",
-        scope: session?.scopes
-      }
-      setUser(newUser);
-    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user){
-      const newUser: UserWithId = {
-        ...session?.user,
-        scope: session?.scopes
-      }
-      setUser(newUser);
-    }
-  }, [session])
+	useEffect(() => {
+		if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account) {
+			const newUser: UserWithId = {
+				id: session?.user?.id,
+				email: session?.user?.email,
+				type: UserType.USER,
+				status: UserStatus.APPROVED,
+				firstName: session?.user?.firstName,
+				lastName: session?.user?.lastName,
+				createdAt: 0,
+				lastLogin: 0,
+				providerType: ProviderType.KEYCLOAK,
+				providerSubjectId: '',
+				scope: session?.scopes,
+			};
+			setUser(newUser);
+		} else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user) {
+			const newUser: UserWithId = {
+				...session?.user,
+				scope: session?.scopes,
+			};
+			setUser(newUser);
+		}
+	}, [session]);
 
-  const authData = {
-    user
-  };
+	const authData = {
+		user,
+	};
 
-  return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>;
 };
 
 export default function useAuthContext() {
-  return React.useContext(AuthContext);
+	return React.useContext(AuthContext);
 }

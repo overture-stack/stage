@@ -23,11 +23,11 @@ import React from 'react';
 import NextHead from 'next/head';
 
 const PageHead = ({ subtitle }: { subtitle?: string }) => {
-  return (
-    <NextHead>
-      <title>Overture DMS{subtitle ? ` - ${subtitle}` : ''}</title>
-    </NextHead>
-  );
+	return (
+		<NextHead>
+			<title>Overture DMS{subtitle ? ` - ${subtitle}` : ''}</title>
+		</NextHead>
+	);
 };
 
 export default PageHead;

@@ -33,58 +33,61 @@ import { getConfig } from '../global/config';
 import { decryptContent } from '@/global/utils/crypt';
 
 const DMSApp = ({
-  Component,
-  pageProps,
-  ctx,
-  session
+	Component,
+	pageProps,
+	ctx,
+	session,
 }: {
-  Component: PageWithConfig;
-  pageProps: { [k: string]: any };
-  ctx: any;
-  session: any;
+	Component: PageWithConfig;
+	pageProps: { [k: string]: any };
+	ctx: any;
+	session: any;
 }) => {
-  const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
-  useEffect(() => {
+	const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
+	useEffect(() => {
+		if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) {
+			if (
+				(!session || !isValidJwt(decryptContent(session?.account?.accessToken))) &&
+				!Component.isPublic
+			) {
+				// redirect to logout when token is expired/missing only if user is on a non-public page
+				Router.push({
+					pathname: getInternalLink({ path: LOGIN_PATH }),
+					query: { session_expired: true },
+				});
+			}
+		} else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) {
+			if (!session && !Component.isPublic) {
+				Router.push({
+					pathname: getInternalLink({ path: LOGIN_PATH }),
+					query: { session_expired: true },
+				});
+			}
+		}
+	}),
+		[session];
 
-    if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
-      if((!session || !isValidJwt(decryptContent(session?.account?.accessToken))) && !Component.isPublic) {
-        // redirect to logout when token is expired/missing only if user is on a non-public page
-        Router.push({
-          pathname: getInternalLink({ path: LOGIN_PATH }),
-          query: { session_expired: true },
-        });
-      }
-    } else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
-      if(!session && !Component.isPublic) {
-        Router.push({
-          pathname: getInternalLink({ path: LOGIN_PATH }),
-          query: { session_expired: true },
-        });
-      }
-    }
-  }), [session];
-
-  return (
-    <SessionProvider session={session}>
-      <Root pageContext={ctx} session={session}>
-        <Component {...pageProps} />
-      </Root>
-    </SessionProvider>
-  );
+	return (
+		<SessionProvider session={session}>
+			<Root pageContext={ctx} session={session}>
+				<Component {...pageProps} />
+			</Root>
+		</SessionProvider>
+	);
 };
 
 DMSApp.getInitialProps = async ({ ctx, Component }: AppContext & { Component: PageWithConfig }) => {
-  const pageProps = await Component.getInitialProps({ ...ctx });
-  const session = await getSession(ctx)
-  return {
-    ctx: {
-      pathname: ctx.pathname,
-      query: ctx.query,
-      asPath: ctx.asPath,
-    },
-    pageProps,
-    session
-  };
+	const pageProps = await Component.getInitialProps({ ...ctx });
+	const session = await getSession(ctx);
+	return {
+		ctx: {
+			pathname: ctx.pathname,
+			query: ctx.query,
+			asPath: ctx.asPath,
+		},
+		pageProps,
+		session,
+	};
 };
 
 export default DMSApp;

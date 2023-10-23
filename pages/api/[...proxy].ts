@@ -1,12 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import httpProxy from "http-proxy";
-
+import type { NextApiRequest, NextApiResponse } from 'next';
+import httpProxy from 'http-proxy';
 
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 import { removeFromPath } from '@/global/utils/proxyUtils';
 
-const proxy = httpProxy.createProxyServer()
+const proxy = httpProxy.createProxyServer();
 
 const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
 
@@ -18,37 +17,38 @@ const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
 export const config = {
 	api: {
 		bodyParser: false,
-        externalResolver: true,
+		externalResolver: true,
 	},
-}
+};
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	let path = req.url;
+	let target = '';
+	if (req.url?.startsWith(INTERNAL_API_PROXY.ARRANGER)) {
+		path = removeFromPath(req?.url, INTERNAL_API_PROXY.ARRANGER);
+		target = NEXT_PUBLIC_ARRANGER_API;
+	} else {
+		return res.status(404).end();
+	}
+	req.url = path;
 
-    let path = req.url;
-    let target = "";
-    if(req.url?.startsWith(INTERNAL_API_PROXY.ARRANGER)){
-        path = removeFromPath(req?.url, INTERNAL_API_PROXY.ARRANGER);
-        target = NEXT_PUBLIC_ARRANGER_API;
-    } else {
-        return res.status(404).end()
-    }
-    req.url = path;
+	// Don't forward cookies to the API:
+	req.headers.cookie = '';
 
-    // Don't forward cookies to the API:
-    req.headers.cookie = ''
+	console.info(`proxy without authentication - proxing to target:${target} path:${path}`);
 
-    console.info(`proxy without authentication - proxing to target:${target} path:${path}`)
-
-    proxy.web(req, res, {
-        target ,
-        changeOrigin: true,
-    }, (err) => {
-        console.error(`Proxy error for ${req.url}: ${JSON.stringify(err)}`)
-        if (err) {
-            return res.status(500).json(err)
-        }
-    })
+	proxy.web(
+		req,
+		res,
+		{
+			target,
+			changeOrigin: true,
+		},
+		(err) => {
+			console.error(`Proxy error for ${req.url}: ${JSON.stringify(err)}`);
+			if (err) {
+				return res.status(500).json(err);
+			}
+		},
+	);
 }

@@ -28,67 +28,67 @@ import { DMS_HELP_URL, DMS_INSTALLATION_URL } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const Footer = () => {
-  const { NEXT_PUBLIC_UI_VERSION } = getConfig();
+	const { NEXT_PUBLIC_UI_VERSION } = getConfig();
 
-  return (
-    <div
-      css={(theme: typeof defaultTheme) => css`
-        height: ${theme.dimensions.footer.height}px;
-        background-color: ${theme.colors.white};
-        border-top: 1px solid ${theme.colors.grey_3};
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 0 18px;
-        ${theme.shadow.default};
-        z-index: 10;
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-      `}
-    >
-      <StyledLink
-        css={(theme) => css`
-          ${theme.typography.subheading2};
-          padding-right: 13px;
-        `}
-        href={DMS_HELP_URL}
-        target="_blank"
-      >
-        Help
-      </StyledLink>
-      |
-      <StyledLink
-        css={(theme) => css`
-          ${theme.typography.subheading2};
-          padding-left: 13px;
-          padding-right: 5px;
-        `}
-        href={DMS_INSTALLATION_URL}
-        target="_blank"
-      >
-        DMS
-      </StyledLink>
-      <span
-        css={(theme) =>
-          css`
-            color: ${theme.colors.accent_dark};
-            ${theme.typography.subheading2}
-            line-height: 24px;
-            font-weight: normal;
-            padding-right: 10px;
-            padding-left: 5px;
-          `
-        }
-      >
-        {NEXT_PUBLIC_UI_VERSION && `UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
-      </span>
-      <a href="https://www.overture.bio/" target="_blank">
-        <OvertureLogoWithText width={100} height={18} />
-      </a>
-    </div>
-  );
+	return (
+		<div
+			css={(theme: typeof defaultTheme) => css`
+				height: ${theme.dimensions.footer.height}px;
+				background-color: ${theme.colors.white};
+				border-top: 1px solid ${theme.colors.grey_3};
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				padding: 0 18px;
+				${theme.shadow.default};
+				z-index: 10;
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+			`}
+		>
+			<StyledLink
+				css={(theme) => css`
+					${theme.typography.subheading2};
+					padding-right: 13px;
+				`}
+				href={DMS_HELP_URL}
+				target="_blank"
+			>
+				Help
+			</StyledLink>
+			|
+			<StyledLink
+				css={(theme) => css`
+					${theme.typography.subheading2};
+					padding-left: 13px;
+					padding-right: 5px;
+				`}
+				href={DMS_INSTALLATION_URL}
+				target="_blank"
+			>
+				DMS
+			</StyledLink>
+			<span
+				css={(theme) =>
+					css`
+						color: ${theme.colors.accent_dark};
+						${theme.typography.subheading2}
+						line-height: 24px;
+						font-weight: normal;
+						padding-right: 10px;
+						padding-left: 5px;
+					`
+				}
+			>
+				{NEXT_PUBLIC_UI_VERSION && `UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
+			</span>
+			<a href="https://www.overture.bio/" target="_blank">
+				<OvertureLogoWithText width={100} height={18} />
+			</a>
+		</div>
+	);
 };
 
 export default Footer;
