@@ -28,7 +28,7 @@ const convertToRegexPath = (path: string) => {
     return new RegExp(`^${escapedPath}\\/?`)
 }
 
-const replacePath = (url: string, path: string, ) => {
+const removeFromPath = (url: string, path: string, ) => {
     return url?.replace(convertToRegexPath(path), '') || "";
 }
 
@@ -40,19 +40,19 @@ export default async function handler(
     let path = req.url;
     let target = "";
     if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_ARRANGER)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_ARRANGER);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.PROTECTED_ARRANGER);
         target = NEXT_PUBLIC_ARRANGER_API;
     } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_APIKEY_ENDPOINT);
         target = EGO_API_KEY_ENDPOINT;
     } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.PROTECTED_EGO_API_SCOPES_ENDPOINT);
         target = EGO_SCOPES_ENDPOINT;
     } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_APIKEY_ENDPOINT);
         target = KEYCLOAK_API_KEY_ENDPOINT;
     } else if(req.url?.startsWith(INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.PROTECTED_KEYCLOAK_TOKEN_ENDPOINT);
         target = KEYCLOAK_URL_TOKEN;
     } else {
         return res.status(404).end()

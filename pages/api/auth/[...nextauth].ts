@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
-import NextAuth, { SessionStrategy } from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { OAuthConfig } from 'next-auth/providers'
 import urlJoin from 'url-join';
@@ -14,8 +14,8 @@ import { permissionBodyParams, scopesFromPermissions } from "@/global/utils/keyc
 
 
 const { NEXT_PUBLIC_KEYCLOAK_CLIENT_ID, 
-  NEXT_PUBLIC_KEYCLOAK_CLIENT_SECRET, 
-  NEXT_PUBLIC_KEYCLOAK_SECRET,
+  KEYCLOAK_CLIENT_SECRET, 
+  SESSION_ENCRYPTION_SECRET,
   NEXT_PUBLIC_EGO_API_ROOT,
   NEXT_PUBLIC_EGO_CLIENT_ID
 } = getConfig();
@@ -51,14 +51,14 @@ export const fetchScopes = async (accessToken: string) => {
   return (data) ? scopesFromPermissions(data) : [];
 }
 
-export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRequest) => {
+export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRequest): AuthOptions => {
   return {
-    secret: NEXT_PUBLIC_KEYCLOAK_SECRET,
+    secret: SESSION_ENCRYPTION_SECRET,
     // Configure one or more authentication providers
     providers: [
       KeycloakProvider({
         clientId: NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
-        clientSecret: NEXT_PUBLIC_KEYCLOAK_CLIENT_SECRET,
+        clientSecret: KEYCLOAK_CLIENT_SECRET,
         issuer: KEYCLOAK_URL_ISSUER,
       }),
       {
@@ -145,7 +145,7 @@ export const getAuthOptions = (req: GetServerSidePropsContext["req"] | NextApiRe
     },
     session: {
         // Encrypted JWT (JWE) stored in the session cookie.
-        strategy: "jwt" as SessionStrategy,
+        strategy: "jwt",
         // Seconds - How long until an idle session expires and is no longer valid.
         maxAge: 60 * 60 // 1 hour
     },

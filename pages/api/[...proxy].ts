@@ -26,7 +26,7 @@ const convertToRegexPath = (path: string) => {
     return new RegExp(`^${escapedPath}\\/?`)
 }
 
-const replacePath = (url: string, path: string, ) => {
+const removeFromPath = (url: string, path: string, ) => {
     return url?.replace(convertToRegexPath(path), '') || "";
 }
 
@@ -38,7 +38,7 @@ export default async function handler(
     let path = req.url;
     let target = "";
     if(req.url?.startsWith(INTERNAL_API_PROXY.ARRANGER)){
-        path = replacePath(req?.url, INTERNAL_API_PROXY.ARRANGER);
+        path = removeFromPath(req?.url, INTERNAL_API_PROXY.ARRANGER);
         target = NEXT_PUBLIC_ARRANGER_API;
     } else {
         return res.status(404).end()

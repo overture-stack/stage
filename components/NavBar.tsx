@@ -135,7 +135,7 @@ const NavBar: React.ComponentType = () => {
             </a>
           </Link>
         </div>
-        { user ? (
+        {user ? (
           <div
             css={(theme) => css`
               width: 195px;

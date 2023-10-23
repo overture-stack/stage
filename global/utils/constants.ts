@@ -49,11 +49,14 @@ export const AUTH_PROVIDER = {
     KEYCLOAK: 'keycloak'
 }
 
+const PROXY_API_PATH = '/api';
+const PROXY_PROTECTED_API_PATH = '/api/protected';
+
 export const INTERNAL_API_PROXY = {
-    ARRANGER: '/api/arranger',
-    PROTECTED_ARRANGER: '/api/protected/arranger',
-    PROTECTED_EGO_APIKEY_ENDPOINT: '/api/protected/ego/apikey',
-    PROTECTED_EGO_API_SCOPES_ENDPOINT: '/api/protected/ego/scopes',
-    PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: '/api/protected/keycloak/apikey',
-    PROTECTED_KEYCLOAK_TOKEN_ENDPOINT: '/api/protected/keycloak/token'
+    ARRANGER: urlJoin(PROXY_API_PATH, 'arranger'),
+    PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, 'arranger'),
+    PROTECTED_EGO_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/apikey'),
+    PROTECTED_EGO_API_SCOPES_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/scopes'),
+    PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/apikey'),
+    PROTECTED_KEYCLOAK_TOKEN_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/token')
 }
