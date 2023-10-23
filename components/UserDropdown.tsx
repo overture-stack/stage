@@ -127,7 +127,6 @@ const UserDropdown = () => {
     if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO || NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
       signOut()
     }
-    return false;
   }
 
   return (

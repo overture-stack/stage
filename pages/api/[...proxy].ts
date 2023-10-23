@@ -4,6 +4,7 @@ import httpProxy from "http-proxy";
 
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
+import { removeFromPath } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer()
 
@@ -19,15 +20,6 @@ export const config = {
 		bodyParser: false,
         externalResolver: true,
 	},
-}
-
-const convertToRegexPath = (path: string) => {
-    const escapedPath = path.replaceAll('/', '\\/');
-    return new RegExp(`^${escapedPath}\\/?`)
-}
-
-const removeFromPath = (url: string, path: string, ) => {
-    return url?.replace(convertToRegexPath(path), '') || "";
 }
 
 export default async function handler(

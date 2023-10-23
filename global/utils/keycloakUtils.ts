@@ -18,6 +18,6 @@ export type Permission = {
 
 export const scopesFromPermissions = (permissions: Permission[]) => {
     return permissions
-        .filter(p => p.scopes)
-        .flatMap(p => p.scopes.flatMap(s => [p.rsname + "." + s]))
+        .filter(({ scopes }) => scopes)
+        .flatMap(({ rsname, scopes }) => scopes.flatMap(scope => [rsname + "." + scope]))
 }

@@ -7,6 +7,7 @@ import { getAuthOptions } from '../auth/[...nextauth]';
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY, KEYCLOAK_API_KEY_ENDPOINT, KEYCLOAK_URL_TOKEN, EGO_API_KEY_ENDPOINT, EGO_SCOPES_ENDPOINT } from '@/global/utils/constants';
 import { decryptContent } from '@/global/utils/crypt';
+import { removeFromPath } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer()
 
@@ -21,15 +22,6 @@ export const config = {
 	api: {
 		bodyParser: false,
 	},
-}
-
-const convertToRegexPath = (path: string) => {
-    const escapedPath = path.replaceAll('/', '\\/');
-    return new RegExp(`^${escapedPath}\\/?`)
-}
-
-const removeFromPath = (url: string, path: string, ) => {
-    return url?.replace(convertToRegexPath(path), '') || "";
 }
 
 export default async function handler(
