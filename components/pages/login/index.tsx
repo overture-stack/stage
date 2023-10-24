@@ -21,6 +21,7 @@
 
 import { css } from '@emotion/react';
 import urlJoin from 'url-join';
+import { signIn } from "next-auth/react";
 
 import PageLayout from '../../PageLayout';
 import { Illustration } from '../../theme/icons';
@@ -33,6 +34,7 @@ import { trim } from 'lodash';
 import ErrorNotification from '../../ErrorNotification';
 import providerMap, { ProviderDetail } from '../../../global/utils/providerTypeMap';
 import { ProviderType } from '../../../global/types';
+import { AUTH_PROVIDER, EXPLORER_PATH } from '@/global/utils/constants';
 
 const LoginButton = ({
   Icon,
@@ -43,16 +45,32 @@ const LoginButton = ({
   title: string;
   path: string;
 }) => {
-  const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_EGO_CLIENT_ID } = getConfig();
+  const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_EGO_CLIENT_ID, NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
+
   const url = `${urlJoin(
     NEXT_PUBLIC_EGO_API_ROOT,
     '/oauth/login',
     path,
   )}?client_id=${NEXT_PUBLIC_EGO_CLIENT_ID}`;
   const disabled = !path;
+
+
+  const handleLogin = () => {
+    if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO){
+      window.location.href = url;
+      return false;
+    } else if(NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK){
+      signIn(AUTH_PROVIDER.KEYCLOAK, { callbackUrl: EXPLORER_PATH })
+    } else {
+      return false;
+    }
+  }
+
+
   return (
     <a
-      href={url}
+      href={'#'}
+      onClick={handleLogin}
       css={css`
         text-decoration: none;
       `}
@@ -108,7 +126,7 @@ const LoginButton = ({
 
 const LoginPage = () => {
   const query = usePageQuery();
-  const { NEXT_PUBLIC_SSO_PROVIDERS } = getConfig();
+  const { NEXT_PUBLIC_SSO_PROVIDERS, NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
 
   const configuredProviders = NEXT_PUBLIC_SSO_PROVIDERS.length
     ? NEXT_PUBLIC_SSO_PROVIDERS.split(',').map((p: string) => trim(p))
@@ -165,6 +183,18 @@ const LoginPage = () => {
               </ErrorNotification>
             </div>
           )}
+          {query.error && (
+            <div
+              css={css`
+                height: 70px;
+                margin: 1rem 0;
+              `}
+            >
+              <ErrorNotification size="md" title="Login error">
+                Please try again.
+              </ErrorNotification>
+            </div>
+          )}
           <span
             css={(theme) => css`
               display: block;
@@ -178,7 +208,7 @@ const LoginPage = () => {
             Please choose one of the following log in methods to access your API token for data
             download:
           </span>
-          {providers.length ? (
+          {NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && providers.length ? (
             <ul
               css={css`
                 width: 400px;
@@ -203,6 +233,8 @@ const LoginPage = () => {
                 );
               })}
             </ul>
+          ) : (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) ? (
+            <LoginButton Icon={providerMap[ProviderType.KEYCLOAK].icon} title={`Log in with ${providerMap[ProviderType.KEYCLOAK].displayName}`} path={providerMap[ProviderType.KEYCLOAK].path} />
           ) : (
             <div
               css={css`

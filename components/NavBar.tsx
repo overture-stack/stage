@@ -32,7 +32,7 @@ import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants'
 import { getConfig } from '../global/config';
 
 const NavBar: React.ComponentType = () => {
-  const { token } = useAuthContext();
+  const { user } = useAuthContext();
   const router = useRouter();
   const theme: typeof defaultTheme = useTheme();
 
@@ -135,7 +135,7 @@ const NavBar: React.ComponentType = () => {
             </a>
           </Link>
         </div>
-        {token ? (
+        {user ? (
           <div
             css={(theme) => css`
               width: 195px;

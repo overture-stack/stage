@@ -19,7 +19,7 @@
  *
  */
 
-import { GitHubLogo, GoogleLogo, LinkedInLogo, OrcidLogo } from '../../components/theme/icons';
+import { GitHubLogo, GoogleLogo, LinkedInLogo, OrcidLogo, KeycloakLogo } from '../../components/theme/icons';
 import { ProviderType } from '../types';
 
 export type ProviderDetail = {
@@ -35,6 +35,7 @@ const providerMap: ProviderMap = {
   [ProviderType.ORCID]: { displayName: 'ORCiD', path: 'orcid', icon: OrcidLogo },
   [ProviderType.GITHUB]: { displayName: 'GitHub', path: 'github', icon: GitHubLogo },
   [ProviderType.LINKEDIN]: { displayName: 'LinkedIn', path: 'linkedin', icon: LinkedInLogo },
+  [ProviderType.KEYCLOAK]: { displayName: 'Keycloak', path: 'keycloak', icon: KeycloakLogo },
   // Facebook will be hidden until provider implementation is fixed in Ego https://github.com/overture-stack/ego/issues/555
   // [ProviderType.FACEBOOK]: { displayName: 'Facebook', path: '', icon: FacebookLogo },
 };

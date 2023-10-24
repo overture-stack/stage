@@ -20,8 +20,8 @@
  */
 
 import urlJoin from 'url-join';
-import { getConfig } from '../../global/config';
 import ajax from './ajax';
+import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
 const createArrangerFetcher = ({
 	onError = (err: any) => Promise.reject(err),
@@ -40,10 +40,8 @@ const createArrangerFetcher = ({
 		if (cache.has(key)) return cache.get(key);
 		// TODO: max cache size
 
-		const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
-
 		const { body = {}, endpoint = '/graphql', endpointTag = '', headers = {} } = args;
-		const uri = urlJoin(NEXT_PUBLIC_ARRANGER_API, endpoint, endpointTag);
+		const uri = urlJoin(INTERNAL_API_PROXY.ARRANGER, endpoint, endpointTag);
 		const response = await ajax
 			.post(uri, body, {
 				headers: {

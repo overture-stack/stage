@@ -24,6 +24,7 @@ import FacebookLogo from './facebook';
 import GitHubLogo from './github';
 import LinkedInLogo from './linkedin';
 import OrcidLogo from './orcid';
+import KeycloakLogo from './keycloak';
 import Illustration from './illustration';
 import Avatar from './avatar';
 import ChevronDown from './chevron_down';
@@ -42,6 +43,7 @@ export {
   GitHubLogo,
   LinkedInLogo,
   OrcidLogo,
+  KeycloakLogo,
   Illustration,
   Avatar,
   ChevronDown,
