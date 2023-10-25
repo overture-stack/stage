@@ -8,7 +8,7 @@ The DMS-UI is a React-based user interface designed to prop up browser-accessibl
 
 The DMS-UI is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-For more information about the DMS-UI, including setup and how to integrate Overture microservices Arranger and Ego, see our [official DMS-UI user documentation](https://www.overture.bio/documentation/dmsui/)
+For more information about the DMS-UI, including setup and how to integrate Overture microservices Arranger and Ego, see our [official DMS-UI user documentation](https://www.overture.bio/documentation/dms-ui/)
 
 <!--Blockqoute-->
 
