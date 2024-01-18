@@ -79,7 +79,7 @@ const StyledListLink = styled('a')`
     height: 40px;
     display: flex;
     align-items: center;
-    background: (theme.colors.white)};
+    background: ${theme.colors.white};
     padding: 6px 12px;
     color: ${theme.colors.black};
     background-color: ${theme.colors.white};
