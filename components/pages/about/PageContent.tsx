@@ -639,6 +639,7 @@ const InfoPanel = (): ReactElement => {
 				`}
 			>
 				<h1
+					id="how-to-use-it"
 					css={css`
 						color: ${theme.colors.accent};
 						font-size: 26px;

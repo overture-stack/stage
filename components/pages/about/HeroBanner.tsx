@@ -7,7 +7,7 @@ import { EXPLORER_PATH } from '@/global/utils/constants';
 import overtureOverview from './assets/overview.png';
 import heroDemoBannerWide from './assets/herobannerdemo.png'
 
-const HeroBanner = (): ReactElement => {
+const HeroBanner = ({updateFunction}): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
 	return (
@@ -128,7 +128,9 @@ const HeroBanner = (): ReactElement => {
 						> How it's deployed
 					</StyledLink>
 				</Link>
+			<a onClick={() => {updateFunction("how-to-use-it")}}>Click here</a>
 			</div>
+
 		</article>
 	);
 };
