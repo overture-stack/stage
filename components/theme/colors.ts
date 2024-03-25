@@ -37,6 +37,7 @@ const grey = {
 const primary = {
 	primary: '#00ddbe',
 	primary_dark: '#00c4a7',
+	primary_hero: '#6fc3ec',
 };
 
 // dark blues

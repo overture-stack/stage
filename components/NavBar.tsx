@@ -28,7 +28,7 @@ import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import { EXPLORER_PATH, LOGIN_PATH, USER_PATH, ABOUT_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const NavBar: React.ComponentType = () => {
@@ -97,12 +97,45 @@ const NavBar: React.ComponentType = () => {
 					</a>
 				</Link>
 			</div>
+
 			<div
 				css={css`
 					display: flex;
 					align-items: center;
 				`}
 			>
+				<div
+					css={(theme) => css`
+						width: 144px; /* Adjust width as needed */
+						height: 100%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						background-color: ${theme.colors.white};
+						&:hover {
+							background-color: ${theme.colors.grey_2};
+						}
+						border-right: 2px solid ${theme.colors.white};
+					`}
+				>
+					<Link path={ABOUT_PATH}>
+						<a
+							css={(theme) => css`
+								display: flex;
+								flex: 1;
+								height: 100%;
+								justify-content: center;
+								align-items: center;
+								text-decoration: none;
+								color: ${theme.colors.accent_dark};
+								cursor: pointer;
+								${router.pathname === ABOUT_PATH ? activeLinkStyle : ''}
+							`}
+						>
+							About This Portal
+						</a>
+					</Link>
+				</div>
 				<div
 					css={(theme) => css`
 						display: flex;

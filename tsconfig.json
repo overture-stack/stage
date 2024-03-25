@@ -34,6 +34,12 @@
 			} // absolute paths for .d.ts files
 		]
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "additional.d.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"additional.d.ts",
+		"components/pages/DocumentationContainerContainer"
+	],
 	"exclude": ["node_modules"]
 }
