@@ -19,63 +19,44 @@
  *
  */
 
-import { ReactElement } from 'react';
-import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
-import defaultTheme from '../../theme';
-import { StyledLinkAsButton, InternalLink as Link } from '../../Link';
-import { EXPLORER_PATH } from '@/global/utils/constants';
+import defaultTheme from './theme';
 
-const SupportFooter = (): ReactElement => {
-	const theme: typeof defaultTheme = useTheme();
+const HeroLink = styled('a')`
+	${({ theme }: { theme: typeof defaultTheme }) => css`
+		color: ${theme.colors.secondary_accessible};
+		${theme.typography.regular};
+		line-height: 24px;
+		cursor: pointer;
+		user-select: none;
+		&:hover {
+			color: ${theme.colors.accent};
+		}
+	`}
+`;
 
-	return (
-		<article
-			css={css`
-				background-color: ${theme.colors.black};
-				box-sizing: border-box;
-				color: ${theme.colors.white};
-				display: flex;
-				padding: 45px 50px 50px 50px;
-				width: 100%;
+export const HeroLinkAsButton = styled(HeroLink)`
+	${({ theme }: { theme: typeof defaultTheme }) => css`
+		color: ${theme.colors.white};
+		background-color: ${theme.colors.accent};
+		${theme.typography.subheading2};
+		line-height: 24px;
+		border-radius: 5px;
+		border: 1px solid ${theme.colors.accent};
+		padding: 6px 15px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		position: relative;
+		text-decoration: none;
+		&:hover {
+			color: ${theme.colors.white};
+			background-color: ${theme.colors.accent_dark};
+		}
+	`}
+`;
 
-				@media (min-width: 1270px) {
-					height: 400px;
-					padding-left: 50px;
-				}
-
-				@media (min-width: 2165px) {
-					padding-left: 50px;
-					justify-content: left;
-				}
-
-				@media (min-width: 2170px) {
-				}
-
-				@media (min-width: 2880px) {
-					padding-left: 50px;
-				}
-			`}
-		>
-			<section
-				css={css`
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-					max-width: 1550px;
-					width: 100%;
-
-					> * {
-						margin: 0;
-
-						&:not(h1) {
-							margin-top: 20px;
-						}
-					}
-				`}
-			></section>
-		</article>
-	);
-};
-
-export default SupportFooter;
+export default HeroLink;

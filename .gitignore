@@ -34,3 +34,6 @@ yarn-error.log*
 .vercel
 
 .env
+
+
+components/pages/about/ArticleComponent.tsx

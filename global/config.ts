@@ -37,7 +37,7 @@ export const getConfig = () => {
 		NEXT_PUBLIC_ADMIN_EMAIL: publicConfig.NEXT_PUBLIC_ADMIN_EMAIL,
 		NEXT_PUBLIC_BASE_PATH: publicConfig.NEXT_PUBLIC_BASE_PATH || '/',
 		NEXT_PUBLIC_DEBUG: (publicConfig.NEXT_PUBLIC_DEBUG || '').toLowerCase() === 'true',
-		NEXT_PUBLIC_LAB_NAME: publicConfig.NEXT_PUBLIC_LAB_NAME || 'Data Management System',
+		NEXT_PUBLIC_LAB_NAME: publicConfig.NEXT_PUBLIC_LAB_NAME || 'Overture Demo Portal',
 		NEXT_PUBLIC_LOGO_FILENAME: publicConfig.NEXT_PUBLIC_LOGO_FILENAME,
 		NEXT_PUBLIC_SSO_PROVIDERS: publicConfig.NEXT_PUBLIC_SSO_PROVIDERS || '',
 		NEXT_PUBLIC_UI_VERSION: publicConfig.NEXT_PUBLIC_UI_VERSION || '',

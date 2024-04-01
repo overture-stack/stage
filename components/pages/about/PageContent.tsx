@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
-import ImageBox from '@/components/ImageBox';
 import overtureOverview from './assets/overview.png';
 import retrievalOverview from './assets/dataretrieval.png';
 import submissionOverview from './assets/submission.png';
@@ -8,8 +7,7 @@ import StyledLink, { StyledLinkAsButton, InternalLink as Link } from '../../Link
 import { SCORE_DOCS, SUBMISSION_DOCS } from '@/global/utils/constants';
 
 import defaultTheme from '../../theme';
-import TerminalComponent from './Terminal';
-import Terminal from './Terminal';
+import ArticleComponent from './ArticleComponent';
 
 const dockerRunCommand = `docker run -d -it \\
 --name score-client \\
@@ -25,7 +23,7 @@ const dockerDownloadCommand = `docker exec score-client sh -c \\
 --manifest ./<manifestDirectory>/manifest.txt \\ 
 --output-dir ./<outputDirectory>"`;
 
-const InfoPanel = (): ReactElement => {
+const Content = ({ activeId }: { activeId: string | null }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
 	return (
@@ -49,6 +47,7 @@ const InfoPanel = (): ReactElement => {
 					padding: 60px;
 					width: 98%;
 					background-color: ${theme.colors.white};
+					display: ${activeId === 'usage' ? 'flex' : 'none'};
 				`}
 			>
 				<h1
@@ -518,6 +517,7 @@ const InfoPanel = (): ReactElement => {
 					padding: 60px;
 					width: 98%;
 					background-color: ${theme.colors.white};
+					display: ${activeId === 'microservices' ? 'flex' : 'none'};
 				`}
 			>
 				<h1
@@ -674,4 +674,4 @@ const InfoPanel = (): ReactElement => {
 	);
 };
 
-export default InfoPanel;
+export default Content;

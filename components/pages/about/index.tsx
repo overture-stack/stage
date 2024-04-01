@@ -2,20 +2,22 @@ import { ReactElement } from 'react';
 import { useState } from 'react';
 
 import PageLayout from '../../PageLayout';
-import HeroBanner from './HeroBanner';
+import HeroBanner from './HeroComponent';
 import PageContent from './PageContent';
+interface ArticleProps {
+	articleId: string;
+}
 
 const About = (): ReactElement => {
-	const [articleId, setArticleId] = useState(null);
+	const [articleId, setArticleId] = useState<string | null>(null);
 
-	const updateArticleId = (articleId) => setArticleId(articleId);
+	const activeArticleId = (articleId: string) => setArticleId(articleId);
 
 	return (
 		<PageLayout subtitle="About This Portal">
-			<HeroBanner updateFunction={updateArticleId} />
-			<div>{articleId}</div>
-			  
-			<PageContent /> 
+			<HeroBanner setArticleID={activeArticleId} />
+			<div>{activeArticleId}</div>
+			<PageContent activeId={articleId} /> 
 		</PageLayout>
 	);
 };
