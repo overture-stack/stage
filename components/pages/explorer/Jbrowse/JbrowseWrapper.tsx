@@ -49,33 +49,35 @@ import {
 	JbrowseTypeName,
 	JbrowseTypeNames,
 } from './utils';
-const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
+const { NEXT_PUBLIC_SCORE_API_URL, NEXT_PUBLIC_JBROWSE_DATA_MODEL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
+
+const fileQuery = `file {
+	hits (filters: $filters){
+		total 
+		edges {
+			node {
+				file_access
+				file_type
+				object_id
+				file {
+					name
+					size
+					index_file {
+						object_id
+						size
+					}
+				}
+			}
+		}
+	}
+}`;
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
-const jbrowseInputQuery = `
+const jbrowseInputQuery = (dataQuery: string) => `
 query jbrowseInput($filters:JSON){
-  file {
-    hits (filters: $filters){
-      total 
-      edges {
-        node {
-          file_access
-          file_type
-          object_id
-          file {
-            name
-            size
-            index_file {
-              object_id
-              size
-            }
-          }
-        }
-      }
-    }
-  }
+  ${dataQuery}
 }
 `;
 
@@ -132,6 +134,7 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 		// step 1: get compatible files
 
 		setLoading(true);
+		const query = jbrowseInputQuery(NEXT_PUBLIC_JBROWSE_DATA_MODEL || fileQuery);
 
 		// fetch metadata from arranger for selected files
 		arrangerFetcher({
@@ -140,12 +143,16 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 				variables: {
 					filters: SQON.in('object_id', selectedRows),
 				},
-				query: jbrowseInputQuery,
+				query,
 			}),
 		})
 			.then(({ data }) => {
+				const isDefaultDataModel = !NEXT_PUBLIC_JBROWSE_DATA_MODEL ? true : false;
+				// TODO: Handle Alternate Data Model
+				const nodes = isDefaultDataModel ? data.file?.hits?.edges : [];
+
 				// restructure compatible files list for jbrowse's API
-				const nextJbrowseCompatibleFiles = (data.file?.hits?.edges || [])
+				const nextJbrowseCompatibleFiles = nodes
 					.filter(
 						({
 							node: {
