@@ -32,7 +32,7 @@ const HeroLink = styled('a')`
 		cursor: pointer;
 		user-select: none;
 		&:hover {
-			color: ${theme.colors.accent};
+			color: ${theme.colors.accent2};
 		}
 	`}
 `;
@@ -53,8 +53,8 @@ export const HeroLinkAsButton = styled(HeroLink)`
 		position: relative;
 		text-decoration: none;
 		&:hover {
-			color: ${theme.colors.white};
-			background-color: ${theme.colors.accent_dark};
+			color: ${theme.colors.accent2};
+			background-color: ${theme.colors.accent2};
 		}
 	`}
 `;

@@ -1,675 +1,100 @@
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
-import overtureOverview from './assets/overview.png';
+import 'swagger-ui-react/swagger-ui.css';
+
+import overtureOverview from './assets/overview-comp.png';
 import retrievalOverview from './assets/dataretrieval.png';
 import submissionOverview from './assets/submission.png';
-import StyledLink, { StyledLinkAsButton, InternalLink as Link } from '../../Link';
+import StyledLink, { InternalLink as Link } from '../../Link';
 import { SCORE_DOCS, SUBMISSION_DOCS } from '@/global/utils/constants';
+
+import SwaggerEndpoint from './SwaggerEndpoint';
 
 import defaultTheme from '../../theme';
 import ArticleComponent from './ArticleComponent';
 
-const dockerRunCommand = `docker run -d -it \\
---name score-client \\
--e CLIENT_ACCESS_TOKEN="API-Key" \\
--e STORAGE_URL=http://<INSERT-URL> \\
--e METADATA_URL=http://<INSERT-URL> \\
---network="host" \\
---mount type=bind,source="$(pwd)",target=/output \\
-ghcr.io/overture-stack/score:latest`;
-
-const dockerDownloadCommand = `docker exec score-client sh -c \\
-"score-client download \\
---manifest ./<manifestDirectory>/manifest.txt \\ 
---output-dir ./<outputDirectory>"`;
-
-const Content = ({ activeId }: { activeId: string | null }): ReactElement => {
+const Content = ({ activeId }: { activeId: string | 'overview' }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
 	return (
 		<main
 			css={css`
-				width: 100vw;
-				align-items: center;
-				display: flex;
-				flex-direction: column;
+				width: 100%;
 				background-color: ${theme.colors.white};
 				padding-bottom: ${theme.dimensions.footer.height}px;
 			`}
 		>
-			<article
-				css={css`
-					box-sizing: border-box;
-					border-radius: 5px;
-					display: flex;
-					flex-direction: column;
-					margin: 0px 15px 0px 15px;
-					padding: 60px;
-					width: 98%;
-					background-color: ${theme.colors.white};
-					display: ${activeId === 'usage' ? 'flex' : 'none'};
-				`}
-			>
-				<h1
-					css={css`
-						color: ${theme.colors.accent};
-						font-size: 26px;
-						font-weight: normal;
-					`}
-				>
-					Q: How are Overture data platforms used?
-				</h1>
-				<p
-					css={css`
-						line-height: 2;
-						font-size: 16px;
-						font-weight: 200;
-					`}
-				>
-					Overture core functionalities are split between three categories of users:
-				</p>
-				<ul
-					css={css`
-						line-height: 2;
-						font-size: 16px;
-						font-weight: 200;
-					`}
-				>
-					<li>
-						Data consumers{' '}
+			{/* Demo Portal Overview */}
+			{activeId === 'overview' && (
+				<div>
+					<ArticleComponent
+						title="Demo Portal"
+						text="This Overture Demo Portal is a publically availableread-only resource, "
+					/>
+
+					<ArticleComponent
+						title="What is Overture?"
+						text="Overture is a collection of flexible, open-source software microservices that improve
+						and simplify the process of building and deploying online platforms for researchers to
+						gather, organize, and share genomics data."
+					/>
+					<ArticleComponent
+						title="Who is Overture for?"
+						text="We designed and developed the Overture suite to simplify the development and
+						deployment of large-scale data platforms. These data platforms enable research groups
+						to efficiently organize and share genomics data globally, helping researchers maximize
+						the potential of existing data by ensuring its transparency, reproducibility, and
+						reuse all while retaining oversight over its distribution."
+					/>
+					<ArticleComponent
+						title="Who uses Overture?"
+						text="Overture core functionalities are split between three categories of users:"
+						htmlContent="<ol type=1>
+						<li>
+						Data consumers,
 						<strong>
 							<em>retrieving data from the platform</em>
 						</strong>
 					</li>
 					<li>
-						Data providers,{' '}
+						Data providers,
 						<strong>
 							<em>submitting data to the platform</em>
 						</strong>
 					</li>
 					<li>
-						Data administrators,{' '}
+						Data administrators,
 						<strong>
 							<em>managing and configuring the platform</em>
 						</strong>
-					</li>
-				</ul>
-				{/* Retrieving Data */}
-				<div
-					css={css`
-						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
-						margin-top: 20px;
-						@media (max-width: 1400px) {
-							flex-direction: column;
-						}
-					`}
-				>
-					<div
-						css={css`
-							flex: 1;
-							margin-right: 20px;
-						`}
-					>
-						<h2
-							css={css`
-								color: ${theme.colors.black};
-								font-size: 22px;
-								font-weight: 400;
-							`}
-						>
-							Retrieving data from the platform
-						</h2>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Data Filtering: </strong>Use the search facets in the left-hand panel to
-							refine your search, employing checkboxes, data ranges, sliders, and quick search input
-							boxes for precise filtering. All your filtering parameters are visible at the top
-							query bar, ensuring you have a clear overview of your search criteria. The filtered
-							data subset is then displayed within a sortable data table, facilitating efficient
-							navigation through potentially massive and complex datasets.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Sharing Queries: </strong>To share your queries, simply copy the browser URL,
-							which dynamically updates with your filter parameters.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Downloading Data: </strong>Once you have identified your relevant data, select
-							the download dropdown, which provides options for downloading metadata or a file
-							manifest in a TSV format. The manifest file is used to download your files of interest
-							directly from the resources database and object storage using Overure’s CLI tools,
-							specifically the Song and Score clients. We use CLI tools as massive genomic datasets
-							require reliable multi-part download sessions unsuitable for a browser.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-								margin-bottom: 0px;
-							`}
-						>
-							For more information on using Score including installing the client and downloading
-							data with a manifest, see our
-							<Link path={SCORE_DOCS}>
-								<StyledLink
-									css={css`
-										line-height: 2;
-										font-size: 16px;
-										font-weight: 200;
-									`}
-								>
-									{' '}
-									Score User Docs.
-								</StyledLink>
-							</Link>
-						</p>
-					</div>
-					<div
-						css={css`
-							flex: 1;
-						`}
-					>
-						<img
-							css={css`
-								max-width: 100%;
-								height: auto;
-							`}
-							src={retrievalOverview.src}
-							alt="Retrieving Data Overview"
-						/>
-					</div>
+						</li>
+					</ol>"
+					/>
 				</div>
-				{/* 
-				<h3
-					css={css`
-						color: ${theme.colors.accent};
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 60px;
-						margin-bottom: 0px;
-					`}
-				>
-					Setting up the Score CLI tool
-				</h3>
-				<p
-					css={css`
-						line-height: 2;
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 60px;
-						margin-bottom: 0px;
-					`}
-				>
-					We utilize Docker for all our software services, facilitating rapid installation without
-					the need to consider operating system compatibility. To install and run the Score client
-					you will need the following information:
-				</p>
-				<ul
-					css={css`
-						line-height: 1.5;
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 60px;
-					`}
-				>
-					<li>An API Key</li>
-					<li>The Score Storage URL</li>
-					<li>The Song Metadata URL</li>
-				</ul>
-				<div
-					css={css`
-						margin-left: 60px;
-					`}
-				>
-					<Terminal command={dockerRunCommand} />
+			)}
+			{/* How our platforms are used */}
+			{activeId === 'usage' && (
+				<div>
+					<ArticleComponent
+						title="Data Retrieval"
+						text="Data Retrieval using Overture-based platforms is designed to be user-friendly and efficient, catering to closed-access and open-access data scenarios. Open-access data, such as pathogen datasets, is readily accessible to any user with the URL to the resource. For closed-access data, researchers need authorization from an administrator to access the resource. Upon approval, researchers can access the portal by navigating to the public URL and selecting the login button located at the top of the screen. They can then log in to the web portal using popular identity providers, including Google, ORiD, GitHub or using the GA4GH passport system [REF]. From the Overture data exploration page, users can filter data using the left-hand panel's search facets which allow for the rapid and efficient filtering of data using checkboxes, data ranges, sliders, and quick search input boxes. These search facets enable users to narrow their queries and focus on relevant data subsets. Filtered datasets are presented in a data table which provides sortable columns, file counts, and pagination. All query parameters are summarized within a filter panel at the top of the page, giving users a clear overview of their search criteria. Users can easily share these queries using the browser URL, which gets updated with the filter parameters in real time. This enhances collaboration and allows data filtering to be reproducible. Once the users have identified relevant data, they can select the download dropdown, which provides options for downloading metadata or a file manifest in a TSV format. The manifest file allows users to download their files of interest directly from the resources database and object storage using Overure’s CLI tools, specifically the Song and Score clients. These CLI tools are needed as massive genomic datasets require reliable multi-part download sessions unsuitable for a browser. To ensure secure access to data, users must supply a valid API key when installing the Song and Score clients. This key can be obtained after logging in to the data portal and navigating to the profile page."
+						imageUrl={overtureOverview.src}
+					/>
+					<ArticleComponent
+						title="Data Submission"
+						text="Data Retrieval using Overture-based platforms is designed to be user-friendly and efficient, catering to closed-access and open-access data scenarios. Open-access data, such as pathogen datasets, is readily accessible to any user with the URL to the resource. For closed-access data, researchers need authorization from an administrator to access the resource. Upon approval, researchers can access the portal by navigating to the public URL and selecting the login button located at the top of the screen. They can then log in to the web portal using popular identity providers, including Google, ORiD, GitHub or using the GA4GH passport system [REF]. From the Overture data exploration page, users can filter data using the left-hand panel's search facets which allow for the rapid and efficient filtering of data using checkboxes, data ranges, sliders, and quick search input boxes. These search facets enable users to narrow their queries and focus on relevant data subsets. Filtered datasets are presented in a data table which provides sortable columns, file counts, and pagination. All query parameters are summarized within a filter panel at the top of the page, giving users a clear overview of their search criteria. Users can easily share these queries using the browser URL, which gets updated with the filter parameters in real time. This enhances collaboration and allows data filtering to be reproducible. Once the users have identified relevant data, they can select the download dropdown, which provides options for downloading metadata or a file manifest in a TSV format. The manifest file allows users to download their files of interest directly from the resources database and object storage using Overure’s CLI tools, specifically the Song and Score clients. These CLI tools are needed as massive genomic datasets require reliable multi-part download sessions unsuitable for a browser. To ensure secure access to data, users must supply a valid API key when installing the Song and Score clients. This key can be obtained after logging in to the data portal and navigating to the profile page."
+						imageUrl={overtureOverview.src}
+					/>
 				</div>
-				<h3
-					css={css`
-						color: ${theme.colors.accent};
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 60px;
-						margin-bottom: 0px;
-					`}
-				>
-					Downloading file data using the Score CLI
-				</h3>
-				<p
-					css={css`
-						line-height: 2;
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 60px;
-						margin-bottom: 0px;
-					`}
-				>
-					Run the following command to download data using a local manifest:
-				</p>
-				<div
-					css={css`
-						margin-left: 60px;
-					`}
-				>
-					<Terminal command={dockerDownloadCommand} />
-				</div>
-	*/}
-
-				{/* Submitting Data */}
-				<div
-					css={css`
-						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
-						margin-top: 20px;
-						@media (max-width: 1400px) {
-							flex-direction: column;
-						}
-					`}
-				>
-					<div
-						css={css`
-							flex: 1;
-							margin-right: 20px;
-							@media (max-width: 1400px) {
-								margin-right: 0;
-								margin-bottom: 20px;
-							}
-						`}
-					>
-						<h2
-							css={css`
-								color: ${theme.colors.black};
-								font-size: 22px;
-								font-weight: 400;
-							`}
-						>
-							Submitting data to the platform
-						</h2>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Preparation of Analysis: </strong> An analysis in Overture consists of one or
-							more files along with metadata describing these files. Data submitters organize their
-							metadata using a spreadsheet editor alongside a data dictionary provided by the
-							resource administrator. The data dictionary outlines the required metadata fields and
-							their syntax.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Uploading Metadata: </strong> The completed analysis file is uploaded as a
-							JSON document using the Song CLI tool. A single command is used to validate the
-							metadata payload against the resource's data model, if validation fails, error
-							messages detailing the issues are provided. Upon successful validation, confirmation
-							is given along with an auto-generated analysis ID.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Generating and Uploading File Manifest: </strong> A file manifest is generated
-							using the Song client, specifying the directory containing the files and the analysis
-							ID provided on successful submission of your analysis file. This process ensures that
-							all metadata can be tracked, using Song's analysis ID, to the corresponding file data
-							stored in the cloud. The files are uploaded to object storage using the generated and
-							verified manifest with the Score CLI upload command.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							<strong>Publication Controls: </strong> Publication controls allow administrators and
-							data providers to coordinate and prepare data releases in a predictable and timely
-							manner. Analyses are, by default, in an unpublished state and can be published or
-							suppressed depending on your desired data availability of the data.
-						</p>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-								margin-bottom: 0px;
-							`}
-						>
-							For more information on using Song and Score including installing the clients and
-							uploading analyses, see our
-							<Link path={SUBMISSION_DOCS}>
-								<StyledLink
-									css={css`
-										line-height: 2;
-										font-size: 16px;
-										font-weight: 200;
-									`}
-								>
-									{' '}
-									Song User Docs.
-								</StyledLink>
-							</Link>
-						</p>
-					</div>
-					<div
-						css={css`
-							flex: 1;
-							@media (max-width: 1400px) {
-								margin-left: 0;
-							}
-						`}
-					>
-						<img
-							css={css`
-								max-width: 100%;
-								height: auto;
-							`}
-							src={submissionOverview.src}
-							alt="Submitting Data Overview"
-						/>
-					</div>
-				</div>
-
-				{/* Managing and Configuring the platform */}
-				<div
-					css={css`
-						display: flex;
-						flex-direction: column;
-						margin-top: 20px;
-						@media (max-width: 1400px) {
-							flex-direction: column;
-						}
-					`}
-				>
-					<h2
-						css={css`
-							color: ${theme.colors.black};
-							font-size: 22px;
-							font-weight: 400;
-						`}
-					>
-						Managing and configuring the platform
-					</h2>
-					<div
-						css={css`
-							display: flex;
-							flex-direction: row;
-							justify-content: space-between;
-							margin-top: 20px;
-							@media (max-width: 1400px) {
-								flex-direction: column;
-							}
-						`}
-					>
-						<div
-							css={css`
-								flex: 1;
-								margin-right: 20px;
-							`}
-						>
-							<p
-								css={css`
-									line-height: 2;
-									font-size: 16px;
-									font-weight: 200;
-								`}
-							>
-								<strong>Data Model Customization: </strong> Administrators have the freedom to
-								tailor the data model to their specific needs, ensuring that the data structure
-								aligns with their project's requirements. By defining their own data model,
-								administrators can ensure that all data submitted to the system adheres to a
-								consistent structure.
-							</p>
-							<p
-								css={css`
-									line-height: 2;
-									font-size: 16px;
-									font-weight: 200;
-								`}
-							>
-								<strong>Data Portal Customization: </strong> Accommodating a flexible data model
-								must also extend to a flexible representation of the data from the portal search
-								interface. The ability to customize arrangers' search components gives
-								administrators the ability to customize what search facets and data columns, making
-								it easier for data consumers to navigate and interact with the resource.
-							</p>
-							<p
-								css={css`
-									line-height: 2;
-									font-size: 16px;
-									font-weight: 200;
-								`}
-							>
-								<strong>Portal Customization:</strong> With the flexibility to theme and extend the
-								Stage UI, administrators can tailor the portal's content for various use cases. This
-								includes adding custom pages and menu options that provide valuable information or
-								resources, enhancing the portal's overall utility and appeal.
-							</p>
-							<p
-								css={css`
-									line-height: 2;
-									font-size: 16px;
-									font-weight: 200;
-								`}
-							>
-								<strong>Managing Users and Applications: </strong> The ability to manage user
-								permissions through Ego or KeyCloak ensures that only authorized users can access
-								the data and applications. This is crucial for maintaining the security and
-								confidentiality of potentially sensitive genomics data. By applying role-based
-								permissions, administrators can precisely control what each user or application can
-								do within the system. This granular control allows for a more secure and efficient
-								data management process, ensuring that users only have access to the data and
-								functionalities they need.
-							</p>
-						</div>
-						<div
-							css={css`
-								flex: 1;
-							`}
-						>
-							<img
-								css={css`
-									max-width: 100%;
-									height: auto;
-								`}
-								src={overtureOverview.src}
-							/>
-						</div>
-					</div>
-				</div>
-			</article>
-			<article
-				css={css`
-					box-sizing: border-box;
-					border-radius: 5px;
-					display: flex;
-					flex-direction: column;
-					margin: 0px 15px 0px 15px;
-					padding: 60px;
-					width: 98%;
-					background-color: ${theme.colors.white};
-					display: ${activeId === 'microservices' ? 'flex' : 'none'};
-				`}
-			>
-				<h1
-					css={css`
-						color: ${theme.colors.accent};
-						font-size: 26px;
-						font-weight: normal;
-						margin-bottom: 20px;
-					`}
-				>
-					Q: How are Overture data platforms built?
-				</h1>
-				<div
-					css={css`
-						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
-						margin-top: 20px;
-						@media (max-width: 1400px) {
-							flex-direction: column;
-						}
-					`}
-				>
-					<div
-						css={css`
-							flex: 1;
-							margin-right: 20px;
-							@media (max-width: 1400px) {
-								margin-right: 0;
-								margin-bottom: 20px;
-							}
-						`}
-					>
-						<p
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							This portal is built using six core microservices, each playing a crucial role in its
-							functionality. These microservices include Stage, Arrangers, Keycloak or Ego, Song,
-							Score, and Maestro.
-						</p>
-						<ul
-							css={css`
-								line-height: 2;
-								font-size: 16px;
-								font-weight: 200;
-							`}
-						>
-							{/* List items */}
-
-							<li>
-								<strong>Stage:</strong> Serves as the basic front-end portal user interface. It
-								includes navigation, login, profile, and exploration pages, providing users with a
-								seamless experience.
-							</li>
-							<li>
-								<strong>Arranger Components:</strong> A library of search UI components that
-								integrates with Stage to offer a configurable search facet panel, data table, and
-								filter summary panel. This integration enhances the user's ability to explore and
-								query the data effectively.
-							</li>
-							<li>
-								<strong>Arranger Server:</strong> Uses this index to produce a GraphQL search API
-								that connects with its front-end library components on the data exploration page.
-								This API enables users to perform complex queries and retrieve data in a structured
-								and efficient manner.
-							</li>
-							<li>
-								<strong>Song and Score:</strong> Responsible for data management, retrieval, and
-								submission. Score is tasked with transferring large genomic files from object
-								storage, while Song handles the organization of metadata stored within its database.
-								This separation of concerns allows for efficient data handling and retrieval.
-							</li>
-							<li>
-								<strong>Maestro:</strong> Indexes data from a distributed network of Song metadata
-								repositories into a unified Elasticsearch index. This centralized indexing
-								facilitates faster and more efficient data searches.
-							</li>
-							<li>
-								<strong>Autherization & Authentication:</strong> Integrate with Keycloak or Ego,
-								which provide security and enable accessibility with authentication and
-								authorization for users and applications. This ensures that only authorized users
-								can access the system and its data.
-							</li>
-						</ul>
-					</div>
-					<div
-						css={css`
-							flex: 1;
-							@media (max-width: 1400px) {
-								margin-left: 0;
-							}
-						`}
-					>
-						<img
-							css={css`
-								max-width: 100%;
-								height: auto;
-							`}
-							src={overtureOverview.src}
-							alt="Overture Overview"
-						/>
-					</div>
-				</div>
-			</article>
-			<article
-				css={css`
-					box-sizing: border-box;
-					border-radius: 5px;
-					display: flex;
-					flex-direction: column;
-					margin: 0px 15px 0px 15px;
-					padding: 60px;
-					width: 98%;
-					background-color: ${theme.colors.white};
-				`}
-			>
-				<h1
-					id="how-to-use-it"
-					css={css`
-						color: ${theme.colors.accent};
-						font-size: 26px;
-						font-weight: normal;
-						margin-bottom: 20px;
-					`}
-				>
-					Q: Why use a microservice architecture?
-				</h1>
-				<p
-					css={css`
-						line-height: 2;
-						font-size: 16px;
-						font-weight: 200;
-						margin-left: 20px;
-						@media (max-width: 1400px) {
-							margin-left: 0;
-						}
-					`}
-				>
-					Choosing a microservice framework for Overture was a strategic decision that offers
-					several key advantages. <strong> Scalability</strong> is enhanced by allowing individual
-					system components to scale independently, ensuring efficient resource allocation.
-					<strong> Flexibility</strong> is achieved through the ability to deploy and update each
-					microservice separately, simplifying the development process and facilitating the
-					introduction of new features or modifications.
-					<strong> Resilience</strong> is maintained through fault isolation, ensuring that a single
-					point of failure doesn't disrupt the entire system.
-				</p>
-			</article>
+			)}
+			{/* How our platforms are built*/}
+			{activeId === 'build' && (
+				<ArticleComponent
+					title="Q: How are Overture data platforms built?"
+					text="This demo portal was built using six core Overture microservices including Stage, Arrangers, Keycloak or Ego, Song, Score, and Maestro. Stage: is the customizable front-ends user interface including prebuilt components (ex. Navbar and Footer), theming, and login, profile, and exploration pages. Arranger Components: are our library of search UI components made to integrate with Stages data expolorer page. Components include a configurable search facet panel, data table, and filter summary panel. Arranger Server: Uses this index to produce a GraphQL search API that connects with its front-end library components on the data exploration page. This API enables users to perform complex queries and retrieve data in a structured and efficient manner. Song and Score: Responsible for data management, retrieval, and submission. Score is tasked with transferring large genomic files from object storage, while Song handles the organization of metadata stored within its database. This separation of concerns allows for efficient data handling and retrieval. Maestro: Indexes data from a distributed network of Song metadata repositories into a unified Elasticsearch index. This centralized indexing facilitates faster and more efficient data searches. Autherization & Authentication: Overture can integrate with Keycloak or Ego, which provide security and enable accessibility with authentication and authorization for users and applications. This ensures that only authorized users can access the system and its data."
+					imageUrl={overtureOverview.src}
+				/>
+			)}
 		</main>
 	);
 };

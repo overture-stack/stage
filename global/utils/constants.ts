@@ -37,12 +37,12 @@ export const INFO_PATH = '/info'
 export const ABOUT_PATH = '/about'
 
 // external docs links
-const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms/';
+const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms';
 export const DMS_HELP_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'user-guide');
 export const DMS_INSTALLATION_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'installation');
 export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuration/prereq/emails');
-export const SCORE_DOCS = 'https://overture.bio/documentation/score/user-guide/client-setup/'
-export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user/submit/'
+export const SCORE_DOCS = 'https://overture.bio/documentation/score/user-guide/client-setup';
+export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user/submit';
 
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(
