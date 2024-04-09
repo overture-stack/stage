@@ -6,7 +6,7 @@ import HeroBanner from './HeroComponent';
 import PageContent from './PageContent';
 
 const About = (): ReactElement => {
-	const [articleId, setArticleId] = useState<string>('software');
+	const [articleId, setArticleId] = useState<string>('overview');
 
 	const activeArticleId = (articleId: string) => setArticleId(articleId);
 

@@ -24,7 +24,7 @@ const Content = ({ activeId }: { activeId: string | null }): ReactElement => {
 				padding-bottom: ${theme.dimensions.footer.height}px;
 			`}
 		>
-			{/* FAQ */}
+			{/* Demo Portal Overview */}
 			{activeId === 'overview' && (
 				<article
 					css={css`

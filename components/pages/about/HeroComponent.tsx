@@ -7,10 +7,10 @@ import HeroLink from '@/components/HeroLink';
 
 interface HeroProps {
 	setArticleID: (id: string) => void;
-	activeId?: string;
+	activeId: string | null;
 }
 
-const HeroComponent = ({ setArticleID, activeId = 'overview' }: HeroProps): ReactElement => {
+const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
 	return (
@@ -77,8 +77,9 @@ const HeroComponent = ({ setArticleID, activeId = 'overview' }: HeroProps): Reac
 						line-height: 1.5;
 					`}
 				>
-					The Overture demo portal is designed as a simple demonstration of our core software
-					services. From this page you can find relevant information on the following topics:
+					Welcome to our Demo portal. We've designed this portal specifically to assist new users in
+					getting acquainted with Overture and its capabilities. From this page you can find
+					relevant information on the following topics:
 				</p>
 				<div
 					css={css`
@@ -87,7 +88,8 @@ const HeroComponent = ({ setArticleID, activeId = 'overview' }: HeroProps): Reac
 						flex-direction: row;
 						justify-content: space-between;
 						max-width: 700px;
-						@media only screen and (max-width: 900px) {
+						padding-top: 15px;
+						@media only screen and (max-width: 1100px) {
 							flex-direction: column;
 							align-items: flex-start;
 						}
