@@ -44,6 +44,7 @@ import {
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import {
 	checkJbrowseCompatibility,
+	fileQuery,
 	jbrowseAssemblyName,
 	jbrowseErrors,
 	JbrowseTypeName,
@@ -51,27 +52,6 @@ import {
 } from './utils';
 const { NEXT_PUBLIC_SCORE_API_URL, NEXT_PUBLIC_JBROWSE_DATA_MODEL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
-
-const fileQuery = `file {
-	hits (filters: $filters){
-		total 
-		edges {
-			node {
-				file_access
-				file_type
-				object_id
-				file {
-					name
-					size
-					index_file {
-						object_id
-						size
-					}
-				}
-			}
-		}
-	}
-}`;
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
