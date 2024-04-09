@@ -121,7 +121,7 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 								}
 							`}
 						>
-							Data Retrieval and Submission
+							Data Retrieval & Submission
 						</HeroLink>
 					</a>
 					<a onClick={() => setArticleID('build')}>

@@ -1,17 +1,13 @@
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
-import 'swagger-ui-react/swagger-ui.css';
+
+import defaultTheme from '../../theme';
+import ArticleComponent from './ArticleComponent';
 
 import overtureOverview from './assets/overview-comp.png';
 import retrievalOverview from './assets/dataretrieval.png';
 import submissionOverview from './assets/submission.png';
-import StyledLink, { InternalLink as Link } from '../../Link';
-import { SCORE_DOCS, SUBMISSION_DOCS } from '@/global/utils/constants';
-
-import SwaggerEndpoint from './SwaggerEndpoint';
-
-import defaultTheme from '../../theme';
-import ArticleComponent from './ArticleComponent';
+import SwaggerUI from 'swagger-ui-react';
 
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
@@ -79,6 +75,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 				<div>
 					<ArticleComponent
 						title="Data Retrieval"
+						imageUrl={overtureOverview.src}
 						text="This is a read-only demo environment with a default user login and API Key. As such, you can follow the instructions below and download our mock data as a typical user would."
 						htmlContent='
 
@@ -123,15 +120,89 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						<p><strong>Note on authentication:</strong> Typically you will require authorization from an administrator prior to accessing any given resource. Upon approval, researchers can access the portal by selecting the login button at the top of the screen. Since this demo portal is an open-access resource, no login information is required, For more information on access mangement using Overture, select the login button at the top right of the portal page.</p>
 						'
 					/>
+					<ArticleComponent
+						title="Data Submission"
+						imageUrl={overtureOverview.src}
+						text="Please note that this portal is a read-only resource. You cannot submit data to this demo environment. We are currently developing an easy-to-install quickstart environment that can be spun up locally with read and write permissions. To get updates join our Slack channel linked within the footer."
+						htmlContent="
+
+						<p>The following information provides a high-level overview of the data submission process. For detailed information on using Song and Score, including installing the clients and uploading data, see our documentation here.</p>
+
+						<strong>1. Prepare your Analysis:</strong>
+
+						<p>An analysis in Overture consists of one or more files along with metadata describing these files. Data submitters organize their metadata using a spreadsheet editor alongside a data dictionary provided by the resource administrator. The data dictionary outlines the required metadata fields and their syntax.</p>
+
+						<strong>2. Upload your metadata:</strong>
+
+						<p>The completed analysis file is uploaded as a JSON document using the Song CLI tool. A single command validates the metadata payload against the resource's data model. If validation fails, error messages detailing the issues are provided. Upon successful validation, the payload gets committed to the database and the user is returned an auto-generated analysis ID.</p>
+
+						<strong>3. Upload your file data:</strong>
+
+						<p>A file manifest is generated using the Song client, specifying the directory containing the files and the analysis ID provided on the successful submission of your analysis file. This process ensures that all metadata can be tracked, using Song's analysis ID, to the corresponding file data stored in the cloud. The files are uploaded to object storage using the generated and verified manifest with the Score CLI upload command.</p>
+
+						<strong>4. When ready, publish your data:</strong>
+
+						<p>Publication controls allow administrators and data providers to coordinate and prepare data releases in a predictable and timely manner. Analyses are, by default, unpublished and can be published or suppressed depending on the availability of your desired data.</p>
+						"
+					/>
 				</div>
 			)}
 			{/* How our platforms are built*/}
 			{activeId === 'build' && (
-				<ArticleComponent
-					title="Q: How are Overture data platforms built?"
-					text="This demo portal was built using six core Overture microservices including Stage, Arrangers, Keycloak or Ego, Song, Score, and Maestro. Stage: is the customizable front-ends user interface including prebuilt components (ex. Navbar and Footer), theming, and login, profile, and exploration pages. Arranger Components: are our library of search UI components made to integrate with Stages data expolorer page. Components include a configurable search facet panel, data table, and filter summary panel. Arranger Server: Uses this index to produce a GraphQL search API that connects with its front-end library components on the data exploration page. This API enables users to perform complex queries and retrieve data in a structured and efficient manner. Song and Score: Responsible for data management, retrieval, and submission. Score is tasked with transferring large genomic files from object storage, while Song handles the organization of metadata stored within its database. This separation of concerns allows for efficient data handling and retrieval. Maestro: Indexes data from a distributed network of Song metadata repositories into a unified Elasticsearch index. This centralized indexing facilitates faster and more efficient data searches. Autherization & Authentication: Overture can integrate with Keycloak or Ego, which provide security and enable accessibility with authentication and authorization for users and applications. This ensures that only authorized users can access the system and its data."
-					imageUrl={overtureOverview.src}
-				/>
+				<div>
+					<ArticleComponent
+						title="Data Administration"
+						text="Administrators have the freedom to
+						tailor the platforms data model to their specific needs, ensuring that the data structure
+						aligns with their project's requirements. By defining their own data model,
+						administrators can ensure that all data submitted to the system adheres to a
+						consistent structure."
+						imageUrl={overtureOverview.src}
+						htmlContent="<p>All data admin duties are primarily done through Song and Score. Score facilitates file data management, while Song handles metadata submission, validation, and tracking. With Song, administrators can tailor the platform's data model to their needs, ensuring the data structure aligns with their project's requirements.</p>
+
+						<p>To achieve this, Song uses JSON Schema to describe the metadata structure of the resource. Data is submitted to Song in JSON format and undergoes validation against the data model schema. This schema ensures the presence of required fields and validates the contents of each field, ensuring adherence to the desired data type and allowed values. This validation process preserves the integrity and quality of the metadata within Song.</p>
+						
+						<p>The schema associated with the analysis type consists of two parts:</p>
+						
+						<ol>
+						<li>A minimal <strong>base schema</strong> containing the essential fields for all analyses, including primary patient data, submitter IDs, and file details.</li>
+						<li>A flexible, <strong>dynamic schema</strong> that the Song administrator can configure and upload to define specific analysis types.</li>
+						</ol>
+						
+						<p>These schema components ensure accurate and consistent metadata validation within Song. When submitting an analysis to Song, the data provider tags an 'analysis type' to dictate the data model used for validation.</p>
+						
+						<p>All Overture microservices leverage Swagger UIs to ease interaction and enable development with our APIs. The Song Swagger UI for this demo portal can be accessed from https://song.demo.overture.bio</p>
+						"
+					/>
+					<ArticleComponent
+						title="Portal Configuration"
+						text=""
+						htmlContent="
+						<p>
+							<strong>Data Explorer Customization: </strong> Accommodating a flexible data model
+							must also extend to a flexible representation of the data from the portal search
+							interface. The ability to customize arrangers' search components gives
+							administrators the ability to customize what search facets and data columns,
+							making it easier for data consumers to navigate and interact with the resource.
+						</p>
+						<p>
+							<strong>Portal Customization:</strong> With the flexibility to theme and extend
+							the Stage UI, administrators can tailor the portal's content for various use
+							cases. This includes adding custom pages and menu options that provide valuable
+							information or resources, enhancing the portal's overall utility and appeal.
+						</p>"
+					/>
+					<ArticleComponent
+						title="Managing Users and Applications:"
+						text="	The ability to manage user permissions through Ego or KeyCloak ensures that only authorized users can access
+						the data and applications. This is crucial for maintaining the security and
+						confidentiality of potentially sensitive genomics data. By applying role-based
+						permissions, administrators can precisely control what each user or application
+						can do within the system. This granular control allows for a more secure and
+						efficient data management process, ensuring that users only have access to the
+						data and functionalities they need."
+					/>
+				</div>
 			)}
 		</main>
 	);
