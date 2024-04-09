@@ -28,6 +28,7 @@ import { css, useTheme } from '@emotion/react';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseCircular, JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
 import SQON from '@overture-stack/sqon-builder';
+import jsonpath from 'jsonpath';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
 import urlJoin from 'url-join';
@@ -50,6 +51,7 @@ import {
 	JbrowseTypeName,
 	JbrowseTypeNames,
 } from './utils';
+
 const { NEXT_PUBLIC_SCORE_API_URL, NEXT_PUBLIC_JBROWSE_DATA_MODEL } = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
 
@@ -127,9 +129,15 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 			}),
 		})
 			.then(({ data }) => {
-				const isDefaultDataModel = !NEXT_PUBLIC_JBROWSE_DATA_MODEL ? true : false;
-				// TODO: Handle Alternate Data Model
-				const nodes = isDefaultDataModel ? data.file?.hits?.edges : [];
+				const isDefaultDataModel = !NEXT_PUBLIC_JBROWSE_DATA_MODEL;
+
+				const nodes = isDefaultDataModel
+					? data.file?.hits?.edges
+					: [
+							...jsonpath.query(data, '$..file_access'),
+							...jsonpath.query(data, '$..file_type'),
+							...jsonpath.query(data, '$..index_file'),
+					  ];
 
 				// restructure compatible files list for jbrowse's API
 				const nextJbrowseCompatibleFiles = nodes
