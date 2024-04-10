@@ -8,6 +8,7 @@ import overtureOverview from './assets/overview-comp.png';
 import retrievalOverview from './assets/dataretrieval.png';
 import submissionOverview from './assets/submission.png';
 import SwaggerUI from 'swagger-ui-react';
+import 'swagger-ui-react/swagger-ui.css';
 
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
@@ -202,6 +203,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						efficient data management process, ensuring that users only have access to the
 						data and functionalities they need."
 					/>
+					{/*<SwaggerUI url="./swagger.json" />*/}
 				</div>
 			)}
 		</main>
