@@ -27,7 +27,6 @@ import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { css, useTheme } from '@emotion/react';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseCircular, JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
-import SQON from '@overture-stack/sqon-builder';
 import jsonpath from 'jsonpath';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -58,10 +57,31 @@ const arrangerFetcher = createArrangerFetcher({});
 // request data for jbrowse display and
 // score /download request to get signed URLs
 const jbrowseInputQuery = (dataQuery: string) => `
-query jbrowseInput($filters:JSON){
+query jbrowseInput {
   ${dataQuery}
 }
 `;
+
+// TODO: Add Filters back in ($filters:JSON)
+
+type tableNodes = {
+	node: {
+		files: {
+			hits: {
+				edges: {
+					node: {
+						data_type: String;
+						object_id: String;
+						name: String;
+						size: Number;
+						fileType: String;
+						file_access: String;
+					};
+				};
+			};
+		};
+	};
+};
 
 const baseScoreDownloadParams = {
 	external: 'true',
@@ -112,19 +132,56 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 		console.error(error);
 	};
 
+	const jBrowseCompatibilityFilter = ({
+		node: {
+			file_access,
+			file_type,
+			file: { index_file },
+		},
+	}: {
+		node: JbrowseQueryNode;
+	}) =>
+		checkJbrowseCompatibility({
+			file_access,
+			file_type,
+			index_file,
+			jbrowseType: activeJbrowseType,
+		});
+
+	const mapJbrowseFiles = ({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
+		fileId: node.object_id,
+		fileName: node.file.name,
+		fileSize: node.file.size,
+		fileType: node.file_type,
+		// files without an index were filtered out above.
+		// falsey handling is for typescript only.
+		indexId: node.file.index_file?.object_id || '',
+		indexSize: node.file.index_file?.size || 0,
+	});
+
 	useEffect(() => {
 		// step 1: get compatible files
 
 		setLoading(true);
-		const query = jbrowseInputQuery(NEXT_PUBLIC_JBROWSE_DATA_MODEL || fileQuery);
 
+		const dataQuery = NEXT_PUBLIC_JBROWSE_DATA_MODEL || fileQuery;
+		const variables = {
+			filters: {
+				first: 20,
+				offset: 0,
+				score: '',
+				sort: [{ fieldName: 'analysis_id', order: 'asc' }],
+				sqon: null,
+			},
+		};
+		const query = jbrowseInputQuery(dataQuery);
+
+		// SQON.in('object_id', selectedRows),
 		// fetch metadata from arranger for selected files
 		arrangerFetcher({
 			endpoint: 'graphql/JBrowseDataQuery',
 			body: JSON.stringify({
-				variables: {
-					filters: SQON.in('object_id', selectedRows),
-				},
+				variables,
 				query,
 			}),
 		})
@@ -133,43 +190,19 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 
 				const nodes = isDefaultDataModel
 					? data.file?.hits?.edges
-					: [
-							...jsonpath.query(data, '$..file_access'),
-							...jsonpath.query(data, '$..file_type'),
-							...jsonpath.query(data, '$..index_file'),
-					  ];
+					: jsonpath
+							.query(data, '$..edges')[0]
+							.map(({ node }: tableNodes) => {
+								const files = node.files?.hits?.edges;
+								return files;
+							})
+							.flat();
 
 				// restructure compatible files list for jbrowse's API
 				const nextJbrowseCompatibleFiles = nodes
-					.filter(
-						({
-							node: {
-								file_access,
-								file_type,
-								file: { index_file },
-							},
-						}: {
-							node: JbrowseQueryNode;
-						}) =>
-							checkJbrowseCompatibility({
-								file_access,
-								file_type,
-								index_file,
-								jbrowseType: activeJbrowseType,
-							}),
-					)
-					.map(
-						({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
-							fileId: node.object_id,
-							fileName: node.file.name,
-							fileSize: node.file.size,
-							fileType: node.file_type,
-							// files without an index were filtered out above.
-							// falsey handling is for typescript only.
-							indexId: node.file.index_file?.object_id || '',
-							indexSize: node.file.index_file?.size || 0,
-						}),
-					);
+					.filter(jBrowseCompatibilityFilter)
+					.map(mapJbrowseFiles);
+
 				setCompatibleFiles(nextJbrowseCompatibleFiles);
 			})
 			.catch((error: Error) => handleError(error));
