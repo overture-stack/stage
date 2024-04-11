@@ -40,6 +40,8 @@ import {
 	JbrowseQueryNode,
 	ScoreDownloadParams,
 	ScoreDownloadResult,
+	TableData,
+	TableNodes,
 } from './types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import {
@@ -64,27 +66,6 @@ query jbrowseInput {
   ${dataQuery}
 }
 `;
-
-type tableData = {
-	node: {
-		data_type: string;
-		object_id: string;
-		name: string;
-		size: number;
-		fileType: string;
-		file_access: string;
-	};
-};
-
-type tableNodes = {
-	node: {
-		files: {
-			hits: {
-				edges: tableData[];
-			};
-		};
-	};
-};
 
 const baseScoreDownloadParams = {
 	external: 'true',
@@ -195,8 +176,8 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 					? data.file?.hits?.edges
 					: jsonpath
 							.query(data, '$..edges')[0]
-							.map(({ node }: tableNodes) => {
-								const files = node.files?.hits?.edges.map((data: tableData) => {
+							.map(({ node }: TableNodes) => {
+								const files = node.files?.hits?.edges.map((data: TableData) => {
 									// Map for Compatibility
 									// Based on Table Data Query
 									const { object_id, name, size, fileType, file_access } = data.node;
