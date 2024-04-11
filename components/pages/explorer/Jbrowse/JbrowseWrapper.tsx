@@ -47,6 +47,8 @@ import {
 	fileQuery,
 	jbrowseAssemblyName,
 	jbrowseErrors,
+	JbrowseFileAccess,
+	JbrowseFileTypes,
 	JbrowseTypeName,
 	JbrowseTypeNames,
 } from './utils';
@@ -56,28 +58,29 @@ const arrangerFetcher = createArrangerFetcher({});
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
+// TODO: Add Filters back in ($filters:JSON)
 const jbrowseInputQuery = (dataQuery: string) => `
 query jbrowseInput {
   ${dataQuery}
 }
 `;
 
-// TODO: Add Filters back in ($filters:JSON)
+type tableData = {
+	node: {
+		data_type: string;
+		object_id: string;
+		name: string;
+		size: number;
+		fileType: string;
+		file_access: string;
+	};
+};
 
 type tableNodes = {
 	node: {
 		files: {
 			hits: {
-				edges: {
-					node: {
-						data_type: String;
-						object_id: String;
-						name: String;
-						size: Number;
-						fileType: String;
-						file_access: String;
-					};
-				};
+				edges: tableData[];
 			};
 		};
 	};
@@ -193,7 +196,25 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 					: jsonpath
 							.query(data, '$..edges')[0]
 							.map(({ node }: tableNodes) => {
-								const files = node.files?.hits?.edges;
+								const files = node.files?.hits?.edges.map((data: tableData) => {
+									// Map for Compatibility
+									// Based on Table Data Query
+									const { object_id, name, size, fileType, file_access } = data.node;
+									const jbrowseFile: JbrowseQueryNode = {
+										file_type: fileType as JbrowseFileTypes,
+										file_access: file_access as JbrowseFileAccess,
+										object_id,
+										file: {
+											name,
+											size,
+											index_file: {
+												object_id,
+												size,
+											},
+										},
+									};
+									return { node: jbrowseFile };
+								});
 								return files;
 							})
 							.flat();
