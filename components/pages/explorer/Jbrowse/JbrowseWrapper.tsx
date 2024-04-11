@@ -27,6 +27,7 @@ import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { css, useTheme } from '@emotion/react';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseCircular, JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
+import SQON from '@overture-stack/sqon-builder';
 import jsonpath from 'jsonpath';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -60,7 +61,6 @@ const arrangerFetcher = createArrangerFetcher({});
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
-// TODO: Add Filters back in ($filters:JSON)
 const jbrowseInputQuery = (dataQuery: string) => `
 query jbrowseInput {
   ${dataQuery}
@@ -155,12 +155,11 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 				offset: 0,
 				score: '',
 				sort: [{ fieldName: 'analysis_id', order: 'asc' }],
-				sqon: null,
+				sqon: SQON.in('object_id', selectedRows),
 			},
 		};
 		const query = jbrowseInputQuery(dataQuery);
 
-		// SQON.in('object_id', selectedRows),
 		// fetch metadata from arranger for selected files
 		arrangerFetcher({
 			endpoint: 'graphql/JBrowseDataQuery',
