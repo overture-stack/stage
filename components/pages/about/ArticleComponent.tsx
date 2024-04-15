@@ -6,9 +6,10 @@ interface ArticleProps {
 	text: string;
 	imageUrl?: string;
 	htmlContent?: string;
+	children?: React.ReactNode;
 }
 
-const ArticleComponent = ({ title, text, imageUrl, htmlContent }: ArticleProps) => {
+const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => {
 	const theme = useTheme();
 
 	return (
@@ -24,7 +25,7 @@ const ArticleComponent = ({ title, text, imageUrl, htmlContent }: ArticleProps) 
 			<h1
 				css={css`
 					color: ${theme.colors.accent};
-					font-size: 26px;
+					font-size: 22px;
 					font-weight: normal;
 				`}
 			>
@@ -32,70 +33,44 @@ const ArticleComponent = ({ title, text, imageUrl, htmlContent }: ArticleProps) 
 			</h1>
 			{/* Conditional rendering based on imageUrl */}
 			{imageUrl ? (
-				// If imageUrl is provided, render the image and text side by side
 				<div
 					css={css`
 						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
-						@media (max-width: 1280px) {
-							flex-direction: column;
-						}
+						flex-direction: column;
 					`}
 				>
 					<div
 						css={css`
-							flex: 2;
-							padding-right: 30px;
+							line-height: 1.5;
+							font-size: 14px;
+							font-weight: 200;
+							text-align: justify;
+							max-width: 1000px;
 						`}
 					>
+						<p>{text}</p>
 						<img
 							css={css`
-								@media (max-width: 1279px) and (min-width: 1000px) {
-									max-width: 70%;
+								padding-right: 30px;
+								@media (min-width: 1000px) {
+									max-width: 50rem;
 								}
-								width: 100%;
+								max-width: 90%;
 								height: auto;
 							`}
 							src={imageUrl}
 							alt={title}
 						/>
-					</div>
-					<div
-						css={css`
-							flex: 2;
-						`}
-					>
+
+						{/* Render HTML content */}
 						<div
 							css={css`
-								line-height: 1.5;
-								font-size: 16px;
-								font-weight: 200;
-								text-align: justify;
+								strong {
+									font-weight: 900;
+								}
 							`}
-						>
-							<p>{text}</p>
-							{/* Render HTML content */}
-							<div
-								css={css`
-									strong {
-										font-weight: 900;
-									}
-									code {
-										background-color: ${theme.colors.black};
-										border-radius: 10px;
-										padding: 30px 30px;
-										font-family: 'Courier New', Courier, monospace;
-										font-size: 14px;
-										color: ${theme.colors.white};
-										display: inline-block;
-										margin: 0 5px;
-										border: 1px solid ${theme.colors.accent};
-									}
-								`}
-								dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
-							/>
-						</div>
+						/>
+						{children}
 					</div>
 				</div>
 			) : (
@@ -104,9 +79,10 @@ const ArticleComponent = ({ title, text, imageUrl, htmlContent }: ArticleProps) 
 					<div
 						css={css`
 							line-height: 1.5;
-							font-size: 16px;
+							font-size: 14px;
 							font-weight: 200;
 							text-align: justify;
+							max-width: 1000px;
 						`}
 					>
 						<p>{text}</p>
@@ -128,8 +104,8 @@ const ArticleComponent = ({ title, text, imageUrl, htmlContent }: ArticleProps) 
 									border: 1px solid ${theme.colors.accent};
 								}
 							`}
-							dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
 						/>
+						{children}
 					</div>
 				</div>
 			)}

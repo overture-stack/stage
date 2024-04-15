@@ -90,6 +90,9 @@ const NavBar: React.ComponentType = () => {
 						<span
 							css={css`
 								padding-left: 10px;
+								@media (max-width: 675px) {
+									display: none;
+								}
 							`}
 						>
 							{NEXT_PUBLIC_LAB_NAME}

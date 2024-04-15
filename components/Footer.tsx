@@ -56,7 +56,7 @@ const Footer = () => {
 				href={DMS_HELP_URL}
 				target="_blank"
 			>
-				Help
+				Check us out on GitHub
 			</StyledLink>
 			|
 			<StyledLink
@@ -68,7 +68,19 @@ const Footer = () => {
 				href={DMS_INSTALLATION_URL}
 				target="_blank"
 			>
-				DMS
+				Join our Slack
+			</StyledLink>
+			|
+			<StyledLink
+				css={(theme) => css`
+					${theme.typography.subheading2};
+					padding-left: 13px;
+					padding-right: 5px;
+				`}
+				href={DMS_INSTALLATION_URL}
+				target="_blank"
+			>
+				Contact us by Email
 			</StyledLink>
 			<span
 				css={(theme) =>

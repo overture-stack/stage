@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 import defaultTheme from '../../theme';
-import overtureOverview from './assets/portal-hero.png';
+import overtureOverview from './assets/emblemNoBackground.png';
 import heroDemoBannerWide from './assets/herobannerdemo.png';
 import HeroLink from '@/components/HeroLink';
 
@@ -21,30 +21,13 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				padding: 60px;
 				background-image: url(${heroDemoBannerWide.src});
 				background-repeat: no-repeat;
-				background-position: 90% -210%;
+				background-position: 95% -190%;
 				background-size: 800px;
 				height: 350px;
-
-				@media only screen and (max-width: 2000px) {
-					background-image: url(${heroDemoBannerWide.src});
-					background-position: 95% -210%;
-					background-size: 800px;
-				}
 				@media only screen and (max-width: 1711px) {
 					background-image: url(${overtureOverview.src});
-					background-position: 95% 150%;
-					background-size: 700px;
-				}
-				@media only screen and (max-width: 1550px) {
-					background-image: url(${overtureOverview.src});
-					background-position: 130% 50%;
-					background-size: 55vw;
-				}
-				@media only screen and (max-width: 1235px) {
-					background-image: url(${overtureOverview.src});
-					background-position: 140% 50%;
-					background-size: 60vw;
-				}
+					background-position: 80% 50%;
+					background-size: 30vw;
 				@media only screen and (max-width: 900px) {
 					background-image: none;
 				}
@@ -71,15 +54,17 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				<p
 					css={css`
 						font-size: 18px;
-						color: ${theme.colors.accent_dark};
+						color: ${theme.colors.black};
 						font-weight: 200;
 						text-align: left;
 						line-height: 1.5;
+						@media (min-width: 1450px) {
+							max-width: 1200px;
 					`}
 				>
 					Welcome to our Demo portal. We've designed this portal specifically to assist new users in
-					getting acquainted with Overture and its capabilities. From this page you can find
-					relevant information on the following topics:
+					getting acquainted with Overture. From this page you can find basic information on the
+					following topics:
 				</p>
 				<div
 					css={css`
@@ -135,7 +120,7 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 								}
 							`}
 						>
-							Data Administration & Portal Configuration
+							Administration & Portal Configuration
 						</HeroLink>
 					</a>
 				</div>
