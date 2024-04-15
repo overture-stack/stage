@@ -1,3 +1,24 @@
+/*
+ *
+ * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
+ *
+ *  This program and the accompanying materials are made available under the terms of
+ *  the GNU Affero General Public License v3.0. You should have received a copy of the
+ *  GNU Affero General Public License along with this program.
+ *   If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 
@@ -36,17 +57,16 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						imageUrl={overtureOverview.src}
 					>
 						<p>
-							<strong>Ego</strong>, is our identity and permission management service, broadly
-							enabling authorization and authentication of all user users and applications. Overture
-							can also integrate with third-party Oauth service, Keycloak.{' '}
-							<strong>Song and Score</strong> manage data submission, management, and retrieval,
-							automating file-to-metadata tracking and validating data submissions against a
-							customizable model. These services enhance data quality, findability, and
-							interoperability. <strong>Maestro</strong> indexes submitted metadata from the Song
-							repository into an Elasticsearch index. <strong>Arranger</strong> references this
+							<b>Ego</b>, is our identity and permission management service, broadly enabling
+							authorization and authentication of all user users and applications. Overture can also
+							integrate with third-party Oauth service, Keycloak. <b>Song and Score</b> manage data
+							submission, management, and retrieval, automating file-to-metadata tracking and
+							validating data submissions against a customizable model. These services enhance data
+							quality, findability, and interoperability. <b>Maestro</b> indexes submitted metadata
+							from the Song repository into an Elasticsearch index. <b>Arranger</b> references this
 							index to produce a GraphQL search API, connected to our configurable search UI
-							components on the data exploration page. <strong>Stage</strong> integrates these
-							services into the React-based front-data portal UI you're currently viewing.
+							components on the data exploration page. <b>Stage</b> integrates these services into
+							the React-based front-data portal UI you're currently viewing.
 						</p>
 					</ArticleComponent>
 				</div>
@@ -75,23 +95,23 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							`}
 						>
 							<p>
-								<strong>1. Create a data subset:</strong> From the exploration page, use the search
-								facets in the left-hand panel to refine your search. All your filtering parameters
-								are visible at the top query bar, ensuring you have a clear overview of your search
-								criteria. To share your queries, you can simply copy the browser URL, which
-								dynamically updates as you filter through the dataset.
+								<b>1. Create a data subset:</b> From the exploration page, use the search facets in
+								the left-hand panel to refine your search. All your filtering parameters are visible
+								at the top query bar, ensuring you have a clear overview of your search criteria. To
+								share your queries, you can simply copy the browser URL, which dynamically updates
+								as you filter through the dataset.
 							</p>
 
 							<p>
-								<strong>2. Generate a manifest:</strong> Select the download dropdown, and click
-								file manifest. The downloaded file manifest will be used next to download the data
-								with our Score Client CLI tool. We use CLI tools as massive genomic datasets require
+								<b>2. Generate a manifest:</b> Select the download dropdown, and click file
+								manifest. The downloaded file manifest will be used next to download the data with
+								our Score Client CLI tool. We use CLI tools as massive genomic datasets require
 								reliable multi-part download sessions unsuitable for a browser.
 							</p>
 
 							<p>
-								<strong>3. Run the Score-client:</strong> With Docker installed, the Score client is
-								run using the following command:
+								<b>3. Run the Score-client:</b> With Docker installed, the Score client is run using
+								the following command:
 							</p>
 
 							<code>
@@ -106,8 +126,8 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							</code>
 
 							<p>
-								<strong>4. Download your data:</strong> You can download the data outlined in your
-								manifest file by running the following command:
+								<b>4. Download your data:</b> You can download the data outlined in your manifest
+								file by running the following command:
 							</p>
 
 							<code>
@@ -127,11 +147,10 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							</ul>
 
 							<p>
-								<strong>Note on authentication:</strong> Typically you will require authorization
-								from an administrator prior to accessing any given resource. Upon approval,
-								researchers can access the portal by selecting the login button at the top of the
-								screen. Since this demo portal is an open-access resource, no login information is
-								required.
+								<b>Note on authentication:</b> Typically you will require authorization from an
+								administrator prior to accessing any given resource. Upon approval, researchers can
+								access the portal by selecting the login button at the top of the screen. Since this
+								demo portal is an open-access resource, no login information is required.
 							</p>
 						</div>
 					</ArticleComponent>
@@ -144,24 +163,22 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					>
 						<p>
 							{' '}
-							The initial step in data submission involves{' '}
-							<strong>preparing an analysis file.</strong> In Overture, an analysis consists of one
-							or more files along with metadata. Data submitters typically use a spreadsheet editor,
-							complemented by a data dictionary provided by the resource administrator, to organize
-							their metadata. This dictionary outlines the required metadata fields and their
-							syntax. Following this, <strong>the analysis file is uploaded</strong> as a JSON
-							document via the Song CLI tool. A single command validates the metadata against the
-							resource's data model. Upon successful validation, the payload is committed to the
-							database, and the user receives an auto-generated analysis ID. Subsequently, the user{' '}
-							<strong>generates a file manifest</strong> using the Song client's manifest command,
-							which necessitates specifying the directory of the files and a valid analysis ID. This
-							process enables Song to link all metadata within its database to the corresponding
-							file data stored in the cloud. Finally,{' '}
-							<strong>the files are uploaded to object storage</strong> using the verified manifest
-							with the Score CLI upload command. Additional publication controls allow
-							administrators and data providers to manage data releases predictably and timely.
-							Analyses are unpublished by default and can be published or suppressed using the Song
-							Client.{' '}
+							The initial step in data submission involves <b>preparing an analysis file.</b> In
+							Overture, an analysis consists of one or more files along with metadata. Data
+							submitters typically use a spreadsheet editor, complemented by a data dictionary
+							provided by the resource administrator, to organize their metadata. This dictionary
+							outlines the required metadata fields and their syntax. Following this,{' '}
+							<b>the analysis file is uploaded</b> as a JSON document via the Song CLI tool. A
+							single command validates the metadata against the resource's data model. Upon
+							successful validation, the payload is committed to the database, and the user receives
+							an auto-generated analysis ID. Subsequently, the user <b>generates a file manifest</b>{' '}
+							using the Song client's manifest command, which necessitates specifying the directory
+							of the files and a valid analysis ID. This process enables Song to link all metadata
+							within its database to the corresponding file data stored in the cloud. Finally,{' '}
+							<b>the files are uploaded to object storage</b> using the verified manifest with the
+							Score CLI upload command. Additional publication controls allow administrators and
+							data providers to manage data releases predictably and timely. Analyses are
+							unpublished by default and can be published or suppressed using the Song Client.{' '}
 						</p>
 						<p>
 							For detailed information on using Song and Score, including installing the clients and
