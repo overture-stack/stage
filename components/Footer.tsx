@@ -24,7 +24,7 @@ import { css } from '@emotion/react';
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
 import StyledLink from './Link';
-import { DMS_HELP_URL, DMS_INSTALLATION_URL } from '../global/utils/constants';
+import { SLACK, GITHUB, EMAIL } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const Footer = () => {
@@ -46,14 +46,18 @@ const Footer = () => {
 				bottom: 0px;
 				left: 0px;
 				right: 0px;
+				@media only screen and (max-width: 721px) {
+					display: none;
+				}
 			`}
 		>
 			<StyledLink
 				css={(theme) => css`
 					${theme.typography.subheading2};
-					padding-right: 13px;
+					padding-left: 10px;
+					padding-right: 10px;
 				`}
-				href={DMS_HELP_URL}
+				href={GITHUB}
 				target="_blank"
 			>
 				Check us out on GitHub
@@ -62,10 +66,10 @@ const Footer = () => {
 			<StyledLink
 				css={(theme) => css`
 					${theme.typography.subheading2};
-					padding-left: 13px;
-					padding-right: 5px;
+					padding-left: 10px;
+					padding-right: 10px;
 				`}
-				href={DMS_INSTALLATION_URL}
+				href={SLACK}
 				target="_blank"
 			>
 				Join our Slack
@@ -74,14 +78,15 @@ const Footer = () => {
 			<StyledLink
 				css={(theme) => css`
 					${theme.typography.subheading2};
-					padding-left: 13px;
-					padding-right: 5px;
+					padding-left: 10px;
+					padding-right: 10px;
 				`}
-				href={DMS_INSTALLATION_URL}
+				href={EMAIL}
 				target="_blank"
 			>
-				Contact us by Email
+				contact@overture.bio
 			</StyledLink>
+			|
 			<span
 				css={(theme) =>
 					css`
@@ -89,12 +94,12 @@ const Footer = () => {
 						${theme.typography.subheading2}
 						line-height: 24px;
 						font-weight: normal;
+						padding-left: 10px;
 						padding-right: 10px;
-						padding-left: 5px;
 					`
 				}
 			>
-				{NEXT_PUBLIC_UI_VERSION && `UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
+				{NEXT_PUBLIC_UI_VERSION && `  UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
 			</span>
 			<a href="https://www.overture.bio/" target="_blank">
 				<OvertureLogoWithText width={100} height={18} />

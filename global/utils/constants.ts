@@ -44,6 +44,11 @@ export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuratio
 export const SCORE_DOCS = 'https://overture.bio/documentation/score/user-guide/client-setup';
 export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user/submit';
 
+// Footer Links
+export const SLACK = "https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw";
+export const GITHUB = "https://github.com/overture-stack/";
+export const EMAIL = "mailto:john@example.com";
+
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(
 	NEXT_PUBLIC_KEYCLOAK_HOST,
