@@ -42,7 +42,7 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				padding: 60px;
 				background-image: url(${heroDemoBannerWide.src});
 				background-repeat: no-repeat;
-				background-position: 95% -190%;
+				background-position: 90% -180%;
 				background-size: 800px;
 				height: 350px;
 				@media only screen and (max-width: 1711px) {
