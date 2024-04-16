@@ -37,7 +37,7 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 			css={css`
 				box-sizing: border-box;
 				border-radius: 5px;
-				padding: 0px 60px 0px 60px;
+				padding: 30px 60px 0px 60px;
 				background-color: ${theme.colors.white};
 			`}
 		>
