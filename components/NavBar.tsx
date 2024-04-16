@@ -36,7 +36,12 @@ const NavBar: React.ComponentType = () => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
 
-	const { NEXT_PUBLIC_LAB_NAME, NEXT_PUBLIC_LOGO_FILENAME, NEXT_PUBLIC_BASE_PATH } = getConfig();
+	const {
+		NEXT_PUBLIC_AUTH_PROVIDER,
+		NEXT_PUBLIC_LAB_NAME,
+		NEXT_PUBLIC_LOGO_FILENAME,
+		NEXT_PUBLIC_BASE_PATH,
+	} = getConfig();
 
 	const activeLinkStyle = `
     background-color: ${theme.colors.grey_2};
@@ -135,42 +140,44 @@ const NavBar: React.ComponentType = () => {
 						</a>
 					</Link>
 				</div>
-				{user ? (
-					<div
-						css={(theme) => css`
-							width: 195px;
-							height: 100%;
-							display: flex;
-							${router.pathname === USER_PATH ? activeLinkStyle : ''}
-							&:hover {
-								background-color: ${theme.colors.grey_2};
-							}
-						`}
-					>
-						<UserDropdown />
-					</div>
-				) : (
-					<div
-						css={css`
-							width: 145px;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-						`}
-					>
-						<Link path={LOGIN_PATH}>
-							<StyledLinkAsButton
-								css={(theme) => css`
-									width: 70px;
-									${theme.typography.button};
-									line-height: 20px;
-								`}
-							>
-								Log in
-							</StyledLinkAsButton>
-						</Link>
-					</div>
-				)}
+
+				{NEXT_PUBLIC_AUTH_PROVIDER &&
+					(user ? (
+						<div
+							css={(theme) => css`
+								width: 195px;
+								height: 100%;
+								display: flex;
+								${router.pathname === USER_PATH ? activeLinkStyle : ''}
+								&:hover {
+									background-color: ${theme.colors.grey_2};
+								}
+							`}
+						>
+							<UserDropdown />
+						</div>
+					) : (
+						<div
+							css={css`
+								width: 145px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							`}
+						>
+							<Link path={LOGIN_PATH}>
+								<StyledLinkAsButton
+									css={(theme) => css`
+										width: 70px;
+										${theme.typography.button};
+										line-height: 20px;
+									`}
+								>
+									Log in
+								</StyledLinkAsButton>
+							</Link>
+						</div>
+					))}
 			</div>
 		</div>
 	);
