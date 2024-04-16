@@ -33,9 +33,10 @@ const About = (): ReactElement => {
 
 	return (
 		<PageLayout subtitle="About This Portal">
-			<HeroBanner setArticleID={activeArticleId} activeId={articleId} />
-			<div>{activeArticleId}</div>
-			<PageContent activeId={articleId} /> 
+			<div>
+				<HeroBanner setArticleID={activeArticleId} activeId={articleId} />
+				<PageContent activeId={articleId} /> 
+			</div>
 		</PageLayout>
 	);
 };
