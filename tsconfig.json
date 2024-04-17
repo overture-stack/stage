@@ -39,7 +39,6 @@
 		"**/*.ts",
 		"**/*.tsx",
 		"additional.d.ts",
-		"components/pages/DocumentationContainerContainer"
 	],
 	"exclude": ["node_modules"]
 }

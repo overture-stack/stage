@@ -5,7 +5,7 @@
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
  *  GNU Affero General Public License along with this program.
- *   If not, see <http://www.gnu.org/licenses/>.
+ *  If not, see <http://www.gnu.org/licenses/>.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
  *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -25,13 +25,13 @@ import { css, useTheme } from '@emotion/react';
 import defaultTheme from '../../theme';
 import ArticleComponent from './ArticleComponent';
 
-import overtureOverview from './assets/portalOverview.png';
-import retrievalOverview from './assets/dataretrieval.png';
-import submissionOverview from './assets/dataSubmission.png';
-import dataAdmin from './assets/dataAdmin.png';
-import arrangerConfigs from './assets/arrangerConfigs.png';
-import stageUI from './assets/stageUI.png';
-import ego from './assets/ego.png';
+import overtureOverview from './assets/portalOverview.webp';
+import retrievalOverview from './assets/dataretrieval.webp';
+import submissionOverview from './assets/dataSubmission.webp';
+import dataAdmin from './assets/dataAdministration.webp';
+import arrangerConfigs from './assets/arrangerConfigs.webp';
+import stageUI from './assets/stageUI.webp';
+import ego from './assets/ego.webp';
 
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
