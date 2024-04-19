@@ -26,7 +26,7 @@ import defaultTheme from '../../theme';
 import ArticleComponent from './ArticleComponent';
 
 import overtureOverview from './assets/portalOverview.webp';
-import retrievalOverview from './assets/dataretrieval.webp';
+import retrievalOverview from './assets/dataRetrieval.webp';
 import submissionOverview from './assets/dataSubmission.webp';
 import dataAdmin from './assets/dataAdministration.webp';
 import arrangerConfigs from './assets/arrangerConfigs.webp';
