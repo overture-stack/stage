@@ -33,6 +33,8 @@ import arrangerConfigs from './assets/arrangerConfigs.webp';
 import stageUI from './assets/stageUI.webp';
 import ego from './assets/ego.webp';
 
+import { SUBMISSION_DOCS } from '@/global/utils/constants';
+
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
@@ -53,7 +55,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					/>
 					<ArticleComponent
 						title="How are our platforms built?"
-						text="Our six core microservices, Ego, Song, Score, Maestro, Arranger and Stage, combine to build end-to-end data platforms. Here is how the our services are being used to build out this demo portal:"
+						text="Our six core microservices, Ego, Song, Score, Maestro, Arranger and Stage, combine to build end-to-end data platforms. Here is how our services are being used to build out this demo portal:"
 						imageUrl={overtureOverview.src}
 					>
 						<p>
@@ -157,8 +159,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 
 					<ArticleComponent
 						title="Data Submission"
-						text="Public users do not have the required permissions to submit data to this demo portal. To enable full access we are currently developing an easy-to-install quickstart. To get updates join our Slack channel linked within the footer. 							The following information provides a high-level overview of the data submission
-						process."
+						text="Public users do not have the required permissions to submit data to this demo portal. To enable full access, we are currently developing an easy-to-install quickstart. To get updates, join our Slack channel linked within the footer. The following information provides a high-level overview of the data submission process."
 						imageUrl={submissionOverview.src}
 					>
 						<p>
@@ -181,8 +182,13 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							unpublished by default and can be published or suppressed using the Song Client.{' '}
 						</p>
 						<p>
-							For detailed information on using Song and Score, including installing the clients and
-							uploading data, see our documentation here.
+							For detailed information on data submission with Song and Score, including installing
+							the clients and uploading data, see our{' '}
+							<a href={SUBMISSION_DOCS} target="_blank" rel="noopener noreferrer">
+								{' '}
+								submission documentation here
+							</a>
+							.
 						</p>
 					</ArticleComponent>
 				</div>
@@ -214,7 +220,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					<ArticleComponent
 						title="Application & User Management"
 						text="User and application management
-							through Ego oer KeyCloak ensures that only authorized users and applications can
+							through Ego or KeyCloak ensures that only authorized users and applications can
 							access the platform. By applying role-based permissions, administrators can precisely
 							control what each user or application can do within the system."
 						imageUrl={ego.src}
