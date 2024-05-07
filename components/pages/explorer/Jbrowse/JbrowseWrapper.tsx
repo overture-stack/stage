@@ -28,6 +28,7 @@ import { css, useTheme } from '@emotion/react';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { JbrowseCircular, JbrowseLinear } from '@overture-stack/dms-jbrowse-components';
 import SQON from '@overture-stack/sqon-builder';
+import jsonpath from 'jsonpath';
 import { find } from 'lodash';
 import { useEffect, useState } from 'react';
 import urlJoin from 'url-join';
@@ -40,42 +41,43 @@ import {
 	JbrowseQueryNode,
 	ScoreDownloadParams,
 	ScoreDownloadResult,
+	TableData,
 } from './types';
 import useJbrowseCompatibility from './useJbrowseCompatibility';
 import {
 	checkJbrowseCompatibility,
+	fileQuery,
 	jbrowseAssemblyName,
 	jbrowseErrors,
+	JbrowseFileAccess,
+	JbrowseFileTypes,
 	JbrowseTypeName,
 	JbrowseTypeNames,
 } from './utils';
-const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
+
+const {
+	NEXT_PUBLIC_SCORE_API_URL,
+	NEXT_PUBLIC_JBROWSE_DATA_MODEL,
+	NEXT_PUBLIC_JBROWSE_NODE_QUERY,
+	NEXT_PUBLIC_JBROWSE_FILE_QUERY,
+} = getConfig();
 const arrangerFetcher = createArrangerFetcher({});
+
+type Filters = {
+	filters: {
+		first: number;
+		offset: number;
+		score: string;
+		sort: [{ fieldName: string; order: string }];
+		sqon: SQON;
+	};
+};
 
 // request data for jbrowse display and
 // score /download request to get signed URLs
-const jbrowseInputQuery = `
-query jbrowseInput($filters:JSON){
-  file {
-    hits (filters: $filters){
-      total 
-      edges {
-        node {
-          file_access
-          file_type
-          object_id
-          file {
-            name
-            size
-            index_file {
-              object_id
-              size
-            }
-          }
-        }
-      }
-    }
-  }
+const jbrowseInputQuery = (dataQuery: string) => `
+query jbrowseInput ($filters: JSON) {
+  ${dataQuery}
 }
 `;
 
@@ -128,53 +130,96 @@ const JbrowseEl = ({ activeJbrowseType }: { activeJbrowseType: JbrowseTypeName }
 		console.error(error);
 	};
 
+	const jBrowseCompatibilityFilter = ({
+		file_access,
+		file_type,
+		file: { index_file },
+	}: JbrowseQueryNode) =>
+		checkJbrowseCompatibility({
+			file_access,
+			file_type,
+			index_file,
+			jbrowseType: activeJbrowseType,
+		});
+
+	const mapJbrowseFiles = ({
+		object_id,
+		file,
+		file_type,
+	}: JbrowseQueryNode): JbrowseCompatibleFile => ({
+		fileId: object_id,
+		fileName: file.name,
+		fileSize: file.size,
+		fileType: file_type,
+		// files without an index were filtered out above.
+		// falsey handling is for typescript only.
+		indexId: file.index_file?.object_id || '',
+		indexSize: file.index_file?.size || 0,
+	});
+
 	useEffect(() => {
 		// step 1: get compatible files
-
 		setLoading(true);
 
+		const variables: Filters = {
+			filters: {
+				first: 20,
+				offset: 0,
+				score: '',
+				sort: [{ fieldName: 'analysis_id', order: 'asc' }],
+				sqon: SQON.in('object_id', selectedRows),
+			},
+		};
+		const dataQuery = NEXT_PUBLIC_JBROWSE_DATA_MODEL || fileQuery;
+		const query = jbrowseInputQuery(dataQuery);
 		// fetch metadata from arranger for selected files
 		arrangerFetcher({
 			endpoint: 'graphql/JBrowseDataQuery',
 			body: JSON.stringify({
-				variables: {
-					filters: SQON.in('object_id', selectedRows),
-				},
-				query: jbrowseInputQuery,
+				variables,
+				query,
 			}),
 		})
 			.then(({ data }) => {
+				const nodeQuery = NEXT_PUBLIC_JBROWSE_NODE_QUERY
+					? `$..${NEXT_PUBLIC_JBROWSE_NODE_QUERY}`
+					: '$..edges';
+				const fileQuery = NEXT_PUBLIC_JBROWSE_FILE_QUERY
+					? `$..${NEXT_PUBLIC_JBROWSE_FILE_QUERY}`
+					: '$..edges';
+
+				const nodes = jsonpath.query(data, nodeQuery)[0];
+				const indexFiles = jsonpath.query(nodes, fileQuery);
+				const files = indexFiles
+					.map((files: TableData[]) => {
+						const mappedFiles = files.map((data) => {
+							// Map for Compatibility
+							// Based on Table Data Query
+							const { object_id, name, size, fileType, file_access } = data.node;
+							const jbrowseFile: JbrowseQueryNode = {
+								file_type: fileType as JbrowseFileTypes,
+								file_access: file_access as JbrowseFileAccess,
+								object_id,
+								file: {
+									name,
+									size,
+									index_file: {
+										object_id,
+										size,
+									},
+								},
+							};
+							return jbrowseFile;
+						});
+						return mappedFiles;
+					})
+					.flat();
+
 				// restructure compatible files list for jbrowse's API
-				const nextJbrowseCompatibleFiles = (data.file?.hits?.edges || [])
-					.filter(
-						({
-							node: {
-								file_access,
-								file_type,
-								file: { index_file },
-							},
-						}: {
-							node: JbrowseQueryNode;
-						}) =>
-							checkJbrowseCompatibility({
-								file_access,
-								file_type,
-								index_file,
-								jbrowseType: activeJbrowseType,
-							}),
-					)
-					.map(
-						({ node }: { node: JbrowseQueryNode }): JbrowseCompatibleFile => ({
-							fileId: node.object_id,
-							fileName: node.file.name,
-							fileSize: node.file.size,
-							fileType: node.file_type,
-							// files without an index were filtered out above.
-							// falsey handling is for typescript only.
-							indexId: node.file.index_file?.object_id || '',
-							indexSize: node.file.index_file?.size || 0,
-						}),
-					);
+				const nextJbrowseCompatibleFiles = files
+					.filter(jBrowseCompatibilityFilter)
+					.map(mapJbrowseFiles);
+
 				setCompatibleFiles(nextJbrowseCompatibleFiles);
 			})
 			.catch((error: Error) => handleError(error));
