@@ -76,7 +76,7 @@ type Filters = {
 // request data for jbrowse display and
 // score /download request to get signed URLs
 const jbrowseInputQuery = (dataQuery: string) => `
-query jbrowseInput {
+query jbrowseInput ($filters: JSON) {
   ${dataQuery}
 }
 `;
