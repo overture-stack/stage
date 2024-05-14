@@ -35,14 +35,16 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 	const theme = useTheme();
 
 	return (
-		<article
+		<div
 			css={css`
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				background-color: ${defaultTheme.colors.grey_2};
-				color: ${defaultTheme.colors.white};
 				padding: 60px;
 				background-image: url(${heroDemoBannerWide.src});
 				background-repeat: no-repeat;
-				background-position: 90% -180%;
+				background-position: 85% -180%;
 				background-size: 800px;
 				height: 350px;
 				@media only screen and (max-width: 1711px) {
@@ -54,99 +56,104 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				}
 			`}
 		>
-			<h1
-				css={css`
-					font-size: 48px;
-					font-weight: 900;
-					color: ${theme.colors.accent_dark};
-				`}
-			>
-				About this Portal
-			</h1>
-			<div
-				css={css`
-					text-align: left;
-					max-width: 50%;
-					@media only screen and (max-width: 900px) {
-						max-width: 100%;
-					}
-				`}
-			>
-				<p
+			<article css={css``}>
+				<h1
 					css={css`
-						font-size: 18px;
-						color: ${theme.colors.black};
-						font-weight: 200;
-						text-align: left;
-						line-height: 1.5;
-						@media (min-width: 1450px) {
-							max-width: 1200px;
+						font-size: 30px;
+						font-weight: 400;
+						line-hieght: 36px;
+						margin-bottom: 44px;
+						color: rgb(0, 48, 85);
 					`}
 				>
-					Welcome to our Demo portal. We've designed this portal specifically to assist new users in
-					getting acquainted with Overture. From this page you can find basic information on the
-					following topics:
-				</p>
+					About this Portal
+				</h1>
 				<div
 					css={css`
-						display: flex;
-						flex: 1;
-						flex-direction: row;
-						justify-content: space-between;
-						max-width: 700px;
-						padding-top: 15px;
-						@media only screen and (max-width: 1100px) {
-							flex-direction: column;
-							align-items: flex-start;
+						text-align: left;
+						max-width: 50%;
+						@media only screen and (max-width: 900px) {
+							max-width: 100%;
 						}
 					`}
 				>
-					{/* Add links here */}
-					<a onClick={() => setArticleID('overview')}>
-						<HeroLink
-							css={css`
-								color: ${activeId === 'overview' ? theme.colors.accent2 : ''};
-								padding-right: 10px;
-								&:hover {
-									color: ${theme.colors.accent2};
-									text-decoration: underline;
-								}
-							`}
-						>
-							Demo Portal Overview
-						</HeroLink>
-					</a>
-					<a onClick={() => setArticleID('usage')}>
-						<HeroLink
-							css={css`
-								color: ${activeId === 'usage' ? theme.colors.accent2 : ''};
-								padding-right: 10px;
-								&:hover {
-									color: ${theme.colors.accent2};
-									text-decoration: underline;
-								}
-							`}
-						>
-							Data Retrieval & Submission
-						</HeroLink>
-					</a>
-					<a onClick={() => setArticleID('build')}>
-						<HeroLink
-							css={css`
-								color: ${activeId === 'build' ? theme.colors.accent2 : ''};
-								padding-right: 10px;
-								&:hover {
-									color: ${theme.colors.accent2};
-									text-decoration: underline;
-								}
-							`}
-						>
-							Administration & Portal Configuration
-						</HeroLink>
-					</a>
+					<p
+						css={css`
+						font-size: 16px;
+						color: rgb(0, 48, 85);
+						font-weight: 400;
+						text-align: left;
+						line-height: 24px;
+						margin-bottom: 24px;
+						@media (min-width: 1450px) {
+							max-width: 1200px;
+					`}
+					>
+						Welcome to our Demo portal. We've designed this portal specifically to assist new users
+						in getting acquainted with Overture. From this page you can find basic information on
+						the following topics:
+					</p>
+					<div
+						css={css`
+							display: flex;
+							flex: 1;
+							flex-direction: row;
+							justify-content: space-between;
+							max-width: 700px;
+							padding-top: 15px;
+							@media only screen and (max-width: 1100px) {
+								flex-direction: column;
+								align-items: flex-start;
+							}
+						`}
+					>
+						{/* Add links here */}
+						<a onClick={() => setArticleID('overview')}>
+							<HeroLink
+								css={css`
+									color: ${activeId === 'overview' ? theme.colors.accent2 : ''};
+									padding-right: 10px;
+									&:hover {
+										color: ${theme.colors.accent2};
+										text-decoration: underline;
+									}
+								`}
+							>
+								Demo Portal Overview
+							</HeroLink>
+						</a>
+						<a onClick={() => setArticleID('usage')}>
+							<HeroLink
+								css={css`
+									color: ${activeId === 'usage' ? theme.colors.accent2 : ''};
+									padding-right: 10px;
+									&:hover {
+										color: ${theme.colors.accent2};
+										text-decoration: underline;
+									}
+								`}
+							>
+								Data Retrieval & Submission
+							</HeroLink>
+						</a>
+						<a onClick={() => setArticleID('build')}>
+							<HeroLink
+								css={css`
+									color: ${activeId === 'build' ? theme.colors.accent2 : ''};
+									padding-right: 10px;
+									&:hover {
+										color: ${theme.colors.accent2};
+										text-decoration: underline;
+									}
+								`}
+							>
+								Administration & Portal Configuration
+							</HeroLink>
+						</a>
+					</div>
 				</div>
-			</div>
-		</article>
+			</article>
+		</div>
 	);
 };
 

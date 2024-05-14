@@ -35,18 +35,28 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 	return (
 		<article
 			css={css`
-				box-sizing: border-box;
-				border-radius: 5px;
-				padding: 15px 60px 0px 60px;
-				background-color: ${theme.colors.white};
+				margin: 48px 48px 48px;
 			`}
 		>
 			{/* Title */}
 			<h1
 				css={css`
-					color: ${theme.colors.accent};
-					font-size: 22px;
-					font-weight: normal;
+					position: relative;
+					color: rgb(0, 48, 85);
+					font-size: 20px;
+					line-height: 30px;
+					font-weight: 700;
+					margin-bottom: 40px;
+					&:after {
+						content: '';
+						position: absolute;
+						bottom: -12px;
+						display: block;
+						height: 3px;
+						width: 106px;
+						border-radius: 1.5px;
+						background-color: #f2d021;
+					}
 				`}
 			>
 				{title}
@@ -61,11 +71,14 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 				>
 					<div
 						css={css`
-							line-height: 1.5;
-							font-size: 14px;
-							font-weight: 200;
+							box-sizing: border-box;
+							color: rgb(0, 48, 85);
+							font-size: 16px;
+							font-weight: 00;
+							line-height: 24px;
+							margin-bottom: 24px;
 							text-align: justify;
-							max-width: 1000px;
+							max-width: 1200px;
 						`}
 					>
 						<p>{text}</p>
@@ -85,7 +98,7 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 						{/* Render HTML content */}
 						<div
 							css={css`
-								strong {
+								b {
 									font-weight: 900;
 								}
 							`}
@@ -98,25 +111,24 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 				<div>
 					<div
 						css={css`
+							color: rgb(0, 48, 85);
+							font-size: 1em;
+							font-weight: 400;
 							line-height: 1.5;
-							font-size: 14px;
-							font-weight: 200;
+							margin-bottom: 24px;
 							text-align: justify;
-							max-width: 1000px;
+							max-width: 1200px;
 						`}
 					>
 						<p>{text}</p>
 						{/* Render HTML content */}
 						<div
 							css={css`
-								b {
-									font-weight: 900;
-								}
 								code {
 									background-color: ${theme.colors.black};
 									border-radius: 10px;
 									padding: 30px 30px;
-									font-family: 'Courier New', Courier, monospace;
+									font-family: Lato, Helvetica, Arial, sans-serif;
 									font-size: 14px;
 									color: ${theme.colors.white};
 									display: inline-block;
