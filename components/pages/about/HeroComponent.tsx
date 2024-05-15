@@ -22,7 +22,7 @@
 import React, { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 import defaultTheme from '../../theme';
-import overtureOverview from './assets/emblemNoBackground.webp';
+import overtureOverview from './assets/heroEmblem.webp';
 import heroDemoBannerWide from './assets/herobannerdemo.webp';
 import HeroLink from '@/components/HeroLink';
 
@@ -40,8 +40,8 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				background-color: ${defaultTheme.colors.grey_2};
 				padding: 60px;
+				background-color: ${defaultTheme.colors.grey_2};
 				background-image: url(${heroDemoBannerWide.src});
 				background-repeat: no-repeat;
 				background-position: 85% -180%;
@@ -50,18 +50,14 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				@media only screen and (max-width: 1711px) {
 					background-image: url(${overtureOverview.src});
 					background-position: 80% 50%;
-					background-size: 30%;
+					background-size: 25%;
 				}
 				@media only screen and (max-width: 900px) {
 					background-image: none;
 				}
 			`}
 		>
-			<article
-				css={css`
-					padding: 48px;
-				`}
-			>
+			<article>
 				<h1
 					css={css`
 						font-size: 30px;

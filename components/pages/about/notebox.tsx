@@ -45,6 +45,19 @@ const NoteBox = ({ children, title, ...props }: NoteBoxProps) => {
 					font-weight: 400;
 					line-height: 24px;
 					margin-bottom: 16px;
+					a {
+						color: #fff;
+						font-weight: 600;
+					}
+					code {
+						background-color: rgb(0, 48, 85);
+						font-family: Source Code Pro, monospace;
+						font-size: 14px;
+						font-weight: 600;
+						line-height: 20px;
+						padding: 2px 3px;
+						box-sizing: border-box;
+					}
 				`}
 			>
 				{children}

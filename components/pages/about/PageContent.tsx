@@ -95,6 +95,18 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 									you're currently viewing.
 								</li>
 							</ul>
+							<NoteBox title="Need a hand?">
+								We believe in the collective power of expertise and shared resources. If you want to
+								work with us you can{' '}
+								<a
+									href="https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									connect with us on slack
+								</a>{' '}
+								or contact us by email at <code>contact@overture.bio</code>.
+							</NoteBox>
 						</ArticleComponent>
 					</div>
 				)}
@@ -103,114 +115,103 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					<div>
 						<ArticleComponent
 							title="Data Retrieval"
-							text="This is a read-only demo environment with a default user login and API Key. As such, you can follow the instructions below and download our mock data as a typical user would."
+							text="Users filter data via Arrangers' search components in the Stage UI's data explorer. After selecting a subset, you can download a manifest from the download dropdown.  To download Song and Score a valid API key will be needed. Once a users logs in through Stage's auth integration, they can access their API key from the profile page. Data downloads are managed using a seperate Score Client CLI tool. We use CLI tools as massive genomic datasets require reliable multi-part download sessions unsuitable for a browser."
 							imageUrl={retrievalOverview.src}
 						>
-							<div
-								css={css`
-									code {
-										background-color: ${theme.colors.black};
-										border-radius: 10px;
-										padding: 25px 25px;
-										font-family: Lato, Helvetica, Arial, sans-serif;
-										font-size: 12px;
-										color: ${theme.colors.white};
-										display: inline-block;
-										margin-top: 28px;
-										border: 1px solid ${theme.colors.accent};
-									}
-								`}
-							>
-								<ol>
+							<NoteBox title="Give it a try">
+								This demo portal operates as a read-only environment, equipped with a publicly
+								accessible API Key:
+								<ul>
 									<li>
-										<b>Create a data subset:</b> From the exploration page, use the search facets in
-										the left-hand panel to refine your search. All your filtering parameters are
-										visible at the top query bar, ensuring you have a clear overview of your search
-										criteria. To share your queries, you can simply copy the browser URL, which
-										dynamically updates as you filter through the dataset.
+										The demo portals publically available API Key is{' '}
+										<code>to be updated here following testing</code>
+									</li>
+
+									<li>
+										The STORAGE_URL is <code>`https://score.demo.overture.bio/`</code>
+									</li>
+
+									<li>
+										The METADATA_URL is <code>`https://song.demo.overture.bio/`</code>
+									</li>
+								</ul>
+								With this information you should be able to download our mock data using the
+								following step-wise documentation:
+								<ul>
+									<li>
+										<a
+											href="https://www.overture.bio/documentation/score/user-guide/client-setup/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Setting up the score client
+										</a>
 									</li>
 									<li>
-										<b>Generate a manifest:</b> Select the download dropdown, and click file
-										manifest. The downloaded file manifest will be used next to download the data
-										with our Score Client CLI tool. We use CLI tools as massive genomic datasets
-										require reliable multi-part download sessions unsuitable for a browser.
+										<a
+											href="https://www.overture.bio/documentation/score/user-guide/download/"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Downloading Data Using Score
+										</a>
 									</li>
-									<li>
-										<b>Run the Score-client:</b> With Docker installed, the Score client is run
-										using the following command:
-										<code>
-											docker run -d -it \ <br></br>
-											--name score-client \ <br></br>
-											-e CLIENT_ACCESS_TOKEN=$token \<br></br>
-											-e STORAGE_URL=https://score.demo.overture.bio \<br></br>
-											-e METADATA_URL=https:"//"song.demo.overture.bio \<br></br>
-											--network="host" \<br></br>
-											--mount type=bind,source="$(pwd)",target=/output \<br></br>
-											ghcr.io/overture-stack/score:latest
-										</code>
-									</li>
-									<li>
-										<b>Download your data:</b> You can download the data outlined in your manifest
-										file by running the following command:
-										<code>
-											docker exec score-client sh -c "score-client download \<br></br>
-											--manifest ./manifestDirectory/manifest.txt \<br></br>
-											--output-dir ./outputDirectory"
-										</code>
-									</li>
-									<ul>
-										<li>
-											Replace <em>manifestDirectory </em> with the path that points to your manifest
-											file
-										</li>
-										<li>
-											Replace the <em>outputDirectory </em> with your desired download destination
-										</li>
-									</ul>
-								</ol>
-								<NoteBox title="Note on authentication">
-									Typically you will require authorization from an administrator prior to accessing
-									any given resource. Upon approval, researchers can access the portal by selecting
-									the login button at the top of the screen. Since this demo portal is an
-									open-access resource, no login information is required.
-								</NoteBox>
-							</div>
+								</ul>
+							</NoteBox>
 						</ArticleComponent>
 
 						<ArticleComponent
 							title="Data Submission"
-							text="Public users do not have the required permissions to submit data to this demo portal. To enable full access, we are currently developing an easy-to-install quickstart. To get updates, join our Slack channel linked within the footer. The following information provides a high-level overview of the data submission process."
+							text="Before starting the submission process, data providers need to gather and organize metadata. This involves using a spreadsheet editor alongside the data dictionary provided by the resource administrators. The data dictionary outlines the structure and specifications for the metadata, including field names, requirements and formatting. After preparing the metadata according to these specifications, data providers export their organized metadata into a JSON file. This JSON file is now ready to be uploaded."
 							imageUrl={submissionOverview.src}
 						>
-							<p>
-								{' '}
-								The initial step in data submission involves <b>preparing an analysis file.</b> In
-								Overture, an analysis consists of one or more files along with metadata. Data
-								submitters typically use a spreadsheet editor, complemented by a data dictionary
-								provided by the resource administrator, to organize their metadata. This dictionary
-								outlines the required metadata fields and their syntax. Following this,{' '}
-								<b>the analysis file is uploaded</b> as a JSON document via the Song CLI tool. A
-								single command validates the metadata against the resource's data model. Upon
-								successful validation, the payload is committed to the database, and the user
-								receives an auto-generated analysis ID. Subsequently, the user{' '}
-								<b>generates a file manifest</b> using the Song client's manifest command, which
-								necessitates specifying the directory of the files and a valid analysis ID. This
-								process enables Song to link all metadata within its database to the corresponding
-								file data stored in the cloud. Finally,{' '}
-								<b>the files are uploaded to object storage</b> using the verified manifest with the
-								Score CLI upload command. Additional publication controls allow administrators and
-								data providers to manage data releases predictably and timely. Analyses are
-								unpublished by default and can be published or suppressed using the Song Client.{' '}
-							</p>
-							<p>
-								For detailed information on data submission with Song and Score, including
-								installing the clients and uploading data, see our{' '}
-								<a href={SUBMISSION_DOCS} target="_blank" rel="noopener noreferrer">
-									{' '}
-									submission documentation here
+							<ol>
+								<li>
+									<b>Upload metadata to Song</b> as a JSON document via the Song CLI tool. A single
+									command validates the metadata against the resource's data model. Upon successful
+									validation, the metadta is committed to the database, and the user receives an
+									auto-generated analysis ID. In Overture, the term analysis is a unit of related
+									file data and file metadata.
+								</li>
+								<li>
+									<b>Generate a file manifest:</b> Using the Song clients manifest command,
+									specifying the local directory of your file data and provide a valid analysis ID.
+									This process enables Song to link the associated metadata within its database to
+									the corresponding file data that will be stored in the cloud following upload.
+								</li>
+								<li>
+									<b>Upload your files:</b> Using the Score clients upload command, specify the path
+									of your manifest and upload.
+								</li>
+								<li>
+									<b>Publish your data:</b> Additional publication controls allow administrators and
+									data providers to manage data releases predictably and timely. Analyses are
+									unpublished by default and can be published or suppressed using the Song Client.
+								</li>
+							</ol>
+							<NoteBox title="Want to try?">
+								The Overture demo portal has been deployed as a read-only resource; therefore,
+								public users do not have the required permissions to submit data. To enable full
+								access, we are currently developing an easy-to-install quickstart. To get updates,
+								join our Slack channel linked within the footer. For more information about the data
+								submission process, see our{' '}
+								<a
+									href="https://www.overture.bio/documentation/song/user/submit/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Song submission
+								</a>{' '}
+								and{' '}
+								<a
+									href="https://www.overture.bio/documentation/score/user-guide/upload/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Score upload documentation
 								</a>
 								.
-							</p>
+							</NoteBox>
 						</ArticleComponent>
 					</div>
 				)}
@@ -219,9 +220,22 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					<div>
 						<ArticleComponent
 							title="Data Model Customization"
-							text="Administrators can customize the data model in Song to align with most project requirements. This customization is achieved by submitting Song schemas (JSON), which extend the application's base data model. An administrator can submit any number of Song schemas, allowing them to cover various analysis types. Data submission requires an analysis type defined within the metadata payload; this analysis type specifies which Song Schema is used to validate the submission. Song will then use the specified schema to ensure all required fields are present and the content is valid, thereby preserving metadata integrity."
+							text="Administrators can tailor the data model in Song to meet the needs of almost any project. This customization process involves providing Song schemas, formatted as JSON, that extend the core data model of Song. There's no limit to how many Song schemas an administrator can submit, enabling comprehensive coverage across different experimental scenarios. To facilitate data submission, data providers must specify an analysis type within the metadata payload. This designated analysis type determines which Song Schema is used to verify the submission. By using the selected schema, Song ensures that all essential fields are included and that the content adheres to the expected standards, thus safeguarding the integrity of the metadata."
 							imageUrl={dataAdmin.src}
-						/>
+						>
+							<NoteBox title="Learn more">
+								If you're interested in learning more about Song and Song schemas see our
+								documentation on{' '}
+								<a
+									href="https://www.overture.bio/documentation/song/admin/schemas/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Schema Management in Song
+								</a>
+								.
+							</NoteBox>
+						</ArticleComponent>
 						<ArticleComponent
 							title="Data Explorer Configuration"
 							text="Accommodating a flexible data model
@@ -229,7 +243,20 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						arrangers' search components gives administrators the ability to customize how search
 						facets and data columns are displayed on the data exploration page."
 							imageUrl={arrangerConfigs.src}
-						/>
+						>
+							<NoteBox title="Learn more">
+								If you're interested in learning more see our documentation on{' '}
+								<a
+									href="https://www.overture.bio/documentation/arranger/installation/configuration/metadata/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Arranger metadata configuration
+								</a>
+								.
+							</NoteBox>
+						</ArticleComponent>
+
 						<ArticleComponent
 							title="Portal UI Customization"
 							text="	With the flexibility to theme and extend the
@@ -237,7 +264,30 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							includes adding custom pages and menu options that provide valuable information or
 							resources, enhancing the portal's overall utility and appeal."
 							imageUrl={stageUI.src}
-						/>
+						>
+							<NoteBox title="Let us know">
+								Basic Stage documentation is{' '}
+								<a
+									href="https://www.overture.bio/documentation/arranger/installation/configuration/metadata/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									available here
+								</a>{' '}
+								. We're actively working on enhancing our documentation and guides, and we welcome
+								any suggestions from the community regarding topics they would find useful. If you
+								have a topic suggestion, feel free to reach out through the Slack channel or email
+								address listed in the footer, or by{' '}
+								<a
+									href="https://github.com/overture-stack/website/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									submitting a feature request via this link
+								</a>{' '}
+								.
+							</NoteBox>
+						</ArticleComponent>
 						<ArticleComponent
 							title="Application & User Management"
 							text="User and application management

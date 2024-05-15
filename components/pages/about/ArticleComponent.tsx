@@ -35,7 +35,7 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 	return (
 		<article
 			css={css`
-				margin: 48px;
+				margin: 48px 20px;
 				li {
 					margin-bottom: 28px;
 				}
@@ -78,17 +78,23 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 					>
 						{text}
 					</p>
-					<img
+					<div
 						css={css`
-							@media (min-width: 1000px) {
-								max-width: 50rem;
-							}
-							max-width: 90%;
-							height: auto;
+							display: flex;
+							justify-content: center;
+							align-items: center;
 						`}
-						src={imageUrl}
-						alt={title}
-					/>
+					>
+						<img
+							css={css`
+								height: auto;
+								max-width: 100%;
+							`}
+							src={imageUrl}
+							alt={title}
+						/>
+					</div>
+
 					{children}
 				</div>
 			) : (
