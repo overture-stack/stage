@@ -34,6 +34,7 @@ import stageUI from './assets/stageUI.webp';
 import ego from './assets/ego.webp';
 
 import { SUBMISSION_DOCS } from '@/global/utils/constants';
+import NoteBox from './notebox';
 
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
@@ -44,13 +45,17 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 				width: 100%;
 				background-color: ${theme.colors.white};
 				padding-bottom: ${theme.dimensions.footer.height}px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 			`}
 		>
 			<div
 				css={css`
-					display: flex;
-					justify-content: center;
-					align-items: center;
+					width: 100%;
+					max-width: 1200px;
+					padding: 0 48px;
+					box-sizing: border-box;
 				`}
 			>
 				{/* Demo Portal Overview */}
@@ -65,19 +70,31 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							text="Our six core microservices, Ego, Song, Score, Maestro, Arranger and Stage, combine to build end-to-end data platforms. Here is how our services are being used to build out this demo portal:"
 							imageUrl={overtureOverview.src}
 						>
-							<p>
-								<b>Ego</b>, is our identity and permission management service, broadly enabling
-								authorization and authentication of all user users and applications. Overture can
-								also integrate with third-party Oauth service, Keycloak. <b>Song and Score</b>{' '}
-								manage data submission, management, and retrieval, automating file-to-metadata
-								tracking and validating data submissions against a customizable model. These
-								services enhance data quality, findability, and interoperability. <b>Maestro</b>{' '}
-								indexes submitted metadata from the Song repository into an Elasticsearch index.{' '}
-								<b>Arranger</b> references this index to produce a GraphQL search API, connected to
-								our configurable search UI components on the data exploration page. <b>Stage</b>{' '}
-								integrates these services into the React-based front-data portal UI you're currently
-								viewing.
-							</p>
+							<ul>
+								<li>
+									<b>Ego</b>, is our identity and permission management service, broadly enabling
+									authorization and authentication of all user users and applications. Overture can
+									also integrate with third-party Oauth service, Keycloak.
+								</li>
+								<li>
+									<b>Song and Score</b> manage data submission, management, and retrieval,
+									automating file-to-metadata tracking and validating data submissions against a
+									customizable model. These services enhance data quality, findability, and
+									interoperability.
+								</li>
+								<li>
+									<b>Maestro</b> indexes submitted metadata from the Song repository into an
+									Elasticsearch index.
+								</li>
+								<li>
+									<b>Arranger</b> references this index to produce a GraphQL search API, connected
+									to our configurable search UI components on the data exploration page.
+								</li>
+								<li>
+									<b>Stage</b> integrates these services into the React-based front-data portal UI
+									you're currently viewing.
+								</li>
+							</ul>
 						</ArticleComponent>
 					</div>
 				)}
@@ -99,70 +116,64 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 										font-size: 12px;
 										color: ${theme.colors.white};
 										display: inline-block;
-										margin: 0 5px;
+										margin-top: 28px;
 										border: 1px solid ${theme.colors.accent};
 									}
 								`}
 							>
-								<p>
-									<b>1. Create a data subset:</b> From the exploration page, use the search facets
-									in the left-hand panel to refine your search. All your filtering parameters are
-									visible at the top query bar, ensuring you have a clear overview of your search
-									criteria. To share your queries, you can simply copy the browser URL, which
-									dynamically updates as you filter through the dataset.
-								</p>
-
-								<p>
-									<b>2. Generate a manifest:</b> Select the download dropdown, and click file
-									manifest. The downloaded file manifest will be used next to download the data with
-									our Score Client CLI tool. We use CLI tools as massive genomic datasets require
-									reliable multi-part download sessions unsuitable for a browser.
-								</p>
-
-								<p>
-									<b>3. Run the Score-client:</b> With Docker installed, the Score client is run
-									using the following command:
-								</p>
-
-								<code>
-									docker run -d -it \ <br></br>
-									--name score-client \ <br></br>
-									-e CLIENT_ACCESS_TOKEN=$token \<br></br>
-									-e STORAGE_URL=https://score.demo.overture.bio \<br></br>
-									-e METADATA_URL=https:"//"song.demo.overture.bio \<br></br>
-									--network="host" \<br></br>
-									--mount type=bind,source="$(pwd)",target=/output \<br></br>
-									ghcr.io/overture-stack/score:latest
-								</code>
-
-								<p>
-									<b>4. Download your data:</b> You can download the data outlined in your manifest
-									file by running the following command:
-								</p>
-
-								<code>
-									docker exec score-client sh -c "score-client download \<br></br>
-									--manifest ./manifestDirectory/manifest.txt \<br></br>
-									--output-dir ./outputDirectory"
-								</code>
-
-								<ul>
+								<ol>
 									<li>
-										Replace <em>manifestDirectory </em> with the path that points to your manifest
-										file
+										<b>Create a data subset:</b> From the exploration page, use the search facets in
+										the left-hand panel to refine your search. All your filtering parameters are
+										visible at the top query bar, ensuring you have a clear overview of your search
+										criteria. To share your queries, you can simply copy the browser URL, which
+										dynamically updates as you filter through the dataset.
 									</li>
 									<li>
-										Replace the <em>outputDirectory </em> with your desired download destination
+										<b>Generate a manifest:</b> Select the download dropdown, and click file
+										manifest. The downloaded file manifest will be used next to download the data
+										with our Score Client CLI tool. We use CLI tools as massive genomic datasets
+										require reliable multi-part download sessions unsuitable for a browser.
 									</li>
-								</ul>
-
-								<p>
-									<b>Note on authentication:</b> Typically you will require authorization from an
-									administrator prior to accessing any given resource. Upon approval, researchers
-									can access the portal by selecting the login button at the top of the screen.
-									Since this demo portal is an open-access resource, no login information is
-									required.
-								</p>
+									<li>
+										<b>Run the Score-client:</b> With Docker installed, the Score client is run
+										using the following command:
+										<code>
+											docker run -d -it \ <br></br>
+											--name score-client \ <br></br>
+											-e CLIENT_ACCESS_TOKEN=$token \<br></br>
+											-e STORAGE_URL=https://score.demo.overture.bio \<br></br>
+											-e METADATA_URL=https:"//"song.demo.overture.bio \<br></br>
+											--network="host" \<br></br>
+											--mount type=bind,source="$(pwd)",target=/output \<br></br>
+											ghcr.io/overture-stack/score:latest
+										</code>
+									</li>
+									<li>
+										<b>Download your data:</b> You can download the data outlined in your manifest
+										file by running the following command:
+										<code>
+											docker exec score-client sh -c "score-client download \<br></br>
+											--manifest ./manifestDirectory/manifest.txt \<br></br>
+											--output-dir ./outputDirectory"
+										</code>
+									</li>
+									<ul>
+										<li>
+											Replace <em>manifestDirectory </em> with the path that points to your manifest
+											file
+										</li>
+										<li>
+											Replace the <em>outputDirectory </em> with your desired download destination
+										</li>
+									</ul>
+								</ol>
+								<NoteBox title="Note on authentication">
+									Typically you will require authorization from an administrator prior to accessing
+									any given resource. Upon approval, researchers can access the portal by selecting
+									the login button at the top of the screen. Since this demo portal is an
+									open-access resource, no login information is required.
+								</NoteBox>
 							</div>
 						</ArticleComponent>
 

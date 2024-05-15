@@ -35,10 +35,12 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 	return (
 		<article
 			css={css`
-				margin: 48px 48px 48px;
+				margin: 48px;
+				li {
+					margin-bottom: 28px;
+				}
 			`}
 		>
-			{/* Title */}
 			<h1
 				css={css`
 					position: relative;
@@ -61,84 +63,48 @@ const ArticleComponent = ({ title, text, imageUrl, children }: ArticleProps) => 
 			>
 				{title}
 			</h1>
-			{/* Conditional rendering based on imageUrl */}
 			{imageUrl ? (
-				<div
-					css={css`
-						display: flex;
-						flex-direction: column;
-					`}
-				>
-					<div
+				<div>
+					<p
 						css={css`
-							box-sizing: border-box;
 							color: rgb(0, 48, 85);
 							font-size: 16px;
-							font-weight: 00;
+							font-weight: 400;
 							line-height: 24px;
 							margin-bottom: 24px;
 							text-align: justify;
 							max-width: 1200px;
 						`}
 					>
-						<p>{text}</p>
-						<img
-							css={css`
-								padding-right: 30px;
-								@media (min-width: 1000px) {
-									max-width: 50rem;
-								}
-								max-width: 90%;
-								height: auto;
-							`}
-							src={imageUrl}
-							alt={title}
-						/>
-
-						{/* Render HTML content */}
-						<div
-							css={css`
-								b {
-									font-weight: 900;
-								}
-							`}
-						/>
-						{children}
-					</div>
+						{text}
+					</p>
+					<img
+						css={css`
+							@media (min-width: 1000px) {
+								max-width: 50rem;
+							}
+							max-width: 90%;
+							height: auto;
+						`}
+						src={imageUrl}
+						alt={title}
+					/>
+					{children}
 				</div>
 			) : (
-				// If imageUrl is not provided, render just the text
-				<div>
-					<div
-						css={css`
-							color: rgb(0, 48, 85);
-							font-size: 1em;
-							font-weight: 400;
-							line-height: 1.5;
-							margin-bottom: 24px;
-							text-align: justify;
-							max-width: 1200px;
-						`}
-					>
-						<p>{text}</p>
-						{/* Render HTML content */}
-						<div
-							css={css`
-								code {
-									background-color: ${theme.colors.black};
-									border-radius: 10px;
-									padding: 30px 30px;
-									font-family: Lato, Helvetica, Arial, sans-serif;
-									font-size: 14px;
-									color: ${theme.colors.white};
-									display: inline-block;
-									margin: 0 5px;
-									border: 1px solid ${theme.colors.accent};
-								}
-							`}
-						/>
-						{children}
-					</div>
+				<div
+					css={css`
+						color: rgb(0, 48, 85);
+						font-size: 16px;
+						font-weight: 400;
+						line-height: 24px;
+						margin-bottom: 24px;
+						text-align: justify;
+						max-width: 1200px;
+					`}
+				>
+					<p>{text}</p>
+					{children}
 				</div>
 			)}
 		</article>

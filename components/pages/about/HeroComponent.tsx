@@ -19,7 +19,7 @@
  *
  */
 
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 import defaultTheme from '../../theme';
 import overtureOverview from './assets/emblemNoBackground.webp';
@@ -50,18 +50,23 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				@media only screen and (max-width: 1711px) {
 					background-image: url(${overtureOverview.src});
 					background-position: 80% 50%;
-					background-size: 30vw;
+					background-size: 30%;
+				}
 				@media only screen and (max-width: 900px) {
 					background-image: none;
 				}
 			`}
 		>
-			<article css={css``}>
+			<article
+				css={css`
+					padding: 48px;
+				`}
+			>
 				<h1
 					css={css`
 						font-size: 30px;
 						font-weight: 400;
-						line-hieght: 36px;
+						line-height: 36px;
 						margin-bottom: 44px;
 						color: rgb(0, 48, 85);
 					`}
@@ -79,19 +84,19 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 				>
 					<p
 						css={css`
-						font-size: 16px;
-						color: rgb(0, 48, 85);
-						font-weight: 400;
-						text-align: left;
-						line-height: 24px;
-						margin-bottom: 24px;
-						@media (min-width: 1450px) {
-							max-width: 1200px;
-					`}
+							font-size: 16px;
+							color: rgb(0, 48, 85);
+							font-weight: 400;
+							text-align: left;
+							line-height: 24px;
+							margin-bottom: 24px;
+							@media (min-width: 1450px) {
+								max-width: 1200px;
+							}
+						`}
 					>
-						Welcome to our Demo portal. We've designed this portal specifically to assist new users
-						in getting acquainted with Overture. From this page you can find basic information on
-						the following topics:
+						We've designed this demo to assist new users in getting acquainted with Overture. From
+						this page you can find basic information on the following topics:
 					</p>
 					<div
 						css={css`
@@ -107,7 +112,6 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 							}
 						`}
 					>
-						{/* Add links here */}
 						<a onClick={() => setArticleID('overview')}>
 							<HeroLink
 								css={css`
@@ -119,7 +123,7 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 									}
 								`}
 							>
-								Demo Portal Overview
+								Platform Overview
 							</HeroLink>
 						</a>
 						<a onClick={() => setArticleID('usage')}>
