@@ -169,7 +169,7 @@ const NavBar: React.ComponentType = () => {
 								text-decoration: none;
 								color: ${theme.colors.accent_dark};
 								cursor: pointer;
-								${router.pathname === EXPLORER_PATH ? activeLinkStyle : ''}
+								${[EXPLORER_PATH, '/'].includes(router.pathname) ? activeLinkStyle : ''}
 							`}
 						>
 							Data Explorer
