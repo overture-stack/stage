@@ -23,15 +23,22 @@ import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 
 import Facets from './Facets';
+import BamTable from './BamTable';
 import RepoTable from './RepoTable';
 import QueryBar from './QueryBar';
+
+const tableTypes = {
+	REPO_TABLE: 'repoTable',
+	BAM_TABLE: 'bamTable',
+};
 
 const PageContent = () => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
+	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
-
+	console.log(tableType);
 	return useMemo(
 		() => (
 			<div
@@ -90,14 +97,25 @@ const PageContent = () => {
 								max-width: calc(100vw - ${sidebarWidth + 10}px);
 							`}
 						>
+							<button
+								onClick={() => {
+									const nextTableValue =
+										tableType === tableTypes['REPO_TABLE']
+											? tableTypes['BAM_TABLE']
+											: tableTypes['REPO_TABLE'];
+									setTableType(nextTableValue);
+								}}
+							>
+								Toggle Table Type
+							</button>
 							<QueryBar />
-							<RepoTable />
+							{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
 						</div>
 					</div>
 				</div>
 			</div>
 		),
-		[],
+		[tableType],
 	);
 };
 
