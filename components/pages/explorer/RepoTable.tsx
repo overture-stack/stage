@@ -129,7 +129,8 @@ const getTableConfigs = ({
 				`,
 				hoverBackground: theme.colors.grey_highlight,
 				lineHeight: '1.5rem',
-				selectedBackground: 'pink',
+				selectedBackground: theme.colors.primary_hero,
+				// selectedColor: 'white',
 				verticalBorderColor: theme.colors.grey_3,
 			},
 			TableWrapper: {
