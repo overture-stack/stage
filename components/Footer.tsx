@@ -24,7 +24,7 @@ import { css } from '@emotion/react';
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
 import StyledLink from './Link';
-import { SLACK, GITHUB, EMAIL } from '../global/utils/constants';
+import { SLACK, GITHUB, EMAIL, DISCLAIMER_PATH, ACKNOWLEDGEMENTS } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const Footer = () => {
@@ -46,11 +46,36 @@ const Footer = () => {
 				bottom: 0px;
 				left: 0px;
 				right: 0px;
-				@media only screen and (max-width: 721px) {
+				@media only screen and (max-width: 843px) {
 					display: none;
 				}
 			`}
 		>
+			{' '}
+			<StyledLink
+				css={(theme) => css`
+					${theme.typography.subheading2};
+					padding-left: 10px;
+					padding-right: 10px;
+				`}
+				href={DISCLAIMER_PATH}
+			>
+				Disclaimers
+			</StyledLink>
+			|
+			<StyledLink
+				css={(theme) => css`
+					${theme.typography.subheading2};
+					padding-left: 10px;
+					padding-right: 10px;
+				`}
+				href={ACKNOWLEDGEMENTS}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Acknowledgements
+			</StyledLink>
+			|
 			<StyledLink
 				css={(theme) => css`
 					${theme.typography.subheading2};

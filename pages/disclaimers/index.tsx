@@ -20,14 +20,13 @@
  */
 
 import React from 'react';
-import NextHead from 'next/head';
+import Disclaimers from '../../components/pages/disclaimers';
+import { createPage } from '../../global/utils/pages';
 
-const PageHead = ({ subtitle }: { subtitle?: string }) => {
-	return (
-		<NextHead>
-			<title>Overture Demo Portal{subtitle ? ` - ${subtitle}` : ''}</title>
-		</NextHead>
-	);
-};
+const DisclaimersPage = createPage({
+	isPublic: true,
+})(() => {
+	return <Disclaimers />;
+});
 
-export default PageHead;
+export default DisclaimersPage;

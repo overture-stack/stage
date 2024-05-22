@@ -1,11 +1,11 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * 	Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
  *  GNU Affero General Public License along with this program.
- *   If not, see <http://www.gnu.org/licenses/>.
+ *  If not, see <http://www.gnu.org/licenses/>.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
  *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -19,15 +19,26 @@
  *
  */
 
-import React from 'react';
-import NextHead from 'next/head';
+import { ReactElement } from 'react';
+import { useState } from 'react';
 
-const PageHead = ({ subtitle }: { subtitle?: string }) => {
+import PageLayout from '../../PageLayout';
+import HeroBanner from './HeroComponent';
+import PageContent from './PageContent';
+
+const Disclaimers = (): ReactElement => {
+	const [articleId, setArticleId] = useState<string>('data');
+
+	const activeArticleId = (articleId: string) => setArticleId(articleId);
+
 	return (
-		<NextHead>
-			<title>Overture Demo Portal{subtitle ? ` - ${subtitle}` : ''}</title>
-		</NextHead>
+		<PageLayout subtitle="About This Portal">
+			<div>
+				<HeroBanner setArticleID={activeArticleId} activeId={articleId} />
+				<PageContent activeId={articleId} /> 
+			</div>
+		</PageLayout>
 	);
 };
 
-export default PageHead;
+export default Disclaimers;

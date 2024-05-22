@@ -35,6 +35,8 @@ export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
 export const INFO_PATH = '/info'
 export const ABOUT_PATH = '/about'
+export const DISCLAIMER_PATH='/disclaimers'
+
 
 // external docs links
 const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms';
@@ -47,7 +49,8 @@ export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user
 // Footer Links
 export const SLACK = "https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw";
 export const GITHUB = "https://github.com/overture-stack/";
-export const EMAIL = "mailto:john@example.com";
+export const EMAIL = "mailto:contact@overture.bio";
+export const ACKNOWLEDGEMENTS = "https://www.overture.bio/acknowledgements/"
 
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(
