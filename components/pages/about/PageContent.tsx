@@ -124,7 +124,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 								<ul>
 									<li>
 										The demo portals publically available API Key is{' '}
-										<code>to be updated here following testing</code>
+										<code>02d79157-a0aa-46fd-9a91-5a21cdfee3a3</code>
 									</li>
 
 									<li>
