@@ -32,7 +32,7 @@ const Disclaimers = (): ReactElement => {
 	const activeArticleId = (articleId: string) => setArticleId(articleId);
 
 	return (
-		<PageLayout subtitle="About This Portal">
+		<PageLayout subtitle="Disclaimers">
 			<div>
 				<HeroBanner setArticleID={activeArticleId} activeId={articleId} />
 				<PageContent activeId={articleId} /> 
