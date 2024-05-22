@@ -36,6 +36,7 @@ import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
+import { ABOUT_PATH } from '@/global/utils/constants';
 
 const getTableConfigs = ({
 	apiHost,
@@ -165,16 +166,16 @@ const RepoTable = () => {
 						}
 					`}
 				>
-					To download files using a file manifest, please follow these
+					For more information, see the Data Retrieval section found on our
 					<StyledLink
 						css={css`
 							line-height: inherit;
 						`}
-						href="https://overture.bio/documentation/score/user-guide/download"
+						href={ABOUT_PATH}
 						rel="noopener noreferrer"
 						target="_blank"
 					>
-						instructions
+						about this portal page
 					</StyledLink>
 					.
 				</span>
