@@ -19,7 +19,6 @@
  *
  */
 
-import React from 'react';
 import { css, useTheme } from '@emotion/react';
 
 type ArticleProps = {
