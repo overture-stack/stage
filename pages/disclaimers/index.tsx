@@ -19,7 +19,6 @@
  *
  */
 
-import React from 'react';
 import Disclaimers from '../../components/pages/disclaimers';
 import { createPage } from '../../global/utils/pages';
 
