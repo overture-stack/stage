@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { css } from '@emotion/react';
 // Correctly import the SVG as a React component
 import NotesIcon from './assets/notes.svg';
