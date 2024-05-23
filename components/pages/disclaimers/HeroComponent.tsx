@@ -61,7 +61,7 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 						color: rgb(0, 48, 85);
 					`}
 				>
-					Disclaimer
+					Disclaimers
 				</h1>
 				<div
 					css={css`

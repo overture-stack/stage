@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -142,46 +142,62 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const {
+		NEXT_PUBLIC_ARRANGER_API,
+		NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS,
+		NEXT_PUBLIC_ENABLE_DOWNLOADS,
+	} = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
 	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
 		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
 		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
-	const customExporters = [
-		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-		{
-			label: () => (
-				<span
-					css={css`
-						border-top: 1px solid ${theme.colors.grey_3};
-						margin-top: -3px;
-						padding-top: 7px;
-						white-space: pre-line;
+	const customExporters = NEXT_PUBLIC_ENABLE_DOWNLOADS
+		? [
+				{
+					// exports a TSV with what is displayed on the table (columns selected, etc.)
+					label: 'File Table',
+					fileName: `data-explorer-table-export.${today}.tsv`,
+				},
+				{
+					// exports a TSV with the manifest columns
+					label: 'File Manifest',
+					fileName: `score-manifest.${today}.tsv`,
+					columns: manifestColumns,
+				},
+				{
+					// Link to further instructions
+					label: () => (
+						<span
+							css={css`
+								border-top: 1px solid ${theme.colors.grey_3};
+								margin-top: -3px;
+								padding-top: 7px;
+								white-space: pre-line;
 
-						a {
-							margin-left: 3px;
-						}
-					`}
-				>
-					For more information, see the Data Retrieval section found on our
-					<StyledLink
-						css={css`
-							line-height: inherit;
-						`}
-						href={ABOUT_PATH}
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						about this portal page
-					</StyledLink>
-					.
-				</span>
-			),
-		},
-	];
+								a {
+									margin-left: 3px;
+								}
+							`}
+						>
+							For more information, see the Data Retrieval section found on our
+							<StyledLink
+								css={css`
+									line-height: inherit;
+								`}
+								href={ABOUT_PATH}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								about this portal page
+							</StyledLink>
+							.
+						</span>
+					),
+				},
+		  ]
+		: [];
 
 	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
 

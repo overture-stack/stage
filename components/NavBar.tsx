@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -38,9 +38,10 @@ const NavBar: React.ComponentType = () => {
 
 	const {
 		NEXT_PUBLIC_AUTH_PROVIDER,
+		NEXT_PUBLIC_BASE_PATH,
+		NEXT_PUBLIC_ENABLE_LOGIN,
 		NEXT_PUBLIC_LAB_NAME,
 		NEXT_PUBLIC_LOGO_FILENAME,
-		NEXT_PUBLIC_BASE_PATH,
 	} = getConfig();
 
 	const activeLinkStyle = `
@@ -178,6 +179,7 @@ const NavBar: React.ComponentType = () => {
 				</div>
 
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
+					NEXT_PUBLIC_ENABLE_LOGIN &&
 					(user ? (
 						<div
 							css={(theme) => css`
