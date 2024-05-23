@@ -19,7 +19,7 @@
  *
  */
 
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 import defaultTheme from '../../theme';
 import HeroLink from '@/components/HeroLink';
