@@ -38,7 +38,7 @@ const PageContent = () => {
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
-	console.log(tableType);
+
 	return useMemo(
 		() => (
 			<div

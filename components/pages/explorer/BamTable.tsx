@@ -194,9 +194,7 @@ const BamTable = () => {
 					`}
 				>
 					<TableContextProvider>
-						<Toolbar />
-						{/* <Table /> */}
-						<Pagination />
+						<h2>Bam.iobio</h2>
 					</TableContextProvider>
 				</article>
 			</>
