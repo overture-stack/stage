@@ -31,7 +31,7 @@ import {
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
 import urlJoin from 'url-join';
-import App from '@overture-stack/bam-visualizations/src/App';
+import BamApp from '@overture-stack/bam-visualizations/src/App';
 
 import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
@@ -196,6 +196,7 @@ const BamTable = () => {
 				>
 					<TableContextProvider>
 						<h2>Bam.iobio</h2>
+						<BamApp />
 					</TableContextProvider>
 				</article>
 			</>

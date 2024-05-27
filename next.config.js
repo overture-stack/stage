@@ -4,7 +4,9 @@ const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
-const withTranspileModules = require('next-transpile-modules')([]);
+const withTranspileModules = require('next-transpile-modules')([
+	'@overture-stack/bam-visualizations',
+]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 /**
  * @type {import('next').NextConfig}
