@@ -66,6 +66,7 @@ const getTableConfigs = ({
 			DownloadButton: {
 				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
+				// @ts-ignore
 				label: () => (
 					<>
 						<Download
