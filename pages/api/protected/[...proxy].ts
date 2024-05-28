@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	const session = await getServerSession(req, res, getAuthOptions(req));
 
-	console.info(`protected proxy - proxing to target:${target} path:${path}`);
+	console.info(`protected proxy - proxying to target:${target} path:${path}`);
 
 	if (session?.account?.accessToken) {
 		req.headers['Authorization'] = 'Bearer ' + decryptContent(session?.account?.accessToken);

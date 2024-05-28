@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	// Don't forward cookies to the API:
 	req.headers.cookie = '';
 
-	console.info(`proxy without authentication - proxing to target:${target} path:${path}`);
+	console.info(`proxy without authentication - proxying to target:${target} path:${path}`);
 
 	proxy.web(
 		req,
