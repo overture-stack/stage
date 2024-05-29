@@ -284,6 +284,16 @@ const ApiTokenInfo = () => {
 	const parsedExpiry: number = existingApiToken ? parseExpiry(existingApiToken?.expiryDate) : 0;
 	const tokenIsExpired: boolean = has(existingApiToken, 'expiryDate') && parsedExpiry <= 0;
 
+	const displayToken = (token: ApiToken | null) => {
+		if (!token) {
+			return 'You have no API token...';
+		} else if (existingApiToken?.name) {
+			return existingApiToken.name;
+		} else {
+			return 'API token encrypted';
+		}
+	};
+
 	useEffect(() => {
 		if (user) {
 			const searchParam = new URLSearchParams({
@@ -489,7 +499,7 @@ const ApiTokenInfo = () => {
 							${tokenIsExpired ? 'opacity: 0.3' : ''}
 						`}
 					>
-						{existingApiToken?.name || 'You have no API token...'}
+						{displayToken(existingApiToken)}
 					</span>
 				</div>
 				<>
@@ -512,7 +522,12 @@ const ApiTokenInfo = () => {
 						position="top"
 					>
 						<Button
-							disabled={isEmpty(existingApiToken) || isCopyingToken || tokenIsExpired}
+							disabled={
+								isEmpty(existingApiToken) ||
+								isCopyingToken ||
+								tokenIsExpired ||
+								!existingApiToken?.name
+							}
 							css={() =>
 								css`
 									border-radius: 0px 5px 5px 0px;
