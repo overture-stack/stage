@@ -47,6 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		},
 		(err) => {
 			console.error(`Proxy error URL: ${req.url}. Error: ${JSON.stringify(err)}`);
+
 			return res.status(500).json(err);
 		},
 	);
