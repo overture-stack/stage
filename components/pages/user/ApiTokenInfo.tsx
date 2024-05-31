@@ -47,7 +47,7 @@ interface ApiToken {
 	expiryDate: string;
 	isRevoked: boolean;
 	issueDate: string;
-	name: string;
+	name?: string;
 	scope: string[];
 }
 
@@ -287,8 +287,8 @@ const ApiTokenInfo = () => {
 	const displayToken = (token: ApiToken | null) => {
 		if (!token) {
 			return 'You have no API token...';
-		} else if (existingApiToken?.name) {
-			return existingApiToken.name;
+		} else if (token.name) {
+			return token.name;
 		} else {
 			return 'API token encrypted';
 		}
