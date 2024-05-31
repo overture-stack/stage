@@ -12,7 +12,7 @@ import {
 	EGO_SCOPES_ENDPOINT,
 } from '@/global/utils/constants';
 import { decryptContent } from '@/global/utils/crypt';
-import { removeFromPath } from '@/global/utils/proxyUtils';
+import { removeFromPath, SSLSecured } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer();
 
@@ -69,12 +69,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		{
 			target,
 			changeOrigin: true,
+			secure: SSLSecured,
 		},
 		(err) => {
-			if (err) {
-				return res.status(500).end(err);
-			}
-			return res.end();
+			console.error(`Proxy error URL: ${req.url}. Error: ${JSON.stringify(err)}`);
+
+			return res.status(500).json(err);
 		},
 	);
 }

@@ -3,7 +3,7 @@ import httpProxy from 'http-proxy';
 
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
-import { removeFromPath } from '@/global/utils/proxyUtils';
+import { removeFromPath, SSLSecured } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer();
 
@@ -43,12 +43,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		{
 			target,
 			changeOrigin: true,
+			secure: SSLSecured,
 		},
 		(err) => {
-			console.error(`Proxy error for ${req.url}: ${JSON.stringify(err)}`);
-			if (err) {
-				return res.status(500).json(err);
-			}
+			console.error(`Proxy error URL: ${req.url}. Error: ${JSON.stringify(err)}`);
+
+			return res.status(500).json(err);
 		},
 	);
 }
