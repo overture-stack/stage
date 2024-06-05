@@ -19,7 +19,7 @@
  *
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import {
 	Pagination,
@@ -36,6 +36,7 @@ import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
+import BamTable from './BamTable';
 
 const getTableConfigs = ({
 	apiHost,
@@ -140,8 +141,15 @@ const getTableConfigs = ({
 	},
 });
 
+const tableTypes = {
+	FILE_TABLE: 'fileTable',
+	BAM_TABLE: 'bamTable',
+	JBROWSE_TABLE: 'jbrowseTable',
+};
+
 const RepoTable = () => {
 	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const [tableType, setTableType] = useState(tableTypes['FILE_TABLE']);
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -197,14 +205,56 @@ const RepoTable = () => {
 					`}
 				>
 					<TableContextProvider>
+						<button
+							style={{
+								// TODO: Refactor Ternaries
+								backgroundColor:
+									tableType === tableTypes['JBROWSE_TABLE']
+										? theme.colors.secondary_light
+										: theme.colors.grey_3,
+							}}
+							onClick={() => {
+								const nextTableValue =
+									tableType === tableTypes['FILE_TABLE']
+										? tableTypes['JBROWSE_TABLE']
+										: tableTypes['FILE_TABLE'];
+								setTableType(nextTableValue);
+							}}
+						>
+							JBrowse
+						</button>
+						<button
+							style={{
+								backgroundColor:
+									tableType === tableTypes['BAM_TABLE']
+										? theme.colors.secondary_light
+										: theme.colors.grey_3,
+							}}
+							onClick={() => {
+								const nextTableValue =
+									tableType === tableTypes['FILE_TABLE']
+										? tableTypes['BAM_TABLE']
+										: tableTypes['FILE_TABLE'];
+								setTableType(nextTableValue);
+							}}
+						>
+							IOBIO
+						</button>
 						<Toolbar />
-						<Table />
+						{tableType === tableTypes['FILE_TABLE'] ? (
+							<Table />
+						) : tableType === tableTypes['BAM_TABLE'] ? (
+							<BamTable />
+						) : (
+							// TODO: Add JBrowse
+							<></>
+						)}
 						<Pagination />
 					</TableContextProvider>
 				</article>
 			</>
 		),
-		[],
+		[tableType],
 	);
 };
 
