@@ -36,7 +36,42 @@ import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
+import Linkedin from '@/components/theme/icons/linkedin';
+import Overture_logo from '@/components/theme/icons/overture_logo';
 import BamTable from './BamTable';
+
+const buttonStyles = (active: boolean, theme: DMSThemeInterface) => ({
+	backgroundColor: active ? theme.colors.accent : theme.colors.grey_3,
+	border: 'none',
+	borderRadius: '8px',
+	color: active ? theme.colors.white : theme.colors.black,
+	fontSize: '14px',
+	fontWeight: 700,
+	letterSpacing: '0.2px',
+	lineHeight: '16px',
+	margin: '5px',
+	padding: '8px',
+});
+
+const TableOptionButton = ({
+	label,
+	TableIcon,
+	active,
+	theme,
+	onClick,
+}: {
+	label: string;
+	TableIcon: typeof Overture_logo;
+	active: boolean;
+	theme: DMSThemeInterface;
+	onClick: () => void;
+}) => (
+	<button style={buttonStyles(active, theme)} onClick={onClick}>
+		<span>
+			<TableIcon height={13} /> {label}
+		</span>
+	</button>
+);
 
 const getTableConfigs = ({
 	apiHost,
@@ -192,6 +227,10 @@ const RepoTable = () => {
 
 	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_API, customExporters, theme }));
 
+	const fileTableActive = tableType === tableTypes['FILE_TABLE'];
+	const jbrowseTableActive = tableType === tableTypes['JBROWSE_TABLE'];
+	const bamTableActive = tableType === tableTypes['BAM_TABLE'];
+
 	return useMemo(
 		() => (
 			<>
@@ -205,45 +244,34 @@ const RepoTable = () => {
 					`}
 				>
 					<TableContextProvider>
-						<button
-							style={{
-								// TODO: Refactor Ternaries
-								backgroundColor:
-									tableType === tableTypes['JBROWSE_TABLE']
-										? theme.colors.secondary_light
-										: theme.colors.grey_3,
-							}}
+						<TableOptionButton
+							label={'JBrowse'}
+							active={jbrowseTableActive}
+							theme={theme}
 							onClick={() => {
-								const nextTableValue =
-									tableType === tableTypes['FILE_TABLE']
-										? tableTypes['JBROWSE_TABLE']
-										: tableTypes['FILE_TABLE'];
+								const nextTableValue = jbrowseTableActive
+									? tableTypes['FILE_TABLE']
+									: tableTypes['JBROWSE_TABLE'];
 								setTableType(nextTableValue);
 							}}
-						>
-							JBrowse
-						</button>
-						<button
-							style={{
-								backgroundColor:
-									tableType === tableTypes['BAM_TABLE']
-										? theme.colors.secondary_light
-										: theme.colors.grey_3,
-							}}
+							TableIcon={Linkedin}
+						/>
+						<TableOptionButton
+							label={'IOBIO'}
+							active={tableType === tableTypes['BAM_TABLE']}
+							theme={theme}
 							onClick={() => {
-								const nextTableValue =
-									tableType === tableTypes['FILE_TABLE']
-										? tableTypes['BAM_TABLE']
-										: tableTypes['FILE_TABLE'];
+								const nextTableValue = bamTableActive
+									? tableTypes['FILE_TABLE']
+									: tableTypes['BAM_TABLE'];
 								setTableType(nextTableValue);
 							}}
-						>
-							IOBIO
-						</button>
+							TableIcon={Overture_logo}
+						/>
 						<Toolbar />
-						{tableType === tableTypes['FILE_TABLE'] ? (
+						{fileTableActive ? (
 							<Table />
-						) : tableType === tableTypes['BAM_TABLE'] ? (
+						) : bamTableActive ? (
 							<BamTable />
 						) : (
 							// TODO: Add JBrowse
