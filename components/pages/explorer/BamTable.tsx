@@ -22,7 +22,7 @@
 import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import BamApp from '@overture-stack/bam-visualizations/src/App';
+import BamApp from '@overture-stack/iobio-components/src/App';
 
 const BamTable = () => {
 	const theme = useTheme();

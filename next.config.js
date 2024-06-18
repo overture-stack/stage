@@ -5,7 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
 const withTranspileModules = require('next-transpile-modules')([
-	'@overture-stack/bam-visualizations',
+	'@overture-stack/iobio-components',
 ]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 /**
