@@ -1,14 +1,14 @@
-# Data Management System - UI
+# Stage - UI
 
 <div>
 <img align="right" width="120vw" src="productDMS.svg" alt="arranger-logo"/>
 </div>
 
-The DMS-UI is a React-based user interface designed to prop up browser-accessible data portals. Although the DMS-UI can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
+The Stage is a React-based user interface designed to prop up browser-accessible data portals. Although the Stage can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
 
-The DMS-UI is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+The Stage is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-For more information about the DMS-UI, including setup and how to integrate Overture microservices Arranger and Ego, see our [official DMS-UI user documentation](https://www.overture.bio/documentation/dms-ui/)
+For more information about the Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/Stage/)
 
 <!--Blockqoute-->
 
@@ -18,7 +18,7 @@ For more information about the DMS-UI, including setup and how to integrate Over
 > <img align="left" src="ov-logo.png" height="90"/>
 > </div>
 >
-> _The DMS-UI is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
+> _The Stage is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
 
 <!--Blockqoute-->
 
@@ -45,7 +45,7 @@ For more information about the DMS-UI, including setup and how to integrate Over
   npm run dev
 ```
 
-Once running the DMS-UI is available from your [http://localhost:3000](http://localhost:3000)
+Once running the Stage is available from your [http://localhost:3000](http://localhost:3000)
 
 You can edit the UI by modifying `pages/index.js`. The UI will auto-update as you edit.
 
@@ -53,7 +53,7 @@ You can edit the UI by modifying `pages/index.js`. The UI will auto-update as yo
 
 ### Troubleshooting Note:
 
-DMS-UI requires NPM v^8.3.0, to ensure all dependencies get installed correctly
+Stage requires NPM v^8.3.0, to ensure all dependencies get installed correctly
 
 ```bash
 # If you need to update your NPM version first, use the following command:
@@ -76,10 +76,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Support & Contributions
 
-- Filing an [issue](https://github.com/overture-stack/dms-ui/issues)
-- Making a [contribution](CONTRIBUTING.md)
-- Connect with us on [Slack](https://overture-bio.slack.com/)
-- Add or Upvote a [feature request](https://github.com/overture-stack/dms-ui/issues?q=is%3Aopen+is%3Aissue+label%3Anew-feature+sort%3Areactions-%2B1-desc)
+- Filing an [issue](https://github.com/overture-stack/Stage/issues)
+- Making a [contribution](https://github.com/overture-stack/.github/blob/master/CONTRIBUTING.md)
+- Connect with us on [Slack](https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw)
+- Add or Upvote a [feature request](https://github.com/overture-stack/stage/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md)
 
 ## Related Products
 
@@ -89,21 +89,19 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 Overture is an ecosystem of research software tools, each with narrow responsibilities, designed to reduce redundant programming efforts and enable developers and data scientists to build reliable systems that organize and share big data.
 
-All our core microservices are included in the Overture **Data Management System** (DMS). The DMS offers turnkey installation, configuration, and deployment of Overture software. For more information on the DMS, read our [DMS documentation](https://www.overture.bio/documentation/dms/).
-
 See the links below for additional information on our other research software tools:
 
 </br>
 
-|Software|Description|
-|---|---|
-|[Ego](https://github.com/overture-stack/ego)|An authorization and user management service|
-|[Ego UI](https://github.com/overture-stack/ego-ui)|A UI for managing Ego authentication and authorization services|
-|[Score](https://github.com/overture-stack/score)| Transfer data to and from any cloud-based storage system|
-|[Song](https://github.com/overture-stack/song)|Catalog and manage metadata associated to file data spread across cloud storage systems|
-|[Maestro](https://github.com/overture-stack/maestro)|Organizing your distributed data into a centralized Elasticsearch index|
-|[Arranger](https://github.com/overture-stack/arranger)|A search API with reusable UI components that build into configurable and functional data portals|
-|[DMS-UI](https://github.com/overture-stack/dms-ui)|A simple web browser UI that integrates Ego and Arranger|
+| Software                                               | Description                                                                                       |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| [Ego](https://github.com/overture-stack/ego)           | An authorization and user management service                                                      |
+| [Ego UI](https://github.com/overture-stack/ego-ui)     | A UI for managing Ego authentication and authorization services                                   |
+| [Score](https://github.com/overture-stack/score)       | Transfer data to and from any cloud-based storage system                                          |
+| [Song](https://github.com/overture-stack/song)         | Catalog and manage metadata associated to file data spread across cloud storage systems           |
+| [Maestro](https://github.com/overture-stack/maestro)   | Organizing your distributed data into a centralized Elasticsearch index                           |
+| [Arranger](https://github.com/overture-stack/arranger) | A search API with reusable UI components that build into configurable and functional data portals |
+| [Stage](https://github.com/overture-stack/Stage)       | A simple web browser UI that integrates Ego and Arranger                                          |
 
 ## Acknowledgements
 

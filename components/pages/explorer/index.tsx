@@ -126,7 +126,7 @@ const RepositoryPage = () => {
 					}
 				>
 					<ErrorNotification
-						title={'DMS Configuration Error'}
+						title={'Configuration Error'}
 						size="lg"
 						css={css`
 							flex-direction: column;

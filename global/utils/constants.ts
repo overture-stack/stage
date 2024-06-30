@@ -39,10 +39,8 @@ export const DISCLAIMER_PATH='/disclaimers'
 
 
 // external docs links
-const OVERTURE_DMS_DOCS_ROOT = 'https://overture.bio/documentation/dms';
-export const DMS_HELP_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'user-guide');
-export const DMS_INSTALLATION_URL = urlJoin(OVERTURE_DMS_DOCS_ROOT, 'installation');
-export const DMS_EMAIL_SETTING_URL = urlJoin(DMS_INSTALLATION_URL, 'configuration/prereq/emails');
+export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'
+export const EMAIL_SETTING_URL = 'admin@example.com';
 export const SCORE_DOCS = 'https://overture.bio/documentation/score/user-guide/client-setup';
 export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user/submit';
 
