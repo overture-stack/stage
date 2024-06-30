@@ -24,6 +24,7 @@ import { css, useTheme } from '@emotion/react';
 import { ArrangerDataProvider } from '@overture-stack/arranger-components';
 
 import ErrorNotification from '../../ErrorNotification';
+import EntryNotification from '../../EntryNotification';
 import Loader from '../../Loader';
 import PageLayout from '../../PageLayout';
 import createArrangerFetcher from '../../utils/arrangerFetcher';
@@ -33,6 +34,8 @@ import { RepoFiltersType } from './sqonTypes';
 
 import getConfigError from './getConfigError';
 import PageContent from './PageContent';
+import { Warning } from '@/components/theme/icons';
+import NoteBox from '../about/notebox';
 
 export interface PageContentProps {
 	sqon: RepoFiltersType;
@@ -122,20 +125,46 @@ const RepositoryPage = () => {
 						`
 					}
 				>
+					<ErrorNotification
+						title={'DMS Configuration Error'}
+						size="lg"
+						css={css`
+							flex-direction: column;
+							justify-content: center;
+							align-items: center;
+						`}
+					>
+						{ConfigError}
+					</ErrorNotification>
 					<Loader />
 				</div>
 			) : ConfigError ? (
-				<ErrorNotification
-					title={'DMS Configuration Error'}
+				<EntryNotification
+					title={'Welcome'}
 					size="lg"
+					dismissible={true}
 					css={css`
 						flex-direction: column;
 						justify-content: center;
 						align-items: center;
 					`}
 				>
-					{ConfigError}
-				</ErrorNotification>
+					<p>
+						This demo shows a basic implementation of an Overture platform, it includes:
+						<ul>
+							<li>A Data Exploration page with mock data</li>
+							<br></br>
+							<li>
+								Learn More guides covering how this platform was built, basics on data retrieval and
+								submission, and how it can be configured and customized
+							</li>
+						</ul>
+					</p>
+					<p>
+						<b>Disclaimer:</b> All data is intended for demo purposes only and does not represent
+						any real or operational information.
+					</p>
+				</EntryNotification>
 			) : (
 				<ArrangerDataProvider
 					apiUrl={NEXT_PUBLIC_ARRANGER_API}

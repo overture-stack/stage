@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 
 import UserDropdown from './UserDropdown';
 import defaultTheme from './theme';
-import { OvertureLogo } from './theme/icons';
+import { OvertureLogo as Logo } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
 import { EXPLORER_PATH, LOGIN_PATH, USER_PATH, ABOUT_PATH } from '../global/utils/constants';
@@ -55,7 +55,7 @@ const NavBar: React.ComponentType = () => {
 			height={`${theme.dimensions.labIcon.height}px`}
 		/>
 	) : (
-		<OvertureLogo height={theme.dimensions.labIcon.height} />
+		<Logo height={theme.dimensions.labIcon.height} />
 	);
 
 	return (
@@ -114,38 +114,6 @@ const NavBar: React.ComponentType = () => {
 			>
 				<div
 					css={(theme) => css`
-						width: 144px; /* Adjust width as needed */
-						height: 100%;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						background-color: ${theme.colors.white};
-						&:hover {
-							background-color: ${theme.colors.grey_2};
-						}
-						border-right: 2px solid ${theme.colors.white};
-					`}
-				>
-					<Link path={ABOUT_PATH}>
-						<a
-							css={(theme) => css`
-								display: flex;
-								flex: 1;
-								height: 100%;
-								justify-content: center;
-								align-items: center;
-								text-decoration: none;
-								color: ${theme.colors.accent_dark};
-								cursor: pointer;
-								${router.pathname === ABOUT_PATH ? activeLinkStyle : ''}
-							`}
-						>
-							About This Portal
-						</a>
-					</Link>
-				</div>
-				<div
-					css={(theme) => css`
 						display: flex;
 						align-items: center;
 						justify-content: center;
@@ -174,6 +142,27 @@ const NavBar: React.ComponentType = () => {
 						>
 							Data Explorer
 						</a>
+					</Link>
+				</div>
+
+				<div
+					css={css`
+						width: 145px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+					`}
+				>
+					<Link path={ABOUT_PATH}>
+						<StyledLinkAsButton
+							css={(theme) => css`
+								width: 90px;
+								${theme.typography.button};
+								line-height: 20px;
+							`}
+						>
+							Learn More
+						</StyledLinkAsButton>
 					</Link>
 				</div>
 
