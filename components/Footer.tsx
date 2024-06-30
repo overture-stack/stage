@@ -24,7 +24,7 @@ import { css } from '@emotion/react';
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
 import StyledLink from './Link';
-import { DMS_HELP_URL, DMS_INSTALLATION_URL } from '../global/utils/constants';
+import { HELP_URL } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 
 const Footer = () => {
@@ -53,22 +53,10 @@ const Footer = () => {
 					${theme.typography.subheading2};
 					padding-right: 13px;
 				`}
-				href={DMS_HELP_URL}
+				href={HELP_URL}
 				target="_blank"
 			>
 				Help
-			</StyledLink>
-			|
-			<StyledLink
-				css={(theme) => css`
-					${theme.typography.subheading2};
-					padding-left: 13px;
-					padding-right: 5px;
-				`}
-				href={DMS_INSTALLATION_URL}
-				target="_blank"
-			>
-				DMS
 			</StyledLink>
 			<span
 				css={(theme) =>

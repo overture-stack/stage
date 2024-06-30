@@ -25,7 +25,7 @@ import NextHead from 'next/head';
 const PageHead = ({ subtitle }: { subtitle?: string }) => {
 	return (
 		<NextHead>
-			<title>Overture DMS{subtitle ? ` - ${subtitle}` : ''}</title>
+			<title>Overture {subtitle ? ` - ${subtitle}` : ''}</title>
 		</NextHead>
 	);
 };

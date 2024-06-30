@@ -21,7 +21,7 @@
 
 import React from 'react';
 
-import { DMS_EMAIL_SETTING_URL } from '../../global/utils/constants';
+import { EMAIL_SETTING_URL } from '../../global/utils/constants';
 import providerMap from '../../global/utils/providerTypeMap';
 import StyledLink from '../Link';
 import { ErrorPageLayout } from '../PageLayout';
@@ -58,7 +58,7 @@ const Error403 = ({ query }: { query: { error_type: EgoLoginError; provider_type
 					required to log in to the Data Explorer. Make sure an email exists on your{' '}
 					{providerTypeDisplayName} profile and that it is accessible by external parties (i.e. not
 					private). See{' '}
-					<StyledLink href={DMS_EMAIL_SETTING_URL} target="_blank">
+					<StyledLink href={EMAIL_SETTING_URL} target="_blank">
 						here
 					</StyledLink>{' '}
 					for instructions on how to do this.
