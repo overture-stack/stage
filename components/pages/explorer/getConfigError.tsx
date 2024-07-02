@@ -82,7 +82,7 @@ const getConfigError = ({
 	index && documentType ? (
 		!hasConfig && (
 			<span>
-				No active configurations for the portal were found. Please make sure the index and GraphQL
+				No active configurations for the platform were found. Please make sure the index and GraphQL
 				document type are correctly configured.
 				<GenericHelpMessage />
 			</span>
