@@ -18,7 +18,7 @@ For more information about Stage, including setup and how to integrate Overture 
 > <img align="left" src="ov-logo.png" height="90"/>
 > </div>
 >
-> _ is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
+> Stage is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery.
 
 <!--Blockqoute-->
 
