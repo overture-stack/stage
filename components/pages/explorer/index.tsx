@@ -126,7 +126,7 @@ const RepositoryPage = () => {
 				</div>
 			) : ConfigError ? (
 				<ErrorNotification
-					title={'DMS Configuration Error'}
+					title={'Configuration Error'}
 					size="lg"
 					css={css`
 						flex-direction: column;

@@ -27,17 +27,17 @@ const Span = styled('span')`
 	line-height: 24px;
 `;
 
-const DMSAdminContact = () => {
+const PlatformAdminContact = () => {
 	const { NEXT_PUBLIC_ADMIN_EMAIL } = getConfig();
 	const Component = NEXT_PUBLIC_ADMIN_EMAIL ? StyledLink : Span;
-	return <Component href={`mailto:${NEXT_PUBLIC_ADMIN_EMAIL}`}>DMS administrator</Component>;
+	return <Component href={`mailto:${NEXT_PUBLIC_ADMIN_EMAIL}`}>platform administrator</Component>;
 };
 
 export const GenericHelpMessage = () => (
 	<span>
-		Please try again. If the problem persists, please contact the <DMSAdminContact /> for help
-		troubleshooting the issue.
+		If the problem persists, please contact the <PlatformAdminContact /> for help troubleshooting
+		the issue.
 	</span>
 );
 
-export default DMSAdminContact;
+export default PlatformAdminContact;

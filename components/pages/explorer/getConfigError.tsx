@@ -82,32 +82,15 @@ const getConfigError = ({
 	index && documentType ? (
 		!hasConfig && (
 			<span>
-				No active configurations for the DMS portal were found. Please make sure the index and
-				GraphQL document type specified in the DMS{' '}
-				<span
-					css={css`
-						font-weight: bold;
-					`}
-				>
-					config.yaml
-				</span>{' '}
-				file during installation have been set in the Arranger server configs.{' '}
+				No active configurations for the platform were found. Please make sure the index and GraphQL
+				document type are correctly configured.
 				<GenericHelpMessage />
 			</span>
 		)
 	) : (
 		<span>
-			One or more of the following values required by the DMS portal do not exist. Please make sure
-			the values are specified in the DMS{' '}
-			<span
-				css={css`
-					font-weight: bold;
-				`}
-			>
-				config.yaml
-			</span>{' '}
-			file during installation and have been used to create your Arranger server configs.{' '}
-			<GenericHelpMessage />
+			One or more of the following values required by the platform do not exist. Please make sure
+			these values are specified in your platform configuration. <GenericHelpMessage />
 			<ul
 				css={css`
 					list-style-type: none;
