@@ -4,11 +4,11 @@
 <img align="right" width="120vw" src="productDMS.svg" alt="arranger-logo"/>
 </div>
 
-Stage is a React-based user interface designed to prop up browser-accessible data portals. Although the Stage can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
+Stage is a React-based user interface designed to prop up browser-accessible data portals. Although Stage can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
 
 Stage is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-For more information about the Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/Stage/)
+For more information about Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/Stage/)
 
 <!--Blockqoute-->
 
@@ -18,7 +18,7 @@ For more information about the Stage, including setup and how to integrate Overt
 > <img align="left" src="ov-logo.png" height="90"/>
 > </div>
 >
-> _The Stage is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
+> _ is part of the [Overture](https://www.overture.bio/) research software ecosystem. See our [related products](#related-products) for more information on how Overture is helping organize data and enable discovery._
 
 <!--Blockqoute-->
 
@@ -45,7 +45,7 @@ For more information about the Stage, including setup and how to integrate Overt
   npm run dev
 ```
 
-Once running the Stage is available from your [http://localhost:3000](http://localhost:3000)
+Once running Stage is available from your [http://localhost:3000](http://localhost:3000)
 
 You can edit the UI by modifying `pages/index.js`. The UI will auto-update as you edit.
 
