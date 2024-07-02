@@ -4,9 +4,9 @@
 <img align="right" width="120vw" src="productDMS.svg" alt="arranger-logo"/>
 </div>
 
-The Stage is a React-based user interface designed to prop up browser-accessible data portals. Although the Stage can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
+Stage is a React-based user interface designed to prop up browser-accessible data portals. Although the Stage can be used for any web application, it is designed to integrate with Overture's Ego and Arranger microservices.
 
-The Stage is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Stage is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 For more information about the Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/Stage/)
 
