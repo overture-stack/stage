@@ -45,7 +45,7 @@ For more information about Stage, including setup and how to integrate Overture 
   npm run dev
 ```
 
-Once running Stage is available from your [http://localhost:3000](http://localhost:3000)
+Once running, Stage is available from your [http://localhost:3000](http://localhost:3000)
 
 You can edit the UI by modifying `pages/index.js`. The UI will auto-update as you edit.
 
