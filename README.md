@@ -8,7 +8,7 @@ Stage is a React-based user interface designed to prop up browser-accessible dat
 
 Stage is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-For more information about Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/Stage/)
+For more information about Stage, including setup and how to integrate Overture microservices Arranger and Ego, see our [official Stage user documentation](https://www.overture.bio/documentation/stage/)
 
 <!--Blockqoute-->
 
