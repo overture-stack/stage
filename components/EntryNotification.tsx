@@ -1,31 +1,10 @@
-/*
- *
- * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
- *
- *  This program and the accompanying materials are made available under the terms of
- *  the GNU Affero General Public License v3.0. You should have received a copy of the
- *  GNU Affero General Public License along with this program.
- *   If not, see <http://www.gnu.org/licenses/>.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
- *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
-
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import React from 'react';
-import IconButton from './IconButton';
+import React, { useState, useEffect } from 'react';
 
 import { OvertureUser as Logo } from './theme/icons/';
-import DismissIcon from './theme/icons/dismiss';
+import Button from './Button';
+import Loader from './Loader';
 
 type EntrySize = 'lg' | 'md' | 'sm';
 
@@ -110,11 +89,6 @@ const EntryTitle = styled('h1')<{ size: EntrySize }>`
 	`}
 `;
 
-const DismissButtonContainer = styled.div`
-	display: flex;
-	align-items: center;
-`;
-
 const EntryNotification = ({
 	children,
 	className,
@@ -133,6 +107,12 @@ const EntryNotification = ({
 	dismissible?: boolean;
 }) => {
 	const theme = useTheme();
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setLoading(false), 2000);
+		return () => clearTimeout(timer);
+	}, []);
 
 	return (
 		<div
@@ -147,27 +127,64 @@ const EntryNotification = ({
 					<div>
 						<EntryTitle size={size}>
 							<span>
-								<Logo
-									{...getIconDimensions(size)}
-									style={css`
-										${getIconStyle(size)};
+								<div
+									css={css`
+										display: flex;
+										flex-direction: row;
 									`}
-								/>{' '}
-								{title}
+								>
+									<div>
+										<Logo
+											{...getIconDimensions(size)}
+											style={css`
+												${getIconStyle(size)};
+											`}
+										/>{' '}
+									</div>
+									<div
+										css={css`
+											padding-left: 20px;
+											padding-top: 10px;
+										`}
+									>
+										{title}
+									</div>
+								</div>
 							</span>
-							{dismissible && (
-								<DismissButtonContainer>
-									<IconButton
-										onClick={(e: React.MouseEvent) => (onDismiss ? onDismiss() : () => null)}
-										Icon={DismissIcon}
-										height={12}
-										width={12}
-										fill={theme.colors.accent2}
-									/>
-								</DismissButtonContainer>
-							)}
 						</EntryTitle>
 						{children}
+						<div
+							css={css`
+								padding: 15px;
+								text-align: center;
+								max-width: fit-content;
+								margin-left: auto;
+								margin-right: auto;
+							`}
+						>
+							{loading ? (
+								<Loader />
+							) : (
+								<Button
+									onClick={() => {
+										if (onDismiss) {
+											onDismiss();
+										}
+									}}
+								>
+									Get Started
+								</Button>
+							)}
+						</div>
+						<p
+							css={css`
+								font-size: 12px;
+								margin-bottom: 0px;
+							`}
+						>
+							<b>Disclaimer:</b> All data is intended for demo purposes only and does not represent
+							any real or operational information.
+						</p>
 					</div>
 				) : (
 					<div
@@ -188,6 +205,7 @@ const EntryNotification = ({
 							css={css`
 								margin-left: 10px;
 								margin-right: 10px;
+
 								display: flex;
 								align-items: center;
 								justify-content: center;
@@ -195,15 +213,6 @@ const EntryNotification = ({
 						>
 							{children}
 						</div>
-						{dismissible && (
-							<IconButton
-								onClick={(e: React.MouseEvent) => (onDismiss ? onDismiss() : () => null)}
-								Icon={DismissIcon}
-								height={12}
-								width={12}
-								fill={theme.colors.accent2}
-							/>
-						)}
 					</div>
 				)}
 			</EntryContentContainer>

@@ -74,7 +74,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 								<li>
 									<b>Ego</b>, is our identity and permission management service, broadly enabling
 									authorization and authentication of all user users and applications. Overture can
-									also integrate with third-party Oauth service, Keycloak.
+									also integrate with third-party auth service, Keycloak.
 								</li>
 								<li>
 									<b>Song and Score</b> manage data submission, management, and retrieval,
@@ -95,17 +95,24 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 									you're currently viewing.
 								</li>
 							</ul>
-							<NoteBox title="Need a hand?">
-								We believe in the collective power of expertise and shared resources. If you want to
-								work with us you can{' '}
+							<NoteBox title="Get started using Overture">
+								We provide a{' '}
 								<a
-									href="https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw"
+									href="https://overture.bio/getting-started/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									connect with us on slack
+									QuickStart
 								</a>{' '}
-								or contact us by email at <code>contact@overture.bio</code>.
+								for fast and frictionless setup of our data platform locally. This QuickStart
+								complements our continually updated, and{' '}
+								<a
+									href="https://overture.bio/documentation/guides/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									more comprehensive guides available here
+								</a>{' '}
 							</NoteBox>
 						</ArticleComponent>
 					</div>
@@ -115,46 +122,31 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 					<div>
 						<ArticleComponent
 							title="Data Retrieval"
-							text="Users filter data via Arrangers' search components in the Stage UI's data explorer. After selecting a subset, you can download a manifest from the download dropdown.  To download Song and Score a valid API key will be needed. Once a users logs in through Stage's auth integration, they can access their API key from the profile page. Data downloads are managed using a seperate Score Client CLI tool. We use CLI tools as massive genomic datasets require reliable multi-part download sessions unsuitable for a browser."
+							text="Users filter data via Arrangers' search components in the Stage UI's data explorer. After selecting a subset, you can download a manifest from the download dropdown.  To download Song and Score a valid API key will be needed. Once a user logs in through Stage's auth integration, they can access their API key from the profile page. Data downloads are managed using a seperate Score Client CLI tool. We use CLI tools because massive genomic datasets require reliable multi-part download sessions, which are unsuitable for a browser."
 							imageUrl={retrievalOverview.src}
 						>
 							<NoteBox title="Give it a try">
-								This demo portal operates as a read-only environment, equipped with a publicly
-								accessible API Key:
+								This demo portal operates as a read-only environment with a publicly available API
+								Key. To download data, refer to our guide on{' '}
+								<a
+									href="/documentation/guides/download/clientdownload/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									CLI downloads with Score
+								</a>{' '}
+								, using the following values where required:
 								<ul>
 									<li>
-										The demo portals publically available API Key is{' '}
-										<code>02d79157-a0aa-46fd-9a91-5a21cdfee3a3</code>
+										<b>Public API Key: </b> <code>02d79157-a0aa-46fd-9a91-5a21cdfee3a3</code>
 									</li>
 
 									<li>
-										The STORAGE_URL is <code>`https://score.demo.overture.bio/`</code>
+										<b>STORAGE_URL: </b> <code>`https://score.demo.overture.bio/`</code>
 									</li>
 
 									<li>
-										The METADATA_URL is <code>`https://song.demo.overture.bio/`</code>
-									</li>
-								</ul>
-								With this information you should be able to download our mock data using the
-								following step-wise documentation:
-								<ul>
-									<li>
-										<a
-											href="https://www.overture.bio/documentation/score/user-guide/client-setup/"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											Setting up the score client
-										</a>
-									</li>
-									<li>
-										<a
-											href="https://www.overture.bio/documentation/score/user-guide/download/"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											Downloading Data Using Score
-										</a>
+										<b>METADATA_URL: </b> <code>`https://song.demo.overture.bio/`</code>
 									</li>
 								</ul>
 							</NoteBox>
@@ -174,13 +166,13 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 									file data and file metadata.
 								</li>
 								<li>
-									<b>Generate a file manifest:</b> Using the Song clients manifest command,
+									<b>Generate a file manifest:</b> Using the Song Clients manifest command,
 									specifying the local directory of your file data and provide a valid analysis ID.
 									This process enables Song to link the associated metadata within its database to
 									the corresponding file data that will be stored in the cloud following upload.
 								</li>
 								<li>
-									<b>Upload your files:</b> Using the Score clients upload command, specify the path
+									<b>Upload your files:</b> Using the Song Clients upload command, specify the path
 									of your manifest and upload.
 								</li>
 								<li>
@@ -189,26 +181,14 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 									unpublished by default and can be published or suppressed using the Song Client.
 								</li>
 							</ol>
-							<NoteBox title="Want to try?">
-								The Overture demo portal has been deployed as a read-only resource; therefore,
-								public users do not have the required permissions to submit data. To enable full
-								access, we are currently developing an easy-to-install quickstart. To get updates,
-								join our Slack channel linked within the footer. For more information about the data
-								submission process, see our{' '}
+							<NoteBox title="Learn More">
+								Our data submission workflow is detailedd extensively within our{' '}
 								<a
-									href="https://www.overture.bio/documentation/song/user/submit/"
+									href="https://www.overture.bio/documentation/guides/submission/clientsubmission/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									Song submission
-								</a>{' '}
-								and{' '}
-								<a
-									href="https://www.overture.bio/documentation/score/user-guide/upload/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Score upload documentation
+									CLI data submission guide
 								</a>
 								.
 							</NoteBox>
@@ -224,14 +204,13 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							imageUrl={dataAdmin.src}
 						>
 							<NoteBox title="Learn more">
-								If you're interested in learning more about Song and Song schemas see our
-								documentation on{' '}
+								For more information on customizing Song's data model, check out our{' '}
 								<a
-									href="https://www.overture.bio/documentation/song/admin/schemas/"
+									href="http://localhost:8000/documentation/guides/administration/modelling/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									Schema Management in Song
+									Song data modelling guide
 								</a>
 								.
 							</NoteBox>
@@ -245,13 +224,13 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							imageUrl={arrangerConfigs.src}
 						>
 							<NoteBox title="Learn more">
-								If you're interested in learning more see our documentation on{' '}
+								If you're interested in learning more see our guide on{' '}
 								<a
-									href="https://www.overture.bio/documentation/arranger/installation/configuration/metadata/"
+									href="https://www.overture.bio/documentation/guides/administration/portalcustomization/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									Arranger metadata configuration
+									customizing your data portal
 								</a>
 								.
 							</NoteBox>

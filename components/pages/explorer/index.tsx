@@ -1,24 +1,3 @@
-/*
- *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
- *
- *  This program and the accompanying materials are made available under the terms of
- *  the GNU Affero General Public License v3.0. You should have received a copy of the
- *  GNU Affero General Public License along with this program.
- *   If not, see <http://www.gnu.org/licenses/>.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
- *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
-
 import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { ArrangerDataProvider } from '@overture-stack/arranger-components';
@@ -34,8 +13,6 @@ import { RepoFiltersType } from './sqonTypes';
 
 import getConfigError from './getConfigError';
 import PageContent from './PageContent';
-import { Warning } from '@/components/theme/icons';
-import NoteBox from '../about/notebox';
 
 export interface PageContentProps {
 	sqon: RepoFiltersType;
@@ -74,6 +51,7 @@ const RepositoryPage = () => {
 	} = getConfig();
 	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
 	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
+	const [isModalVisible, setModalVisible] = useState<boolean>(true);
 
 	useEffect(() => {
 		arrangerFetcher({
@@ -111,6 +89,10 @@ const RepositoryPage = () => {
 		documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
 	});
 
+	const handleDismiss = () => {
+		setModalVisible(false);
+	};
+
 	return (
 		<PageLayout subtitle="Data Explorer">
 			{loadingArrangerConfig ? (
@@ -125,6 +107,29 @@ const RepositoryPage = () => {
 						`
 					}
 				>
+					<EntryNotification
+						title={'Welcome to the Overture Platform Demo'}
+						size="lg"
+						css={css`
+							flex-direction: column;
+							justify-content: center;
+							align-items: center;
+						`}
+						onDismiss={handleDismiss}
+					>
+						<p>Explore the features of our Overture platform through this demo, which includes:</p>
+						<ul>
+							<li>
+								<b>Data Exploration:</b> Navigate our Data Exploration page with mock data.
+							</li>
+							<li>
+								<b>Learn More Guides:</b> Access basic guides to understand how the platform works.
+							</li>
+						</ul>
+					</EntryNotification>
+				</div>
+			) : ConfigError ? (
+				isModalVisible && (
 					<ErrorNotification
 						title={'Configuration Error'}
 						size="lg"
@@ -136,35 +141,7 @@ const RepositoryPage = () => {
 					>
 						{ConfigError}
 					</ErrorNotification>
-					<Loader />
-				</div>
-			) : ConfigError ? (
-				<EntryNotification
-					title={'Welcome'}
-					size="lg"
-					dismissible={true}
-					css={css`
-						flex-direction: column;
-						justify-content: center;
-						align-items: center;
-					`}
-				>
-					<p>
-						This demo shows a basic implementation of an Overture platform, it includes:
-						<ul>
-							<li>A Data Exploration page with mock data</li>
-							<br></br>
-							<li>
-								Learn More guides covering how this platform was built, basics on data retrieval and
-								submission, and how it can be configured and customized
-							</li>
-						</ul>
-					</p>
-					<p>
-						<b>Disclaimer:</b> All data is intended for demo purposes only and does not represent
-						any real or operational information.
-					</p>
-				</EntryNotification>
+				)
 			) : (
 				<ArrangerDataProvider
 					apiUrl={NEXT_PUBLIC_ARRANGER_API}

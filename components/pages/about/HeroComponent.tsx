@@ -91,8 +91,8 @@ const HeroComponent = ({ setArticleID, activeId }: HeroProps): ReactElement => {
 							}
 						`}
 					>
-						We've designed this demo to assist new users in getting acquainted with Overture. From
-						this page you can find basic information on the following topics:
+						We created this portal to introduce new users to Overture. Here, you can access basic
+						information on the following topics:
 					</p>
 					<div
 						css={css`
