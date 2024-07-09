@@ -89,30 +89,42 @@ const EntryTitle = styled('h1')<{ size: EntrySize }>`
 	`}
 `;
 
+function randomIntFromInterval(min: number, max: number) {
+	// min and max included
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 const EntryNotification = ({
 	children,
 	className,
-	title,
-	size,
-	onDismiss,
 	dismissible = true,
+	loading: parentLoading,
+	onDismiss,
+	size,
+	title,
 	...props
 }: {
 	children: React.ReactNode;
 	className?: string;
-	title?: string;
+	dismissible?: boolean;
+	loading?: boolean;
+	onDismiss?: Function;
 	size: EntrySize;
 	styles?: string;
-	onDismiss?: Function;
-	dismissible?: boolean;
+	title?: string;
 }) => {
-	const theme = useTheme();
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const timer = setTimeout(() => setLoading(false), 2000);
-		return () => clearTimeout(timer);
-	}, []);
+		if (parentLoading === undefined) {
+			const delay = randomIntFromInterval(750, 2000);
+			const timer = setTimeout(() => setLoading(false), delay);
+
+			return () => clearTimeout(timer);
+		} else {
+			setLoading(parentLoading);
+		}
+	}, [parentLoading]);
 
 	return (
 		<div

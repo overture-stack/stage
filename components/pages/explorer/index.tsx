@@ -95,7 +95,7 @@ const RepositoryPage = () => {
 
 	return (
 		<PageLayout subtitle="Data Explorer">
-			{loadingArrangerConfig ? (
+			{isModalVisible ? (
 				<div
 					css={(theme) =>
 						css`
@@ -108,14 +108,16 @@ const RepositoryPage = () => {
 					}
 				>
 					<EntryNotification
-						title={'Welcome to the Overture Platform Demo'}
-						size="lg"
 						css={css`
 							flex-direction: column;
 							justify-content: center;
 							align-items: center;
 						`}
+						// TODO: use "loading" from Arranger data, so table is ready after dismissing the modal
+						loading={loadingArrangerConfig}
 						onDismiss={handleDismiss}
+						size="lg"
+						title={'Welcome to the Overture Platform Demo'}
 					>
 						<p>Explore the features of our Overture platform through this demo, which includes:</p>
 						<ul>
@@ -129,19 +131,17 @@ const RepositoryPage = () => {
 					</EntryNotification>
 				</div>
 			) : ConfigError ? (
-				isModalVisible && (
-					<ErrorNotification
-						title={'Configuration Error'}
-						size="lg"
-						css={css`
-							flex-direction: column;
-							justify-content: center;
-							align-items: center;
-						`}
-					>
-						{ConfigError}
-					</ErrorNotification>
-				)
+				<ErrorNotification
+					title={'Configuration Error'}
+					size="lg"
+					css={css`
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+					`}
+				>
+					{ConfigError}
+				</ErrorNotification>
 			) : (
 				<ArrangerDataProvider
 					apiUrl={NEXT_PUBLIC_ARRANGER_API}
