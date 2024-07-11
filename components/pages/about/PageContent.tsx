@@ -33,7 +33,6 @@ import arrangerConfigs from './assets/arrangerConfigs.webp';
 import stageUI from './assets/stageUI.webp';
 import ego from './assets/ego.webp';
 
-import { SUBMISSION_DOCS } from '@/global/utils/constants';
 import NoteBox from './notebox';
 
 const Content = ({ activeId }: { activeId: string }): ReactElement => {
@@ -129,7 +128,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 								This demo portal operates as a read-only environment with a publicly available API
 								Key. To download data, refer to our guide on{' '}
 								<a
-									href="/documentation/guides/download/clientdownload/"
+									href="https://overture.bio/documentation/guides/download/clientdownload/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -206,7 +205,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							<NoteBox title="Learn more">
 								For more information on customizing Song's data model, check out our{' '}
 								<a
-									href="http://localhost:8000/documentation/guides/administration/modelling/"
+									href="https://overture.bio/documentation/guides/administration/modelling/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -247,7 +246,7 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							<NoteBox title="Let us know">
 								Basic Stage documentation is{' '}
 								<a
-									href="https://www.overture.bio/documentation/arranger/installation/configuration/metadata/"
+									href="https://www.overture.bio/documentation/stage/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
