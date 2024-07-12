@@ -170,7 +170,7 @@ const RepoTable = () => {
 						css={css`
 							line-height: inherit;
 						`}
-						href="https://overture.bio/documentation/score/user-guide/download"
+						href="https://www.overture.bio/documentation/guides/download/clientdownload/"
 						rel="noopener noreferrer"
 						target="_blank"
 					>
@@ -182,7 +182,9 @@ const RepoTable = () => {
 		},
 	];
 
-	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }));
+	useArrangerTheme(
+		getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }),
+	);
 
 	return useMemo(
 		() => (
