@@ -182,9 +182,7 @@ const RepoTable = () => {
 		},
 	];
 
-	useArrangerTheme(
-		getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }),
-	);
+	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }));
 
 	return useMemo(
 		() => (
