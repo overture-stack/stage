@@ -170,7 +170,7 @@ const RepoTable = () => {
 						css={css`
 							line-height: inherit;
 						`}
-						href="https://overture.bio/documentation/score/user-guide/download"
+						href="https://www.overture.bio/documentation/guides/download/clientdownload/"
 						rel="noopener noreferrer"
 						target="_blank"
 					>
