@@ -137,15 +137,15 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 								, using the following values where required:
 								<ul>
 									<li>
-										<b>Public API Key: </b> <code>02d79157-a0aa-46fd-9a91-5a21cdfee3a3</code>
+										<b>Public API Key: </b> <code>87b41e4f-e011-4797-ab54-87242ebc72dd</code>
 									</li>
 
 									<li>
-										<b>STORAGE_URL: </b> <code>`https://score.demo.overture.bio/`</code>
+										<b>STORAGE_URL: </b> <code>https://score.demo.overture.bio/</code>
 									</li>
 
 									<li>
-										<b>METADATA_URL: </b> <code>`https://song.demo.overture.bio/`</code>
+										<b>METADATA_URL: </b> <code>https://song.demo.overture.bio/</code>
 									</li>
 								</ul>
 							</NoteBox>
