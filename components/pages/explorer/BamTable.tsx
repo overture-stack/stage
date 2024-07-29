@@ -22,7 +22,16 @@
 import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import BamApp from '@overture-stack/iobio-components/src/App';
+import IobioComponents from '@overture-stack/iobio-components/packages/iobio-react-components/dist/index';
+
+const {
+	IobioCoverageDepth,
+	IobioDataBroker,
+	IobioHistogram,
+	IobioPercentBox,
+	BamDisplayNames,
+	BamKeys,
+} = IobioComponents;
 
 const BamTable = () => {
 	const theme = useTheme();
@@ -41,7 +50,23 @@ const BamTable = () => {
 				>
 					<TableContextProvider>
 						<h2>Bam.iobio</h2>
-						<BamApp />
+						<>
+							<IobioDataBroker
+								alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
+							/>
+							<IobioPercentBox
+								title={BamDisplayNames['mapped_reads']}
+								percentKey={BamKeys[0]}
+								totalKey="total_reads"
+								key={BamKeys[0]}
+							/>
+							<IobioCoverageDepth />
+							<IobioHistogram
+								key={'baseq_hist'}
+								brokerKey={'baseq_hist'}
+								title={BamDisplayNames['baseq_hist']}
+							/>
+						</>
 					</TableContextProvider>
 				</article>
 			</>
