@@ -28,7 +28,7 @@ import { EgoJwtData, UserWithId } from '../types';
 
 const { NEXT_PUBLIC_EGO_PUBLIC_KEY } = getConfig();
 
-const verifyJwt: (egoPublicKey: string) => (egoJwt?: string) => boolean =
+const verifyJwt: (egoPublicKey: string) => (egoJwt?: string) => string | boolean =
 	(egoPublicKey) => (egoJwt) => {
 		try {
 			if (!egoJwt || !egoPublicKey) {

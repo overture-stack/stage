@@ -30,6 +30,7 @@ import {
 } from '@overture-stack/arranger-components';
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
+import IobioComponents from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import urlJoin from 'url-join';
 
 import { getConfig } from '@/global/config';
@@ -37,6 +38,15 @@ import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
+
+const {
+	IobioCoverageDepth,
+	IobioDataBroker,
+	IobioHistogram,
+	IobioPercentBox,
+	BamDisplayNames,
+	BamKeys,
+} = IobioComponents;
 
 const getTableConfigs = ({
 	apiHost,
@@ -182,7 +192,9 @@ const RepoTable = () => {
 		},
 	];
 
-	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }));
+	useArrangerTheme(
+		getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }),
+	);
 
 	return useMemo(
 		() => (
