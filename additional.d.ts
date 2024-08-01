@@ -19,7 +19,5 @@
  *
  */
 
-import global from '@overture-stack/iobio-components/packages/iobio-react-components/src/jsx';
-
 declare module 'url-join';
 declare module 'js-cookie';
