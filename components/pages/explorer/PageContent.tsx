@@ -19,6 +19,8 @@
  *
  */
 
+'use client';
+
 import { useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 
@@ -109,13 +111,14 @@ const PageContent = () => {
 								Toggle Table Type
 							</button>
 							<QueryBar />
+							{/* WIP */}
 							{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
 						</div>
 					</div>
 				</div>
 			</div>
 		),
-		[tableType],
+		[tableType, window],
 	);
 };
 
