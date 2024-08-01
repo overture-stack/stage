@@ -187,15 +187,6 @@ const RepoTable = () => {
 		getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }),
 	);
 
-	const {
-		IobioCoverageDepth,
-		IobioDataBroker,
-		IobioHistogram,
-		IobioPercentBox,
-		BamDisplayNames,
-		BamKeys,
-	} = IobioComponents;
-
 	return useMemo(
 		() => (
 			<>
