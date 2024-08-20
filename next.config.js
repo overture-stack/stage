@@ -6,15 +6,31 @@ const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
 const withTranspileModules = require('next-transpile-modules')([]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const jsdom = require('jsdom');
+
 /**
  * @type {import('next').NextConfig}
  **/
 module.exports = withPlugins([withTranspileModules], {
 	webpack: (config, options) => {
-		// These 'react' related configs are added to enable linking packages in development
-		// (e.g. Arranger), and not get the "broken Hooks" warning.
-		// https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
 		if (options.isServer) {
+			// Adaptors for Browser APIs used in iobio-charts web components
+			const { JSDOM } = jsdom;
+			const dom = new JSDOM('', { url: 'http://localhost/' });
+
+			// @ts-ignore
+			global.window = dom.window;
+
+			global.customElements = global.window.customElements;
+			global.HTMLElement = global.window.HTMLElement;
+			global.document = global.window.document;
+			global.Element = global.window.Element;
+			global.localStorage = global.window.localStorage;
+			global.navigator = global.window.navigator;
+
+			// These 'react' related configs are added to enable linking packages in development
+			// (e.g. Arranger), and not get the "broken Hooks" warning.
+			// https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
 			config.externals = ['react', ...config.externals];
 		} else {
 			options.dev &&
