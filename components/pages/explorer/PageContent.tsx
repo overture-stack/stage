@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,8 +19,14 @@
  *
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
+import { useArrangerData } from '@overture-stack/arranger-components';
+import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
+import stringify from 'fast-json-stable-stringify';
+import { isEqual } from 'lodash';
+
+import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable';
 import Facets from './Facets';
@@ -39,6 +45,28 @@ const PageContent = () => {
 
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
+	// TODO: abstract this param handling into an Arranger integration.
+	const { sqon, setSQON } = useArrangerData({ callerName: 'Explorer-PageContent' });
+	const [firstRender, setFirstRender] = useState<boolean>(true);
+	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
+		prepare: (v) => v.replace('"field"', '"fieldName"'),
+		deSerialize: (v) => {
+			return v ? JSON.parse(v) : null;
+		},
+		serialize: (v) => (v ? stringify(v) : ''),
+	});
+
+	useEffect(() => {
+		if (firstRender) {
+			currentFilters && setSQON(currentFilters);
+			setFirstRender(false);
+		}
+	}, [currentFilters, firstRender, setSQON]);
+
+	useEffect(() => {
+		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
+	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
+
 	return useMemo(
 		() => (
 			<div
@@ -55,15 +83,16 @@ const PageContent = () => {
 					`}
 				>
 					{/* WIP button to hide/show the sidebar
-            <button
-            css={css`
-              position: absolute;
-              top: 5px;
-            `}
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            Show
-          </button> */}
+					<button
+						css={css`
+						position: absolute;
+						top: 5px;
+						`}
+						onClick={() => setShowSidebar(!showSidebar)}
+					>
+						Show
+					</button> */}
+
 					<aside
 						css={css`
 							flex: 0 0 ${sidebarWidth}px;
