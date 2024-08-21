@@ -22,7 +22,7 @@
 import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import IobioComponents from '@overture-stack/iobio-components/packages/iobio-react-components/dist/index';
+import IobioComponents from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 const chartCss = css`
 	height: 20vh;
