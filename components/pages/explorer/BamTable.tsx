@@ -155,13 +155,13 @@ const BamTable = () => {
 								</div>
 							</div>
 							<div css={histoCss}>
-								<IobioCoverageDepth />
+								<IobioCoverageDepth label="Read Coverage" />
 							</div>
 							<div css={histoCss}>
 								<IobioHistogram
 									key={'baseq_hist'}
 									brokerKey={'baseq_hist'}
-									title={'Base Quality'}
+									label={'Base Quality'}
 								/>
 							</div>
 						</>
