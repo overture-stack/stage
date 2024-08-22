@@ -21,13 +21,13 @@
 
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
-	BamDisplayNames,
-	BamKeys,
+	type BamPercentKey,
+	type BamKey,
 	type IobioDataBrokerType,
 	type IobioCoverageDepthType,
 	type IobioHistogramType,
@@ -83,8 +83,31 @@ const IobioPercentBox: IobioPercentBoxType = dynamic(
 	{ ssr: false },
 );
 
+type BamConstants = {
+	displayNames?: Record<BamKey, string>;
+	percentKeys?: BamPercentKey[];
+};
+
 const BamTable = () => {
 	const theme = useTheme();
+
+	const [BamValues, setBamValues] = useState<BamConstants>({});
+
+	useEffect(() => {
+		async function getBamValues() {
+			return await import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
+				(ioBio) => {
+					const displayNames = ioBio.BamDisplayNames;
+					const percentKeys = ioBio.percentKeys;
+					setBamValues({ displayNames, percentKeys });
+				},
+			);
+		}
+		getBamValues();
+	}, []);
+
+	const { displayNames = {} as Record<BamKey, string>, percentKeys = [] as BamPercentKey[] } =
+		BamValues;
 
 	return useMemo(
 		() => (
@@ -105,54 +128,18 @@ const BamTable = () => {
 								alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
 							/>
 							<div css={percentChartCss}>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label="Mapped Reads"
-										percentKey="mapped_reads"
-										totalKey="total_reads"
-										key="mapped_reads"
-									/>
-								</div>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label={'Forward Strands'}
-										percentKey={'forward_strands'}
-										totalKey="total_reads"
-										key={'forward_strands'}
-									/>
-								</div>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label={'Proper Pairs'}
-										percentKey={'proper_pairs'}
-										totalKey="total_reads"
-										key={'proper_pairs'}
-									/>
-								</div>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label={'Singletons'}
-										percentKey={'singletons'}
-										totalKey="total_reads"
-										key={'singletons'}
-									/>
-								</div>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label={'Both Mates Mapped'}
-										percentKey={'both_mates_mapped'}
-										totalKey="total_reads"
-										key={'both_mates_mapped'}
-									/>
-								</div>
-								<div css={chartCss}>
-									<IobioPercentBox
-										label={'Duplicates'}
-										percentKey={'duplicates'}
-										totalKey="total_reads"
-										key={'duplicates'}
-									/>
-								</div>
+								{percentKeys.map(
+									(key) =>
+										key && (
+											<div css={chartCss} key={key}>
+												<IobioPercentBox
+													label={displayNames[key]}
+													percentKey={key}
+													totalKey="total_reads"
+												/>
+											</div>
+										),
+								)}
 							</div>
 							<div css={histoCss}>
 								<IobioCoverageDepth label="Read Coverage" />
@@ -169,7 +156,7 @@ const BamTable = () => {
 				</article>
 			</>
 		),
-		[],
+		[BamValues],
 	);
 };
 
