@@ -145,7 +145,7 @@ const PageContent = () => {
 				</div>
 			</div>
 		),
-		[tableType, window],
+		[tableType],
 	);
 };
 
