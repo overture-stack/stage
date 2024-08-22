@@ -126,6 +126,8 @@ const PageContent = () => {
 								max-width: calc(100vw - ${sidebarWidth + 10}px);
 							`}
 						>
+							<QueryBar />
+							{/* WIP */}
 							<button
 								onClick={() => {
 									const nextTableValue =
@@ -137,8 +139,6 @@ const PageContent = () => {
 							>
 								Toggle Table Type
 							</button>
-							<QueryBar />
-							{/* WIP */}
 							{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
 						</div>
 					</div>
