@@ -27,6 +27,7 @@ import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
 	type BamPercentKey,
+	type BamHistogramKey,
 	type BamKey,
 	type IobioDataBrokerType,
 	type IobioCoverageDepthType,
@@ -84,14 +85,19 @@ const IobioPercentBox: IobioPercentBoxType = dynamic(
 );
 
 type BamConstants = {
-	displayNames?: Record<BamKey, string>;
-	percentKeys?: BamPercentKey[];
+	displayNames: Record<BamKey, string>;
+	percentKeys: BamPercentKey[];
+	histogramKeys: BamHistogramKey[];
 };
 
 const BamTable = () => {
 	const theme = useTheme();
 
-	const [BamValues, setBamValues] = useState<BamConstants>({});
+	const [BamValues, setBamValues] = useState<BamConstants>({
+		displayNames: {} as Record<BamKey, string>,
+		percentKeys: [],
+		histogramKeys: [],
+	});
 
 	useEffect(() => {
 		async function getBamValues() {
@@ -99,15 +105,15 @@ const BamTable = () => {
 				(ioBio) => {
 					const displayNames = ioBio.BamDisplayNames;
 					const percentKeys = ioBio.percentKeys;
-					setBamValues({ displayNames, percentKeys });
+					const histogramKeys = ioBio.histogramKeys;
+					setBamValues({ displayNames, histogramKeys, percentKeys });
 				},
 			);
 		}
 		getBamValues();
 	}, []);
 
-	const { displayNames = {} as Record<BamKey, string>, percentKeys = [] as BamPercentKey[] } =
-		BamValues;
+	const { displayNames, percentKeys, histogramKeys } = BamValues;
 
 	return useMemo(
 		() => (
@@ -144,13 +150,11 @@ const BamTable = () => {
 							<div css={histoCss}>
 								<IobioCoverageDepth label="Read Coverage" />
 							</div>
-							<div css={histoCss}>
-								<IobioHistogram
-									key={'baseq_hist'}
-									brokerKey={'baseq_hist'}
-									label={'Base Quality'}
-								/>
-							</div>
+							{histogramKeys.map((key) => (
+								<div css={histoCss}>
+									<IobioHistogram key={key} brokerKey={key} label={displayNames[key]} />
+								</div>
+							))}
 						</>
 					</TableContextProvider>
 				</article>
