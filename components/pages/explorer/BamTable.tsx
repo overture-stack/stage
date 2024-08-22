@@ -34,15 +34,21 @@ import {
 	type IobioPercentBoxType,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
+const percentChartCss = css`
+	display: flex;
+	width: 100%;
+	height: 25vh;
+	justify-content: space-evenly;
+`;
+
 const chartCss = css`
-	height: 20vh;
-	width: 15vw;
-	display: inline-block;
+	display: inline-flex;
 	margin: 10px;
 `;
 
 const histoCss = css`
 	height: 40vh;
+	margin: 2vh;
 `;
 
 const IobioDataBroker: IobioDataBrokerType = dynamic(
@@ -98,39 +104,65 @@ const BamTable = () => {
 							<IobioDataBroker
 								alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
 							/>
-							<div css={chartCss}>
-								{/* <IobioPercentBox
-									label={BamDisplayNames['mapped_reads']}
-									percentKey={BamKeys[0]}
-									totalKey="total_reads"
-									key={BamKeys[0]}
-								/> */}
-							</div>
-							<div css={chartCss}>
-								{/* <IobioPercentBox
-									title={BamDisplayNames['forward_strands']}
-									percentKey={BamKeys[1]}
-									totalKey="total_reads"
-									key={BamKeys[1]}
-								/> */}
-							</div>
-							<div css={chartCss}>
-								{/* <IobioPercentBox
-									title={BamDisplayNames['proper_pairs']}
-									percentKey={BamKeys[2]}
-									totalKey="total_reads"
-									key={BamKeys[2]}
-								/> */}
+							<div css={percentChartCss}>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label="Mapped Reads"
+										percentKey="mapped_reads"
+										totalKey="total_reads"
+										key="mapped_reads"
+									/>
+								</div>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label={'Forward Strands'}
+										percentKey={'forward_strands'}
+										totalKey="total_reads"
+										key={'forward_strands'}
+									/>
+								</div>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label={'Proper Pairs'}
+										percentKey={'proper_pairs'}
+										totalKey="total_reads"
+										key={'proper_pairs'}
+									/>
+								</div>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label={'Singletons'}
+										percentKey={'singletons'}
+										totalKey="total_reads"
+										key={'singletons'}
+									/>
+								</div>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label={'Both Mates Mapped'}
+										percentKey={'both_mates_mapped'}
+										totalKey="total_reads"
+										key={'both_mates_mapped'}
+									/>
+								</div>
+								<div css={chartCss}>
+									<IobioPercentBox
+										label={'Duplicates'}
+										percentKey={'duplicates'}
+										totalKey="total_reads"
+										key={'duplicates'}
+									/>
+								</div>
 							</div>
 							<div css={histoCss}>
 								<IobioCoverageDepth />
 							</div>
 							<div css={histoCss}>
-								{/* <IobioHistogram
+								<IobioHistogram
 									key={'baseq_hist'}
 									brokerKey={'baseq_hist'}
-									title={BamDisplayNames['baseq_hist']}
-								/> */}
+									title={'Base Quality'}
+								/>
 							</div>
 						</>
 					</TableContextProvider>
