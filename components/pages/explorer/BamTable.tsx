@@ -53,6 +53,18 @@ const histoCss = css`
 	margin: 2vh;
 `;
 
+type BamConstants = {
+	displayNames: Partial<Record<BamKey, string>>;
+	percentKeys: BamPercentKey[];
+	histogramKeys: BamHistogramKey[];
+};
+
+const emptyConstants: BamConstants = {
+	displayNames: {},
+	percentKeys: [],
+	histogramKeys: [],
+};
+
 const componentTypes = [
 	'IobioDataBroker',
 	'IobioCoverageDepth',
@@ -60,7 +72,7 @@ const componentTypes = [
 	'IobioPercentBox',
 ] as const;
 
-const dynamicImport = (key: (typeof componentTypes)[number]) =>
+const dynamicComponentImport = (key: (typeof componentTypes)[number]) =>
 	dynamic(
 		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
 			(ioBio) => ioBio[key],
@@ -68,43 +80,31 @@ const dynamicImport = (key: (typeof componentTypes)[number]) =>
 		{ ssr: false },
 	);
 
-const IobioCoverageDepth: IobioCoverageDepthType = dynamicImport('IobioCoverageDepth');
-const IobioDataBroker: IobioDataBrokerType = dynamicImport('IobioDataBroker');
-const IobioHistogram: IobioHistogramType = dynamicImport('IobioHistogram');
-const IobioPercentBox: IobioPercentBoxType = dynamicImport('IobioPercentBox');
-
-type BamConstants = {
-	displayNames: Partial<Record<BamKey, string>>;
-	percentKeys: BamPercentKey[];
-	histogramKeys: BamHistogramKey[];
-};
-
-const IobioConstants: BamConstants = {
-	displayNames: {},
-	percentKeys: [],
-	histogramKeys: [],
-};
-
-const getConstValues = async () => {
+const asyncValueImport: () => Promise<BamConstants> = async () => {
 	const iobio = await import('@overture-stack/iobio-components/packages/iobio-react-components/');
 
-	const { BamDisplayNames, percentKeys, histogramKeys } = iobio;
+	const displayNames = iobio['BamDisplayNames'];
+	const percentKeys = iobio['percentKeys'];
+	const histogramKeys = iobio['histogramKeys'];
 
-	IobioConstants['displayNames'] = BamDisplayNames;
-	IobioConstants['percentKeys'] = percentKeys;
-	IobioConstants['histogramKeys'] = histogramKeys;
+	return { displayNames, percentKeys, histogramKeys };
 };
+
+const IobioCoverageDepth: IobioCoverageDepthType = dynamicComponentImport('IobioCoverageDepth');
+const IobioDataBroker: IobioDataBrokerType = dynamicComponentImport('IobioDataBroker');
+const IobioHistogram: IobioHistogramType = dynamicComponentImport('IobioHistogram');
+const IobioPercentBox: IobioPercentBoxType = dynamicComponentImport('IobioPercentBox');
 
 const BamTable = () => {
 	const theme = useTheme();
 
-	const [BamValues, setBamValues] = useState<BamConstants>(IobioConstants);
+	const [BamValues, setBamValues] = useState<BamConstants>(emptyConstants);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		async function getBamValues() {
-			await getConstValues();
-			setBamValues(IobioConstants);
+			const bamData = await asyncValueImport();
+			setBamValues(bamData);
 			setLoading(false);
 		}
 		getBamValues();
@@ -163,7 +163,7 @@ const BamTable = () => {
 				</article>
 			</>
 		),
-		[BamValues, loading],
+		[loading],
 	);
 };
 
