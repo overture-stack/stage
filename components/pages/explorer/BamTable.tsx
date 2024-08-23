@@ -53,37 +53,25 @@ const histoCss = css`
 	margin: 2vh;
 `;
 
-const IobioDataBroker: IobioDataBrokerType = dynamic(
-	() =>
-		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-			(ioBio) => ioBio.IobioDataBroker,
-		),
-	{ ssr: false },
-);
+const componentTypes = [
+	'IobioDataBroker',
+	'IobioCoverageDepth',
+	'IobioHistogram',
+	'IobioPercentBox',
+] as const;
 
-const IobioCoverageDepth: IobioCoverageDepthType = dynamic(
-	() =>
+const dynamicImport = (key: (typeof componentTypes)[number]) =>
+	dynamic(
 		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-			(ioBio) => ioBio.IobioCoverageDepth,
+			(ioBio) => ioBio[key],
 		),
-	{ ssr: false },
-);
+		{ ssr: false },
+	);
 
-const IobioHistogram: IobioHistogramType = dynamic(
-	() =>
-		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-			(ioBio) => ioBio.IobioHistogram,
-		),
-	{ ssr: false },
-);
-
-const IobioPercentBox: IobioPercentBoxType = dynamic(
-	() =>
-		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-			(ioBio) => ioBio.IobioPercentBox,
-		),
-	{ ssr: false },
-);
+const IobioCoverageDepth: IobioCoverageDepthType = dynamicImport('IobioCoverageDepth');
+const IobioDataBroker: IobioDataBrokerType = dynamicImport('IobioDataBroker');
+const IobioHistogram: IobioHistogramType = dynamicImport('IobioHistogram');
+const IobioPercentBox: IobioPercentBoxType = dynamicImport('IobioPercentBox');
 
 type BamConstants = {
 	displayNames: Partial<Record<BamKey, string>>;
