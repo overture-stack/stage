@@ -42,6 +42,10 @@ module.exports = withPlugins([withTranspileModules], {
 				);
 		}
 
+		config.experiments = {
+			...config.experiments,
+			topLevelAwait: true,
+		};
 		config.resolve.alias['@emotion/react'] = path.resolve(
 			__dirname,
 			'.',

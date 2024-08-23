@@ -34,6 +34,7 @@ import {
 	type IobioHistogramType,
 	type IobioPercentBoxType,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import Loader from '../../Loader';
 
 const percentChartCss = css`
 	display: flex;
@@ -85,30 +86,38 @@ const IobioPercentBox: IobioPercentBoxType = dynamic(
 );
 
 type BamConstants = {
-	displayNames: Record<BamKey, string>;
+	displayNames: Partial<Record<BamKey, string>>;
 	percentKeys: BamPercentKey[];
 	histogramKeys: BamHistogramKey[];
+};
+
+const IobioConstants: BamConstants = {
+	displayNames: {},
+	percentKeys: [],
+	histogramKeys: [],
+};
+
+const getConstValues = async () => {
+	const iobio = await import('@overture-stack/iobio-components/packages/iobio-react-components/');
+
+	const { BamDisplayNames, percentKeys, histogramKeys } = iobio;
+
+	IobioConstants['displayNames'] = BamDisplayNames;
+	IobioConstants['percentKeys'] = percentKeys;
+	IobioConstants['histogramKeys'] = histogramKeys;
 };
 
 const BamTable = () => {
 	const theme = useTheme();
 
-	const [BamValues, setBamValues] = useState<BamConstants>({
-		displayNames: {} as Record<BamKey, string>,
-		percentKeys: [],
-		histogramKeys: [],
-	});
+	const [BamValues, setBamValues] = useState<BamConstants>(IobioConstants);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		async function getBamValues() {
-			return await import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-				(ioBio) => {
-					const displayNames = ioBio.BamDisplayNames;
-					const percentKeys = ioBio.percentKeys;
-					const histogramKeys = ioBio.histogramKeys;
-					setBamValues({ displayNames, histogramKeys, percentKeys });
-				},
-			);
+			await getConstValues();
+			setBamValues(IobioConstants);
+			setLoading(false);
 		}
 		getBamValues();
 	}, []);
@@ -133,34 +142,40 @@ const BamTable = () => {
 							<IobioDataBroker
 								alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
 							/>
-							<div css={percentChartCss}>
-								{percentKeys.map(
-									(key) =>
-										key && (
-											<div css={chartCss} key={key}>
-												<IobioPercentBox
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											</div>
-										),
-								)}
-							</div>
-							<div css={histoCss}>
-								<IobioCoverageDepth label="Read Coverage" />
-							</div>
-							{histogramKeys.map((key) => (
-								<div css={histoCss}>
-									<IobioHistogram key={key} brokerKey={key} label={displayNames[key]} />
-								</div>
-							))}
+							{loading ? (
+								<Loader />
+							) : (
+								<>
+									<div css={percentChartCss}>
+										{percentKeys.map(
+											(key) =>
+												key && (
+													<div css={chartCss} key={key}>
+														<IobioPercentBox
+															label={displayNames[key]}
+															percentKey={key}
+															totalKey="total_reads"
+														/>
+													</div>
+												),
+										)}
+									</div>
+									<div css={histoCss}>
+										<IobioCoverageDepth label="Read Coverage" />
+									</div>
+									{histogramKeys.map((key) => (
+										<div css={histoCss} key={key}>
+											<IobioHistogram brokerKey={key} label={displayNames[key]} />
+										</div>
+									))}
+								</>
+							)}
 						</>
 					</TableContextProvider>
 				</article>
 			</>
 		),
-		[BamValues],
+		[BamValues, loading],
 	);
 };
 
