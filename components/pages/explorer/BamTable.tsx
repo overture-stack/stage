@@ -26,6 +26,7 @@ import { css, useTheme } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
+	isOutlierKey,
 	type BamPercentKey,
 	type BamHistogramKey,
 	type BamKey,
@@ -153,7 +154,11 @@ const BamTable = () => {
 									</div>
 									{histogramKeys.map((key) => (
 										<div css={histoCss} key={key}>
-											<IobioHistogram brokerKey={key} label={displayNames[key]} />
+											<IobioHistogram
+												brokerKey={key}
+												ignoreOutliers={isOutlierKey(key)}
+												label={displayNames[key]}
+											/>
 										</div>
 									))}
 								</>
