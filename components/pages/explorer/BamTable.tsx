@@ -26,8 +26,8 @@ import { css, useTheme } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
-	isOutlierKey,
 	type BamPercentKey,
+	type BamOutlierKey,
 	type BamHistogramKey,
 	type BamKey,
 	type IobioDataBrokerType,
@@ -58,12 +58,14 @@ type BamConstants = {
 	displayNames: Partial<Record<BamKey, string>>;
 	percentKeys: BamPercentKey[];
 	histogramKeys: BamHistogramKey[];
+	ignoreOutlierKeys: BamOutlierKey[];
 };
 
 const emptyConstants: BamConstants = {
 	displayNames: {},
 	percentKeys: [],
 	histogramKeys: [],
+	ignoreOutlierKeys: [],
 };
 
 const componentTypes = [
@@ -71,6 +73,7 @@ const componentTypes = [
 	'IobioCoverageDepth',
 	'IobioHistogram',
 	'IobioPercentBox',
+	'isOutlierKey',
 ] as const;
 
 const dynamicComponentImport = (key: (typeof componentTypes)[number]) =>
@@ -87,14 +90,19 @@ const asyncValueImport: () => Promise<BamConstants> = async () => {
 	const displayNames = iobio['BamDisplayNames'];
 	const percentKeys = iobio['percentKeys'];
 	const histogramKeys = iobio['histogramKeys'];
+	const ignoreOutlierKeys = iobio['ignoreOutlierKeys'];
 
-	return { displayNames, percentKeys, histogramKeys };
+	return { displayNames, percentKeys, histogramKeys, ignoreOutlierKeys };
 };
 
 const IobioCoverageDepth: IobioCoverageDepthType = dynamicComponentImport('IobioCoverageDepth');
 const IobioDataBroker: IobioDataBrokerType = dynamicComponentImport('IobioDataBroker');
 const IobioHistogram: IobioHistogramType = dynamicComponentImport('IobioHistogram');
 const IobioPercentBox: IobioPercentBoxType = dynamicComponentImport('IobioPercentBox');
+
+const isOutlierKey = (key: BamKey, outlierKeys: BamOutlierKey[]): key is BamOutlierKey => {
+	return outlierKeys.includes(key as BamOutlierKey);
+};
 
 const BamTable = () => {
 	const theme = useTheme();
@@ -111,7 +119,7 @@ const BamTable = () => {
 		getBamValues();
 	}, []);
 
-	const { displayNames, percentKeys, histogramKeys } = BamValues;
+	const { displayNames, percentKeys, histogramKeys, ignoreOutlierKeys } = BamValues;
 
 	return useMemo(
 		() => (
@@ -156,7 +164,7 @@ const BamTable = () => {
 										<div css={histoCss} key={key}>
 											<IobioHistogram
 												brokerKey={key}
-												ignoreOutliers={isOutlierKey(key)}
+												ignoreOutliers={isOutlierKey(key, ignoreOutlierKeys)}
 												label={displayNames[key]}
 											/>
 										</div>
