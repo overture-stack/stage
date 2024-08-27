@@ -27,7 +27,6 @@ import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
 	type BamPercentKey,
-	type BamOutlierKey,
 	type BamHistogramKey,
 	type BamKey,
 	type IobioDataBrokerType,
@@ -58,7 +57,7 @@ type BamConstants = {
 	displayNames: Partial<Record<BamKey, string>>;
 	percentKeys: BamPercentKey[];
 	histogramKeys: BamHistogramKey[];
-	ignoreOutlierKeys: BamOutlierKey[];
+	ignoreOutlierKeys: BamKey[];
 };
 
 const emptyConstants: BamConstants = {
@@ -73,7 +72,6 @@ const componentTypes = [
 	'IobioCoverageDepth',
 	'IobioHistogram',
 	'IobioPercentBox',
-	'isOutlierKey',
 ] as const;
 
 const dynamicComponentImport = (key: (typeof componentTypes)[number]) =>
@@ -90,7 +88,8 @@ const asyncValueImport: () => Promise<BamConstants> = async () => {
 	const displayNames = iobio['BamDisplayNames'];
 	const percentKeys = iobio['percentKeys'];
 	const histogramKeys = iobio['histogramKeys'];
-	const ignoreOutlierKeys = iobio['ignoreOutlierKeys'];
+	// TODO: Requires package update
+	const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
 
 	return { displayNames, percentKeys, histogramKeys, ignoreOutlierKeys };
 };
@@ -100,8 +99,8 @@ const IobioDataBroker: IobioDataBrokerType = dynamicComponentImport('IobioDataBr
 const IobioHistogram: IobioHistogramType = dynamicComponentImport('IobioHistogram');
 const IobioPercentBox: IobioPercentBoxType = dynamicComponentImport('IobioPercentBox');
 
-const isOutlierKey = (key: BamKey, outlierKeys: BamOutlierKey[]): key is BamOutlierKey => {
-	return outlierKeys.includes(key as BamOutlierKey);
+const isOutlierKey = (key: BamKey, outlierKeys: BamKey[] = []): key is BamKey => {
+	return outlierKeys.includes(key);
 };
 
 const BamTable = () => {
