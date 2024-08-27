@@ -23,16 +23,9 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import {
-	type BamPercentKey,
-	type BamHistogramKey,
+import iobio, {
 	type BamKey,
-	type IobioDataBrokerType,
-	type IobioCoverageDepthType,
-	type IobioHistogramType,
-	type IobioPercentBoxType,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import Loader from '../../Loader';
 
@@ -53,51 +46,20 @@ const histoCss = css`
 	margin: 2vh;
 `;
 
-type BamConstants = {
-	displayNames: Partial<Record<BamKey, string>>;
-	percentKeys: BamPercentKey[];
-	histogramKeys: BamHistogramKey[];
-	ignoreOutlierKeys: BamKey[];
-};
+const iobioComponents = iobio();
 
-const emptyConstants: BamConstants = {
-	displayNames: {},
-	percentKeys: [],
-	histogramKeys: [],
-	ignoreOutlierKeys: [],
-};
+const {
+	IobioCoverageDepth,
+	IobioDataBroker,
+	IobioHistogram,
+	IobioPercentBox,
+	BamDisplayNames: displayNames,
+	percentKeys,
+	histogramKeys,
+} = iobioComponents;
 
-const componentTypes = [
-	'IobioDataBroker',
-	'IobioCoverageDepth',
-	'IobioHistogram',
-	'IobioPercentBox',
-] as const;
-
-const dynamicComponentImport = (key: (typeof componentTypes)[number]) =>
-	dynamic(
-		import('@overture-stack/iobio-components/packages/iobio-react-components/').then(
-			(ioBio) => ioBio[key],
-		),
-		{ ssr: false },
-	);
-
-const asyncValueImport: () => Promise<BamConstants> = async () => {
-	const iobio = await import('@overture-stack/iobio-components/packages/iobio-react-components/');
-
-	const displayNames = iobio['BamDisplayNames'];
-	const percentKeys = iobio['percentKeys'];
-	const histogramKeys = iobio['histogramKeys'];
-	// TODO: Requires package update
-	const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
-
-	return { displayNames, percentKeys, histogramKeys, ignoreOutlierKeys };
-};
-
-const IobioCoverageDepth: IobioCoverageDepthType = dynamicComponentImport('IobioCoverageDepth');
-const IobioDataBroker: IobioDataBrokerType = dynamicComponentImport('IobioDataBroker');
-const IobioHistogram: IobioHistogramType = dynamicComponentImport('IobioHistogram');
-const IobioPercentBox: IobioPercentBoxType = dynamicComponentImport('IobioPercentBox');
+// TODO: needs export from package
+const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
 
 const isOutlierKey = (key: BamKey, outlierKeys: BamKey[] = []): key is BamKey => {
 	return outlierKeys.includes(key);
@@ -106,19 +68,11 @@ const isOutlierKey = (key: BamKey, outlierKeys: BamKey[] = []): key is BamKey =>
 const BamTable = () => {
 	const theme = useTheme();
 
-	const [BamValues, setBamValues] = useState<BamConstants>(emptyConstants);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		async function getBamValues() {
-			const bamData = await asyncValueImport();
-			setBamValues(bamData);
-			setLoading(false);
-		}
-		getBamValues();
+		setLoading(false);
 	}, []);
-
-	const { displayNames, percentKeys, histogramKeys, ignoreOutlierKeys } = BamValues;
 
 	return useMemo(
 		() => (
