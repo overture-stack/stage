@@ -24,9 +24,17 @@
 import { useMemo, useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import iobio, {
+import initIobio, {
+	IobioCoverageDepth,
+	IobioDataBroker,
+	IobioHistogram,
+	IobioPercentBox,
+	BamDisplayNames as displayNames,
+	percentKeys,
+	histogramKeys,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+
 import Loader from '../../Loader';
 
 const percentChartCss = css`
@@ -46,17 +54,7 @@ const histoCss = css`
 	margin: 2vh;
 `;
 
-const iobioComponents = iobio();
-
-const {
-	IobioCoverageDepth,
-	IobioDataBroker,
-	IobioHistogram,
-	IobioPercentBox,
-	BamDisplayNames: displayNames,
-	percentKeys,
-	histogramKeys,
-} = iobioComponents;
+initIobio();
 
 // TODO: needs export from package
 const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
