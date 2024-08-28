@@ -24,7 +24,7 @@
 import { useMemo, useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
-import initIobio, {
+import {
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
@@ -53,8 +53,6 @@ const histoCss = css`
 	height: 40vh;
 	margin: 2vh;
 `;
-
-initIobio();
 
 // TODO: needs export from package
 const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
