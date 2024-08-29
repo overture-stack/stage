@@ -32,7 +32,7 @@ import {
 	BamDisplayNames as displayNames,
 	percentKeys,
 	histogramKeys,
-	type BamKey,
+	isOutlierKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 import Loader from '../../Loader';
@@ -53,13 +53,6 @@ const histoCss = css`
 	height: 40vh;
 	margin: 2vh;
 `;
-
-// TODO: needs export from package
-const ignoreOutlierKeys: BamKey[] = ['frag_hist', 'length_hist'];
-
-const isOutlierKey = (key: BamKey, outlierKeys: BamKey[] = []): key is BamKey => {
-	return outlierKeys.includes(key);
-};
 
 const BamTable = () => {
 	const theme = useTheme();
@@ -113,7 +106,7 @@ const BamTable = () => {
 										<div css={histoCss} key={key}>
 											<IobioHistogram
 												brokerKey={key}
-												ignoreOutliers={isOutlierKey(key, ignoreOutlierKeys)}
+												ignoreOutliers={isOutlierKey(key)}
 												label={displayNames[key]}
 											/>
 										</div>
