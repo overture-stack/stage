@@ -71,42 +71,40 @@ const BamTable = () => {
 			>
 				<TableContextProvider>
 					<h2>Bam.iobio</h2>
-					<>
-						<IobioDataBroker
-							alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
-						/>
-						{loading ? (
-							<Loader />
-						) : (
-							<>
-								<div css={percentChartCss}>
-									{percentKeys.map(
-										(key) =>
-											key && (
-												<IobioPercentBox
-													key={key}
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											),
-									)}
+					<IobioDataBroker
+						alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
+					/>
+					{loading ? (
+						<Loader />
+					) : (
+						<>
+							<div css={percentChartCss}>
+								{percentKeys.map(
+									(key) =>
+										key && (
+											<IobioPercentBox
+												key={key}
+												label={displayNames[key]}
+												percentKey={key}
+												totalKey="total_reads"
+											/>
+										),
+								)}
+							</div>
+							<div css={histoCss}>
+								<IobioCoverageDepth label="Read Coverage" />
+							</div>
+							{histogramKeys.map((key) => (
+								<div css={histoCss} key={key}>
+									<IobioHistogram
+										brokerKey={key}
+										ignoreOutliers={isOutlierKey(key)}
+										label={displayNames[key]}
+									/>
 								</div>
-								<div css={histoCss}>
-									<IobioCoverageDepth label="Read Coverage" />
-								</div>
-								{histogramKeys.map((key) => (
-									<div css={histoCss} key={key}>
-										<IobioHistogram
-											brokerKey={key}
-											ignoreOutliers={isOutlierKey(key)}
-											label={displayNames[key]}
-										/>
-									</div>
-								))}
-							</>
-						)}
-					</>
+							))}
+						</>
+					)}
 				</TableContextProvider>
 			</article>
 		),
