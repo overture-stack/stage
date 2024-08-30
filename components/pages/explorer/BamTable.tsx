@@ -44,11 +44,6 @@ const percentChartCss = css`
 	justify-content: space-evenly;
 `;
 
-const chartCss = css`
-	display: inline-flex;
-	margin: 10px;
-`;
-
 const histoCss = css`
 	height: 40vh;
 	margin: 2vh;
@@ -89,13 +84,12 @@ const BamTable = () => {
 										{percentKeys.map(
 											(key) =>
 												key && (
-													<div css={chartCss} key={key}>
-														<IobioPercentBox
-															label={displayNames[key]}
-															percentKey={key}
-															totalKey="total_reads"
-														/>
-													</div>
+													<IobioPercentBox
+														key={key}
+														label={displayNames[key]}
+														percentKey={key}
+														totalKey="total_reads"
+													/>
 												),
 										)}
 									</div>
