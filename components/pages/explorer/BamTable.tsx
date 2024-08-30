@@ -47,19 +47,23 @@ const chartColumnCss = css`
 `;
 
 const chartCss = css`
-	height: 30vh;
+	height: 25vh;
 	margin: 2vh;
+	border: 0.55px solid rgb(204, 204, 204);
+	padding: 15px;
 `;
 
 const histoColumnCss = css`
 	display: inline-flex;
 	flex-direction: column;
-	width: 70%;
+	width: 75%;
 `;
 
 const histoCss = css`
 	height: 40vh;
 	margin: 2vh;
+	border: 0.55px solid rgb(204, 204, 204);
+	padding: 15px;
 `;
 
 const defaultBamContext = {
