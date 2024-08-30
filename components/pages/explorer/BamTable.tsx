@@ -33,15 +33,28 @@ import {
 	percentKeys,
 	histogramKeys,
 	isOutlierKey,
+	type BamContext,
+	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 import Loader from '@/components/Loader';
 
-const percentChartCss = css`
-	display: flex;
-	width: 100%;
-	height: 25vh;
+const chartColumnCss = css`
+	display: inline-flex;
+	flex-direction: column;
+	width: 25%;
 	justify-content: space-evenly;
+`;
+
+const chartCss = css`
+	height: 20vh;
+	margin: 2vh;
+`;
+
+const histoColumnCss = css`
+	display: inline-flex;
+	flex-direction: column;
+	width: 70%;
 `;
 
 const histoCss = css`
@@ -49,14 +62,60 @@ const histoCss = css`
 	margin: 2vh;
 `;
 
+const defaultBamContext = {
+	mapped_reads: true,
+	forward_strands: true,
+	proper_pairs: true,
+	singletons: true,
+	both_mates_mapped: true,
+	duplicates: true,
+	coverage_depth: true,
+	coverage_hist: true,
+	frag_hist: true,
+	length_hist: true,
+	mapq_hist: true,
+	baseq_hist: true,
+} as const;
+
+const bamConfigPanel = (
+	bamContext: BamContext,
+	updateContext: (key: BamKey, value: boolean) => void,
+) => (
+	<div style={{ margin: '15px' }}>
+		{[...percentKeys, ...histogramKeys].map((key) => {
+			return (
+				<button
+					// className={clsx('config-button', bamContext[key] && 'active')}
+					key={key}
+					onClick={() => {
+						updateContext(key, bamContext[key]);
+					}}
+				>
+					{displayNames[key]}
+				</button>
+			);
+		})}
+	</div>
+);
+
 const BamTable = () => {
 	const theme = useTheme();
+
+	const [bamContext, setBamContext] = useState(defaultBamContext);
 
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setLoading(false);
 	}, []);
+
+	const updateContext = (key: keyof BamContext, value: boolean) => {
+		const newContext = {
+			...bamContext,
+			[key]: !value,
+		};
+		setBamContext(newContext);
+	};
 
 	return useMemo(
 		() => (
@@ -78,31 +137,38 @@ const BamTable = () => {
 						<Loader />
 					) : (
 						<>
-							<div css={percentChartCss}>
+							<span>Show / Hide: </span> {bamConfigPanel(bamContext, updateContext)}
+							<div css={chartColumnCss}>
 								{percentKeys.map(
 									(key) =>
-										key && (
-											<IobioPercentBox
-												key={key}
-												label={displayNames[key]}
-												percentKey={key}
-												totalKey="total_reads"
-											/>
+										bamContext[key] && (
+											<div css={chartCss} key={key}>
+												<IobioPercentBox
+													label={displayNames[key]}
+													percentKey={key}
+													totalKey="total_reads"
+												/>
+											</div>
 										),
 								)}
 							</div>
-							<div css={histoCss}>
-								<IobioCoverageDepth label="Read Coverage" />
-							</div>
-							{histogramKeys.map((key) => (
-								<div css={histoCss} key={key}>
-									<IobioHistogram
-										brokerKey={key}
-										ignoreOutliers={isOutlierKey(key)}
-										label={displayNames[key]}
-									/>
+							<div css={histoColumnCss}>
+								<div css={histoCss}>
+									<IobioCoverageDepth label="Read Coverage" />
 								</div>
-							))}
+								{histogramKeys.map(
+									(key) =>
+										bamContext[key] && (
+											<div css={histoCss} key={key}>
+												<IobioHistogram
+													brokerKey={key}
+													ignoreOutliers={isOutlierKey(key)}
+													label={displayNames[key]}
+												/>
+											</div>
+										),
+								)}
+							</div>
 						</>
 					)}
 				</TableContextProvider>
