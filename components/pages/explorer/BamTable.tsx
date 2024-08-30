@@ -47,7 +47,7 @@ const chartColumnCss = css`
 `;
 
 const chartCss = css`
-	height: 20vh;
+	height: 30vh;
 	margin: 2vh;
 `;
 
