@@ -35,7 +35,7 @@ import {
 	isOutlierKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-import Loader from '../../Loader';
+import Loader from '@/components/Loader';
 
 const percentChartCss = css`
 	display: flex;
@@ -60,57 +60,55 @@ const BamTable = () => {
 
 	return useMemo(
 		() => (
-			<>
-				<article
-					css={css`
-						background-color: ${theme.colors.white};
-						border-radius: 5px;
-						margin-bottom: 12px;
-						padding: 8px;
-						${theme.shadow.default};
-					`}
-				>
-					<TableContextProvider>
-						<h2>Bam.iobio</h2>
-						<>
-							<IobioDataBroker
-								alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
-							/>
-							{loading ? (
-								<Loader />
-							) : (
-								<>
-									<div css={percentChartCss}>
-										{percentKeys.map(
-											(key) =>
-												key && (
-													<IobioPercentBox
-														key={key}
-														label={displayNames[key]}
-														percentKey={key}
-														totalKey="total_reads"
-													/>
-												),
-										)}
+			<article
+				css={css`
+					background-color: ${theme.colors.white};
+					border-radius: 5px;
+					margin-bottom: 12px;
+					padding: 8px;
+					${theme.shadow.default};
+				`}
+			>
+				<TableContextProvider>
+					<h2>Bam.iobio</h2>
+					<>
+						<IobioDataBroker
+							alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
+						/>
+						{loading ? (
+							<Loader />
+						) : (
+							<>
+								<div css={percentChartCss}>
+									{percentKeys.map(
+										(key) =>
+											key && (
+												<IobioPercentBox
+													key={key}
+													label={displayNames[key]}
+													percentKey={key}
+													totalKey="total_reads"
+												/>
+											),
+									)}
+								</div>
+								<div css={histoCss}>
+									<IobioCoverageDepth label="Read Coverage" />
+								</div>
+								{histogramKeys.map((key) => (
+									<div css={histoCss} key={key}>
+										<IobioHistogram
+											brokerKey={key}
+											ignoreOutliers={isOutlierKey(key)}
+											label={displayNames[key]}
+										/>
 									</div>
-									<div css={histoCss}>
-										<IobioCoverageDepth label="Read Coverage" />
-									</div>
-									{histogramKeys.map((key) => (
-										<div css={histoCss} key={key}>
-											<IobioHistogram
-												brokerKey={key}
-												ignoreOutliers={isOutlierKey(key)}
-												label={displayNames[key]}
-											/>
-										</div>
-									))}
-								</>
-							)}
-						</>
-					</TableContextProvider>
-				</article>
-			</>
+								))}
+							</>
+						)}
+					</>
+				</TableContextProvider>
+			</article>
 		),
 		[loading],
 	);
