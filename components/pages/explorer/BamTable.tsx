@@ -85,16 +85,26 @@ const BamConfigPanel = ({
 		>
 			{[...percentKeys, ...histogramKeys].map((key) => {
 				const active = bamContext[key];
+				const toggleButtonStyles = active
+					? `
+							background-color: ${theme.colors.white};
+							color: ${theme.colors.accent};
+						`
+					: `
+							background-color: ${theme.colors.accent};
+							color: ${theme.colors.white};
+						`;
+
 				return (
 					<button
 						css={css`
 							display: inline-block;
-							background-color: ${active ? theme.colors.white : theme.colors.accent};
 							border: 2px solid ${theme.colors.accent};
 							border-radius: 20px;
 							margin: 5px;
 							min-width: fit-content;
 							padding: 3px 10px;
+							${toggleButtonStyles}
 						`}
 						key={key}
 						onClick={() => {

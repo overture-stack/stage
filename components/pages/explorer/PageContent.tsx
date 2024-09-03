@@ -76,11 +76,11 @@ const PageContent = () => {
 
 	const toggleButtonStyles =
 		tableType === tableTypes['REPO_TABLE']
-			? css`
+			? `
 					background-color: ${theme.colors.white};
 					color: ${theme.colors.accent};
 			  `
-			: css`
+			: `
 					background-color: ${theme.colors.accent};
 					color: ${theme.colors.white};
 			  `;
