@@ -84,11 +84,12 @@ const BamConfigPanel = ({
 			`}
 		>
 			{[...percentKeys, ...histogramKeys].map((key) => {
+				const active = bamContext[key];
 				return (
 					<button
 						css={css`
 							display: inline-block;
-							background-color: white;
+							background-color: ${active ? 'white' : theme.colors.secondary_dark};
 							border: 2px solid ${theme.colors.secondary_dark};
 							border-radius: 20px;
 							margin: 5px;
@@ -235,7 +236,7 @@ const BamTable = () => {
 				</article>
 			</div>
 		),
-		[loading],
+		[loading, bamContext],
 	);
 };
 
