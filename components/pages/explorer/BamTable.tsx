@@ -155,70 +155,76 @@ const BamTable = () => {
 							<BamConfigPanel bamContext={bamContext} updateContext={updateContext} theme={theme} />
 							<div
 								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 25%;
-									justify-content: space-evenly;
-								`}
-							>
-								{percentKeys.map(
-									(key) =>
-										bamContext[key] && (
-											<div
-												css={css`
-													height: 25vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioPercentBox
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											</div>
-										),
-								)}
-							</div>
-							<div
-								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 75%;
+									display: flex;
 								`}
 							>
 								<div
 									css={css`
-										height: 40vh;
-										margin: 2vh;
-										border: 1px solid ${theme.colors.grey_3};
-										padding: 15px;
+										display: inline-flex;
+										flex-direction: column;
+										width: 25%;
+										justify-content: flex-start;
 									`}
 								>
-									<IobioCoverageDepth label="Read Coverage" />
+									{percentKeys.map(
+										(key) =>
+											bamContext[key] && (
+												<div
+													css={css`
+														height: 25vh;
+														margin: 2vh;
+														border: 1px solid ${theme.colors.grey_3};
+														padding: 15px;
+													`}
+													key={key}
+												>
+													<IobioPercentBox
+														label={displayNames[key]}
+														percentKey={key}
+														totalKey="total_reads"
+													/>
+												</div>
+											),
+									)}
 								</div>
-								{histogramKeys.map(
-									(key) =>
-										bamContext[key] && (
-											<div
-												css={css`
-													height: 40vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioHistogram
-													brokerKey={key}
-													ignoreOutliers={isOutlierKey(key)}
-													label={displayNames[key]}
-												/>
-											</div>
-										),
-								)}
+								<div
+									css={css`
+										display: inline-flex;
+										flex-direction: column;
+										width: 75%;
+									`}
+								>
+									<div
+										css={css`
+											height: 40vh;
+											margin: 2vh;
+											border: 1px solid ${theme.colors.grey_3};
+											padding: 15px;
+										`}
+									>
+										<IobioCoverageDepth label="Read Coverage" />
+									</div>
+									{histogramKeys.map(
+										(key) =>
+											bamContext[key] && (
+												<div
+													css={css`
+														height: 40vh;
+														margin: 2vh;
+														border: 1px solid ${theme.colors.grey_3};
+														padding: 15px;
+													`}
+													key={key}
+												>
+													<IobioHistogram
+														brokerKey={key}
+														ignoreOutliers={isOutlierKey(key)}
+														label={displayNames[key]}
+													/>
+												</div>
+											),
+									)}
+								</div>
 							</div>
 						</>
 					)}
