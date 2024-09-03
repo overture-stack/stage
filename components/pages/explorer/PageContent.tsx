@@ -27,6 +27,7 @@ import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
+import { Download } from '../../theme/icons';
 
 import BamTable from './BamTable';
 import Facets from './Facets';
@@ -72,6 +73,20 @@ const PageContent = () => {
 			tableType === tableTypes['REPO_TABLE'] ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 		setTableType(nextTableValue);
 	};
+
+	const toggleButtonStyles =
+		tableType === tableTypes['REPO_TABLE']
+			? css`
+					background-color: ${theme.colors.white};
+					color: ${theme.colors.accent};
+			  `
+			: css`
+					background-color: ${theme.colors.accent};
+					color: ${theme.colors.white};
+			  `;
+
+	const iconColor =
+		tableType === tableTypes['REPO_TABLE'] ? theme.colors.accent : theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -149,14 +164,15 @@ const PageContent = () => {
 								>
 									<button
 										css={css`
-											background-color: ${theme.colors.white};
-											border: 2px solid ${theme.colors.secondary_accessible};
+											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
-											padding: 8px;
+											padding: 6px;
+											${toggleButtonStyles}
 										`}
 										onClick={switchTable}
 									>
-										Toggle Table Type
+										<Download height={10} fill={iconColor} />{' '}
+										{tableType === tableTypes['REPO_TABLE'] ? 'Files' : 'Visualization'}
 									</button>
 								</div>
 								{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}

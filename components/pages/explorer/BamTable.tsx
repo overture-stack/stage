@@ -89,8 +89,8 @@ const BamConfigPanel = ({
 					<button
 						css={css`
 							display: inline-block;
-							background-color: ${active ? 'white' : theme.colors.secondary_dark};
-							border: 2px solid ${theme.colors.secondary_dark};
+							background-color: ${active ? theme.colors.white : theme.colors.accent};
+							border: 2px solid ${theme.colors.accent};
 							border-radius: 20px;
 							margin: 5px;
 							min-width: fit-content;
