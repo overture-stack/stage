@@ -189,21 +189,11 @@ const RepoTable = () => {
 	return useMemo(
 		() => (
 			<>
-				<article
-					css={css`
-						background-color: ${theme.colors.white};
-						border-radius: 5px;
-						margin-bottom: 12px;
-						padding: 8px;
-						${theme.shadow.default};
-					`}
-				>
-					<TableContextProvider>
-						<Toolbar />
-						<Table />
-						<Pagination />
-					</TableContextProvider>
-				</article>
+				<TableContextProvider>
+					<Toolbar />
+					<Table />
+					<Pagination />
+				</TableContextProvider>
 			</>
 		),
 		[],

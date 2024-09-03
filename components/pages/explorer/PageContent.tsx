@@ -67,6 +67,12 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
+	const switchTable = () => {
+		const nextTableValue =
+			tableType === tableTypes['REPO_TABLE'] ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+		setTableType(nextTableValue);
+	};
+
 	return useMemo(
 		() => (
 			<div
@@ -127,19 +133,34 @@ const PageContent = () => {
 							`}
 						>
 							<QueryBar />
-							{/* WIP */}
-							<button
-								onClick={() => {
-									const nextTableValue =
-										tableType === tableTypes['REPO_TABLE']
-											? tableTypes['BAM_TABLE']
-											: tableTypes['REPO_TABLE'];
-									setTableType(nextTableValue);
-								}}
+							<article
+								css={css`
+									background-color: ${theme.colors.white};
+									border-radius: 5px;
+									margin-bottom: 12px;
+									padding: 8px;
+									${theme.shadow.default};
+								`}
 							>
-								Toggle Table Type
-							</button>
-							{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
+								<div
+									css={css`
+										margin-bottom: 8px;
+									`}
+								>
+									<button
+										css={css`
+											background-color: ${theme.colors.white};
+											border: 2px solid ${theme.colors.secondary_accessible};
+											border-radius: 5px;
+											padding: 8px;
+										`}
+										onClick={switchTable}
+									>
+										Toggle Table Type
+									</button>
+								</div>
+								{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
+							</article>
 						</div>
 					</div>
 				</div>
