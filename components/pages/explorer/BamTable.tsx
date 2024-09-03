@@ -31,6 +31,7 @@ import {
 	IobioPercentBox,
 	BamDisplayNames as displayNames,
 	BamKeys,
+	defaultBamContext,
 	percentKeys,
 	histogramKeys,
 	isOutlierKey,
@@ -39,21 +40,6 @@ import {
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 import Loader from '@/components/Loader';
-
-const defaultBamContext = {
-	mapped_reads: true,
-	forward_strands: true,
-	proper_pairs: true,
-	singletons: true,
-	both_mates_mapped: true,
-	duplicates: true,
-	coverage_depth: true,
-	coverage_hist: true,
-	frag_hist: true,
-	length_hist: true,
-	mapq_hist: true,
-	baseq_hist: true,
-} as const;
 
 const BamConfigPanel = ({
 	bamContext,
