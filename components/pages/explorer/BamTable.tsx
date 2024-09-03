@@ -22,7 +22,7 @@
 'use client';
 
 import { useMemo, useEffect, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
 	IobioCoverageDepth,
@@ -39,33 +39,6 @@ import {
 
 import Loader from '@/components/Loader';
 
-const chartColumnCss = css`
-	display: inline-flex;
-	flex-direction: column;
-	width: 25%;
-	justify-content: space-evenly;
-`;
-
-const chartCss = css`
-	height: 25vh;
-	margin: 2vh;
-	border: 0.55px solid rgb(204, 204, 204);
-	padding: 15px;
-`;
-
-const histoColumnCss = css`
-	display: inline-flex;
-	flex-direction: column;
-	width: 75%;
-`;
-
-const histoCss = css`
-	height: 40vh;
-	margin: 2vh;
-	border: 0.55px solid rgb(204, 204, 204);
-	padding: 15px;
-`;
-
 const defaultBamContext = {
 	mapped_reads: true,
 	forward_strands: true,
@@ -81,24 +54,57 @@ const defaultBamContext = {
 	baseq_hist: true,
 } as const;
 
-const bamConfigPanel = (
-	bamContext: BamContext,
-	updateContext: (key: BamKey, value: boolean) => void,
-) => (
-	<div style={{ margin: '15px' }}>
-		{[...percentKeys, ...histogramKeys].map((key) => {
-			return (
-				<button
-					// className={clsx('config-button', bamContext[key] && 'active')}
-					key={key}
-					onClick={() => {
-						updateContext(key, bamContext[key]);
-					}}
-				>
-					{displayNames[key]}
-				</button>
-			);
-		})}
+const BamConfigPanel = ({
+	bamContext,
+	updateContext,
+	theme,
+}: {
+	bamContext: BamContext;
+	updateContext: (key: BamKey, value: boolean) => void;
+	theme: Theme;
+}) => (
+	<div
+		css={css`
+			display: flex;
+		`}
+	>
+		<div
+			css={css`
+				display: inline-flex;
+				min-width: fit-content;
+				padding-top: 6px;
+			`}
+		>
+			Show / Hide:{' '}
+		</div>
+		<div
+			css={css`
+				display: inline-flex;
+				flex-wrap: wrap;
+			`}
+		>
+			{[...percentKeys, ...histogramKeys].map((key) => {
+				return (
+					<button
+						css={css`
+							display: inline-block;
+							background-color: white;
+							border: 2px solid ${theme.colors.secondary_dark};
+							border-radius: 20px;
+							margin: 5px;
+							min-width: fit-content;
+							padding: 3px 10px;
+						`}
+						key={key}
+						onClick={() => {
+							updateContext(key, bamContext[key]);
+						}}
+					>
+						{displayNames[key]}
+					</button>
+				);
+			})}
+		</div>
 	</div>
 );
 
@@ -127,7 +133,7 @@ const BamTable = () => {
 
 	return useMemo(
 		() => (
-			<article
+			<div
 				css={css`
 					background-color: ${theme.colors.white};
 					border-radius: 5px;
@@ -136,49 +142,98 @@ const BamTable = () => {
 					${theme.shadow.default};
 				`}
 			>
-				<TableContextProvider>
-					<h2>{fileName}</h2>
-					<IobioDataBroker alignmentUrl={fileUrl} />
-					{loading ? (
-						<Loader />
-					) : (
-						<>
-							<span>Show / Hide: </span> {bamConfigPanel(bamContext, updateContext)}
-							<div css={chartColumnCss}>
-								{percentKeys.map(
-									(key) =>
-										bamContext[key] && (
-											<div css={chartCss} key={key}>
-												<IobioPercentBox
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											</div>
-										),
-								)}
-							</div>
-							<div css={histoColumnCss}>
-								<div css={histoCss}>
-									<IobioCoverageDepth label="Read Coverage" />
+				<article
+					css={css`
+						background-color: ${theme.colors.white};
+						border: 1px solid ${theme.colors.grey_3};
+						margin: 5px;
+						padding: 10px;
+					`}
+				>
+					<TableContextProvider>
+						<h2>{fileName}</h2>
+						<IobioDataBroker alignmentUrl={fileUrl} />
+						{loading ? (
+							<Loader />
+						) : (
+							<>
+								<BamConfigPanel
+									bamContext={bamContext}
+									updateContext={updateContext}
+									theme={theme}
+								/>
+								<div
+									css={css`
+										display: inline-flex;
+										flex-direction: column;
+										width: 25%;
+										justify-content: space-evenly;
+									`}
+								>
+									{percentKeys.map(
+										(key) =>
+											bamContext[key] && (
+												<div
+													css={css`
+														height: 25vh;
+														margin: 2vh;
+														border: 1px solid ${theme.colors.grey_3};
+														padding: 15px;
+													`}
+													key={key}
+												>
+													<IobioPercentBox
+														label={displayNames[key]}
+														percentKey={key}
+														totalKey="total_reads"
+													/>
+												</div>
+											),
+									)}
 								</div>
-								{histogramKeys.map(
-									(key) =>
-										bamContext[key] && (
-											<div css={histoCss} key={key}>
-												<IobioHistogram
-													brokerKey={key}
-													ignoreOutliers={isOutlierKey(key)}
-													label={displayNames[key]}
-												/>
-											</div>
-										),
-								)}
-							</div>
-						</>
-					)}
-				</TableContextProvider>
-			</article>
+								<div
+									css={css`
+										display: inline-flex;
+										flex-direction: column;
+										width: 75%;
+									`}
+								>
+									<div
+										css={css`
+											height: 40vh;
+											margin: 2vh;
+											border: 1px solid ${theme.colors.grey_3};
+											padding: 15px;
+										`}
+									>
+										<IobioCoverageDepth label="Read Coverage" />
+									</div>
+									{histogramKeys.map(
+										(key) =>
+											bamContext[key] && (
+												<div
+													css={css`
+														height: 40vh;
+														margin: 2vh;
+														border: 1px solid ${theme.colors.grey_3};
+														padding: 15px;
+													`}
+													key={key}
+												>
+													<IobioHistogram
+														brokerKey={key}
+														ignoreOutliers={isOutlierKey(key)}
+														label={displayNames[key]}
+													/>
+												</div>
+											),
+									)}
+								</div>
+							</>
+						)}
+					</TableContextProvider>
+				</article>
+			</div>
 		),
 		[loading],
 	);
