@@ -109,6 +109,10 @@ const BamTable = () => {
 
 	const [loading, setLoading] = useState(false);
 
+	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
+	const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
+	const fileName = fileUrl.split('/').pop();
+
 	useEffect(() => {
 		setLoading(false);
 	}, []);
@@ -133,10 +137,8 @@ const BamTable = () => {
 				`}
 			>
 				<TableContextProvider>
-					<h2>Bam.iobio</h2>
-					<IobioDataBroker
-						alignmentUrl={'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam'}
-					/>
+					<h2>{fileName}</h2>
+					<IobioDataBroker alignmentUrl={fileUrl} />
 					{loading ? (
 						<Loader />
 					) : (
