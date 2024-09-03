@@ -30,6 +30,7 @@ import {
 	IobioHistogram,
 	IobioPercentBox,
 	BamDisplayNames as displayNames,
+	BamKeys,
 	percentKeys,
 	histogramKeys,
 	isOutlierKey,
@@ -83,7 +84,7 @@ const BamConfigPanel = ({
 				flex-wrap: wrap;
 			`}
 		>
-			{[...percentKeys, ...histogramKeys].map((key) => {
+			{BamKeys.map((key) => {
 				const active = bamContext[key];
 				const toggleButtonStyles = active
 					? `
@@ -194,16 +195,18 @@ const BamTable = () => {
 										width: 75%;
 									`}
 								>
-									<div
-										css={css`
-											height: 40vh;
-											margin: 2vh;
-											border: 1px solid ${theme.colors.grey_3};
-											padding: 15px;
-										`}
-									>
-										<IobioCoverageDepth label="Read Coverage" />
-									</div>
+									{bamContext['coverage_depth'] && (
+										<div
+											css={css`
+												height: 40vh;
+												margin: 2vh;
+												border: 1px solid ${theme.colors.grey_3};
+												padding: 15px;
+											`}
+										>
+											<IobioCoverageDepth label="Read Coverage" />
+										</div>
+									)}
 									{histogramKeys.map(
 										(key) =>
 											bamContext[key] && (
