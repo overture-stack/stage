@@ -103,7 +103,6 @@ const BamTable = () => {
 	const theme = useTheme();
 
 	const [bamContext, setBamContext] = useState(defaultBamContext);
-
 	const [loading, setLoading] = useState(false);
 
 	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
