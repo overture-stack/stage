@@ -27,7 +27,7 @@ import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
-import { Download } from '../../theme/icons';
+import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable';
 import Facets from './Facets';
@@ -171,8 +171,27 @@ const PageContent = () => {
 										`}
 										onClick={switchTable}
 									>
-										<Download height={10} fill={iconColor} />{' '}
-										{tableType === tableTypes['REPO_TABLE'] ? 'Files' : 'Visualization'}
+										{tableType === tableTypes['REPO_TABLE'] ? (
+											<span>
+												<File
+													fill={iconColor}
+													style={css`
+														vertical-align: middle;
+													`}
+												/>{' '}
+												Files
+											</span>
+										) : (
+											<span>
+												<Screen
+													fill={iconColor}
+													style={css`
+														vertical-align: middle;
+													`}
+												/>{' '}
+												Visualization
+											</span>
+										)}
 									</button>
 								</div>
 								{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}

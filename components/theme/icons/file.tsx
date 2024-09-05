@@ -19,44 +19,29 @@
  *
  */
 
-import GoogleLogo from './google';
-import FacebookLogo from './facebook';
-import GitHubLogo from './github';
-import LinkedInLogo from './linkedin';
-import OrcidLogo from './orcid';
-import KeycloakLogo from './keycloak';
-import Illustration from './illustration';
-import Avatar from './avatar';
-import ChevronDown from './chevron_down';
-import Download from './download';
-import File from './file';
-import OvertureLogo from './overture_logo';
-import OvertureLogoWithText from './overture_logo_with_text';
-import OvertureUser from './overture_user';
-import Checkmark from './checkmark';
-import Spinner from './spinner';
-import Screen from './screen';
-import Error from './error';
-import Warning from './warning';
+import { css } from '@emotion/react';
 
-export {
-	GoogleLogo,
-	FacebookLogo,
-	GitHubLogo,
-	LinkedInLogo,
-	OrcidLogo,
-	KeycloakLogo,
-	Illustration,
-	Avatar,
-	ChevronDown,
-	Download,
-	File,
-	OvertureLogo,
-	OvertureLogoWithText,
-	OvertureUser,
-	Checkmark,
-	Screen,
-	Spinner,
-	Error,
-	Warning,
+import { IconProps } from './types';
+
+const File = ({ fill = '#003055', width = 12, height, style }: IconProps) => {
+	return (
+		<svg
+			css={css`
+				${style}
+			`}
+			width={width}
+			height={height}
+			viewBox="0 0 12 12"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M1.19995 12V0H7.3538V2.76923C7.3538 2.93031 7.50041 3.07692 7.66149 3.07692H10.4307V12H1.19995ZM7.96918 2.46154V0.307692L10.123 2.46154H7.96918Z"
+				fill={fill}
+			/>
+		</svg>
+	);
 };
+
+export default File;
