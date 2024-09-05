@@ -34,8 +34,8 @@ const Screen = ({ fill = 'white', height, width = 16, style }: IconProps) => {
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path
-				fill-rule="evenodd"
-				clip-rule="evenodd"
+				fillRule="evenodd"
+				clipRule="evenodd"
 				d="M0 1C0 0.447716 0.447715 0 1 0H15C15.5523 0 16 0.447715 16 1V9.28571C16 9.838 15.5523 10.2857 15 10.2857H9.14286V11.4286H10.2857V12.5714H5.71429V11.4286H6.85714V10.2857H1C0.447715 10.2857 0 9.838 0 9.28571V1ZM1.71429 1.71429H14.2857V8.57143H1.71429V1.71429ZM1.14286 9.14286V1.14286H14.8571V9.14286H1.14286Z"
 				fill={fill}
 			/>

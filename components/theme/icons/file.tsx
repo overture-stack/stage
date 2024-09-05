@@ -35,8 +35,8 @@ const File = ({ fill = '#003055', width = 12, height, style }: IconProps) => {
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path
-				fill-rule="evenodd"
-				clip-rule="evenodd"
+				fillRule="evenodd"
+				clipRule="evenodd"
 				d="M1.19995 12V0H7.3538V2.76923C7.3538 2.93031 7.50041 3.07692 7.66149 3.07692H10.4307V12H1.19995ZM7.96918 2.46154V0.307692L10.123 2.46154H7.96918Z"
 				fill={fill}
 			/>
