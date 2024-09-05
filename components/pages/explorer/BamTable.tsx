@@ -23,6 +23,7 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { css, Theme, useTheme } from '@emotion/react';
+import { getToggleButtonStyles } from './PageContent';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
 	IobioCoverageDepth,
@@ -72,15 +73,7 @@ const BamConfigPanel = ({
 		>
 			{BamKeys.map((key) => {
 				const active = bamContext[key];
-				const toggleButtonStyles = active
-					? `
-							background-color: ${theme.colors.white};
-							color: ${theme.colors.accent};
-						`
-					: `
-							background-color: ${theme.colors.accent};
-							color: ${theme.colors.white};
-						`;
+				const toggleButtonStyles = getToggleButtonStyles(active, theme);
 
 				return (
 					<button

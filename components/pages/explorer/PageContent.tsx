@@ -20,7 +20,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
 import stringify from 'fast-json-stable-stringify';
@@ -38,6 +38,17 @@ const tableTypes = {
 	REPO_TABLE: 'repoTable',
 	BAM_TABLE: 'bamTable',
 };
+
+export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
+	active
+		? `
+			background-color: ${theme.colors.white};
+			color: ${theme.colors.accent};
+		`
+		: `
+			background-color: ${theme.colors.accent};
+			color: ${theme.colors.white};
+		`;
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -68,25 +79,14 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
+	const fileTableActive = tableType === tableTypes['REPO_TABLE'];
+
 	const switchTable = () => {
-		const nextTableValue =
-			tableType === tableTypes['REPO_TABLE'] ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+		const nextTableValue = fileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 		setTableType(nextTableValue);
 	};
 
-	const toggleButtonStyles =
-		tableType === tableTypes['REPO_TABLE']
-			? `
-					background-color: ${theme.colors.white};
-					color: ${theme.colors.accent};
-			  `
-			: `
-					background-color: ${theme.colors.accent};
-					color: ${theme.colors.white};
-			  `;
-
-	const iconColor =
-		tableType === tableTypes['REPO_TABLE'] ? theme.colors.accent : theme.colors.white;
+	const iconColor = fileTableActive ? theme.colors.accent : theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -167,11 +167,11 @@ const PageContent = () => {
 											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
 											padding: 6px;
-											${toggleButtonStyles}
+											${getToggleButtonStyles(fileTableActive, theme)}
 										`}
 										onClick={switchTable}
 									>
-										{tableType === tableTypes['REPO_TABLE'] ? (
+										{fileTableActive ? (
 											<span>
 												<File
 													fill={iconColor}
@@ -194,7 +194,7 @@ const PageContent = () => {
 										)}
 									</button>
 								</div>
-								{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
+								{fileTableActive ? <RepoTable /> : <BamTable />}
 							</article>
 						</div>
 					</div>
