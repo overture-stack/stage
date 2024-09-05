@@ -79,14 +79,14 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
-	const fileTableActive = tableType === tableTypes['REPO_TABLE'];
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
 
 	const switchTable = () => {
-		const nextTableValue = fileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 		setTableType(nextTableValue);
 	};
 
-	const iconColor = fileTableActive ? theme.colors.accent : theme.colors.white;
+	const iconColor = isFileTableActive ? theme.colors.accent : theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -167,11 +167,11 @@ const PageContent = () => {
 											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
 											padding: 6px;
-											${getToggleButtonStyles(fileTableActive, theme)}
+											${getToggleButtonStyles(isFileTableActive, theme)}
 										`}
 										onClick={switchTable}
 									>
-										{fileTableActive ? (
+										{isFileTableActive ? (
 											<span>
 												<File
 													fill={iconColor}
@@ -194,7 +194,7 @@ const PageContent = () => {
 										)}
 									</button>
 								</div>
-								{fileTableActive ? <RepoTable /> : <BamTable />}
+								{isFileTableActive ? <RepoTable /> : <BamTable />}
 							</article>
 						</div>
 					</div>
