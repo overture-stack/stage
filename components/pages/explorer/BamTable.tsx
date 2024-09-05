@@ -23,24 +23,24 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { css, Theme, useTheme } from '@emotion/react';
-import { getToggleButtonStyles } from './PageContent';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
+	BamDisplayNames as displayNames,
+	BamKeys,
+	defaultBamContext,
+	histogramKeys,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
 	IobioPercentBox,
-	BamDisplayNames as displayNames,
-	BamKeys,
-	defaultBamContext,
-	percentKeys,
-	histogramKeys,
 	isOutlierKey,
+	percentKeys,
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 import Loader from '@/components/Loader';
+import { getToggleButtonStyles } from './PageContent';
 
 const BamConfigPanel = ({
 	bamContext,
