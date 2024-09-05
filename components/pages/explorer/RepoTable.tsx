@@ -188,13 +188,11 @@ const RepoTable = () => {
 
 	return useMemo(
 		() => (
-			<>
-				<TableContextProvider>
-					<Toolbar />
-					<Table />
-					<Pagination />
-				</TableContextProvider>
-			</>
+			<TableContextProvider>
+				<Toolbar />
+				<Table />
+				<Pagination />
+			</TableContextProvider>
 		),
 		[],
 	);
