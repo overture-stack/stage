@@ -123,94 +123,92 @@ const BamTable = () => {
 
 	return useMemo(
 		() => (
-			<>
-				<TableContextProvider>
-					<h2>{fileName}</h2>
-					<IobioDataBroker alignmentUrl={fileUrl} />
-					{loading ? (
-						<Loader />
-					) : (
-						<>
-							<BamConfigPanel bamContext={bamContext} updateContext={updateContext} theme={theme} />
+			<TableContextProvider>
+				<h2>{fileName}</h2>
+				<IobioDataBroker alignmentUrl={fileUrl} />
+				{loading ? (
+					<Loader />
+				) : (
+					<>
+						<BamConfigPanel bamContext={bamContext} updateContext={updateContext} theme={theme} />
+						<div
+							css={css`
+								display: flex;
+							`}
+						>
 							<div
 								css={css`
-									display: flex;
+									display: inline-flex;
+									flex-direction: column;
+									width: 25%;
+									justify-content: flex-start;
 								`}
 							>
-								<div
-									css={css`
-										display: inline-flex;
-										flex-direction: column;
-										width: 25%;
-										justify-content: flex-start;
-									`}
-								>
-									{percentKeys.map(
-										(key) =>
-											bamContext[key] && (
-												<div
-													css={css`
-														height: 25vh;
-														margin: 2vh;
-														border: 1px solid ${theme.colors.grey_3};
-														padding: 15px;
-													`}
-													key={key}
-												>
-													<IobioPercentBox
-														label={displayNames[key]}
-														percentKey={key}
-														totalKey="total_reads"
-													/>
-												</div>
-											),
-									)}
-								</div>
-								<div
-									css={css`
-										display: inline-flex;
-										flex-direction: column;
-										width: 75%;
-									`}
-								>
-									{bamContext['coverage_depth'] && (
-										<div
-											css={css`
-												height: 40vh;
-												margin: 2vh;
-												border: 1px solid ${theme.colors.grey_3};
-												padding: 15px;
-											`}
-										>
-											<IobioCoverageDepth label="Read Coverage" />
-										</div>
-									)}
-									{histogramKeys.map(
-										(key) =>
-											bamContext[key] && (
-												<div
-													css={css`
-														height: 40vh;
-														margin: 2vh;
-														border: 1px solid ${theme.colors.grey_3};
-														padding: 15px;
-													`}
-													key={key}
-												>
-													<IobioHistogram
-														brokerKey={key}
-														ignoreOutliers={isOutlierKey(key)}
-														label={displayNames[key]}
-													/>
-												</div>
-											),
-									)}
-								</div>
+								{percentKeys.map(
+									(key) =>
+										bamContext[key] && (
+											<div
+												css={css`
+													height: 25vh;
+													margin: 2vh;
+													border: 1px solid ${theme.colors.grey_3};
+													padding: 15px;
+												`}
+												key={key}
+											>
+												<IobioPercentBox
+													label={displayNames[key]}
+													percentKey={key}
+													totalKey="total_reads"
+												/>
+											</div>
+										),
+								)}
 							</div>
-						</>
-					)}
-				</TableContextProvider>
-			</>
+							<div
+								css={css`
+									display: inline-flex;
+									flex-direction: column;
+									width: 75%;
+								`}
+							>
+								{bamContext['coverage_depth'] && (
+									<div
+										css={css`
+											height: 40vh;
+											margin: 2vh;
+											border: 1px solid ${theme.colors.grey_3};
+											padding: 15px;
+										`}
+									>
+										<IobioCoverageDepth label="Read Coverage" />
+									</div>
+								)}
+								{histogramKeys.map(
+									(key) =>
+										bamContext[key] && (
+											<div
+												css={css`
+													height: 40vh;
+													margin: 2vh;
+													border: 1px solid ${theme.colors.grey_3};
+													padding: 15px;
+												`}
+												key={key}
+											>
+												<IobioHistogram
+													brokerKey={key}
+													ignoreOutliers={isOutlierKey(key)}
+													label={displayNames[key]}
+												/>
+											</div>
+										),
+								)}
+							</div>
+						</div>
+					</>
+				)}
+			</TableContextProvider>
 		),
 		[loading, bamContext],
 	);
