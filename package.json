@@ -15,7 +15,7 @@
 		"@emotion/react": "^11.9.0",
 		"@emotion/styled": "^11.8.1",
 		"@overture-stack/arranger-components": "^3.0.0-beta.32",
-		"@overture-stack/iobio-components": "^0.0.3",
+		"@overture-stack/iobio-components": "^0.0.4",
 		"axios": "^0.27.2",
 		"cryptr": "^6.3.0",
 		"http-proxy": "^1.18.1",

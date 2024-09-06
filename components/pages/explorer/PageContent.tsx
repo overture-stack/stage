@@ -19,24 +19,36 @@
  *
  */
 
-import { useEffect, useMemo, useState } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
+import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable';
 import Facets from './Facets';
-import RepoTable from './RepoTable';
 import QueryBar from './QueryBar';
+import RepoTable from './RepoTable';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',
 	BAM_TABLE: 'bamTable',
 };
+
+export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
+	active
+		? `
+			background-color: ${theme.colors.white};
+			color: ${theme.colors.accent};
+		`
+		: `
+			background-color: ${theme.colors.accent};
+			color: ${theme.colors.white};
+		`;
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -66,6 +78,15 @@ const PageContent = () => {
 	useEffect(() => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
+
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+
+	const switchTable = () => {
+		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+		setTableType(nextTableValue);
+	};
+
+	const iconColor = isFileTableActive ? theme.colors.accent : theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -127,19 +148,55 @@ const PageContent = () => {
 							`}
 						>
 							<QueryBar />
-							{/* WIP */}
-							<button
-								onClick={() => {
-									const nextTableValue =
-										tableType === tableTypes['REPO_TABLE']
-											? tableTypes['BAM_TABLE']
-											: tableTypes['REPO_TABLE'];
-									setTableType(nextTableValue);
-								}}
+
+							<article
+								css={css`
+									background-color: ${theme.colors.white};
+									border-radius: 5px;
+									margin-bottom: 12px;
+									padding: 8px;
+									${theme.shadow.default};
+								`}
 							>
-								Toggle Table Type
-							</button>
-							{tableType === tableTypes['REPO_TABLE'] ? <RepoTable /> : <BamTable />}
+								<div
+									css={css`
+										margin-bottom: 8px;
+									`}
+								>
+									<button
+										css={css`
+											border: 2px solid ${theme.colors.accent};
+											border-radius: 5px;
+											padding: 6px;
+											${getToggleButtonStyles(isFileTableActive, theme)}
+										`}
+										onClick={switchTable}
+									>
+										{isFileTableActive ? (
+											<span>
+												<File
+													fill={iconColor}
+													style={css`
+														vertical-align: middle;
+													`}
+												/>{' '}
+												Files
+											</span>
+										) : (
+											<span>
+												<Screen
+													fill={iconColor}
+													style={css`
+														vertical-align: middle;
+													`}
+												/>{' '}
+												Visualization
+											</span>
+										)}
+									</button>
+								</div>
+								{isFileTableActive ? <RepoTable /> : <BamTable />}
+							</article>
 						</div>
 					</div>
 				</div>
