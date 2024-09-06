@@ -21,14 +21,13 @@
 
 'use client';
 
-import { useMemo, useEffect, useState } from 'react';
 import { css, Theme, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
-	BamDisplayNames as displayNames,
 	BamKeys,
-	defaultBamContext,
+	BamDisplayNames as displayNames,
 	histogramKeys,
+	defaultBamContext as initElementState,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
@@ -38,17 +37,18 @@ import {
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { useEffect, useMemo, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getToggleButtonStyles } from './PageContent';
 
-const BamConfigPanel = ({
-	bamContext,
-	updateContext,
+const ToggleButtonPanel = ({
+	elementState,
+	updateElements,
 	theme,
 }: {
-	bamContext: BamContext;
-	updateContext: (key: BamKey, value: boolean) => void;
+	elementState: BamContext;
+	updateElements: (key: BamKey, value: boolean) => void;
 	theme: Theme;
 }) => (
 	<div
@@ -72,7 +72,7 @@ const BamConfigPanel = ({
 			`}
 		>
 			{BamKeys.map((key) => {
-				const active = bamContext[key];
+				const active = elementState[key];
 				const toggleButtonStyles = getToggleButtonStyles(active, theme);
 
 				return (
@@ -88,7 +88,7 @@ const BamConfigPanel = ({
 						`}
 						key={key}
 						onClick={() => {
-							updateContext(key, bamContext[key]);
+							updateElements(key, elementState[key]);
 						}}
 					>
 						{displayNames[key]}
@@ -102,7 +102,7 @@ const BamConfigPanel = ({
 const BamTable = () => {
 	const theme = useTheme();
 
-	const [bamContext, setBamContext] = useState(defaultBamContext);
+	const [elementState, toggleElementState] = useState(initElementState);
 	const [loading, setLoading] = useState(false);
 
 	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
@@ -113,12 +113,12 @@ const BamTable = () => {
 		setLoading(false);
 	}, []);
 
-	const updateContext = (key: keyof BamContext, value: boolean) => {
-		const newContext = {
-			...bamContext,
+	const updateElements = (key: keyof BamContext, value: boolean) => {
+		const newState = {
+			...elementState,
 			[key]: !value,
 		};
-		setBamContext(newContext);
+		toggleElementState(newState);
 	};
 
 	return useMemo(
@@ -130,7 +130,11 @@ const BamTable = () => {
 					<Loader />
 				) : (
 					<>
-						<BamConfigPanel bamContext={bamContext} updateContext={updateContext} theme={theme} />
+						<ToggleButtonPanel
+							elementState={elementState}
+							updateElements={updateElements}
+							theme={theme}
+						/>
 						<div
 							css={css`
 								display: flex;
@@ -146,7 +150,7 @@ const BamTable = () => {
 							>
 								{percentKeys.map(
 									(key) =>
-										bamContext[key] && (
+										elementState[key] && (
 											<div
 												css={css`
 													height: 25vh;
@@ -172,7 +176,7 @@ const BamTable = () => {
 									width: 75%;
 								`}
 							>
-								{bamContext['coverage_depth'] && (
+								{elementState['coverage_depth'] && (
 									<div
 										css={css`
 											height: 40vh;
@@ -186,7 +190,7 @@ const BamTable = () => {
 								)}
 								{histogramKeys.map(
 									(key) =>
-										bamContext[key] && (
+										elementState[key] && (
 											<div
 												css={css`
 													height: 40vh;
@@ -210,7 +214,7 @@ const BamTable = () => {
 				)}
 			</TableContextProvider>
 		),
-		[loading, bamContext],
+		[loading, elementState],
 	);
 };
 
