@@ -91,6 +91,9 @@ const getScoreDownloadUrls = (type: 'file' | 'index', fileData: FileType) => {
 	)
 		.then(async (response) => {
 			if (response.status === 500 || !response.ok) {
+				throw new Error(
+					`Error at getScoreDownloadUrls status: ${response.status}, ok: ${response.ok}`,
+				);
 			}
 
 			const res = await response.json();
