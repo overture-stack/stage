@@ -54,14 +54,25 @@ export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
-	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-	const { selectedRows } = tableContext;
-
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
 	// TODO: abstract this param handling into an Arranger integration.
 	const arrangerData = useArrangerData({ callerName: 'Explorer-PageContent' });
 	const { sqon, setSQON } = arrangerData;
+
+	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
+	const { selectedRows, tableData } = tableContext;
+
+	const oneFileSelected = selectedRows.length === 1;
+	const selectedBamFile = oneFileSelected
+		? // TODO: Type
+		  tableData.find((data: any) => {
+				if (data && typeof data === 'object') {
+					return data.id === selectedRows[0] && data.file_type === 'BAM';
+				}
+		  })
+		: null;
+
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
