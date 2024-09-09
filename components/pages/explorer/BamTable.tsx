@@ -42,6 +42,11 @@ import { useEffect, useMemo, useState } from 'react';
 import Loader from '@/components/Loader';
 import { getToggleButtonStyles } from './PageContent';
 
+const bamFileExtension = 'BAM';
+const cramFileExtension = 'CRAM';
+
+export const BamFileExtensions = [bamFileExtension, cramFileExtension];
+
 const ToggleButtonPanel = ({
 	elementState,
 	updateElements,

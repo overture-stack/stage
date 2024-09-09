@@ -26,11 +26,14 @@ import { TableContextInterface } from '@overture-stack/arranger-components/dist/
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
+import urlJoin from 'url-join';
 
+import { getConfig } from '@/global/config';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { File, Screen } from '../../theme/icons';
 
-import BamTable from './BamTable';
+import BamTable, { BamFileExtensions } from './BamTable';
 import Facets from './Facets';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
@@ -51,6 +54,54 @@ export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 			color: ${theme.colors.white};
 		`;
 
+const baseScoreDownloadParams = {
+	external: 'true',
+	offset: '0',
+	'User-Agent': 'unknown',
+};
+
+type FileType = { id: string; file: { size: number } };
+
+type ScoreDownloadParams = {
+	'User-Agent': string;
+	external: string;
+	length: string;
+	object_id: string;
+	offset: string;
+};
+
+const getScoreDownloadUrls = (type: 'file' | 'index', fileData: FileType) => {
+	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
+	const length = fileData.file.size.toString();
+	const object_id = fileData.id;
+
+	const scoreDownloadParams: ScoreDownloadParams = {
+		...baseScoreDownloadParams,
+		length,
+		object_id: object_id,
+	};
+	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+
+	return fetch(
+		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+		{
+			headers: { accept: '*/*' },
+			method: 'GET',
+		},
+	)
+		.then(async (response) => {
+			if (response.status === 500 || !response.ok) {
+			}
+
+			const res = await response.json();
+
+			if (res.status === 200) return res;
+		})
+		.catch((error) => {
+			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
+		});
+};
+
 const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
@@ -66,11 +117,15 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 	const oneFileSelected = selectedRows.length === 1;
 	const selectedBamFile = oneFileSelected
 		? // TODO: Type
-		  tableData.find((data: any) => {
+		  (tableData.find((data: any) => {
 				if (data && typeof data === 'object') {
-					return data.id === selectedRows[0] && data.file_type === 'BAM';
+					return data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type);
 				}
-		  })
+		  }) as FileType)
+		: null;
+
+	const bamFile = selectedBamFile
+		? getScoreDownloadUrls('file', selectedBamFile).then((file) => file)
 		: null;
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
