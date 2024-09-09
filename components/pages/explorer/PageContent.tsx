@@ -22,6 +22,7 @@
 import { css, Theme, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
+import { TableContextInterface } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -50,15 +51,17 @@ export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 			color: ${theme.colors.white};
 		`;
 
-const PageContent = () => {
+const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
+	const { selectedRows } = tableContext;
 
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
 	// TODO: abstract this param handling into an Arranger integration.
-	const { sqon, setSQON } = useArrangerData({ callerName: 'Explorer-PageContent' });
+	const arrangerData = useArrangerData({ callerName: 'Explorer-PageContent' });
+	const { sqon, setSQON } = arrangerData;
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
