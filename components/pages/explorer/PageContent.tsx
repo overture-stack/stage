@@ -66,11 +66,10 @@ type ScoreDownloadParams = {
 	'User-Agent': string;
 	external: string;
 	length: string;
-	object_id: string;
 	offset: string;
 };
 
-const getScoreDownloadUrls = (type: 'file' | 'index', fileData: FileType) => {
+const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
 	const object_id = fileData.id;
@@ -78,11 +77,10 @@ const getScoreDownloadUrls = (type: 'file' | 'index', fileData: FileType) => {
 	const scoreDownloadParams: ScoreDownloadParams = {
 		...baseScoreDownloadParams,
 		length,
-		object_id: object_id,
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-	return fetch(
+	return await fetch(
 		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
 		{
 			headers: { accept: '*/*' },
@@ -97,8 +95,7 @@ const getScoreDownloadUrls = (type: 'file' | 'index', fileData: FileType) => {
 			}
 
 			const res = await response.json();
-
-			if (res.status === 200) return res;
+			return res;
 		})
 		.catch((error) => {
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
@@ -115,21 +112,6 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 	const { sqon, setSQON } = arrangerData;
 
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-	const { selectedRows, tableData } = tableContext;
-
-	const oneFileSelected = selectedRows.length === 1;
-	const selectedBamFile = oneFileSelected
-		? // TODO: Type
-		  (tableData.find((data: any) => {
-				if (data && typeof data === 'object') {
-					return data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type);
-				}
-		  }) as FileType)
-		: null;
-
-	const bamFile = selectedBamFile
-		? getScoreDownloadUrls('file', selectedBamFile).then((file) => file)
-		: null;
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -153,8 +135,26 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 
 	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
 
-	const switchTable = () => {
+	const switchTable = async () => {
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+		if (nextTableValue === tableTypes['BAM_TABLE']) {
+			const { selectedRows, tableData } = tableContext;
+			const oneFileSelected = selectedRows.length === 1;
+			// TODO: if not oneFile throw error
+
+			const selectedBamFile = oneFileSelected
+				? // TODO: Type
+				  (tableData.find((data: any) => {
+						if (data && typeof data === 'object') {
+							return data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type);
+						}
+				  }) as FileType)
+				: null;
+			// TODO: if not bamFile throw error
+
+			const file = selectedBamFile ? await getScoreDownloadUrls('file', selectedBamFile) : null;
+			const fileUrl = file ? file.parts[0].url : null;
+		}
 		setTableType(nextTableValue);
 	};
 
