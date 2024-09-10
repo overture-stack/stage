@@ -26,11 +26,8 @@ import { TableContextInterface } from '@overture-stack/arranger-components/dist/
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import urlJoin from 'url-join';
 
-import { getConfig } from '@/global/config';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
-import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { File, Screen } from '../../theme/icons';
 
 import BamTable, { BamFileExtensions } from './BamTable';
@@ -54,53 +51,7 @@ export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 			color: ${theme.colors.white};
 		`;
 
-const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
-};
-
-type FileType = { id: string; file: { size: number } };
-
-type ScoreDownloadParams = {
-	'User-Agent': string;
-	external: string;
-	length: string;
-	offset: string;
-};
-
-const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
-	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const length = fileData.file.size.toString();
-	const object_id = fileData.id;
-
-	const scoreDownloadParams: ScoreDownloadParams = {
-		...baseScoreDownloadParams,
-		length,
-	};
-	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
-
-	return await fetch(
-		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
-		{
-			headers: { accept: '*/*' },
-			method: 'GET',
-		},
-	)
-		.then(async (response) => {
-			if (response.status === 500 || !response.ok) {
-				throw new Error(
-					`Error at getScoreDownloadUrls status: ${response.status}, ok: ${response.ok}`,
-				);
-			}
-
-			const res = await response.json();
-			return res;
-		})
-		.catch((error) => {
-			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
-		});
-};
+export type FileType = { id: string; file: { size: number } };
 
 const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
 	const theme = useTheme();
@@ -112,6 +63,7 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 	const { sqon, setSQON } = arrangerData;
 
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
+	const [currentBamFile, setCurrentBamFile] = useState<FileType | null>(null);
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -140,22 +92,25 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
 			const { selectedRows, tableData } = tableContext;
 			const oneFileSelected = selectedRows.length === 1;
-			// TODO: if not oneFile throw error
+			// TODO: if not oneFile throw error; investigate context bug
 
 			const selectedBamFile = oneFileSelected
 				? // TODO: Type
 				  (tableData.find((data: any) => {
 						if (data && typeof data === 'object') {
+							console.log(
+								data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type),
+							);
 							return data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type);
 						}
 				  }) as FileType)
 				: null;
 			// TODO: if not bamFile throw error
-
-			const file = selectedBamFile ? await getScoreDownloadUrls('file', selectedBamFile) : null;
-			const fileUrl = file ? file.parts[0].url : null;
+			setCurrentBamFile(selectedBamFile);
+			setTableType(nextTableValue);
+		} else {
+			setTableType(nextTableValue);
 		}
-		setTableType(nextTableValue);
 	};
 
 	const iconColor = isFileTableActive ? theme.colors.accent : theme.colors.white;
@@ -267,7 +222,7 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 										)}
 									</button>
 								</div>
-								{isFileTableActive ? <RepoTable /> : <BamTable />}
+								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>
 						</div>
 					</div>

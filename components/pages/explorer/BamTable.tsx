@@ -21,6 +21,8 @@
 
 'use client';
 
+import { getConfig } from '@/global/config';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { css, Theme, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
@@ -38,9 +40,10 @@ import {
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useEffect, useMemo, useState } from 'react';
+import urlJoin from 'url-join';
 
 import Loader from '@/components/Loader';
-import { getToggleButtonStyles } from './PageContent';
+import { getToggleButtonStyles, type FileType } from './PageContent';
 
 const bamFileExtension = 'BAM';
 const cramFileExtension = 'CRAM';
@@ -104,18 +107,84 @@ const ToggleButtonPanel = ({
 	</div>
 );
 
-const BamTable = () => {
+const baseScoreDownloadParams = {
+	external: 'true',
+	offset: '0',
+	'User-Agent': 'unknown',
+};
+type ScoreDownloadParams = {
+	'User-Agent': string;
+	external: string;
+	length: string;
+	offset: string;
+};
+
+const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
+	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
+	const length = fileData.file.size.toString();
+	const object_id = fileData.id;
+
+	const scoreDownloadParams: ScoreDownloadParams = {
+		...baseScoreDownloadParams,
+		length,
+	};
+	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+
+	return await fetch(
+		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+		{
+			headers: { accept: '*/*' },
+			method: 'GET',
+		},
+	)
+		.then(async (response) => {
+			if (response.status === 500 || !response.ok) {
+				throw new Error(
+					`Error at getScoreDownloadUrls status: ${response.status}, ok: ${response.ok}`,
+				);
+			}
+
+			const res = await response.json();
+			return res;
+		})
+		.catch((error) => {
+			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
+		});
+};
+
+const getFileMetaData = async (selectedBamFile: FileType) => {
+	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
+	console.log('fileMetaData', fileMetaData);
+	const fileUrl = fileMetaData ? fileMetaData.parts[0].url : null;
+	return fileUrl;
+};
+
+const BamTable = ({ file }: { file: FileType | null }) => {
 	const theme = useTheme();
-
+	const [fileUrl, setFileUrl] = useState('');
 	const [elementState, toggleElementState] = useState(initElementState);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
+	console.log('fileUrl', fileUrl);
 	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
-	const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
+	// const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
 	const fileName = fileUrl.split('/').pop();
+	console.log('fileUrl', fileName);
 
 	useEffect(() => {
-		setLoading(false);
+		if (!fileUrl && file) {
+			// setLoading(true);
+			console.log('condition');
+			getFileMetaData(file).then((data) => {
+				if (typeof data === 'string') {
+					console.log('.then');
+					setFileUrl(data);
+					setLoading(false);
+				}
+			});
+		} else {
+			console.error('Null File Object');
+		}
 	}, []);
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
