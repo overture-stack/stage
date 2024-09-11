@@ -178,7 +178,6 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 	const [elementState, toggleElementState] = useState(initElementState);
 	const [loading, setLoading] = useState(true);
 
-	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
 	// const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
@@ -208,11 +207,11 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 		() => (
 			<TableContextProvider>
 				<h2>{fileName}</h2>
-				<IobioDataBroker alignmentUrl={fileUrl} />
-				{loading ? (
+				{loading || !fileUrl ? (
 					<Loader />
 				) : (
 					<>
+						<IobioDataBroker alignmentUrl={fileUrl} />
 						<ToggleButtonPanel
 							elementState={elementState}
 							updateElements={updateElements}
@@ -297,7 +296,7 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 				)}
 			</TableContextProvider>
 		),
-		[loading, elementState],
+		[loading, fileMetaData, elementState],
 	);
 };
 
