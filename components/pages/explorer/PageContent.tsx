@@ -87,21 +87,20 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 
 	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
 
-	const switchTable = async () => {
+	const switchTable = () => {
+		const { selectedRows, tableData } = tableContext;
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
-			const { selectedRows, tableData } = tableContext;
 			const oneFileSelected = selectedRows.length === 1;
 			// TODO: if not oneFile throw error; investigate context bug
-
 			const selectedBamFile = oneFileSelected
 				? // TODO: Type
 				  (tableData.find((data: any) => {
 						if (data && typeof data === 'object') {
-							console.log(
-								data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type),
-							);
-							return data.id === selectedRows[0] && BamFileExtensions.includes(data.file_type);
+							const idMatch = data.id === selectedRows[0];
+							const isBamFile = BamFileExtensions.includes(data.file_type);
+							return idMatch && isBamFile;
 						}
 				  }) as FileType)
 				: null;
@@ -229,7 +228,7 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 				</div>
 			</div>
 		),
-		[tableType],
+		[tableType, tableContext],
 	);
 };
 
