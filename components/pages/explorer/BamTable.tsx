@@ -119,6 +119,21 @@ type ScoreDownloadParams = {
 	offset: string;
 };
 
+type FileMetaData = {
+	objectId: string;
+	objectKey: string;
+	objectMd5: string;
+	objectSize: number;
+	parts: {
+		md5: string | null;
+		offset: number;
+		partNumber: number;
+		partSize: number;
+		url: string;
+	}[];
+	uploadId: string;
+};
+
 const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
@@ -145,7 +160,7 @@ const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) 
 			}
 
 			const res = await response.json();
-			return res;
+			return res as FileMetaData;
 		})
 		.catch((error) => {
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
@@ -154,31 +169,25 @@ const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) 
 
 const getFileMetaData = async (selectedBamFile: FileType) => {
 	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
-	console.log('fileMetaData', fileMetaData);
-	const fileUrl = fileMetaData ? fileMetaData.parts[0].url : null;
-	return fileUrl;
+	return fileMetaData;
 };
 
 const BamTable = ({ file }: { file: FileType | null }) => {
 	const theme = useTheme();
-	const [fileUrl, setFileUrl] = useState('');
+	const [fileMetaData, setFileMetaData] = useState<FileMetaData | null>(null);
 	const [elementState, toggleElementState] = useState(initElementState);
 	const [loading, setLoading] = useState(true);
 
-	console.log('fileUrl', fileUrl);
 	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
 	// const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
-	const fileName = fileUrl.split('/').pop();
-	console.log('fileUrl', fileName);
+	const fileUrl = fileMetaData?.parts[0]?.url || null;
+	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
 	useEffect(() => {
 		if (!fileUrl && file) {
-			// setLoading(true);
-			console.log('condition');
 			getFileMetaData(file).then((data) => {
-				if (typeof data === 'string') {
-					console.log('.then');
-					setFileUrl(data);
+				if (data) {
+					setFileMetaData(data);
 					setLoading(false);
 				}
 			});
