@@ -81,7 +81,10 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
 			const oneFileSelected = selectedRows.length === 1;
-			if (!oneFileSelected) throw new Error('Only 1 BAM or CRAM file can be loaded');
+
+			if (selectedRows.length === 0) {
+				throw new Error('Please select at least 1 BAM or CRAM file');
+			} else if (!oneFileSelected) throw new Error('Only 1 BAM or CRAM file can be loaded');
 
 			// Type Check for Table Data unknown[]
 			const rowIsFileData = (row: unknown): row is FileTableData => {
