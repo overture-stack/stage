@@ -84,7 +84,9 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 
 			if (selectedRows.length === 0) {
 				throw new Error('Please select at least 1 BAM or CRAM file');
-			} else if (!oneFileSelected) throw new Error('Only 1 BAM or CRAM file can be loaded');
+			} else if (!oneFileSelected) {
+				throw new Error('Only 1 BAM or CRAM file can be loaded');
+			}
 
 			// Type Check for Table Data unknown[]
 			const rowIsFileData = (row: unknown): row is FileTableData => {
@@ -102,7 +104,9 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 					return idMatch && isBamFile;
 				})[0];
 
-			if (!selectedBamFile) throw new Error('Selected file is not a compatible BAM or CRAM file');
+			if (!selectedBamFile) {
+				throw new Error('Selected file is not a compatible BAM or CRAM file');
+			}
 
 			setCurrentBamFile(selectedBamFile);
 			setTableType(nextTableValue);
