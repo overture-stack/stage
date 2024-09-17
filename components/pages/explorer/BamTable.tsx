@@ -138,7 +138,8 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 
 	useEffect(() => {
 		if (!fileUrl && file) {
-			// On page load, file table data is populated, but additional file meta data needs to be requested from Score
+			// On page load, file table data is populated,
+			// but original file url needs to be requested from Score to use for Iobio analysis
 			loadAndSetFile(file);
 		} else if (
 			/* TODO: Remove Demo Data logic */

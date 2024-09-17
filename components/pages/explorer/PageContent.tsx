@@ -81,18 +81,26 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
 			const oneFileSelected = selectedRows.length === 1;
-			// TODO: if not oneFile throw error; investigate context bug
-			const selectedBamFile = oneFileSelected
-				? // TODO: Type
-				  (tableData.find((data: any) => {
-						if (data && typeof data === 'object') {
-							const idMatch = data.id === selectedRows[0];
-							const isBamFile = BamFileExtensions.includes(data.file_type);
-							return idMatch && isBamFile;
-						}
-				  }) as FileType)
-				: null;
-			// TODO: if not bamFile throw error
+			if (!oneFileSelected) throw new Error('Only 1 BAM or CRAM file can be loaded');
+
+			// Type Check for Table Data unknown[]
+			const rowIsFileData = (row: unknown): row is FileType => {
+				const rowData = row as FileType;
+				return Boolean(rowData?.id && rowData?.file_type);
+			};
+
+			const selectedBamFile: FileType = tableData
+				.map((row) => (rowIsFileData(row) ? row : null))
+				.filter((file) => !!file)
+				.filter((data) => {
+					const { id, file_type } = data;
+					const idMatch = id === selectedRows[0];
+					const isBamFile = file_type && BamFileExtensions.includes(file_type);
+					return idMatch && isBamFile;
+				})[0];
+
+			if (!selectedBamFile) throw new Error('Selected file is not a compatible BAM or CRAM file');
+
 			setCurrentBamFile(selectedBamFile);
 			setTableType(nextTableValue);
 		} else {

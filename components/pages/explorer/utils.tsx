@@ -104,7 +104,7 @@ export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: Fil
 		});
 };
 
-export type FileType = { id: string; file: { size: number } };
+export type FileType = { id: string; file_type?: string; file: { size: number } };
 
 export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 	active
