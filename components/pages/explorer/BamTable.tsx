@@ -112,6 +112,7 @@ const baseScoreDownloadParams = {
 	offset: '0',
 	'User-Agent': 'unknown',
 };
+
 type ScoreDownloadParams = {
 	'User-Agent': string;
 	external: string;
@@ -132,6 +133,23 @@ type FileMetaData = {
 		url: string;
 	}[];
 	uploadId: string;
+};
+
+const demoFileMetadata = {
+	objectId: 'demoFileData',
+	objectKey: '',
+	objectMd5: '',
+	objectSize: 0,
+	parts: [
+		{
+			md5: null,
+			offset: 0,
+			partNumber: 0,
+			partSize: 0,
+			url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
+		},
+	],
+	uploadId: '',
 };
 
 const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
@@ -178,22 +196,19 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 	const [elementState, toggleElementState] = useState(initElementState);
 	const [loading, setLoading] = useState(true);
 
-	// const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
+
+	// Todo: Update fileName definition
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
-	useEffect(() => {
-		if (!fileUrl && file) {
-			getFileMetaData(file).then((data) => {
-				if (data) {
-					setFileMetaData(data);
-					setLoading(false);
-				}
-			});
-		} else {
-			console.error('Null File Object');
-		}
-	}, []);
+	const loadAndSetFile = async (file: FileType) => {
+		await getFileMetaData(file).then((data) => {
+			if (data) {
+				setFileMetaData(data);
+				setLoading(false);
+			}
+		});
+	};
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
 		const newState = {
@@ -203,9 +218,52 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 		toggleElementState(newState);
 	};
 
+	/* TODO: Remove Demo Data logic */
+	const isDemoData = fileMetaData?.objectId === demoFileMetadata.objectId;
+
+	useEffect(() => {
+		if (!fileUrl && file) {
+			// On page load, file table data is populated, but additional file meta data needs to be requested from Score
+			loadAndSetFile(file);
+		} else if (
+			/* TODO: Remove Demo Data logic */
+			isDemoData &&
+			loading
+		) {
+			setLoading(false);
+		} else if (file === null) {
+			console.error('No File Data');
+		}
+	}, [fileMetaData]);
+
+	/* TODO: Remove Demo Data logic */
+	const loadDemoFile = async () => {
+		setLoading(true);
+		if (isDemoData && file) {
+			loadAndSetFile(file);
+		} else {
+			setFileMetaData(demoFileMetadata);
+		}
+	};
+
 	return useMemo(
 		() => (
 			<TableContextProvider>
+				<div>
+					{/* TODO: Remove Demo Data button */}
+					<button
+						css={css`
+							border: 2px solid ${theme.colors.accent};
+							border-radius: 5px;
+							min-width: fit-content;
+							padding: 3px 10px;
+							${getToggleButtonStyles(isDemoData, theme)}
+						`}
+						onClick={loadDemoFile}
+					>
+						{isDemoData ? 'View File Data' : 'View Demo Data'}
+					</button>
+				</div>
 				<h2>{fileName}</h2>
 				{loading || !fileUrl ? (
 					<Loader />
