@@ -34,9 +34,9 @@ import BamTable from './BamTable';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { FileTableData } from './filetypes';
+import { getToggleButtonStyles } from './getButtonStyles';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
-import { getToggleButtonStyles } from './tableUtils';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',

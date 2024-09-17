@@ -43,7 +43,7 @@ import Loader from '@/components/Loader';
 import { demoFileMetadata } from './constants';
 import { FileMetaData, FileTableData } from './filetypes';
 import { getFileMetaData } from './fileUtils';
-import { getToggleButtonStyles } from './tableUtils';
+import { getToggleButtonStyles } from './getButtonStyles';
 
 const ToggleButtonPanel = ({
 	elementState,

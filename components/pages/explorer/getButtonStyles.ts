@@ -21,13 +21,12 @@
 
 import { Theme } from '@emotion/react';
 
-export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
-	active
-		? `
-			background-color: ${theme.colors.white};
-			color: ${theme.colors.accent};
-		`
-		: `
-			background-color: ${theme.colors.accent};
-			color: ${theme.colors.white};
+export const getToggleButtonStyles = (active: boolean, theme: Theme) => {
+	const {
+		colors: { accent, white },
+	} = theme;
+	return `
+			background-color: ${active ? white : accent};
+			color: ${active ? accent : white};
 		`;
+};
