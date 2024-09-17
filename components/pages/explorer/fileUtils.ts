@@ -21,54 +21,13 @@
 
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
-import { Theme } from '@emotion/react';
 import urlJoin from 'url-join';
-
-const bamFileExtension = 'BAM';
-const cramFileExtension = 'CRAM';
-
-export const BamFileExtensions = [bamFileExtension, cramFileExtension];
-
-export type FileMetaData = {
-	objectId: string;
-	objectKey?: string;
-	objectMd5?: string;
-	objectSize?: number;
-	parts: {
-		md5?: string | null;
-		offset?: number;
-		partNumber?: number;
-		partSize?: number;
-		url: string;
-	}[];
-	uploadId?: string;
-};
-
-export const demoFileMetadata = {
-	objectId: 'demoFileData',
-	parts: [
-		{
-			url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
-		},
-	],
-};
+import { baseScoreDownloadParams } from './constants';
+import { FileMetaData, FileTableData, ScoreDownloadParams } from './filetypes';
 
 export const getFileMetaData = async (selectedBamFile: FileTableData) => {
 	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
 	return fileMetaData;
-};
-
-export const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
-};
-
-export type ScoreDownloadParams = {
-	'User-Agent': string;
-	external: string;
-	length: string;
-	offset: string;
 };
 
 export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileTableData) => {
@@ -103,16 +62,3 @@ export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: Fil
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
 		});
 };
-
-export type FileTableData = { id: string; file_type?: string; file: { size: number } };
-
-export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
-	active
-		? `
-			background-color: ${theme.colors.white};
-			color: ${theme.colors.accent};
-		`
-		: `
-			background-color: ${theme.colors.accent};
-			color: ${theme.colors.white};
-		`;

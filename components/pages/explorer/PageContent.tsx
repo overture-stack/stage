@@ -31,10 +31,12 @@ import useUrlParamState from '@/global/hooks/useUrlParamsState';
 import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable';
+import { BamFileExtensions } from './constants';
 import Facets from './Facets';
+import { FileTableData } from './filetypes';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
-import { BamFileExtensions, FileTableData, getToggleButtonStyles } from './utils';
+import { getToggleButtonStyles } from './tableUtils';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',

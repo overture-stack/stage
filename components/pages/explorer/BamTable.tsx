@@ -40,13 +40,10 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 
 import Loader from '@/components/Loader';
-import {
-	demoFileMetadata,
-	FileMetaData,
-	FileTableData,
-	getFileMetaData,
-	getToggleButtonStyles,
-} from './utils';
+import { demoFileMetadata } from './constants';
+import { FileMetaData, FileTableData } from './filetypes';
+import { getFileMetaData } from './fileUtils';
+import { getToggleButtonStyles } from './tableUtils';
 
 const ToggleButtonPanel = ({
 	elementState,
