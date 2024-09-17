@@ -34,7 +34,7 @@ import BamTable from './BamTable';
 import Facets from './Facets';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
-import { BamFileExtensions, FileType, getToggleButtonStyles } from './utils';
+import { BamFileExtensions, FileTableData, getToggleButtonStyles } from './utils';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',
@@ -51,7 +51,7 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 	const { sqon, setSQON } = arrangerData;
 
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-	const [currentBamFile, setCurrentBamFile] = useState<FileType | null>(null);
+	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | null>(null);
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -84,12 +84,12 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 			if (!oneFileSelected) throw new Error('Only 1 BAM or CRAM file can be loaded');
 
 			// Type Check for Table Data unknown[]
-			const rowIsFileData = (row: unknown): row is FileType => {
-				const rowData = row as FileType;
+			const rowIsFileData = (row: unknown): row is FileTableData => {
+				const rowData = row as FileTableData;
 				return Boolean(rowData?.id && rowData?.file_type);
 			};
 
-			const selectedBamFile: FileType = tableData
+			const selectedBamFile: FileTableData = tableData
 				.map((row) => (rowIsFileData(row) ? row : null))
 				.filter((file) => !!file)
 				.filter((data) => {

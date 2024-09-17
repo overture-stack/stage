@@ -43,7 +43,7 @@ import Loader from '@/components/Loader';
 import {
 	demoFileMetadata,
 	FileMetaData,
-	FileType,
+	FileTableData,
 	getFileMetaData,
 	getToggleButtonStyles,
 } from './utils';
@@ -105,7 +105,7 @@ const ToggleButtonPanel = ({
 	</div>
 );
 
-const BamTable = ({ file }: { file: FileType | null }) => {
+const BamTable = ({ file }: { file: FileTableData | null }) => {
 	const theme = useTheme();
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | null>(null);
 	const [elementState, toggleElementState] = useState(initElementState);
@@ -116,7 +116,7 @@ const BamTable = ({ file }: { file: FileType | null }) => {
 	// Todo: Update fileName definition
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
-	const loadAndSetFile = async (file: FileType) => {
+	const loadAndSetFile = async (file: FileTableData) => {
 		await getFileMetaData(file).then((data) => {
 			if (data) {
 				setFileMetaData(data);

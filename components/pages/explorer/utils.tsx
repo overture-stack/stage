@@ -53,7 +53,7 @@ export const demoFileMetadata = {
 	],
 };
 
-export const getFileMetaData = async (selectedBamFile: FileType) => {
+export const getFileMetaData = async (selectedBamFile: FileTableData) => {
 	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
 	return fileMetaData;
 };
@@ -71,7 +71,7 @@ export type ScoreDownloadParams = {
 	offset: string;
 };
 
-export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
+export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileTableData) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
 	const object_id = fileData.id;
@@ -104,7 +104,7 @@ export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: Fil
 		});
 };
 
-export type FileType = { id: string; file_type?: string; file: { size: number } };
+export type FileTableData = { id: string; file_type?: string; file: { size: number } };
 
 export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
 	active
