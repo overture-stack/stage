@@ -267,7 +267,7 @@ const BamTable = ({ file }: { file: FileTableData | null }) => {
 				)}
 			</TableContextProvider>
 		),
-		[loading, fileMetaData, elementState],
+		[loading, fileUrl, elementState],
 	);
 };
 
