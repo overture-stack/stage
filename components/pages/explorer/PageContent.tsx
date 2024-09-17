@@ -96,17 +96,19 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 				return Boolean(rowData?.id && rowData?.file_type);
 			};
 
-			const selectedBamFile: FileTableData = tableData
+			const selectedBamFile: FileTableData | null = tableData
 				.map((row) => (rowIsFileData(row) ? row : null))
-				.filter((file) => !!file)
 				.filter((data) => {
+					if (!data) {
+						return false;
+					}
 					const { id, file_type } = data;
 					const idMatch = id === selectedRows[0];
 					const isBamFile = file_type && BamFileExtensions.includes(file_type);
 					return idMatch && isBamFile;
 				})[0];
 
-			if (!selectedBamFile) {
+			if (selectedBamFile === null) {
 				throw new Error('Selected file is not a compatible BAM or CRAM file');
 			}
 
