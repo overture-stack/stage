@@ -31,34 +31,26 @@ export const BamFileExtensions = [bamFileExtension, cramFileExtension];
 
 export type FileMetaData = {
 	objectId: string;
-	objectKey: string;
-	objectMd5: string;
-	objectSize: number;
+	objectKey?: string;
+	objectMd5?: string;
+	objectSize?: number;
 	parts: {
-		md5: string | null;
-		offset: number;
-		partNumber: number;
-		partSize: number;
+		md5?: string | null;
+		offset?: number;
+		partNumber?: number;
+		partSize?: number;
 		url: string;
 	}[];
-	uploadId: string;
+	uploadId?: string;
 };
 
 export const demoFileMetadata = {
 	objectId: 'demoFileData',
-	objectKey: '',
-	objectMd5: '',
-	objectSize: 0,
 	parts: [
 		{
-			md5: null,
-			offset: 0,
-			partNumber: 0,
-			partSize: 0,
 			url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
 		},
 	],
-	uploadId: '',
 };
 
 export const getFileMetaData = async (selectedBamFile: FileType) => {
