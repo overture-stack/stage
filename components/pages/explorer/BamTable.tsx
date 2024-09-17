@@ -21,8 +21,6 @@
 
 'use client';
 
-import { getConfig } from '@/global/config';
-import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { css, Theme, useTheme } from '@emotion/react';
 import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
@@ -40,15 +38,15 @@ import {
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useEffect, useMemo, useState } from 'react';
-import urlJoin from 'url-join';
 
 import Loader from '@/components/Loader';
-import { getToggleButtonStyles, type FileType } from './PageContent';
-
-const bamFileExtension = 'BAM';
-const cramFileExtension = 'CRAM';
-
-export const BamFileExtensions = [bamFileExtension, cramFileExtension];
+import {
+	demoFileMetadata,
+	FileMetaData,
+	FileType,
+	getFileMetaData,
+	getToggleButtonStyles,
+} from './utils';
 
 const ToggleButtonPanel = ({
 	elementState,
@@ -106,89 +104,6 @@ const ToggleButtonPanel = ({
 		</div>
 	</div>
 );
-
-const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
-};
-
-type ScoreDownloadParams = {
-	'User-Agent': string;
-	external: string;
-	length: string;
-	offset: string;
-};
-
-type FileMetaData = {
-	objectId: string;
-	objectKey: string;
-	objectMd5: string;
-	objectSize: number;
-	parts: {
-		md5: string | null;
-		offset: number;
-		partNumber: number;
-		partSize: number;
-		url: string;
-	}[];
-	uploadId: string;
-};
-
-const demoFileMetadata = {
-	objectId: 'demoFileData',
-	objectKey: '',
-	objectMd5: '',
-	objectSize: 0,
-	parts: [
-		{
-			md5: null,
-			offset: 0,
-			partNumber: 0,
-			partSize: 0,
-			url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
-		},
-	],
-	uploadId: '',
-};
-
-const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileType) => {
-	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const length = fileData.file.size.toString();
-	const object_id = fileData.id;
-
-	const scoreDownloadParams: ScoreDownloadParams = {
-		...baseScoreDownloadParams,
-		length,
-	};
-	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
-
-	return await fetch(
-		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
-		{
-			headers: { accept: '*/*' },
-			method: 'GET',
-		},
-	)
-		.then(async (response) => {
-			if (response.status === 500 || !response.ok) {
-				throw new Error(
-					`Error at getScoreDownloadUrls status: ${response.status}, ok: ${response.ok}`,
-				);
-			}
-
-			const res = await response.json();
-			return res as FileMetaData;
-		})
-		.catch((error) => {
-			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
-		});
-};
-
-const getFileMetaData = async (selectedBamFile: FileType) => {
-	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
-	return fileMetaData;
-};
 
 const BamTable = ({ file }: { file: FileType | null }) => {
 	const theme = useTheme();

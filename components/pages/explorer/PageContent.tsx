@@ -19,7 +19,7 @@
  *
  */
 
-import { css, Theme, useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
 import { TableContextInterface } from '@overture-stack/arranger-components/dist/Table/types';
@@ -30,28 +30,16 @@ import { useEffect, useMemo, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 import { File, Screen } from '../../theme/icons';
 
-import BamTable, { BamFileExtensions } from './BamTable';
+import BamTable from './BamTable';
 import Facets from './Facets';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
+import { BamFileExtensions, FileType, getToggleButtonStyles } from './utils';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',
 	BAM_TABLE: 'bamTable',
 };
-
-export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
-	active
-		? `
-			background-color: ${theme.colors.white};
-			color: ${theme.colors.accent};
-		`
-		: `
-			background-color: ${theme.colors.accent};
-			color: ${theme.colors.white};
-		`;
-
-export type FileType = { id: string; file: { size: number } };
 
 const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
 	const theme = useTheme();
