@@ -103,7 +103,6 @@ const PageContent = () => {
 					const isBamFile = file_type && BamFileExtensions.includes(file_type);
 					return idMatch && isBamFile;
 				}
-				return false;
 			}) as FileTableData | undefined;
 
 			if (selectedBamFile === undefined) {
