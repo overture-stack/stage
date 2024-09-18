@@ -31,7 +31,6 @@ import createArrangerFetcher from '../../utils/arrangerFetcher';
 import sleep from '../../utils/sleep';
 import { RepoFiltersType } from './sqonTypes';
 
-import { TableContext } from '@overture-stack/arranger-components/dist/';
 import getConfigError from './getConfigError';
 import PageContent from './PageContent';
 
