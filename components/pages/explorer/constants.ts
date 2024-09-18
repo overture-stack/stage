@@ -26,15 +26,6 @@ const cramFileExtension = 'CRAM';
 
 export const BamFileExtensions = [bamFileExtension, cramFileExtension];
 
-export const demoFileMetadata: FileMetaData = {
-	objectId: 'demoFileData',
-	parts: [
-		{
-			url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
-		},
-	],
-};
-
 export const baseScoreDownloadParams = {
 	external: 'true',
 	offset: '0',

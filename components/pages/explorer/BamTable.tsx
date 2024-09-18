@@ -40,7 +40,6 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 
 import Loader from '@/components/Loader';
-import { demoFileMetadata } from './constants';
 import { FileMetaData, FileTableData } from './fileTypes';
 import { getFileMetaData, isFileMetaData } from './fileUtils';
 import { getToggleButtonStyles } from './getButtonStyles';
@@ -134,25 +133,17 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	};
 
 	/* TODO: Remove Demo Data logic */
+	const demoFileMetadata: FileMetaData = {
+		objectId: 'demoFileData',
+		parts: [
+			{
+				url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
+			},
+		],
+	};
+
 	const isDemoData = fileMetaData?.objectId === demoFileMetadata.objectId;
 
-	useEffect(() => {
-		if (!fileUrl && file) {
-			// On page load, file table data is populated,
-			// but original file url needs to be requested from Score to use for Iobio analysis
-			loadAndSetFile(file);
-		} else if (
-			/* TODO: Remove Demo Data logic */
-			isDemoData &&
-			loading
-		) {
-			setLoading(false);
-		} else if (file === null) {
-			console.error('No File Data');
-		}
-	}, [fileMetaData]);
-
-	/* TODO: Remove Demo Data logic */
 	const loadDemoFile = async () => {
 		setLoading(true);
 		if (isDemoData && file) {
@@ -162,24 +153,44 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 		}
 	};
 
+	const DemoDataButton = () => (
+		<div>
+			<button
+				css={css`
+					border: 2px solid ${theme.colors.accent};
+					border-radius: 5px;
+					min-width: fit-content;
+					padding: 3px 10px;
+					${getToggleButtonStyles(isDemoData, theme)}
+				`}
+				onClick={loadDemoFile}
+			>
+				{isDemoData ? 'View File Data' : 'View Demo Data'}
+			</button>
+		</div>
+	);
+
+	useEffect(() => {
+		if (isDemoData && loading) {
+			setLoading(false);
+		}
+	}, [[fileMetaData]]);
+
+	useEffect(() => {
+		if (!fileUrl && file) {
+			// On page load, file table data is populated,
+			// but original file url needs to be requested from Score to use for Iobio analysis
+			loadAndSetFile(file);
+		} else if (file === null) {
+			console.error('No File Data');
+		}
+	}, [fileMetaData]);
+
 	return useMemo(
 		() => (
 			<TableContextProvider>
-				<div>
-					{/* TODO: Remove Demo Data button */}
-					<button
-						css={css`
-							border: 2px solid ${theme.colors.accent};
-							border-radius: 5px;
-							min-width: fit-content;
-							padding: 3px 10px;
-							${getToggleButtonStyles(isDemoData, theme)}
-						`}
-						onClick={loadDemoFile}
-					>
-						{isDemoData ? 'View File Data' : 'View Demo Data'}
-					</button>
-				</div>
+				{/* TODO: Remove Demo Data Button */}
+				<DemoDataButton />
 				<h2>{fileName}</h2>
 				{loading || !fileUrl ? (
 					<Loader />
