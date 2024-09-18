@@ -20,10 +20,9 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { useArrangerData } from '@overture-stack/arranger-components';
+import { useArrangerData, useTableContext } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
-import { useTableContext } from '@overture-stack/arranger-components/dist/Table/';
-import { UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
+import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
