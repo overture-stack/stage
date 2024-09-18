@@ -41,8 +41,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { demoFileMetadata } from './constants';
-import { FileMetaData, FileTableData } from './filetypes';
-import { getFileMetaData } from './fileUtils';
+import { FileMetaData, FileTableData } from './fileTypes';
+import { getFileMetaData, isFileMetaData } from './fileUtils';
 import { getToggleButtonStyles } from './getButtonStyles';
 
 const ToggleButtonPanel = ({
@@ -114,12 +114,16 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
 	const loadAndSetFile = async (file: FileTableData) => {
-		await getFileMetaData(file).then((data) => {
-			if (data) {
-				setFileMetaData(data);
-				setLoading(false);
-			}
-		});
+		const data = await getFileMetaData(file);
+
+		if (isFileMetaData(data)) {
+			setFileMetaData(data);
+			setLoading(false);
+		} else {
+			setFileMetaData(undefined);
+			setLoading(false);
+			throw new Error('Error retrieving Score File Data');
+		}
 	};
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {

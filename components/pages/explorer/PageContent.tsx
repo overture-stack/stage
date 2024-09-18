@@ -34,7 +34,8 @@ import { File, Screen } from '../../theme/icons';
 import BamTable from './BamTable';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
-import { FileTableData } from './filetypes';
+import { type FileTableData } from './fileTypes';
+import { rowIsFileData } from './fileUtils';
 import { getToggleButtonStyles } from './getButtonStyles';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
@@ -94,12 +95,6 @@ const PageContent = () => {
 			} else if (!oneFileSelected) {
 				throw new Error('Only 1 BAM or CRAM file can be loaded');
 			}
-
-			// Type Check for Table Data unknown[]
-			const rowIsFileData = (row: unknown): row is FileTableData => {
-				const rowData = row as FileTableData;
-				return Boolean(rowData?.id && rowData?.file_type);
-			};
 
 			const selectedBamFile = tableData.find((data) => {
 				if (rowIsFileData(data)) {

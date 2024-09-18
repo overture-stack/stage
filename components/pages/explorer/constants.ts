@@ -19,7 +19,7 @@
  *
  */
 
-import { type FileMetaData } from './filetypes';
+import { type FileMetaData } from './fileTypes';
 
 const bamFileExtension = 'BAM';
 const cramFileExtension = 'CRAM';
