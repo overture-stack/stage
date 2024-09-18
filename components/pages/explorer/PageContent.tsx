@@ -53,7 +53,7 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 	const { sqon, setSQON } = arrangerData;
 
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | null>(null);
+	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -96,19 +96,17 @@ const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) 
 				return Boolean(rowData?.id && rowData?.file_type);
 			};
 
-			const selectedBamFile: FileTableData | null = tableData
-				.map((row) => (rowIsFileData(row) ? row : null))
-				.filter((data) => {
-					if (!data) {
-						return false;
-					}
+			const selectedBamFile = tableData.find((data) => {
+				if (rowIsFileData(data)) {
 					const { id, file_type } = data;
 					const idMatch = id === selectedRows[0];
 					const isBamFile = file_type && BamFileExtensions.includes(file_type);
 					return idMatch && isBamFile;
-				})[0];
+				}
+				return false;
+			}) as FileTableData | undefined;
 
-			if (selectedBamFile === null) {
+			if (selectedBamFile === undefined) {
 				throw new Error('Selected file is not a compatible BAM or CRAM file');
 			}
 
