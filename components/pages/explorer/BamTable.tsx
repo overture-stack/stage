@@ -113,17 +113,16 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	// Todo: Update fileName definition
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
-	const loadAndSetFile = async (file: FileTableData) => {
-		const data = await getFileMetaData(file);
-
-		if (isFileMetaData(data)) {
-			setFileMetaData(data);
+	const loadAndSetFile = (file: FileTableData) => {
+		getFileMetaData(file).then((data) => {
+			if (isFileMetaData(data)) {
+				setFileMetaData(data);
+			} else {
+				setFileMetaData(undefined);
+				throw new Error('Error retrieving Score File Data');
+			}
 			setLoading(false);
-		} else {
-			setFileMetaData(undefined);
-			setLoading(false);
-			throw new Error('Error retrieving Score File Data');
-		}
+		});
 	};
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {

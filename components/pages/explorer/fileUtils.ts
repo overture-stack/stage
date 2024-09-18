@@ -21,6 +21,7 @@
 
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
+import axios from 'axios';
 import urlJoin from 'url-join';
 import { baseScoreDownloadParams } from './constants';
 import { type FileMetaData, type FileTableData, type ScoreDownloadParams } from './fileTypes';
@@ -36,12 +37,12 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 	return Boolean((file as FileMetaData).objectId && (file as FileMetaData).parts[0].url);
 };
 
-export const getFileMetaData = async (selectedBamFile: FileTableData) => {
-	const fileMetaData = await getScoreDownloadUrls('file', selectedBamFile);
+export const getFileMetaData = (selectedBamFile: FileTableData) => {
+	const fileMetaData = getScoreDownloadUrls(selectedBamFile);
 	return fileMetaData;
 };
 
-export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: FileTableData) => {
+export const getScoreDownloadUrls = (fileData: FileTableData) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
 	const object_id = fileData.id;
@@ -52,22 +53,15 @@ export const getScoreDownloadUrls = async (type: 'file' | 'index', fileData: Fil
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-	return await fetch(
-		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
-		{
+	return axios
+		.get(urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`), {
 			headers: { accept: '*/*' },
-			method: 'GET',
-		},
-	)
-		.then(async (response) => {
-			if (response.status === 500 || !response.ok) {
-				throw new Error(
-					`Error at getScoreDownloadUrls status: ${response.status}, ok: ${response.ok}`,
-				);
+		})
+		.then((response) => {
+			if (response.status === 500 || !(response.status === 200)) {
+				throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
 			}
-
-			const res = await response.json();
-			return res;
+			return response.data;
 		})
 		.catch((error) => {
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
