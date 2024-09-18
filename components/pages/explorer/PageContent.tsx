@@ -22,7 +22,8 @@
 import { css, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
-import { TableContextInterface } from '@overture-stack/arranger-components/dist/Table/types';
+import { useTableContext } from '@overture-stack/arranger-components/dist/Table/';
+import { UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -43,15 +44,19 @@ const tableTypes = {
 	BAM_TABLE: 'bamTable',
 };
 
-const PageContent = ({ tableContext }: { tableContext: TableContextInterface }) => {
+const PageContent = () => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
 	// TODO: abstract this param handling into an Arranger integration.
-	const arrangerData = useArrangerData({ callerName: 'Explorer-PageContent' });
+	const contextProps: Partial<UseTableContextProps> = {
+		callerName: 'Explorer-PageContent',
+	};
+	const arrangerData = useArrangerData(contextProps);
 	const { sqon, setSQON } = arrangerData;
 
+	const tableContext = useTableContext(contextProps);
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
 

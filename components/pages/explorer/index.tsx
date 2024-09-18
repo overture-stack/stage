@@ -151,9 +151,7 @@ const RepositoryPage = () => {
 					}}
 				>
 					<TableContextProvider>
-						<TableContext.Consumer>
-							{(context) => <PageContent tableContext={context} />}
-						</TableContext.Consumer>
+						<PageContent />
 					</TableContextProvider>
 				</ArrangerDataProvider>
 			)}
