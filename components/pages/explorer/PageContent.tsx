@@ -25,6 +25,7 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
+import Router from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
@@ -90,9 +91,13 @@ const PageContent = () => {
 			const oneFileSelected = selectedRows.length === 1;
 
 			if (selectedRows.length === 0) {
-				throw new Error('Please select at least 1 BAM or CRAM file');
+				Router.push({
+					pathname: '/_error',
+				});
 			} else if (!oneFileSelected) {
-				throw new Error('Only 1 BAM or CRAM file can be loaded');
+				Router.push({
+					pathname: '/_error',
+				});
 			}
 
 			const selectedBamFile = tableData.find((data) => {
@@ -105,7 +110,9 @@ const PageContent = () => {
 			}) as FileTableData | undefined;
 
 			if (selectedBamFile === undefined) {
-				throw new Error('Selected file is not a compatible BAM or CRAM file');
+				Router.push({
+					pathname: '/_error',
+				});
 			}
 
 			setCurrentBamFile(selectedBamFile);
