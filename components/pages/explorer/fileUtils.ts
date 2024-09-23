@@ -37,11 +37,6 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 	return Boolean((file as FileMetaData).objectId && (file as FileMetaData).parts[0].url);
 };
 
-export const getFileMetaData = (selectedBamFile: FileTableData) => {
-	const fileMetaData = getScoreDownloadUrls(selectedBamFile);
-	return fileMetaData;
-};
-
 export const getScoreDownloadUrls = (fileData: FileTableData) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
@@ -66,4 +61,9 @@ export const getScoreDownloadUrls = (fileData: FileTableData) => {
 		.catch((error) => {
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
 		});
+};
+
+export const getFileMetaData = (selectedBamFile: FileTableData) => {
+	const fileMetaData = getScoreDownloadUrls(selectedBamFile);
+	return fileMetaData;
 };
