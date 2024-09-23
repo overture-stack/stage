@@ -1,46 +1,185 @@
 # Setup
 
-### Prerequisites
+## Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
 
 - Node.js (v16 or higher)
 - npm (v8.3.0 or higher)
 - Docker (v4.32.0 or higher)
+- Git
 
-### Installation
+## Installation
 
-Stage is a basic front-end UI that complements Arranger's search UI components. It's best to run Stage with Arranger and some mock data. To simplify setting up this development environment, we've created a docker-compose file to automate the setup of Stage's complementary services.
+Stage is a front-end UI that complements Arranger's search UI components. This guide will walk you through setting up a complete development environment, including Stage and its complementary services.
 
-**1. Clone and run the Stage Dev Environment QuickStart**
+
+<details>
+  <summary><b>Diagram of the Stage's development environment</b></summary>
+    ```mermaid
+    graph LR
+        %% Define nodes
+        Elasticsearch(Elasticsearch)
+        Arranger(Arranger)
+        Stage(Stage)
+        Keycloak(Keycloak)
+        KeycloakDb[(Keycloak DB)]
+        ArrangerConfigs{{Configuration Files}}
+        IndexMapping{{Index Mapping}}
+        ElasticsearchDocuments{{Elasticsearch Documents}}
+        OvertureAPIKeyProvider{{Overture API Key Provider}}
+
+        %% Identity and Access Management
+        subgraph Identity and Access Management
+            OvertureAPIKeyProvider -.-> Keycloak
+            KeycloakDb --- Keycloak
+        end
+
+        Keycloak -.- Stage
+
+        %% Search & Exploration
+        subgraph Search and Exploration
+            IndexMapping -.-> Elasticsearch
+            ElasticsearchDocuments -.-> Elasticsearch
+            Elasticsearch --- Arranger
+            Arranger --- Stage
+            ArrangerConfigs -.-> Arranger
+        end
+
+
+        %% Styling
+        classDef default fill:#F2F5F8,stroke:#04518c,color:#282A35;
+        classDef database fill:#91909080,stroke:#03497e,color:#282A35;
+        classDef service fill:#0669b64e,stroke:#03497e,color:#282A35;
+        classDef thirdParty fill:#ebeced,stroke:#a1a1a1,color:#282A35;
+        classDef local fill:#E2B7D0,stroke:#9E005D,color:#282A35;
+        classDef configs fill:#E4E775,stroke:#7D7D7D,color:#282A35; 
+
+        class Stage local;
+        class KeycloakDb database;
+        class Arranger service;
+        class Elasticsearch,Keycloak thirdParty;
+        class ElasticsearchDocuments,ArrangerConfigs,IndexMapping,OvertureAPIKeyProvider configs;
+    ```
+
+    **Databases (dark gray), Overture services (light blue & pink), third-party services (light gray), development service (pink), and configuration files (yellow).**
+</details>
+
+### 1. Set up complementary services
+
+We'll use our Conductor service, a flexible Docker Compose setup, to spin up Stage's complementary services.
 
 ```bash
-git clone -b stageDev https://github.com/overture-stack/composer.git
-cd composer
-docker compose up --attach conductor
+git clone https://github.com/overture-stack/conductor.git
+cd conductor
 ```
 
-With Stage's complementary services running, we can now run Stage itself for local development.
+Next, run the appropriate start command for your operating system:
 
-**2. Clone the Stage Repository**
+| Operating System | Command |
+|------------------|---------|
+| Unix/macOS       | `make stageDev` |
+| Windows          | `make.bat stageDev` |
+
+This command will set up all necessary services for Stage development.
+
+### 2. Clone and set up Stage
+
+Now, let's set up Stage itself:
 
 ```bash
 git clone https://github.com/overture-stack/stage.git
 cd stage
 ```
 
-**3. Install the dependencies**
+### 3. Configure environment variables
+
+Rename the `.env.stage` file to `.env`:
+
+```bash
+mv .env.stage .env
+```
+
+This `.env` file is preconfigured for the Stage dev environment quickstart. Here's a summary of the key environment variables:
+
+```env
+# ==============================
+# Stage Environment Variables
+# ==============================
+
+# Stage Variables
+NEXTAUTH_URL=http://localhost:3000/api/auth
+NEXT_PUBLIC_LAB_NAME=Stage Development Environment
+NEXT_PUBLIC_ADMIN_EMAIL=contact@overture.bio
+NEXT_PUBLIC_DEBUG=true
+NEXT_PUBLIC_SHOW_MOBILE_WARNING=true
+
+# Keycloak Variables
+NEXT_PUBLIC_AUTH_PROVIDER=keycloak
+ACCESSTOKEN_ENCRYPTION_SECRET=super_secret
+SESSION_ENCRYPTION_SECRET=this_is_a_super_secret_secret
+NEXT_PUBLIC_KEYCLOAK_HOST=http://keycloak:8080
+NEXT_PUBLIC_KEYCLOAK_REALM=myrealm
+NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=webclient
+KEYCLOAK_CLIENT_SECRET=ikksyrYaKX07acf4hpGrpKWcUGaFkEdM
+NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE=dms
+
+# Arranger Variables
+NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE=file
+NEXT_PUBLIC_ARRANGER_INDEX=file_centric
+NEXT_PUBLIC_ARRANGER_API_URL=http://arranger-server:5050
+NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS=repositories.code, object_id, analysis.analysis_id, study_id, file_type, file.name, file.size, file.md5sum, file.index_file.object_id, donors.donor_id, donors.specimens.samples.sample_id
+```
+
+<details>
+  <summary><b>Detailed explanation of Stage's environment variables</b></summary>
+
+- **Stage Variables**
+    - `NEXTAUTH_URL`: Specifies the base URL for NextAuth.js, which handles authentication in Next.js applications. This setting is used to configure the authentication flow, including where to redirect users after successful authentication.
+    - `NEXT_PUBLIC_LAB_NAME`: The name displayed in the top left of the portal interface. Feel free to customize this.
+    - `NEXT_PUBLIC_ADMIN_EMAIL`: The email address of the administrator or support contact. This setting updates the help link found by default in the footer navigation of the portal interface.
+
+- **Keycloak Variables**
+    - `NEXT_PUBLIC_AUTH_PROVIDER`: Specifies the authentication provider, in this case, "keycloak".
+    - `ACCESSTOKEN_ENCRYPTION_SECRET`: Defines the secret used to encrypt access tokens, enhancing security by preventing easy decoding of intercepted tokens.
+    - `SESSION_ENCRYPTION_SECRET`: Specifies the secret used to encrypt session cookies, protecting sensitive information stored in the cookie from unauthorized access.
+    - `NEXT_PUBLIC_KEYCLOAK_HOST`: Specifies the URL where the Keycloak server is hosted (e.g., "http://localhost:8080").
+    - `NEXT_PUBLIC_KEYCLOAK_REALM`: Defines the realm in Keycloak that contains the users and roles for the application.
+    - `NEXT_PUBLIC_KEYCLOAK_CLIENT_ID`: The client ID for the Keycloak application.
+    - `KEYCLOAK_CLIENT_SECRET`: The client secret for the Keycloak application.
+    - `NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE`: Specifies the audience for the permission claims in the access token, restricting the scope of access granted to the token.
+
+- **Arranger Variables**
+    - `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`: Specifies whether the index is file-centric or analysis (participant) centric.
+    - `NEXT_PUBLIC_ARRANGER_INDEX`: Defines the index used by the Arranger service.
+    - `NEXT_PUBLIC_ARRANGER_API_URL`: The URL of the Arranger GraphQL API. By default, Arranger's API is mapped to port 5050.
+    - `NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS`: Lists the columns to be included in the manifest generated for download with Score.
+
+</details>
+
+### 4. Start the development server
+
+Install the required npm packages:
 
 ```bash
 npm ci
 ```
 
-**4. Set up environment variables**
-
-In the root directory of the Stage repository, rename the `.env.stage` file to `.env`. This environment variable file is preconfigured for the Stage dev environment quickstart.
-
-**5. Run the local development server**
+Launch the Stage development server:
 
 ```bash
 npm run dev
 ```
 
-Once completed, you will be able to access Stage from `http://localhost:3000`.
+Once the server starts, you can access Stage at `http://localhost:3000`.
+
+## Troubleshooting
+
+If you encounter any issues during setup:
+
+1. Ensure all prerequisites are correctly installed and at the specified versions.
+2. Check that all services in the Docker Compose setup are running correctly.
+3. Verify that your `.env` file contains the correct configuration.
+4. If you're having network issues, ensure that the ports specified in the configuration are not being used by other services.
+
+For further assistance, feel free to [open an issue through GitHub here](https://github.com/overture-stack/stage/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md).
