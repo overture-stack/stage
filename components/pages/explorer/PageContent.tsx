@@ -47,6 +47,7 @@ const tableTypes = {
 
 const PageContent = () => {
 	const theme = useTheme();
+	const router = useRouter();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
@@ -88,33 +89,33 @@ const PageContent = () => {
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
-			const router = useRouter();
 			const oneFileSelected = selectedRows.length === 1;
 
-			if (!oneFileSelected) {
-				router.push({
-					pathname: '/_error',
-				});
-			}
+			if (oneFileSelected) {
+				const selectedBamFile = tableData.find((tableData) => {
+					if (rowIsFileData(tableData)) {
+						const { id, file_type } = tableData;
+						const idMatch = id === selectedRows[0];
+						const isBamFile = file_type && BamFileExtensions.includes(file_type);
+						return idMatch && isBamFile;
+					}
+				}) as FileTableData | undefined;
 
-			const selectedBamFile = tableData.find((tableData) => {
-				if (rowIsFileData(tableData)) {
-					const { id, file_type } = tableData;
-					const idMatch = id === selectedRows[0];
-					const isBamFile = file_type && BamFileExtensions.includes(file_type);
-					return idMatch && isBamFile;
+				if (selectedBamFile === undefined) {
+					router.push({
+						pathname: '/_error',
+					});
 				}
-			}) as FileTableData | undefined;
 
-			if (selectedBamFile === undefined) {
+				setCurrentBamFile(selectedBamFile);
+				setTableType(nextTableValue);
+			} else {
 				router.push({
 					pathname: '/_error',
 				});
 			}
-
-			setCurrentBamFile(selectedBamFile);
-			setTableType(nextTableValue);
 		} else {
+			// File Repo or Other Tables
 			setTableType(nextTableValue);
 		}
 	};
