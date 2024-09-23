@@ -19,8 +19,6 @@
  *
  */
 
-import { type FileMetaData } from './fileTypes';
-
 const bamFileExtension = 'BAM';
 const cramFileExtension = 'CRAM';
 

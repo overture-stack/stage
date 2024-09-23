@@ -114,13 +114,15 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
-		const data = await getFileMetaData(file).catch(console.error);
+		const data = await getFileMetaData(file).catch((error) => {
+			console.error('Error at loadAndSetFile', error);
+		});
 
 		if (isFileMetaData(data)) {
 			setFileMetaData(data);
 		} else {
 			setFileMetaData(undefined);
-			throw new Error('Error retrieving Score File Data');
+			console.error('Error retrieving Score File Data');
 		}
 		setLoading(false);
 	};
@@ -148,7 +150,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	const loadDemoFile = async () => {
 		setLoading(true);
 		if (isDemoData && file) {
-			await loadAndSetFile(file);
+			loadAndSetFile(file);
 		} else {
 			setFileMetaData(demoFileMetadata);
 		}
