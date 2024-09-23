@@ -59,6 +59,7 @@ const PageContent = () => {
 	const { sqon, setSQON } = arrangerData;
 
 	const tableContext = useTableContext(contextProps);
+	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
 
@@ -82,45 +83,38 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	// Disable Visualization button unless only 1 BAM Compatible file is selected
+	// TODO: Add User Error messaging
+	useEffect(() => {
+		const oneFileSelected = selectedRows.length === 1;
+		if (oneFileSelected) {
+			const selectedBamFile = tableData.find((tableData) => {
+				if (rowIsFileData(tableData)) {
+					const { id, file_type } = tableData;
+					const idMatch = id === selectedRows[0];
+					const isBamFile = file_type && BamFileExtensions.includes(file_type);
+					return idMatch && isBamFile;
+				}
+			}) as FileTableData | undefined;
+
+			setCurrentBamFile(selectedBamFile);
+		} else {
+			setCurrentBamFile(undefined);
+		}
+	}, [selectedRows]);
 
 	const switchTable = () => {
-		const { selectedRows, tableData } = tableContext;
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
-
-		if (nextTableValue === tableTypes['BAM_TABLE']) {
-			const oneFileSelected = selectedRows.length === 1;
-
-			if (oneFileSelected) {
-				const selectedBamFile = tableData.find((tableData) => {
-					if (rowIsFileData(tableData)) {
-						const { id, file_type } = tableData;
-						const idMatch = id === selectedRows[0];
-						const isBamFile = file_type && BamFileExtensions.includes(file_type);
-						return idMatch && isBamFile;
-					}
-				}) as FileTableData | undefined;
-
-				if (selectedBamFile === undefined) {
-					router.push({
-						pathname: '/_error',
-					});
-				}
-
-				setCurrentBamFile(selectedBamFile);
-				setTableType(nextTableValue);
-			} else {
-				router.push({
-					pathname: '/_error',
-				});
-			}
-		} else {
-			// File Repo or Other Tables
-			setTableType(nextTableValue);
-		}
+		setTableType(nextTableValue);
 	};
 
-	const iconColor = isFileTableActive ? theme.colors.accent : theme.colors.white;
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	const isBamFileSelected = Boolean(currentBamFile);
+	const iconColor = isFileTableActive
+		? isBamFileSelected
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -198,11 +192,17 @@ const PageContent = () => {
 									`}
 								>
 									<button
+										disabled={!isBamFileSelected}
 										css={css`
 											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
 											padding: 6px;
 											${getToggleButtonStyles(isFileTableActive, theme)}
+											:disabled {
+												background-color: ${theme.colors.grey_1};
+												border: 2px solid ${theme.colors.grey_4};
+												color: ${theme.colors.grey_4};
+											}
 										`}
 										onClick={switchTable}
 									>
