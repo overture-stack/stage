@@ -53,10 +53,11 @@ export const getScoreDownloadUrls = (fileData: FileTableData) => {
 			headers: { accept: '*/*' },
 		})
 		.then((response) => {
-			if (response.status === 500 || !(response.status === 200)) {
-				throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
+			if (response.status === 200) {
+				return response.data;
 			}
-			return response.data;
+
+			throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
 		})
 		.catch((error) => {
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
