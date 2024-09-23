@@ -25,7 +25,7 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
@@ -88,21 +88,18 @@ const PageContent = () => {
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 
 		if (nextTableValue === tableTypes['BAM_TABLE']) {
+			const router = useRouter();
 			const oneFileSelected = selectedRows.length === 1;
 
-			if (selectedRows.length === 0) {
-				Router.push({
-					pathname: '/_error',
-				});
-			} else if (!oneFileSelected) {
-				Router.push({
+			if (!oneFileSelected) {
+				router.push({
 					pathname: '/_error',
 				});
 			}
 
-			const selectedBamFile = tableData.find((data) => {
-				if (rowIsFileData(data)) {
-					const { id, file_type } = data;
+			const selectedBamFile = tableData.find((tableData) => {
+				if (rowIsFileData(tableData)) {
+					const { id, file_type } = tableData;
 					const idMatch = id === selectedRows[0];
 					const isBamFile = file_type && BamFileExtensions.includes(file_type);
 					return idMatch && isBamFile;
@@ -110,7 +107,7 @@ const PageContent = () => {
 			}) as FileTableData | undefined;
 
 			if (selectedBamFile === undefined) {
-				Router.push({
+				router.push({
 					pathname: '/_error',
 				});
 			}
