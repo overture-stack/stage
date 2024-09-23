@@ -60,6 +60,7 @@ export const getScoreDownloadUrls = (fileData: FileTableData) => {
 			throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
 		})
 		.catch((error) => {
+			// TODO: Expand error handling
 			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
 		});
 };
