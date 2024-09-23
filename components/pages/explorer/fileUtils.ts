@@ -34,7 +34,7 @@ export const rowIsFileData = (row: unknown): row is FileTableData => {
 
 // Type Check for Score Data response
 export const isFileMetaData = (file: any): file is FileMetaData => {
-	return Boolean((file as FileMetaData).objectId && (file as FileMetaData).parts[0].url);
+	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
 export const getScoreDownloadUrls = (fileData: FileTableData) => {
