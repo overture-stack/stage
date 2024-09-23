@@ -37,7 +37,7 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
-export const getScoreDownloadUrls = (fileData: FileTableData) => {
+export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const length = fileData.file.size.toString();
 	const object_id = fileData.id;
@@ -48,24 +48,22 @@ export const getScoreDownloadUrls = (fileData: FileTableData) => {
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-	return axios
-		.get(urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`), {
+	const response = await axios.get(
+		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+		{
 			headers: { accept: '*/*' },
-		})
-		.then((response) => {
-			if (response.status === 200) {
-				return response.data;
-			}
+		},
+	);
 
-			throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
-		})
-		.catch((error) => {
-			// TODO: Expand error handling
-			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`, error);
-		});
+	if (response.status === 200) {
+		return response.data;
+	} else {
+		console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
+		throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
+	}
 };
 
-export const getFileMetaData = (selectedBamFile: FileTableData) => {
-	const fileMetaData = getScoreDownloadUrls(selectedBamFile);
+export const getFileMetaData = async (selectedBamFile: FileTableData) => {
+	const fileMetaData = await getScoreDownloadUrls(selectedBamFile);
 	return fileMetaData;
 };

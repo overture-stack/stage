@@ -112,16 +112,17 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	// Todo: Update fileName definition
 	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
-	const loadAndSetFile = (file: FileTableData) => {
-		getFileMetaData(file).then((data) => {
-			if (isFileMetaData(data)) {
-				setFileMetaData(data);
-			} else {
-				setFileMetaData(undefined);
-				throw new Error('Error retrieving Score File Data');
-			}
-			setLoading(false);
-		});
+	const loadAndSetFile = async (file: FileTableData) => {
+		// TODO: Add Client Error Handling
+		const data = await getFileMetaData(file).catch(console.error);
+
+		if (isFileMetaData(data)) {
+			setFileMetaData(data);
+		} else {
+			setFileMetaData(undefined);
+			throw new Error('Error retrieving Score File Data');
+		}
+		setLoading(false);
 	};
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
@@ -147,7 +148,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	const loadDemoFile = async () => {
 		setLoading(true);
 		if (isDemoData && file) {
-			loadAndSetFile(file);
+			await loadAndSetFile(file);
 		} else {
 			setFileMetaData(demoFileMetadata);
 		}
@@ -171,20 +172,18 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	);
 
 	useEffect(() => {
-		if (isDemoData && loading) {
-			setLoading(false);
-		}
-	}, [[fileMetaData]]);
-
-	useEffect(() => {
 		if (!fileUrl && file) {
 			// On page load, file table data is populated,
 			// but original file url needs to be requested from Score to use for Iobio analysis
 			loadAndSetFile(file);
 		} else if (file === null) {
+			// TODO: Add Client Error Handling
 			console.error('No File Data');
+		} else if (isDemoData && loading) {
+			// TODO: Remove Demo Hook
+			setLoading(false);
 		}
-	}, [fileMetaData]);
+	}, [fileUrl, file]);
 
 	return useMemo(
 		() => (
