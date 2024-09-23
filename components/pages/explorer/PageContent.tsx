@@ -191,8 +191,11 @@ const PageContent = () => {
 										margin-bottom: 8px;
 									`}
 								>
+									{/* TODO: In current state, this button should not be disabled when Bam Visualizer is active, to allow navigation back to File Table.
+										Final UI mockups will change how navigation and disabled states are handled.
+										*/}
 									<button
-										disabled={!isBamFileSelected}
+										disabled={!isBamFileSelected && isFileTableActive}
 										css={css`
 											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
