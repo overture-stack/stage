@@ -39,7 +39,7 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 
 export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const length = fileData.file.size.toString();
+	const length = fileData.file?.size?.toString();
 	const object_id = fileData.id;
 
 	const scoreDownloadParams: ScoreDownloadParams = {
@@ -57,10 +57,9 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 
 	if (response.status === 200) {
 		return response.data;
-	} else {
-		console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
-		throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
 	}
+	console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
+	throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
 };
 
 export const getFileMetaData = async (selectedBamFile: FileTableData) => {
