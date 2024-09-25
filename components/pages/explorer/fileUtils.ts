@@ -65,11 +65,9 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 		if (response.status === 200) {
 			return response.data;
 		}
-	} catch {
-		(err: unknown) => {
-			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
-			console.error(err);
-		};
+	} catch (err: unknown) {
+		console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
+		console.error(err);
 	}
 };
 
