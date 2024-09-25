@@ -48,18 +48,19 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-	const response = await axios.get(
-		urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
-		{
+	axios
+		.get(urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`), {
 			headers: { accept: '*/*' },
-		},
-	);
-
-	if (response.status === 200) {
-		return response.data;
-	}
-	console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
-	throw new Error(`Error at getScoreDownloadUrls status: ${response.status}, ok: false`);
+		})
+		.then((response) => {
+			if (response.status === 200) {
+				return response.data;
+			}
+		})
+		.catch((err) => {
+			console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
+			console.error(err);
+		});
 };
 
 export const getFileMetaData = async (selectedBamFile: FileTableData) => {
