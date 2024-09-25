@@ -25,7 +25,6 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
@@ -47,7 +46,6 @@ const tableTypes = {
 
 const PageContent = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
