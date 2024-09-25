@@ -140,7 +140,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	const loadDemoFile = async () => {
 		setLoading(true);
 		if (isDemoData && file) {
-			loadAndSetFile(file);
+			await loadAndSetFile(file);
 		} else {
 			setFileMetaData(demoFileMetadata);
 		}
