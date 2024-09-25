@@ -48,7 +48,7 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
 
-	axios
+	return await axios
 		.get(urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`), {
 			headers: { accept: '*/*' },
 		})
