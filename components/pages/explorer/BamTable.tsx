@@ -40,6 +40,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 
 import Loader from '@/components/Loader';
+import { DemoDataButton, demoFileMetadata } from './DemoData';
 import { FileMetaData, FileTableData } from './fileTypes';
 import { getFileMetaData, isFileMetaData } from './fileUtils';
 import { getToggleButtonStyles } from './getButtonStyles';
@@ -114,9 +115,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
-		const data = await getFileMetaData(file).catch((error) => {
-			console.error('Error at loadAndSetFile', error);
-		});
+		const data = await getFileMetaData(file);
 
 		if (isFileMetaData(data)) {
 			setFileMetaData(data);
@@ -136,15 +135,6 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	};
 
 	/* TODO: Remove Demo Data logic */
-	const demoFileMetadata: FileMetaData = {
-		objectId: 'demoFileData',
-		parts: [
-			{
-				url: 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam',
-			},
-		],
-	};
-
 	const isDemoData = fileMetaData?.objectId === demoFileMetadata.objectId;
 
 	const loadDemoFile = async () => {
@@ -155,23 +145,6 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 			setFileMetaData(demoFileMetadata);
 		}
 	};
-
-	const DemoDataButton = () => (
-		<div>
-			<button
-				css={css`
-					border: 2px solid ${theme.colors.accent};
-					border-radius: 5px;
-					min-width: fit-content;
-					padding: 3px 10px;
-					${getToggleButtonStyles(isDemoData, theme)}
-				`}
-				onClick={loadDemoFile}
-			>
-				{isDemoData ? 'View File Data' : 'View Demo Data'}
-			</button>
-		</div>
-	);
 
 	useEffect(() => {
 		if (!fileUrl && file) {
@@ -191,7 +164,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 		() => (
 			<TableContextProvider>
 				{/* TODO: Remove Demo Data Button */}
-				<DemoDataButton />
+				<DemoDataButton loadDemoFile={loadDemoFile} isDemoData={isDemoData} theme={theme} />
 				<h2>{fileName}</h2>
 				{loading || !fileUrl ? (
 					<Loader />
