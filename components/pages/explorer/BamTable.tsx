@@ -105,7 +105,7 @@ const ToggleButtonPanel = ({
 const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 	const theme = useTheme();
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
-	const [elementState, toggleElementState] = useState(initElementState);
+	const [elementState, setElementState] = useState(initElementState);
 	const [loading, setLoading] = useState(true);
 
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
@@ -131,7 +131,7 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 			...elementState,
 			[key]: !value,
 		};
-		toggleElementState(newState);
+		setElementState(newState);
 	};
 
 	/* TODO: Remove Demo Data logic */
