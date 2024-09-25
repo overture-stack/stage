@@ -37,7 +37,7 @@ import {
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { DemoDataButton, demoFileMetadata } from './DemoData';
@@ -160,102 +160,99 @@ const BamTable = ({ file }: { file: FileTableData | undefined }) => {
 		}
 	}, [fileUrl, file]);
 
-	return useMemo(
-		() => (
-			<TableContextProvider>
-				{/* TODO: Remove Demo Data Button */}
-				<DemoDataButton loadDemoFile={loadDemoFile} isDemoData={isDemoData} theme={theme} />
-				<h2>{fileName}</h2>
-				{loading || !fileUrl ? (
-					<Loader />
-				) : (
-					<>
-						<IobioDataBroker alignmentUrl={fileUrl} />
-						<ToggleButtonPanel
-							elementState={elementState}
-							updateElements={updateElements}
-							theme={theme}
-						/>
+	return (
+		<TableContextProvider>
+			{/* TODO: Remove Demo Data Button */}
+			<DemoDataButton loadDemoFile={loadDemoFile} isDemoData={isDemoData} theme={theme} />
+			<h2>{fileName}</h2>
+			{loading || !fileUrl ? (
+				<Loader />
+			) : (
+				<>
+					<IobioDataBroker alignmentUrl={fileUrl} />
+					<ToggleButtonPanel
+						elementState={elementState}
+						updateElements={updateElements}
+						theme={theme}
+					/>
+					<div
+						css={css`
+							display: flex;
+						`}
+					>
 						<div
 							css={css`
-								display: flex;
+								display: inline-flex;
+								flex-direction: column;
+								width: 25%;
+								justify-content: flex-start;
 							`}
 						>
-							<div
-								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 25%;
-									justify-content: flex-start;
-								`}
-							>
-								{percentKeys.map(
-									(key) =>
-										elementState[key] && (
-											<div
-												css={css`
-													height: 25vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioPercentBox
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											</div>
-										),
-								)}
-							</div>
-							<div
-								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 75%;
-								`}
-							>
-								{elementState['coverage_depth'] && (
-									<div
-										css={css`
-											height: 40vh;
-											margin: 2vh;
-											border: 1px solid ${theme.colors.grey_3};
-											padding: 15px;
-										`}
-									>
-										<IobioCoverageDepth label="Read Coverage" />
-									</div>
-								)}
-								{histogramKeys.map(
-									(key) =>
-										elementState[key] && (
-											<div
-												css={css`
-													height: 40vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioHistogram
-													brokerKey={key}
-													ignoreOutliers={isOutlierKey(key)}
-													label={displayNames[key]}
-												/>
-											</div>
-										),
-								)}
-							</div>
+							{percentKeys.map(
+								(key) =>
+									elementState[key] && (
+										<div
+											css={css`
+												height: 25vh;
+												margin: 2vh;
+												border: 1px solid ${theme.colors.grey_3};
+												padding: 15px;
+											`}
+											key={key}
+										>
+											<IobioPercentBox
+												label={displayNames[key]}
+												percentKey={key}
+												totalKey="total_reads"
+											/>
+										</div>
+									),
+							)}
 						</div>
-					</>
-				)}
-			</TableContextProvider>
-		),
-		[loading, fileUrl, elementState],
+						<div
+							css={css`
+								display: inline-flex;
+								flex-direction: column;
+								width: 75%;
+							`}
+						>
+							{elementState['coverage_depth'] && (
+								<div
+									css={css`
+										height: 40vh;
+										margin: 2vh;
+										border: 1px solid ${theme.colors.grey_3};
+										padding: 15px;
+									`}
+								>
+									<IobioCoverageDepth label="Read Coverage" />
+								</div>
+							)}
+							{histogramKeys.map(
+								(key) =>
+									elementState[key] && (
+										<div
+											css={css`
+												height: 40vh;
+												margin: 2vh;
+												border: 1px solid ${theme.colors.grey_3};
+												padding: 15px;
+											`}
+											key={key}
+										>
+											<IobioHistogram
+												brokerKey={key}
+												ignoreOutliers={isOutlierKey(key)}
+												label={displayNames[key]}
+											/>
+										</div>
+									),
+							)}
+						</div>
+					</div>
+				</>
+			)}
+		</TableContextProvider>
 	);
 };
 
