@@ -102,7 +102,7 @@ const ToggleButtonPanel = ({
 	</div>
 );
 
-const BamTable = ({ file }: { file: FileTableData | undefined }) => {
+const BamTable = ({ file }: { file?: FileTableData }) => {
 	const theme = useTheme();
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [elementState, setElementState] = useState(initElementState);
