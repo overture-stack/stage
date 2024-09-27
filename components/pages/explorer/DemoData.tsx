@@ -38,6 +38,7 @@ export const DemoDataButton = ({
 	isDemoData,
 	file,
 	loadAndSetFile,
+	loading,
 	setFileMetaData,
 	setLoading,
 	theme,
@@ -45,18 +46,25 @@ export const DemoDataButton = ({
 	isDemoData: boolean;
 	file?: FileTableData;
 	loadAndSetFile: (file: FileTableData) => Promise<void>;
+	loading: boolean;
 	setFileMetaData: (value: SetStateAction<FileMetaData | undefined>) => void;
 	setLoading: (value: SetStateAction<boolean>) => void;
 	theme: Theme;
 }) => {
 	const loadDemoFile = async () => {
 		setLoading(true);
+		setFileMetaData(undefined);
 		if (isDemoData && file) {
 			await loadAndSetFile(file);
 		} else {
 			setFileMetaData(demoFileMetadata);
 		}
 	};
+
+	if (isDemoData && loading) {
+		setLoading(false);
+	}
+
 	return (
 		<div>
 			<button

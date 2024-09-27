@@ -134,9 +134,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 		setElementState(newState);
 	};
 
-	/* TODO: Remove Demo Data logic */
-	const isDemoData = fileMetaData?.objectId === demoFileMetadata.objectId;
-
 	useEffect(() => {
 		if (!fileUrl && file) {
 			// On page load, file table data is populated,
@@ -145,9 +142,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 		} else if (file === null) {
 			// TODO: Add Client Error Handling
 			console.error('No File Data');
-		} else if (isDemoData && loading) {
-			// TODO: Remove Demo Hook
-			setLoading(false);
 		}
 	}, [fileUrl, file]);
 
@@ -156,8 +150,9 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			{/* TODO: Remove Demo Data Button */}
 			<DemoDataButton
 				file={file}
+				isDemoData={fileMetaData?.objectId === demoFileMetadata.objectId}
 				loadAndSetFile={loadAndSetFile}
-				isDemoData={isDemoData}
+				loading={loading}
 				setFileMetaData={setFileMetaData}
 				setLoading={setLoading}
 				theme={theme}
