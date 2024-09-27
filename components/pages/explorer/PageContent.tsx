@@ -86,14 +86,13 @@ const PageContent = () => {
 	useEffect(() => {
 		const oneFileSelected = selectedRows.length === 1;
 		if (oneFileSelected) {
-			const selectedBamFile = tableData.find((tableData) => {
-				if (rowIsFileData(tableData)) {
-					const { id, file_type } = tableData;
-					const idMatch = id === selectedRows[0];
-					const isBamFile = file_type && BamFileExtensions.includes(file_type);
-					return idMatch && isBamFile;
-				}
-			}) as FileTableData | undefined;
+			const fileData = tableData.filter(rowIsFileData) as FileTableData[];
+			const selectedBamFile = fileData.find((rowData) => {
+				const { id, file_type } = rowData;
+				const idMatch = id === selectedRows[0];
+				const isBamFile = Boolean(file_type && BamFileExtensions.includes(file_type));
+				return idMatch && isBamFile;
+			});
 
 			setCurrentBamFile(selectedBamFile);
 		} else {
