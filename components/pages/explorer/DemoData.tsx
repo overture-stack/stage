@@ -19,11 +19,12 @@
  *
  */
 
+/* TODO: Remove Demo Data logic */
 import { css, Theme } from '@emotion/react';
-import { FileMetaData } from './fileTypes';
+import { SetStateAction } from 'react';
+import { FileMetaData, FileTableData } from './fileTypes';
 import { getToggleButtonStyles } from './getButtonStyles';
 
-/* TODO: Remove Demo Data logic */
 export const demoFileMetadata: FileMetaData = {
 	objectId: 'demoFileData',
 	parts: [
@@ -35,25 +36,41 @@ export const demoFileMetadata: FileMetaData = {
 
 export const DemoDataButton = ({
 	isDemoData,
-	loadDemoFile,
+	file,
+	loadAndSetFile,
+	setFileMetaData,
+	setLoading,
 	theme,
 }: {
 	isDemoData: boolean;
-	loadDemoFile: () => Promise<void>;
+	file?: FileTableData;
+	loadAndSetFile: (file: FileTableData) => Promise<void>;
+	setFileMetaData: (value: SetStateAction<FileMetaData | undefined>) => void;
+	setLoading: (value: SetStateAction<boolean>) => void;
 	theme: Theme;
-}) => (
-	<div>
-		<button
-			css={css`
-				border: 2px solid ${theme.colors.accent};
-				border-radius: 5px;
-				min-width: fit-content;
-				padding: 3px 10px;
-				${getToggleButtonStyles(isDemoData, theme)}
-			`}
-			onClick={loadDemoFile}
-		>
-			{isDemoData ? 'View File Data' : 'View Demo Data'}
-		</button>
-	</div>
-);
+}) => {
+	const loadDemoFile = async () => {
+		setLoading(true);
+		if (isDemoData && file) {
+			await loadAndSetFile(file);
+		} else {
+			setFileMetaData(demoFileMetadata);
+		}
+	};
+	return (
+		<div>
+			<button
+				css={css`
+					border: 2px solid ${theme.colors.accent};
+					border-radius: 5px;
+					min-width: fit-content;
+					padding: 3px 10px;
+					${getToggleButtonStyles(isDemoData, theme)}
+				`}
+				onClick={loadDemoFile}
+			>
+				{isDemoData ? 'View File Data' : 'View Demo Data'}
+			</button>
+		</div>
+	);
+};

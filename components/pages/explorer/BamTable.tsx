@@ -137,15 +137,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	/* TODO: Remove Demo Data logic */
 	const isDemoData = fileMetaData?.objectId === demoFileMetadata.objectId;
 
-	const loadDemoFile = async () => {
-		setLoading(true);
-		if (isDemoData && file) {
-			await loadAndSetFile(file);
-		} else {
-			setFileMetaData(demoFileMetadata);
-		}
-	};
-
 	useEffect(() => {
 		if (!fileUrl && file) {
 			// On page load, file table data is populated,
@@ -163,7 +154,14 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	return (
 		<TableContextProvider>
 			{/* TODO: Remove Demo Data Button */}
-			<DemoDataButton loadDemoFile={loadDemoFile} isDemoData={isDemoData} theme={theme} />
+			<DemoDataButton
+				file={file}
+				loadAndSetFile={loadAndSetFile}
+				isDemoData={isDemoData}
+				setFileMetaData={setFileMetaData}
+				setLoading={setLoading}
+				theme={theme}
+			/>
 			<h2>{fileName}</h2>
 			{loading || !fileUrl ? (
 				<Loader />
