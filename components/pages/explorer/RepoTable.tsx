@@ -19,23 +19,17 @@
  *
  */
 
-import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
-import {
-	Pagination,
-	Table,
-	TableContextProvider,
-	useArrangerTheme,
-	Toolbar,
-} from '@overture-stack/arranger-components';
+import { Pagination, Table, Toolbar, useArrangerTheme } from '@overture-stack/arranger-components';
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
+import { useMemo } from 'react';
 import urlJoin from 'url-join';
 
-import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
+import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
 const getTableConfigs = ({
@@ -182,17 +176,21 @@ const RepoTable = () => {
 		},
 	];
 
-	useArrangerTheme(
-		getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }),
-	);
+	const tableConfig = getTableConfigs({
+		apiHost: INTERNAL_API_PROXY.ARRANGER,
+		customExporters,
+		theme,
+	});
+
+	useArrangerTheme(tableConfig);
 
 	return useMemo(
 		() => (
-			<TableContextProvider>
+			<>
 				<Toolbar />
 				<Table />
 				<Pagination />
-			</TableContextProvider>
+			</>
 		),
 		[],
 	);

@@ -19,16 +19,16 @@
  *
  */
 
-import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
-import { ArrangerDataProvider } from '@overture-stack/arranger-components';
+import { ArrangerDataProvider, TableContextProvider } from '@overture-stack/arranger-components';
+import { useEffect, useState } from 'react';
 
+import { getConfig } from '../../../global/config';
 import ErrorNotification from '../../ErrorNotification';
 import Loader from '../../Loader';
 import PageLayout from '../../PageLayout';
 import createArrangerFetcher from '../../utils/arrangerFetcher';
 import sleep from '../../utils/sleep';
-import { getConfig } from '../../../global/config';
 import { RepoFiltersType } from './sqonTypes';
 
 import getConfigError from './getConfigError';
@@ -149,7 +149,9 @@ const RepositoryPage = () => {
 						},
 					}}
 				>
-					<PageContent />
+					<TableContextProvider>
+						<PageContent />
+					</TableContextProvider>
 				</ArrangerDataProvider>
 			)}
 		</PageLayout>

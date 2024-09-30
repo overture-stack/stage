@@ -19,9 +19,10 @@
  *
  */
 
-import { css, Theme, useTheme } from '@emotion/react';
-import { useArrangerData } from '@overture-stack/arranger-components';
+import { css, useTheme } from '@emotion/react';
+import { useArrangerData, useTableContext } from '@overture-stack/arranger-components';
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
+import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -30,7 +31,11 @@ import useUrlParamState from '@/global/hooks/useUrlParamsState';
 import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable';
+import { BamFileExtensions } from './constants';
 import Facets from './Facets';
+import { type FileTableData } from './fileTypes';
+import { rowIsFileData } from './fileUtils';
+import { getToggleButtonStyles } from './getButtonStyles';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 
@@ -39,26 +44,23 @@ const tableTypes = {
 	BAM_TABLE: 'bamTable',
 };
 
-export const getToggleButtonStyles = (active: boolean, theme: Theme) =>
-	active
-		? `
-			background-color: ${theme.colors.white};
-			color: ${theme.colors.accent};
-		`
-		: `
-			background-color: ${theme.colors.accent};
-			color: ${theme.colors.white};
-		`;
-
 const PageContent = () => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
-	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
 
 	// TODO: abstract this param handling into an Arranger integration.
-	const { sqon, setSQON } = useArrangerData({ callerName: 'Explorer-PageContent' });
+	const contextProps: Partial<UseTableContextProps> = {
+		callerName: 'Explorer-PageContent',
+	};
+	const arrangerData = useArrangerData(contextProps);
+	const { sqon, setSQON } = arrangerData;
+
+	const tableContext = useTableContext(contextProps);
+	const { selectedRows, tableData } = tableContext;
+	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
+	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
+
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
@@ -79,14 +81,37 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	// Disable Visualization button unless only 1 BAM Compatible file is selected
+	// TODO: Add User Error messaging
+	useEffect(() => {
+		const oneFileSelected = selectedRows.length === 1;
+		if (oneFileSelected) {
+			const fileData = tableData.filter(rowIsFileData) as FileTableData[];
+			const selectedBamFile = fileData.find((rowData) => {
+				const { id, file_type } = rowData;
+				const idMatch = id === selectedRows[0];
+				const isBamFile = Boolean(file_type && BamFileExtensions.includes(file_type));
+				return idMatch && isBamFile;
+			});
+
+			setCurrentBamFile(selectedBamFile);
+		} else {
+			setCurrentBamFile(undefined);
+		}
+	}, [selectedRows]);
 
 	const switchTable = () => {
 		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
 		setTableType(nextTableValue);
 	};
 
-	const iconColor = isFileTableActive ? theme.colors.accent : theme.colors.white;
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	const isBamFileSelected = Boolean(currentBamFile);
+	const iconColor = isFileTableActive
+		? isBamFileSelected
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
 	return useMemo(
 		() => (
@@ -163,12 +188,21 @@ const PageContent = () => {
 										margin-bottom: 8px;
 									`}
 								>
+									{/* TODO: In current state, this button should not be disabled when Bam Visualizer is active, to allow navigation back to File Table.
+										Final UI mockups will change how navigation and disabled states are handled.
+										*/}
 									<button
+										disabled={!isBamFileSelected && isFileTableActive}
 										css={css`
 											border: 2px solid ${theme.colors.accent};
 											border-radius: 5px;
 											padding: 6px;
 											${getToggleButtonStyles(isFileTableActive, theme)}
+											:disabled {
+												background-color: ${theme.colors.grey_1};
+												border: 2px solid ${theme.colors.grey_4};
+												color: ${theme.colors.grey_4};
+											}
 										`}
 										onClick={switchTable}
 									>
@@ -195,14 +229,14 @@ const PageContent = () => {
 										)}
 									</button>
 								</div>
-								{isFileTableActive ? <RepoTable /> : <BamTable />}
+								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>
 						</div>
 					</div>
 				</div>
 			</div>
 		),
-		[tableType],
+		[tableType, tableContext],
 	);
 };
 

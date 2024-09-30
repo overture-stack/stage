@@ -37,10 +37,13 @@ import {
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
-import { getToggleButtonStyles } from './PageContent';
+import { DemoDataButton, demoFileMetadata } from './DemoData';
+import { FileMetaData, FileTableData } from './fileTypes';
+import { getFileMetaData, isFileMetaData } from './fileUtils';
+import { getToggleButtonStyles } from './getButtonStyles';
 
 const ToggleButtonPanel = ({
 	elementState,
@@ -99,122 +102,150 @@ const ToggleButtonPanel = ({
 	</div>
 );
 
-const BamTable = () => {
+const BamTable = ({ file }: { file?: FileTableData }) => {
 	const theme = useTheme();
+	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
+	const [elementState, setElementState] = useState(initElementState);
+	const [loading, setLoading] = useState(true);
 
-	const [elementState, toggleElementState] = useState(initElementState);
-	const [loading, setLoading] = useState(false);
+	const fileUrl = fileMetaData?.parts[0]?.url || null;
 
-	// TODO: This will be replaced by File data found in Arranger and passed down through context / parent components
-	const fileUrl = 'https://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam';
-	const fileName = fileUrl.split('/').pop();
+	// Todo: Update fileName definition
+	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
-	useEffect(() => {
+	const loadAndSetFile = async (file: FileTableData) => {
+		// TODO: Add Client Error Handling
+		const data = await getFileMetaData(file);
+
+		if (isFileMetaData(data)) {
+			setFileMetaData(data);
+		} else {
+			setFileMetaData(undefined);
+			console.error('Error retrieving Score File Data');
+		}
 		setLoading(false);
-	}, []);
+	};
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
 		const newState = {
 			...elementState,
 			[key]: !value,
 		};
-		toggleElementState(newState);
+		setElementState(newState);
 	};
 
-	return useMemo(
-		() => (
-			<TableContextProvider>
-				<h2>{fileName}</h2>
-				<IobioDataBroker alignmentUrl={fileUrl} />
-				{loading ? (
-					<Loader />
-				) : (
-					<>
-						<ToggleButtonPanel
-							elementState={elementState}
-							updateElements={updateElements}
-							theme={theme}
-						/>
+	useEffect(() => {
+		if (!fileUrl && file) {
+			// On page load, file table data is populated,
+			// but original file url needs to be requested from Score to use for Iobio analysis
+			loadAndSetFile(file);
+		} else if (file === null) {
+			// TODO: Add Client Error Handling
+			console.error('No File Data');
+		}
+	}, [fileUrl, file]);
+
+	return (
+		<TableContextProvider>
+			{/* TODO: Remove Demo Data Button */}
+			<DemoDataButton
+				file={file}
+				isDemoData={fileMetaData?.objectId === demoFileMetadata.objectId}
+				loadAndSetFile={loadAndSetFile}
+				loading={loading}
+				setFileMetaData={setFileMetaData}
+				setLoading={setLoading}
+				theme={theme}
+			/>
+			<h2>{fileName}</h2>
+			{loading || !fileUrl ? (
+				<Loader />
+			) : (
+				<>
+					<IobioDataBroker alignmentUrl={fileUrl} />
+					<ToggleButtonPanel
+						elementState={elementState}
+						updateElements={updateElements}
+						theme={theme}
+					/>
+					<div
+						css={css`
+							display: flex;
+						`}
+					>
 						<div
 							css={css`
-								display: flex;
+								display: inline-flex;
+								flex-direction: column;
+								width: 25%;
+								justify-content: flex-start;
 							`}
 						>
-							<div
-								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 25%;
-									justify-content: flex-start;
-								`}
-							>
-								{percentKeys.map(
-									(key) =>
-										elementState[key] && (
-											<div
-												css={css`
-													height: 25vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioPercentBox
-													label={displayNames[key]}
-													percentKey={key}
-													totalKey="total_reads"
-												/>
-											</div>
-										),
-								)}
-							</div>
-							<div
-								css={css`
-									display: inline-flex;
-									flex-direction: column;
-									width: 75%;
-								`}
-							>
-								{elementState['coverage_depth'] && (
-									<div
-										css={css`
-											height: 40vh;
-											margin: 2vh;
-											border: 1px solid ${theme.colors.grey_3};
-											padding: 15px;
-										`}
-									>
-										<IobioCoverageDepth label="Read Coverage" />
-									</div>
-								)}
-								{histogramKeys.map(
-									(key) =>
-										elementState[key] && (
-											<div
-												css={css`
-													height: 40vh;
-													margin: 2vh;
-													border: 1px solid ${theme.colors.grey_3};
-													padding: 15px;
-												`}
-												key={key}
-											>
-												<IobioHistogram
-													brokerKey={key}
-													ignoreOutliers={isOutlierKey(key)}
-													label={displayNames[key]}
-												/>
-											</div>
-										),
-								)}
-							</div>
+							{percentKeys.map(
+								(key) =>
+									elementState[key] && (
+										<div
+											css={css`
+												height: 25vh;
+												margin: 2vh;
+												border: 1px solid ${theme.colors.grey_3};
+												padding: 15px;
+											`}
+											key={key}
+										>
+											<IobioPercentBox
+												label={displayNames[key]}
+												percentKey={key}
+												totalKey="total_reads"
+											/>
+										</div>
+									),
+							)}
 						</div>
-					</>
-				)}
-			</TableContextProvider>
-		),
-		[loading, elementState],
+						<div
+							css={css`
+								display: inline-flex;
+								flex-direction: column;
+								width: 75%;
+							`}
+						>
+							{elementState['coverage_depth'] && (
+								<div
+									css={css`
+										height: 40vh;
+										margin: 2vh;
+										border: 1px solid ${theme.colors.grey_3};
+										padding: 15px;
+									`}
+								>
+									<IobioCoverageDepth label="Read Coverage" />
+								</div>
+							)}
+							{histogramKeys.map(
+								(key) =>
+									elementState[key] && (
+										<div
+											css={css`
+												height: 40vh;
+												margin: 2vh;
+												border: 1px solid ${theme.colors.grey_3};
+												padding: 15px;
+											`}
+											key={key}
+										>
+											<IobioHistogram
+												brokerKey={key}
+												ignoreOutliers={isOutlierKey(key)}
+												label={displayNames[key]}
+											/>
+										</div>
+									),
+							)}
+						</div>
+					</div>
+				</>
+			)}
+		</TableContextProvider>
 	);
 };
 

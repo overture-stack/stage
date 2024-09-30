@@ -35,8 +35,10 @@ export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
 
 // external docs links
-export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'
+export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose';
 export const EMAIL_SETTING_URL = 'admin@example.com';
+
+export const SCORE_API_DOWNLOAD_PATH = '/download';
 
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(
