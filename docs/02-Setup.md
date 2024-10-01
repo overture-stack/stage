@@ -1,5 +1,9 @@
 # Setup
 
+Stage is a front-end UI that complements Arranger's search UI components. This guide will walk you through setting up a complete development environment, including Stage and its complementary services.
+
+![Stage Dev](./assets/stageDev.svg 'Stage Dev Environment')
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
@@ -7,63 +11,8 @@ Before you begin, ensure you have the following installed on your system:
 - Node.js (v16 or higher)
 - npm (v8.3.0 or higher)
 - Docker (v4.32.0 or higher)
-- Git
 
 ## Installation
-
-Stage is a front-end UI that complements Arranger's search UI components. This guide will walk you through setting up a complete development environment, including Stage and its complementary services.
-
-
-<details>
-  <summary><b>Diagram of the Stage's development environment</b></summary>
-    ```mermaid
-    graph LR
-        %% Define nodes
-        Elasticsearch(Elasticsearch)
-        Arranger(Arranger)
-        Stage(Stage)
-        Keycloak(Keycloak)
-        KeycloakDb[(Keycloak DB)]
-        ArrangerConfigs{{Configuration Files}}
-        IndexMapping{{Index Mapping}}
-        ElasticsearchDocuments{{Elasticsearch Documents}}
-        OvertureAPIKeyProvider{{Overture API Key Provider}}
-
-        %% Identity and Access Management
-        subgraph Identity and Access Management
-            OvertureAPIKeyProvider -.-> Keycloak
-            KeycloakDb --- Keycloak
-        end
-
-        Keycloak -.- Stage
-
-        %% Search & Exploration
-        subgraph Search and Exploration
-            IndexMapping -.-> Elasticsearch
-            ElasticsearchDocuments -.-> Elasticsearch
-            Elasticsearch --- Arranger
-            Arranger --- Stage
-            ArrangerConfigs -.-> Arranger
-        end
-
-
-        %% Styling
-        classDef default fill:#F2F5F8,stroke:#04518c,color:#282A35;
-        classDef database fill:#91909080,stroke:#03497e,color:#282A35;
-        classDef service fill:#0669b64e,stroke:#03497e,color:#282A35;
-        classDef thirdParty fill:#ebeced,stroke:#a1a1a1,color:#282A35;
-        classDef local fill:#E2B7D0,stroke:#9E005D,color:#282A35;
-        classDef configs fill:#E4E775,stroke:#7D7D7D,color:#282A35; 
-
-        class Stage local;
-        class KeycloakDb database;
-        class Arranger service;
-        class Elasticsearch,Keycloak thirdParty;
-        class ElasticsearchDocuments,ArrangerConfigs,IndexMapping,OvertureAPIKeyProvider configs;
-    ```
-
-    **Databases (dark gray), Overture services (light blue & pink), third-party services (light gray), development service (pink), and configuration files (yellow).**
-</details>
 
 ### 1. Set up complementary services
 
