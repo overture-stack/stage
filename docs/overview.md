@@ -1,4 +1,4 @@
-# Stage
+# Overview
 
 Stage is a simple React-based user interface designed to prop up browser-accessible data portals. Although Stage can be used for any web application, it's designed to integrate with Keycloak and Arranger (see the section on [system architecture](#system-architecture) for more details).
 
