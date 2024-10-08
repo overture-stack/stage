@@ -47,7 +47,7 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
    - Ensure all ports are free on your system before starting the environment.
    - You may need to adjust the ports in the `docker-compose.yml` file if you have conflicts with existing services.
 
-   For more information on configuring and using these services, see our [Conductor documentation](../other-software/conductor
+   For more information on configuring and using these services, see our [Conductor documentation linked here](/docs/other-software/Conductor)
 
     </details>
 
