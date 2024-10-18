@@ -31,7 +31,9 @@ As part of the larger Overture.bio software suite, Stage is typically used with 
 │   ├── /pages/
 │   ├── /theme/
 │   └── /utils/
-├── /global
+├── /global/
+│   ├── /hooks
+│   └── /utils
 ├── /pages/
 │   ├── /api/
 │   ├── /explorer/
@@ -41,24 +43,14 @@ As part of the larger Overture.bio software suite, Stage is typically used with 
 └── /tests
 ```
 
-[Click here to view the Stage respository on GitHub ](https://github.com/overture-stack/stage)
+[Click here to view the Stage respository on GitHub](https://github.com/overture-stack/stage)
 
-#### Components
+- **Components:** UI elements and tools used to compose Pages and features throughout the application. Includes standardized reusable elements for navigation, page layout, error states, theming, and page-specific features.
 
-[Explaination]
+- **Pages:** The central location for the main application file and all page routes, based on [Next.js Pages Routing system](https://nextjs.org/docs/pages/building-your-application/routing). This contains the root \_app.jsx file and individual folders/files for each navigable page in the site. Implements code found in /global and /components.
 
-#### Global
+- **Global:** Global: Utilities, definitions and configuration related to core processes for running the application, or used widely throughout the app. Covers functionality such as authentication & authorization, environment & context sharing, URL management and Page construction.
 
-[Explaination]
+- **Public:** Static public assets such as SVGs and other images.
 
-#### Pages
-
-[Explaination]
-
-#### Public
-
-[Explaination]
-
-#### Tests
-
-[Explaination]
+- **Tests:** Unit tests built in Jest for insuring code stability.
