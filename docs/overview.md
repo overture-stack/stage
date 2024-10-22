@@ -2,6 +2,9 @@
 
 Stage is a simple yet powerful React-based user interface framework designed to facilitate the creation of browser-accessible data portals. While versatile enough to be used for various web applications, Stage is specifically tailored for building the front-end of data management platforms. It provides a robust foundation for developers to rapidly construct and customize data-centric web interfaces.
 
+![Stage Scaffolding](./assets/portal.png 'Stage Scaffolding')
+
+
 ## System Architecture
 
 Stage functions primarily as a scaffold for creating custom data portal user interfaces. It achieves this by providing fundamental portal UI components for navigation, authentication, and data exploration.
