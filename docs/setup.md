@@ -177,7 +177,9 @@ After installation and configuration, verify that Stage is functioning correctly
    - On the profile page, select "Generate API Key".
    - Expected result: A new API key should be generated and displayed on the screen.
 
-For further assistance, [open an issue on GitHub](https://github.com/overture-stack/stage/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md).
+:::info Need Help?
+If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](/community/support).
+:::
 
 :::warning
 This guide is meant to demonstrate the configuration and usage of Stage for development purposes and is not intended for production. If you ignore this warning and use this in any public or production environment, please remember to use appropriate security measures and configure your environment variables accordingly.
