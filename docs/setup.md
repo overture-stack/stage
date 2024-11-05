@@ -28,7 +28,7 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
    | Operating System | Command             |
    | ---------------- | ------------------- |
    | Unix/macOS       | `make stageDev`     |
-   | Windows          | `make.bat stageDev` |
+   | Windows          | `./make.bat stageDev` |
 
     <details>
     <summary>**Click here for a detailed breakdown**</summary>
