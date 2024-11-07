@@ -33,50 +33,50 @@ export const arrangerFetcher = createArrangerFetcher({
 });
 
 const saveSetMutation = `mutation ($sqon: JSON!)  {
-    saveSet(
-        sqon: $sqon,
-        type: file,
-        path: "name"
-    ) {
-        setId
-    }
+	saveSet(
+		sqon: $sqon,
+		type: file,
+		path: "name"
+	) {
+		setId
+	}
 }`;
 
 export const saveSet = (sqon: SQONType): Promise<string> => {
-    return arrangerFetcher({
-        body: {
-            query: saveSetMutation,
-            variables: { sqon },
-        },
-    })
-        .then(
-            ({
-                data: {
-                    saveSet: { setId },
-                },
-            }) => {
-                return setId;
-            },
-        )
-        .catch((err: any) => {
-            console.warn(err);
-            Promise.reject(err);
-        }) as Promise<string>;
+	return arrangerFetcher({
+		body: {
+			query: saveSetMutation,
+			variables: { sqon },
+		},
+	})
+		.then(
+			({
+				data: {
+					saveSet: { setId },
+				},
+			}) => {
+				return setId;
+			},
+		)
+		.catch((err: any) => {
+			console.warn(err);
+			Promise.reject(err);
+		}) as Promise<string>;
 };
 
 export function buildSqonWithObjectIds(currentSqon: SQONType, objectIds: string[]): SQONType {
     const objectsSqon = objectIds && objectIds.length > 0 ? SQON.in('object_id', objectIds) : null;
 
-    // Type guard to ensure currentSqon and objectsSqon are SQON instances
-    if (currentSqon && !isEmpty(currentSqon) && objectsSqon && !isEmpty(objectsSqon)) {
+    // Check if currentSqon is null before calling .and()
+    if (currentSqon && objectsSqon) {
         return currentSqon.and(objectsSqon);
     }
 
-    if (isEmpty(currentSqon) && objectsSqon && !isEmpty(objectsSqon)) {
+    if (!currentSqon && objectsSqon) {
         return objectsSqon;
     }
 
-    if (currentSqon && !isEmpty(currentSqon)) {
+    if (currentSqon && !objectsSqon) {
         return currentSqon;
     }
 

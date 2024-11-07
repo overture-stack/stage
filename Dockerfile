@@ -19,6 +19,7 @@ COPY . /usr/src
 
 VOLUME [ "/usr/src/public/static/dms_user_assets" ]
 
+RUN npm cache clean --force
 RUN npm ci
 RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 
