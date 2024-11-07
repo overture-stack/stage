@@ -25,7 +25,7 @@ import { EMAIL_SETTING_URL } from '../../global/utils/constants';
 import providerMap from '../../global/utils/providerTypeMap';
 import StyledLink from '../Link';
 import { ErrorPageLayout } from '../PageLayout';
-import { ProviderType } from '../../global/types';
+import { ProviderType } from '../../global/types/types';
 import DMSAdminContact from '../DMSAdminContact';
 
 enum EgoLoginError {
@@ -38,8 +38,7 @@ const errorSubtitles: { [k in EgoLoginError]: string } = {
 	access_denied: 'Unable to log in',
 };
 
-const isValidProviderType = (providerType: ProviderType) =>
-	Object.values(ProviderType).includes(providerType);
+const isValidProviderType = (providerType: ProviderType) => Object.values(ProviderType).includes(providerType);
 
 const Error403 = ({ query }: { query: { error_type: EgoLoginError; provider_type?: string } }) => {
 	const { error_type: errorType, provider_type: providerType } = query;
@@ -54,10 +53,9 @@ const Error403 = ({ query }: { query: { error_type: EgoLoginError; provider_type
 					subtitle={`Error 403 - ${errorSubtitles[errorType]}`}
 					errorTitle={`${errorSubtitles[errorType]}`}
 				>
-					No primary email could be found on your {providerTypeDisplayName} profile. An email is
-					required to log in to the Data Explorer. Make sure an email exists on your{' '}
-					{providerTypeDisplayName} profile and that it is accessible by external parties (i.e. not
-					private). See{' '}
+					No primary email could be found on your {providerTypeDisplayName} profile. An email is required to log in to
+					the Data Explorer. Make sure an email exists on your {providerTypeDisplayName} profile and that it is
+					accessible by external parties (i.e. not private). See{' '}
 					<StyledLink href={EMAIL_SETTING_URL} target="_blank">
 						here
 					</StyledLink>{' '}
@@ -70,20 +68,16 @@ const Error403 = ({ query }: { query: { error_type: EgoLoginError; provider_type
 					subtitle={`Error 403 - ${errorSubtitles[errorType]}`}
 					errorTitle={`${errorSubtitles[errorType]}`}
 				>
-					You have denied the DMS access to your {providerTypeDisplayName} profile or cancelled your
-					log in attempt. Please try again and approve access for {providerTypeDisplayName}, or log
-					in with a different provider for which you would prefer to allow access.
+					You have denied the DMS access to your {providerTypeDisplayName} profile or cancelled your log in attempt.
+					Please try again and approve access for {providerTypeDisplayName}, or log in with a different provider for
+					which you would prefer to allow access.
 				</ErrorPageLayout>
 			);
 		default:
 			return (
-				<ErrorPageLayout
-					subtitle="Error 403 - Permission required"
-					errorTitle="Permission required"
-				>
-					You do not have permission to access the requested page. Please check that you have
-					entered the correct URL. If the problem persists, contact the <DMSAdminContact /> for
-					help.
+				<ErrorPageLayout subtitle="Error 403 - Permission required" errorTitle="Permission required">
+					You do not have permission to access the requested page. Please check that you have entered the correct URL.
+					If the problem persists, contact the <DMSAdminContact /> for help.
 				</ErrorPageLayout>
 			);
 	}

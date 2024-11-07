@@ -18,27 +18,24 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-import { useEffect, useMemo, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { useArrangerData } from '@overture-stack/arranger-components';
-import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types.js';
+import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
-
+import defaultTheme from '@/components/theme';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
-
 import Facets from './Facets';
-import RepoTable from './RepoTable';
 import QueryBar from './QueryBar';
-
-const PageContent = () => {
-	const theme = useTheme();
-	const [showSidebar, setShowSidebar] = useState(true);
-	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
-
-	// TODO: abstract this param handling into an Arranger integration.
-	const { sqon, setSQON } = useArrangerData({ callerName: 'Explorer-PageContent' });
+import RepoTable from './RepoTable/RepoTable';
+// const defaultFilters = {
+//   op: 'and',
+//   content: [],
+// };
+const PageContent = (): ReactElement => {
+	const theme: typeof defaultTheme = useTheme();
+	const { sqon, setSQON } = useArrangerData({ callerName: 'Mutation-PageContent' });
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
@@ -47,82 +44,65 @@ const PageContent = () => {
 		},
 		serialize: (v) => (v ? stringify(v) : ''),
 	});
-
+	// // TODO: abstract these effects into an Arranger integration
 	useEffect(() => {
 		if (firstRender) {
 			currentFilters && setSQON(currentFilters);
 			setFirstRender(false);
 		}
 	}, [currentFilters, firstRender, setSQON]);
-
 	useEffect(() => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
-
-	return useMemo(
-		() => (
+	return (
+		<div
+			css={css`
+				flex: 1;
+				width: 100vw;
+			`}
+		>
 			<div
 				css={css`
-					flex: 1;
-					width: 100vw;
+					display: flex;
+					flex-direction: row;
+					margin-left: 0;
 				`}
 			>
 				<div
 					css={css`
-						display: flex;
-						flex-direction: row;
-						margin-left: 0;
+						flex: 0 0 ${theme.dimensions.facets.width}px;
+						flex-direction: column;
+						background-color: ${theme.colors.white};
+						z-index: 1;
+						${theme.shadow.right};
+						height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
+						overflow-y: scroll;
 					`}
 				>
-					{/* WIP button to hide/show the sidebar
-					<button
-						css={css`
-						position: absolute;
-						top: 5px;
-						`}
-						onClick={() => setShowSidebar(!showSidebar)}
-					>
-						Show
-					</button> */}
-
-					<aside
-						css={css`
-							flex: 0 0 ${sidebarWidth}px;
-							flex-direction: column;
-							background-color: ${theme.colors.white};
-							z-index: 1;
-							${theme.shadow.right};
-							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
-							overflow-y: scroll;
-						`}
-					>
-						<Facets />
-					</aside>
+					<Facets />
+				</div>
+				<div
+					css={css`
+						display: flex;
+						flex-direction: column;
+						width: 100%;
+						height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
+						overflow-y: scroll;
+					`}
+				>
 					<div
 						css={css`
-							display: flex;
-							flex-direction: column;
-							width: 100%;
-							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
-							overflow-y: scroll;
+							flex: 8.5;
+							margin: 0 15px 0 15px;
+							max-width: calc(100vw - ${theme.dimensions.facets.width + 10}px);
 						`}
 					>
-						<div
-							css={css`
-								flex: 8.5;
-								margin: 0 15px 0 15px;
-								max-width: calc(100vw - ${sidebarWidth + 10}px);
-							`}
-						>
-							<QueryBar />
-							<RepoTable />
-						</div>
+						<QueryBar />
+						<RepoTable />
 					</div>
 				</div>
 			</div>
-		),
-		[],
+		</div>
 	);
 };
-
 export default PageContent;

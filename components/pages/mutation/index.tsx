@@ -55,9 +55,9 @@ export interface PageContentProps {
 }
 
 const {
-	NEXT_PUBLIC_ARRANGER_CORRELATION_API,
-	NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE,
-	NEXT_PUBLIC_ARRANGER_CORRELATION_INDEX,
+	NEXT_PUBLIC_ARRANGER_MUTATION_API,
+	NEXT_PUBLIC_ARRANGER_MUTATION_DOCUMENT_TYPE,
+	NEXT_PUBLIC_ARRANGER_MUTATION_INDEX,
 } = getConfig();
 
 const configsQuery = `
@@ -66,7 +66,7 @@ const configsQuery = `
 	}
 `;
 
-const CorrelationRepositoryPage = (): ReactElement => {
+const MutationRepositoryPage = (): ReactElement => {
 	const theme = useTheme();
 	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
 	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
@@ -76,8 +76,8 @@ const CorrelationRepositoryPage = (): ReactElement => {
 			endpoint: 'graphql/hasValidConfig',
 			body: JSON.stringify({
 				variables: {
-					documentType: NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE,
-					index: NEXT_PUBLIC_ARRANGER_CORRELATION_INDEX,
+					documentType: NEXT_PUBLIC_ARRANGER_MUTATION_DOCUMENT_TYPE,
+					index: NEXT_PUBLIC_ARRANGER_MUTATION_INDEX,
 				},
 				query: configsQuery,
 			}),
@@ -91,7 +91,7 @@ const CorrelationRepositoryPage = (): ReactElement => {
 					return setLoadingArrangerConfig(false);
 				}
 
-				throw new Error('Could not validate Arranger server configuration!');
+				throw new Error('Could not validate Arranger Mutation server configuration!');
 			})
 			.catch(async (err) => {
 				console.warn(err);
@@ -99,16 +99,16 @@ const CorrelationRepositoryPage = (): ReactElement => {
 				await sleep(1000);
 				setLoadingArrangerConfig(false);
 			});
-	}, [NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_CORRELATION_INDEX]);
+	}, []);
 
 	const ConfigError = getConfigError({
 		hasConfig: arrangerHasConfig,
-		index: NEXT_PUBLIC_ARRANGER_CORRELATION_INDEX,
-		documentType: NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE,
+		index: NEXT_PUBLIC_ARRANGER_MUTATION_INDEX,
+		documentType: NEXT_PUBLIC_ARRANGER_MUTATION_DOCUMENT_TYPE,
 	});
 
 	return (
-		<PageLayout subtitle="Data Explorer">
+		<PageLayout subtitle="Mutation Data Explorer">
 			{loadingArrangerConfig ? (
 				<div
 					css={css`
@@ -135,9 +135,9 @@ const CorrelationRepositoryPage = (): ReactElement => {
 				</ErrorNotification>
 			) : (
 				<ArrangerDataProvider
-					apiUrl={NEXT_PUBLIC_ARRANGER_CORRELATION_API}
+					apiUrl={NEXT_PUBLIC_ARRANGER_MUTATION_API}
 					customFetcher={arrangerFetcher}
-					documentType={NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE}
+					documentType={NEXT_PUBLIC_ARRANGER_MUTATION_DOCUMENT_TYPE}
 					theme={{
 						colors: {
 							common: {
@@ -160,4 +160,4 @@ const CorrelationRepositoryPage = (): ReactElement => {
 	);
 };
 
-export default CorrelationRepositoryPage;
+export default MutationRepositoryPage;

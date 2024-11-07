@@ -18,16 +18,13 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 import { css, useTheme } from '@emotion/react';
 import { SQONViewer, useArrangerTheme } from '@overture-stack/arranger-components';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/types';
 import { Row } from 'react-grid-system';
-
 import { StageThemeInterface } from '@/components/theme';
-
 const getThemeCustomisations = (theme: StageThemeInterface): UseThemeContextProps => ({
-	callerName: 'Explorer-QueryBar',
+	callerName: 'Mutation-QueryBar',
 	components: {
 		SQONViewer: {
 			EmptyMessage: {
@@ -77,7 +74,6 @@ const getThemeCustomisations = (theme: StageThemeInterface): UseThemeContextProp
 				css: css`
 					margin-left: 0;
 					${theme.typography.label}
-
 					&::after {
 						content: url(data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%228%22%20stroke%3D%22white%22%20stroke-width%3D%222%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%20%20%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%228%22%20y2%3D%228%22%20/%3E%0A%20%20%3Cline%20x1%3D%228%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%228%22%20/%3E%0A%3C/svg%3E);
 						margin: 0 0 0 0.5rem;
@@ -100,11 +96,9 @@ const getThemeCustomisations = (theme: StageThemeInterface): UseThemeContextProp
 		},
 	},
 });
-
 const QueryBar = () => {
 	const theme = useTheme();
 	useArrangerTheme(getThemeCustomisations(theme));
-
 	return (
 		<Row
 			gutterWidth={2}
@@ -120,5 +114,4 @@ const QueryBar = () => {
 		</Row>
 	);
 };
-
 export default QueryBar;

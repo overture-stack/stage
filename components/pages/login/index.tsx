@@ -33,26 +33,13 @@ import { usePageQuery } from '../../../global/hooks/usePageContext';
 import { trim } from 'lodash';
 import ErrorNotification from '../../ErrorNotification';
 import providerMap, { ProviderDetail } from '../../../global/utils/providerTypeMap';
-import { ProviderType } from '../../../global/types';
+import { ProviderType } from '../../../global/types/types';
 import { AUTH_PROVIDER, EXPLORER_PATH } from '@/global/utils/constants';
 
-const LoginButton = ({
-	Icon,
-	title,
-	path,
-}: {
-	Icon: React.ComponentType<IconProps>;
-	title: string;
-	path: string;
-}) => {
-	const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_EGO_CLIENT_ID, NEXT_PUBLIC_AUTH_PROVIDER } =
-		getConfig();
+const LoginButton = ({ Icon, title, path }: { Icon: React.ComponentType<IconProps>; title: string; path: string }) => {
+	const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_EGO_CLIENT_ID, NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
 
-	const url = `${urlJoin(
-		NEXT_PUBLIC_EGO_API_ROOT,
-		'/oauth/login',
-		path,
-	)}?client_id=${NEXT_PUBLIC_EGO_CLIENT_ID}`;
+	const url = `${urlJoin(NEXT_PUBLIC_EGO_API_ROOT, '/oauth/login', path)}?client_id=${NEXT_PUBLIC_EGO_CLIENT_ID}`;
 	const disabled = !path;
 
 	const handleLogin = () => {
@@ -204,8 +191,7 @@ const LoginPage = () => {
 							font-weight: normal;
 						`}
 					>
-						Please choose one of the following log in methods to access your API token for data
-						download:
+						Please choose one of the following log in methods to access your API token for data download:
 					</span>
 					{NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && providers.length ? (
 						<ul
@@ -246,7 +232,7 @@ const LoginPage = () => {
 							`}
 						>
 							<ErrorNotification size="md" title="No Configured Providers">
-								No identity providers have been configured. Please check you dms configuration file.
+								No identity providers have been configured. Please check your Stage configuration file.
 							</ErrorNotification>
 						</div>
 					)}

@@ -19,19 +19,48 @@
  *
  */
 
-import colors from './colors';
-import components from './components';
-import typography from './typography';
-import shadow from './shadow';
-import dimensions from './dimensions';
+export type ArrayFieldKeys = 'in' | 'is' | 'filter';
 
-const defaultTheme = {
-	colors,
-	typography,
-	shadow,
-	dimensions,
-	components: components(colors),
+export type ScalarFieldKeys = '>=' | '<=' | '>' | '<';
+
+export type CombinationKeys = 'and' | 'or' | 'not';
+
+export type ArrayFieldValue = Array<string | number> | string;
+export type ScalarFieldValue = number;
+
+export interface FilterField {
+  fieldNames: string[];
+  value: ArrayFieldValue;
+}
+
+export interface FilterFieldOperator {
+  op: ArrayFieldKeys;
+  content: FilterField;
+}
+
+export interface ArrayField {
+  fieldName: string;
+  value: ArrayFieldValue;
+}
+
+export interface ScalarField {
+  fieldName: string;
+  value: ScalarFieldValue;
+}
+
+export interface ArrayFieldOperator {
+  op: ArrayFieldKeys;
+  content: ArrayField;
+}
+
+export interface ScalarFieldOperator {
+  op: ScalarFieldKeys;
+  content: ScalarField;
+}
+
+export type FieldOperator = ArrayFieldOperator | ScalarFieldOperator;
+
+export type RepoFiltersType = {
+  op: 'and';
+  content: FieldOperator[];
 };
-
-export default defaultTheme;
-export type StageThemeInterface = typeof defaultTheme;

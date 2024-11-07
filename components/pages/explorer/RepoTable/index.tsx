@@ -34,7 +34,7 @@ import urlJoin from 'url-join';
 
 import { getConfig } from '@/global/config';
 import StyledLink from '@/components/Link';
-import { DMSThemeInterface } from '@/components/theme';
+import { StageThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
@@ -45,7 +45,7 @@ const getTableConfigs = ({
 }: {
 	apiHost: string;
 	customExporters?: CustomExporterInput;
-	theme: DMSThemeInterface;
+	theme: StageThemeInterface;
 }): UseThemeContextProps => ({
 	callerName: 'RepoTable',
 	components: {
@@ -141,11 +141,11 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_CORRELATION_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
+	const manifestColumns = NEXT_PUBLIC_ARRANGER_CORRELATION_MANIFEST_COLUMNS.split(',')
 		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
 		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
 	const customExporters = [

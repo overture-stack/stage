@@ -19,19 +19,5 @@
  *
  */
 
-import colors from './colors';
-import components from './components';
-import typography from './typography';
-import shadow from './shadow';
-import dimensions from './dimensions';
-
-const defaultTheme = {
-	colors,
-	typography,
-	shadow,
-	dimensions,
-	components: components(colors),
-};
-
-export default defaultTheme;
-export type StageThemeInterface = typeof defaultTheme;
+export * from './NavBar';
+export { default } from './NavBar';

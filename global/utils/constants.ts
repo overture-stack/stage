@@ -26,6 +26,7 @@ import { getConfig } from '../config';
 const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } =
 	getConfig();
 
+
 export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
 export const EGO_SCOPES_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes`;
@@ -33,6 +34,15 @@ export const EGO_SCOPES_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes`;
 export const EXPLORER_PATH = '/explorer';
 export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
+
+export const ROOT_PATH = '/';
+
+export enum INTERNAL_PATHS {
+
+	EXPLORER = '/explorer',
+	MUTATION = '/mutation',
+	ABOUT = '/about'
+}
 
 // external docs links
 export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'

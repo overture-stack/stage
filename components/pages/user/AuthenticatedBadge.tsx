@@ -24,7 +24,7 @@ import { css, useTheme } from '@emotion/react';
 
 import defaultTheme from '../../theme';
 import { Checkmark } from '../../theme/icons';
-import { ProviderType } from '../../../global/types';
+import { ProviderType } from '../../../global/types/types';
 import providerMap from '../../../global/utils/providerTypeMap';
 
 const AuthenticatedBadge = ({ provider }: { provider: ProviderType }) => {

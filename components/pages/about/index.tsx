@@ -19,19 +19,15 @@
  *
  */
 
-import colors from './colors';
-import components from './components';
-import typography from './typography';
-import shadow from './shadow';
-import dimensions from './dimensions';
+import { ReactElement } from 'react';
 
-const defaultTheme = {
-	colors,
-	typography,
-	shadow,
-	dimensions,
-	components: components(colors),
-};
+import PageContent from './PageContent';
+import PageLayout from '../../PageLayout';
 
-export default defaultTheme;
-export type StageThemeInterface = typeof defaultTheme;
+const AboutPage = (): ReactElement => (
+  <PageLayout>
+    <PageContent />
+  </PageLayout>
+);
+
+export default AboutPage;

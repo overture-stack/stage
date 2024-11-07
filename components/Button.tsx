@@ -26,29 +26,37 @@ import styled from '@emotion/styled';
 import defaultTheme from './theme';
 import { Spinner } from './theme/icons';
 
-const ButtonElement = styled('button')`
-	${({ theme }: { theme: typeof defaultTheme }) => css`
-		color: ${theme.colors.white};
-		background-color: ${theme.colors.accent};
-		${theme.typography.subheading2};
+export const UnStyledButton = styled('button')`
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	position: relative;
+	width: fit-content;
+`;
+
+export const ButtonElement = styled(UnStyledButton)`
+	${({ theme }: { theme?: typeof defaultTheme }) => css`
+		color: ${theme?.colors.white};
+		background-color: ${theme?.colors.primary};
+		${theme?.typography.subheading2};
 		line-height: 24px;
-		border-radius: 5px;
-		border: 1px solid ${theme.colors.accent};
+		border-radius: 0px;
+		border: 1px solid ${theme?.colors.primary};
+		box-sizing: border-box;
 		padding: 6px 15px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-		position: relative;
 		&:hover {
-			background-color: ${theme.colors.accent_dark};
+			background-color: ${theme?.colors.primary_dark};
 		}
 		&:disabled,
 		&:disabled:hover {
-			background-color: ${theme.colors.grey_4};
+			background-color: ${theme?.colors.grey_4};
 			cursor: not-allowed;
-			color: ${theme.colors.white};
-			border: 1px solid ${theme.colors.grey_4};
+			color: ${theme?.colors.white};
+			border: 1px solid ${theme?.colors.grey_4};
 		}
 	`}
 `;
@@ -64,16 +72,20 @@ const Button = React.forwardRef<
 		isAsync?: boolean;
 		className?: string;
 		isLoading?: boolean;
+		title?: string;
 	}
 >(
 	(
 		{
 			children,
-			onClick = (e) => {},
+			onClick = (e) => {
+				// console.log('nada');
+			},
 			disabled = false,
 			isAsync = false,
 			className,
 			isLoading: controlledLoadingState,
+			title,
 		},
 		ref = React.createRef(),
 	) => {
@@ -96,6 +108,7 @@ const Button = React.forwardRef<
 				onClick={isAsync ? onClickFn : onClick}
 				disabled={disabled || shouldShowLoading}
 				className={className}
+				title={title}
 			>
 				<span
 					css={css`
@@ -104,18 +117,33 @@ const Button = React.forwardRef<
 				>
 					{children}
 				</span>
-				<span
-					css={(theme) => css`
-						position: absolute;
-						visibility: ${shouldShowLoading ? 'visible' : 'hidden'};
-						bottom: 1px;
-					`}
-				>
-					<Spinner height={20} width={20} />
-				</span>
+
+				{isAsync && (
+					<span
+						css={css`
+							position: absolute;
+							visibility: ${shouldShowLoading ? 'visible' : 'hidden'};
+							bottom: 1px;
+						`}
+					>
+						<Spinner height={20} width={20} />
+					</span>
+				)}
 			</ButtonElement>
 		);
 	},
 );
+
+export const TransparentButton = styled(ButtonElement)`
+	background: none;
+	border: none;
+	justify-content: flex-start;
+	text-align: left;
+
+	&:focus,
+	&:hover {
+		background: none;
+	}
+`;
 
 export default Button;

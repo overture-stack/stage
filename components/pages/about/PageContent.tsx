@@ -19,19 +19,46 @@
  *
  */
 
-import colors from './colors';
-import components from './components';
-import typography from './typography';
-import shadow from './shadow';
-import dimensions from './dimensions';
+import { css } from '@emotion/react';
+import { ReactElement } from 'react';
 
-const defaultTheme = {
-	colors,
-	typography,
-	shadow,
-	dimensions,
-	components: components(colors),
+import LowerPane from './LowerPane';
+import HeroBanner from './HeroBanner';
+import Impact from './Impact';
+import Why from './Why';
+import Footer from '@/components/Footer';
+
+const PageContent = (): ReactElement => {
+	return (
+		<main
+			css={(theme) => css`
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				padding-bottom: ${theme.dimensions.footer.height}px;
+			`}
+		>
+			<HeroBanner />
+
+			<article
+				css={css`
+					display: flex;
+					flex-wrap: wrap;
+					margin-top: 30px;
+					max-width: 1680px;
+					width: 100%;
+
+					@media (min-width: 900px) {
+					}
+				`}
+			>
+				<Impact />
+				<Why />
+			</article>
+
+			<LowerPane />
+		</main>
+	);
 };
 
-export default defaultTheme;
-export type StageThemeInterface = typeof defaultTheme;
+export default PageContent;

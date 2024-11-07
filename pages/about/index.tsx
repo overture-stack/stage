@@ -19,19 +19,17 @@
  *
  */
 
-import colors from './colors';
-import components from './components';
-import typography from './typography';
-import shadow from './shadow';
-import dimensions from './dimensions';
+import React from 'react';
+import About from '../../components/pages/about';
+import { createPage } from '../../global/utils/pages';
 
-const defaultTheme = {
-	colors,
-	typography,
-	shadow,
-	dimensions,
-	components: components(colors),
-};
+const AboutPage = createPage({
+	getInitialProps: async ({ query, egoJwt }) => {
+		return { query, egoJwt };
+	},
+	isPublic: true,
+})(() => {
+	return <About />;
+});
 
-export default defaultTheme;
-export type StageThemeInterface = typeof defaultTheme;
+export default AboutPage;

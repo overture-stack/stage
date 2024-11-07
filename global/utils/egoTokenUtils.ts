@@ -24,7 +24,7 @@ import { memoize } from 'lodash';
 import jwt from 'jsonwebtoken';
 
 import { getConfig } from '../config';
-import { EgoJwtData, UserWithId } from '../types';
+import { EgoJwtData, UserWithId } from '../types/types';
 
 const { NEXT_PUBLIC_EGO_PUBLIC_KEY } = getConfig();
 

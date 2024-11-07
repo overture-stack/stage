@@ -22,7 +22,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 
 import { AUTH_PROVIDER } from '../utils/constants';
-import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
+import { ProviderType, UserStatus, UserType, UserWithId } from '../types/types';
 import { getConfig } from '../config';
 
 type T_AuthContext = {
@@ -37,13 +37,7 @@ if (process.env.NODE_ENV === 'development') {
 	AuthContext.displayName = 'AuthContext';
 }
 
-export const AuthProvider = ({
-	children,
-	session,
-}: {
-	children: React.ReactElement;
-	session: any;
-}) => {
+export const AuthProvider = ({ children, session }: { children: React.ReactElement; session: any }) => {
 	const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
 	const [user, setUser] = useState<UserWithId>();
 

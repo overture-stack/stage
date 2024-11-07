@@ -22,9 +22,10 @@
 const base = {
 	white: '#fff',
 	black: '#282a35',
-};
-
-const grey = {
+	red: '#D93738',
+  };
+  
+  const grey = {
 	grey_1: '#f2f5f8',
 	grey_2: '#f2f3f5',
 	grey_3: '#dfdfe1',
@@ -32,54 +33,64 @@ const grey = {
 	grey_5: '#aeafb3',
 	grey_6: '#5e6068',
 	grey_highlight: '#eceff2',
-};
-
-const primary = {
-	primary: '#00ddbe',
-	primary_dark: '#00c4a7',
-};
-
-// dark blues
-const accent = {
-	accent: '#04518c',
-	accent_light: '#4f85ae',
-	accent_dark: '#003055',
+  };
+  
+  const primary = {
+	primary: '#28519d',
+	primary_dark: '#113877',
+	primary_light: '#6885ba',
+  };
+  
+  const accent = {
+	accent: '#60b3e0',
+	accent_light: '#afd9ef',
+	accent_dark: '#151c3d',
+	accent_light_rgb: '175, 217, 239',
 	accent_1: '#e5edf3',
-};
-
-// light blues
-const secondary = {
+  };
+  
+  // light blues
+  const secondary = {
 	secondary: '#4bc6f0',
 	secondary_light: '#edf9fd',
 	secondary_dark: '#109ed9',
 	secondary_accessible: '#0c7cac',
 	secondary_1: '#d2f1fb',
 	secondary_2: '#aee5f8',
-};
-
-const accent2 = {
+  };
+  
+  const accent2 = {
 	accent2_dark: '#9e005d',
 	accent2: '#b74a89',
 	accent2_light: '#f7ecf3',
-};
-
-const accent3 = {
-	accent3: '#d9de3a',
-};
-
-const error = {
+  };
+  
+  const accent3 = {
+	accent3: '#33aabb',
+	accent3_dark: '#1c8292',
+	accent3_alternate: '#4da3ab',
+  };
+  
+  const success = {
+	success: '#00ddbe',
+	success_dark: '#009984',
+	success_light: '#e6f2f4',
+  };
+  
+  const error = {
 	error: '#c86370',
 	error_dark: '#ad404e',
-	error_1: '#f9eff0',
+	error_1: '#f7d7d7',
 	error_2: '#e9c1c6',
-};
-
-const warning = {
+  };
+  
+  const warning = {
 	warning: '#f2d021',
 	warning_dark: '#e6c104',
-};
-
-export default {
+	warning_1: '#ffff758c',
+  };
+  
+  export default {
 	...base,
 	...grey,
 	...accent,
@@ -87,6 +98,7 @@ export default {
 	...accent3,
 	...primary,
 	...secondary,
+	...success,
 	...error,
 	...warning,
-};
+  };

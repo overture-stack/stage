@@ -21,11 +21,11 @@
 
 import React from 'react';
 
-import ExplorerPage from './explorer';
 import { createPage } from '../global/utils/pages';
+import ExplorerPage from './explorer';
 
 const HomePage = createPage({
-	getInitialProps: async () => {},
+	getInitialProps: async () => null,
 	isPublic: true,
 })(() => {
 	return <ExplorerPage />;
