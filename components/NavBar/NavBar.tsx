@@ -125,8 +125,8 @@ const NavBar = (): ReactElement => {
 					<Dropdown
 						css={linkStyles}
 						data={[
-							<InternalLink path={INTERNAL_PATHS.EXPLORER}>
-								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.EXPLORER) })}>
+							<InternalLink path={INTERNAL_PATHS.CORRELATION}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.CORRELATION) })}>
 									Correlation Data
 								</StyledListLink>
 							</InternalLink>,

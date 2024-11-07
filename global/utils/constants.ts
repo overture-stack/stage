@@ -39,7 +39,7 @@ export const ROOT_PATH = '/';
 
 export enum INTERNAL_PATHS {
 
-	EXPLORER = '/explorer',
+	CORRELATION = '/correlation',
 	MUTATION = '/mutation',
 	ABOUT = '/about'
 }
@@ -66,7 +66,8 @@ const PROXY_API_PATH = '/api';
 const PROXY_PROTECTED_API_PATH = '/api/protected';
 
 export const INTERNAL_API_PROXY = {
-	ARRANGER: urlJoin(PROXY_API_PATH, 'arranger'),
+	CORRELATION_ARRANGER: urlJoin(PROXY_API_PATH, 'correlation_arranger'),
+	MUTATION_ARRANGER: urlJoin(PROXY_API_PATH, 'mutation_arranger'),
 	PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, 'arranger'),
 	PROTECTED_EGO_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/apikey'),
 	PROTECTED_EGO_API_SCOPES_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/scopes'),

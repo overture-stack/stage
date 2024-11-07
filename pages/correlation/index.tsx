@@ -20,16 +20,16 @@
  */
 
 import React from 'react';
-import Explorer from '../../components/pages/explorer';
+import Correllation from '../../components/pages/correlation';
 import { createPage } from '../../global/utils/pages';
 
-const ExplorerPage = createPage({
+const CorrelationPage = createPage({
 	getInitialProps: async ({ query, egoJwt }) => {
 		return { query, egoJwt };
 	},
 	isPublic: true,
 })(() => {
-	return <Explorer />;
+	return <Correllation />;
 });
 
-export default ExplorerPage;
+export default CorrelationPage;

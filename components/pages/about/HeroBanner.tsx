@@ -108,7 +108,7 @@ const HeroBanner = (): ReactElement => {
 						display: flex;
 					`}
 				>
-					<Link path={INTERNAL_PATHS.EXPLORER}>
+					<Link path={INTERNAL_PATHS.CORRELATION}>
 						<StyledLinkAsButton
 							css={css`
 								${theme.typography.button};

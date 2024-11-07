@@ -65,7 +65,7 @@ const getTableConfigs = ({
 				fontColor: 'inherit',
 			},
 			DownloadButton: {
-				customExporters,
+				customExporters: 'saveTSV',
 				downloadUrl: urlJoin(apiHost, 'download'),
 				label: () => (
 					<>
@@ -182,7 +182,7 @@ const RepoTable = () => {
 		},
 	];
 
-	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.ARRANGER, customExporters, theme }));
+	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.MUTATION_ARRANGER, customExporters, theme }));
 
 	return useMemo(
 		() => (

@@ -7,7 +7,7 @@ import { removeFromPath, SSLSecured } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer();
 
-const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
+const { NEXT_PUBLIC_ARRANGER_CORRELATION_API,NEXT_PUBLIC_ARRANGER_MUTATION_API } = getConfig();
 
 // You can export a config variable from any API route in Next.js.
 // We'll use this to disable the bodyParser, otherwise Next.js
@@ -24,9 +24,12 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	let path = req.url;
 	let target = '';
-	if (req.url?.startsWith(INTERNAL_API_PROXY.ARRANGER)) {
-		path = removeFromPath(req?.url, INTERNAL_API_PROXY.ARRANGER);
-		target = NEXT_PUBLIC_ARRANGER_API;
+	if (req.url?.startsWith(INTERNAL_API_PROXY.CORRELATION_ARRANGER)) {
+		path = removeFromPath(req?.url, INTERNAL_API_PROXY.CORRELATION_ARRANGER);
+		target = NEXT_PUBLIC_ARRANGER_CORRELATION_API;
+	} else if (req.url?.startsWith(INTERNAL_API_PROXY.MUTATION_ARRANGER)) {
+		path = removeFromPath(req?.url, INTERNAL_API_PROXY.MUTATION_ARRANGER);
+		target = NEXT_PUBLIC_ARRANGER_MUTATION_API;
 	} else {
 		return res.status(404).end();
 	}
