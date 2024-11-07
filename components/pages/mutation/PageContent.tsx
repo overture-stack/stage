@@ -25,10 +25,12 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import defaultTheme from '@/components/theme';
+
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
+
 import Facets from './Facets';
 import QueryBar from './QueryBar';
-import RepoTable from './RepoTable/RepoTable';
+import RepoTable from './RepoTable';
 // const defaultFilters = {
 //   op: 'and',
 //   content: [],

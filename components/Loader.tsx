@@ -26,11 +26,11 @@ const Loader = () => {
 	return (
 		<div
 			css={(theme) => css`
-				border: 14px solid ${theme.colors.grey_3};
-				border-top: 14px solid ${theme.colors.secondary_dark};
+				border: 10px solid ${theme.colors.grey_3};
+				border-top: 10px solid ${theme.colors.secondary_dark};
 				border-radius: 50%;
-				width: 120px;
-				height: 120px;
+				width: 60px;
+				height: 60px;
 				animation: spin 2s linear infinite;
 
 				@keyframes spin {

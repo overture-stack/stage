@@ -130,7 +130,7 @@ const getTableConfigs = ({
 				`,
 				hoverBackground: theme.colors.grey_highlight,
 				lineHeight: '1.5rem',
-				selectedBackground: 'pink',
+				selectedBackground: theme.colors.accent_highlight,
 				verticalBorderColor: theme.colors.grey_3,
 			},
 			TableWrapper: {
@@ -141,7 +141,7 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_MUTATION_API, NEXT_PUBLIC_ARRANGER_MUTATION_MANIFEST_COLUMNS } = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_MUTATION_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -149,8 +149,8 @@ const RepoTable = () => {
 		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
 		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
 	const customExporters = [
-		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
+		{ label: 'File Table', fileName: `mutation-data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'File Manifest', fileName: `mutation-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
 		{
 			label: () => (
 				<span

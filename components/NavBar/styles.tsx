@@ -47,11 +47,11 @@ export const linkStyles = (theme?: typeof defaultTheme): SerializedStyles => css
 
 	&.active,
 	&:hover {
-		border-bottom-color: ${theme?.colors.accent};
-		color: ${theme?.colors.accent_light};
+		border-bottom-color: ${theme?.colors.white};
+		color: ${theme?.colors.grey_highlight};
 
 		svg path {
-			fill: ${theme?.colors.accent_light};
+			fill: ${theme?.colors.primary_dark};
 		}
 	}
 `;

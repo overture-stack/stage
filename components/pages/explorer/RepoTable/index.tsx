@@ -130,7 +130,7 @@ const getTableConfigs = ({
 				`,
 				hoverBackground: theme.colors.grey_highlight,
 				lineHeight: '1.5rem',
-				selectedBackground: 'pink',
+				selectedBackground: theme.colors.accent_highlight,
 				verticalBorderColor: theme.colors.grey_3,
 			},
 			TableWrapper: {
@@ -149,8 +149,8 @@ const RepoTable = () => {
 		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
 		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
 	const customExporters = [
-		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
+		{ label: 'File Table', fileName: `correlation-data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'File Manifest', fileName: `correlation-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
 		{
 			label: () => (
 				<span

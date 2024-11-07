@@ -30,7 +30,7 @@ const dimensions = {
 		width: 250,
 	},
 	labIcon: {
-		height: 20,
+		width: 45,
 	},
 };
 

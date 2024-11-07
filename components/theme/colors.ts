@@ -47,6 +47,7 @@ const base = {
 	accent_dark: '#151c3d',
 	accent_light_rgb: '175, 217, 239',
 	accent_1: '#e5edf3',
+	accent_highlight: '#6885ba40',
   };
   
   // light blues
@@ -54,6 +55,7 @@ const base = {
 	secondary: '#4bc6f0',
 	secondary_light: '#edf9fd',
 	secondary_dark: '#109ed9',
+	secondary_black: '#2B2B2B',
 	secondary_accessible: '#0c7cac',
 	secondary_1: '#d2f1fb',
 	secondary_2: '#aee5f8',

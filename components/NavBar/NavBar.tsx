@@ -25,15 +25,17 @@ import { useRouter } from 'next/router';
 import cx from 'classnames';
 
 import { INTERNAL_PATHS, ROOT_PATH } from '../../global/utils/constants';
-import StyledLink, { InternalLink } from '../Link';
+import { InternalLink } from '../Link';
 import defaultTheme from '../theme';
 
 import Dropdown from './Dropdown';
 import { linkStyles, StyledListLink } from './styles';
+import labIcon from '@/public/images/navbar-logo.png';
 
 /**
  * Portal ref of navBar. There is only one navBar in entire pagelayout.
  */
+
 export const navBarRef = createRef<HTMLDivElement>();
 
 const NavBar = (): ReactElement => {
@@ -61,26 +63,52 @@ const NavBar = (): ReactElement => {
 				css={css`
 					display: flex;
 					align-items: center;
-					margin-left: 50px;
-					margin-right: 70px;
+					margin-left: 16px;
 					cursor: pointer;
 				`}
 			>
-				<InternalLink path={ROOT_PATH}>
+				<InternalLink path={INTERNAL_PATHS.ABOUT}>
 					<a
-						css={css`
+						css={(theme) => css`
 							display: flex;
 							align-items: center;
 							text-decoration: none;
+							${theme.typography.heading};
+							color: ${theme.colors.accent_dark};
 						`}
 					>
-						<img src="/images/navbar-logo.png" alt="Navbar logo" width="45" />
+						<img
+							src={labIcon.src}
+							alt="Drug Discovery POC Logo"
+							css={css`
+								width: ${theme.dimensions.labIcon.width}px;
+								height: auto;
+								margin-left: 30px;
+								@media (max-width: 675px) {
+									display: none;
+								}
+							`}
+						/>
+						<span
+							css={css`
+								color: ${theme.colors.white};
+								padding-left: 30px;
+								white-space: nowrap;
+								@media (max-width: 675px) {
+									display: none;
+								}
+							`}
+						>
+							Drug Discovery POC
+						</span>
 					</a>
 				</InternalLink>
 			</div>
 			<div
 				css={css`
 					display: flex;
+					margin-left: 30px;
+					margin-top: 5px;
 					align-items: center;
 					justify-content: space-between;
 					width: 100%;
@@ -111,17 +139,6 @@ const NavBar = (): ReactElement => {
 						label="Explore The Data"
 						urls={[INTERNAL_PATHS.MUTATION]}
 					/>
-
-					<InternalLink path={INTERNAL_PATHS.ABOUT}>
-						<StyledLink
-							css={css`
-								${linkStyles(theme)}/* Add any additional styles from Dropdown if needed */
-							`}
-							className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.ABOUT) })}
-						>
-							About
-						</StyledLink>
-					</InternalLink>
 				</div>
 			</div>
 		</div>

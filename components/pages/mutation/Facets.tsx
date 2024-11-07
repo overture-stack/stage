@@ -24,6 +24,7 @@ import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/t
 import { css, useTheme } from '@emotion/react';
 import { StageThemeInterface } from '@/components/theme';
 import { getConfig } from '@/global/config';
+
 const getAggregationsStyles = (theme: StageThemeInterface): UseThemeContextProps => ({
 	callerName: 'Mutation-Facets',
 	components: {
@@ -144,12 +145,12 @@ const getAggregationsStyles = (theme: StageThemeInterface): UseThemeContextProps
 				RangeTrack: {
 					disabledInBackground: theme.colors.grey_4,
 					disabledOutBackground: theme.colors.grey_3,
-					inBackground: theme.colors.secondary,
+					inBackground: theme.colors.primary_dark,
 					outBackground: theme.colors.grey_4,
 				},
 			},
 			TreeJointIcon: {
-				fill: theme.colors.red,
+				fill: theme.colors.primary_dark,
 				size: 8,
 				transition: 'all 0s',
 			},
@@ -188,7 +189,7 @@ const getAggregationsStyles = (theme: StageThemeInterface): UseThemeContextProps
 				`,
 			},
 			TreeJointIcon: {
-				fill: theme.colors.red,
+				fill: theme.colors.primary_dark,
 				size: 8,
 				transition: 'all 0s',
 			},

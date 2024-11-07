@@ -28,7 +28,7 @@ const getThemeCustomisations = (theme: StageThemeInterface): UseThemeContextProp
 	components: {
 		SQONViewer: {
 			EmptyMessage: {
-				arrowColor: theme.colors.red,
+				arrowColor: theme.colors.primary_dark,
 			},
 			SQONBubble: {
 				borderRadius: '8px',

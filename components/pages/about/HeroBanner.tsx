@@ -125,7 +125,27 @@ const HeroBanner = (): ReactElement => {
 								}
 							`}
 						>
-							Explore the Data
+							Correlation Data
+						</StyledLinkAsButton>
+					</Link>
+					<Link path={INTERNAL_PATHS.MUTATION}>
+						<StyledLinkAsButton
+							css={css`
+								${theme.typography.button};
+								background-color: ${theme.colors.black};
+								border-color: ${theme.colors.black};
+								line-height: 20px;
+								margin-right: 15px;
+								padding: 8px 20px;
+								width: fit-content;
+
+								&:hover {
+									color: ${theme.colors.white};
+									background-color: ${theme.colors.grey_6};
+								}
+							`}
+						>
+							Mutation Data
 						</StyledLinkAsButton>
 					</Link>
 				</div>
