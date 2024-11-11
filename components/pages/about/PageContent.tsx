@@ -53,7 +53,6 @@ const PageContent = (): ReactElement => {
 				`}
 			>
 				<Impact />
-				<Why />
 			</article>
 
 			<LowerPane />

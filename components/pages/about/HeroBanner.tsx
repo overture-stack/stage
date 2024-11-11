@@ -78,30 +78,36 @@ const HeroBanner = (): ReactElement => {
 					}
 				`}
 			>
-				<h1
+				<h2
 					css={css`
 						font-size: 30px;
 						font-weight: normal;
 						position: relative;
+						padding-right: 20%;
 
 						@media (min-width: 1345px) {
 							font-size: 34px;
 						}
 					`}
 				>
-					Drug Discovery Proof of Concept
-				</h1>
-
+					Our goal is a sustainable platform that enables the storing, filtering and visualization of drug discovery
+					datasets.
+				</h2>
 				<p
 					css={css`
-						${theme.typography.subheading}
 						font-weight: normal;
+						position: relative;
+						padding-right: 40%;
 					`}
 				>
-					The initial phase of our project focuses on building a simple data portal that displays our dataset through
-					the front-end interface. Once this foundation is in place, we can progressively enhance the portal's
-					functionality to support the specific requirements and workflows of our drug discovery team.
+					The aim of this POC is to simply display a subset of the drug discovery teams data in one single page
+					application, specifically:
 				</p>
+				<ul>
+					<li>Index and display correlation data with sliders to filter correlation parameters </li>
+					<li>Index and display mutation data with standard filter facets</li>
+					<li>Integrate both displays into a single page application</li>
+				</ul>
 
 				<div
 					css={css`

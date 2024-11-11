@@ -52,10 +52,7 @@ const LowerPane = (): ReactElement => {
 					max-width: 900px;
 				`}
 			>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-				magna aliqua, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-				dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-				cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				For more information on the Overture suite feel free to check out a pre-release of our new documentation site
 			</p>
 			<a
 				css={css`
@@ -65,11 +62,11 @@ const LowerPane = (): ReactElement => {
 					font-weight: bold;
 					text-decoration: none;
 				`}
-				href="https://www.overture.bio"
+				href="https://main--overturedev.netlify.app/"
 				rel="noopener noreferrer"
 				target="_blank"
 			>
-				Lorem Ipsum Dolor Sit Amet
+				Overture Docs Pre-release
 				<ChevronDown
 					fill={theme.colors.primary}
 					height={11}
