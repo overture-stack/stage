@@ -68,7 +68,7 @@ type Config = {
 	// NEXT_PUBLIC_SYSTEM_ALERTS: string;
 	// Optional features/functionalities
 	NEXT_PUBLIC_DEBUG: boolean;
-	// NEXT_PUBLIC_ENABLE_DOWNLOADS: boolean;
+	NEXT_PUBLIC_ENABLE_DOWNLOADS: boolean;
 	// NEXT_PUBLIC_ENABLE_LOGIN: boolean;
 	NEXT_PUBLIC_ENABLE_CORRELATION_QUICKSEARCH: boolean;
 	NEXT_PUBLIC_ENABLE_MUTATION_QUICKSEARCH: boolean;
@@ -124,6 +124,8 @@ export const getConfig = (): Config => {
 		NEXT_PUBLIC_UI_VERSION: publicConfig.NEXT_PUBLIC_UI_VERSION || '',
 		SESSION_ENCRYPTION_SECRET: process.env.SESSION_ENCRYPTION_SECRET || '',
 		NEXT_PUBLIC_ENABLE_CORRELATION_QUICKSEARCH: (publicConfig.NEXT_PUBLIC_ENABLE_QUICKSEARCH || '').toLowerCase() === 'true',
-		NEXT_PUBLIC_ENABLE_MUTATION_QUICKSEARCH: (publicConfig.NEXT_PUBLIC_ENABLE_QUICKSEARCH || '').toLowerCase() === 'true'
+		NEXT_PUBLIC_ENABLE_MUTATION_QUICKSEARCH: (publicConfig.NEXT_PUBLIC_ENABLE_QUICKSEARCH || '').toLowerCase() === 'true',
+		NEXT_PUBLIC_ENABLE_DOWNLOADS:
+		(publicConfig.NEXT_PUBLIC_ENABLE_DOWNLOADS || '').toLowerCase() === 'true',
 	  };
 	};

@@ -33,10 +33,8 @@ import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/T
 import urlJoin from 'url-join';
 
 import { getConfig } from '@/global/config';
-import StyledLink from '@/components/Link';
 import { StageThemeInterface } from '@/components/theme';
 import { Download } from '@/components/theme/icons';
-import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
 const getTableConfigs = ({
 	apiHost,
@@ -65,7 +63,7 @@ const getTableConfigs = ({
 				fontColor: 'inherit',
 			},
 			DownloadButton: {
-				customExporters: 'saveTSV',
+				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
 				label: () => (
 					<>
@@ -141,48 +139,16 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_CORRELATION_MANIFEST_COLUMNS } = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_CORRELATION_API } = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-	const manifestColumns = NEXT_PUBLIC_ARRANGER_CORRELATION_MANIFEST_COLUMNS.split(',')
-		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
-		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
-	const customExporters = [
-		{ label: 'File Table', fileName: `correlation-data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-		{ label: 'File Manifest', fileName: `correlation-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-		{
-			label: () => (
-				<span
-					css={css`
-						border-top: 1px solid ${theme.colors.grey_3};
-						margin-top: -3px;
-						padding-top: 7px;
-						white-space: pre-line;
 
-						a {
-							margin-left: 3px;
-						}
-					`}
-				>
-					To download files using a file manifest, please follow these
-					<StyledLink
-						css={css`
-							line-height: inherit;
-						`}
-						href="https://www.overture.bio/documentation/guides/download/clientdownload/"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						instructions
-					</StyledLink>
-					.
-				</span>
-			),
-		},
+	const customExporters = [
+		{ label: 'Download', fileName: `correlation-data-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
 	];
 
-	useArrangerTheme(getTableConfigs({ apiHost: INTERNAL_API_PROXY.CORRELATION_ARRANGER, customExporters, theme }));
+	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_CORRELATION_API, customExporters, theme }));
 
 	return useMemo(
 		() => (

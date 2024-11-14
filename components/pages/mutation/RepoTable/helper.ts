@@ -22,63 +22,65 @@
 import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/types';
 import SQON from '@overture-stack/sqon-builder';
 import { isEmpty } from 'lodash';
-
 import createArrangerFetcher from '@/components/utils/arrangerFetcher';
 import { getConfig } from '@/global/config';
 
 const { NEXT_PUBLIC_ARRANGER_MUTATION_API } = getConfig();
 
 export const arrangerFetcher = createArrangerFetcher({
-	ARRANGER_API: NEXT_PUBLIC_ARRANGER_MUTATION_API,
+    ARRANGER_API: NEXT_PUBLIC_ARRANGER_MUTATION_API,
 });
 
 const saveSetMutation = `mutation ($sqon: JSON!)  {
-	saveSet(
-		sqon: $sqon,
-		type: file,
-		path: "name"
-	) {
-		setId
-	}
+    saveSet(
+        sqon: $sqon,
+        type: file,
+        path: "name"
+    ) {
+        setId
+    }
 }`;
 
 export const saveSet = (sqon: SQONType): Promise<string> => {
-	return arrangerFetcher({
-		body: {
-			query: saveSetMutation,
-			variables: { sqon },
-		},
-	})
-		.then(
-			({
-				data: {
-					saveSet: { setId },
-				},
-			}) => {
-				return setId;
-			},
-		)
-		.catch((err: any) => {
-			console.warn(err);
-			Promise.reject(err);
-		}) as Promise<string>;
+    return arrangerFetcher({
+        body: {
+            query: saveSetMutation,
+            variables: { sqon },
+        },
+    })
+        .then(
+            ({
+                data: {
+                    saveSet: { setId },
+                },
+            }) => {
+                return setId;
+            },
+        )
+        .catch((err: any) => {
+            console.warn(err);
+            Promise.reject(err);
+        }) as Promise<string>;
 };
 
+// Type guard to check if SQON is not null
+function isSQON(sqon: SQONType | null): sqon is SQON {
+    return sqon !== null && !isEmpty(sqon);
+}
+
 export function buildSqonWithObjectIds(currentSqon: SQONType, objectIds: string[]): SQONType {
-    const objectsSqon = objectIds && objectIds.length > 0 ? SQON.in('object_id', objectIds) : null;
+    // Create object ID SQON only if we have IDs
+    const objectsSqon = objectIds.length > 0 
+        ? SQON.in('object_id', objectIds) 
+        : null;
 
-    // Check if currentSqon is null before calling .and()
-    if (currentSqon && objectsSqon) {
-        return currentSqon.and(objectsSqon);
+    // If both SQONs are valid, combine them
+    if (isSQON(currentSqon) && isSQON(objectsSqon)) {
+        return SQON.and([currentSqon, objectsSqon]);
     }
 
-    if (!currentSqon && objectsSqon) {
-        return objectsSqon;
-    }
-
-    if (currentSqon && !objectsSqon) {
-        return currentSqon;
-    }
-
-    return null;
+    // Return whichever SQON is valid, or null if neither is
+    return isSQON(currentSqon) ? currentSqon : 
+           isSQON(objectsSqon) ? objectsSqon : 
+           null;
 }
