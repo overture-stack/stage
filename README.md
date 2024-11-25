@@ -4,14 +4,11 @@ Stage is a simple yet powerful React-based user interface framework designed to 
 
 </br>
 
-> 
 > <div>
 > <img align="left" src="ov-logo.png" height="50"/>
 > </div>
-> 
-> Stage is part of [Overture](https://www.overture.bio/), a collection of open-source software microservices used to create platforms for researchers to organize and share genomics data.*
-> 
-> 
+>
+> Stage is part of [Overture](https://www.overture.bio/), a collection of open-source software microservices used to create platforms for researchers to organize and share genomics data.\*
 
 ## Repository Structure
 
@@ -41,16 +38,15 @@ The repository is organized with the following directory structure:
 - **Public:** Static public assets such as SVGs and other images.
 - **Tests:** Unit tests built in Jest for insuring code stability.
 
-
 ## Documentation
 
 Technical resources for those working with or contributing to the project are available from our official documentation site, the following content can also be read and updated within the `/docs` folder of this repository.
 
-- **[Stage Overview](https://main--overturedev.netlify.app/docs/core-software/Stage/overview)** 
-- [**Setting up the Development Enviornment**](https://main--overturedev.netlify.app/docs/core-software/Stage/setup)
-- [**Common Usage Docs**](https://main--overturedev.netlify.app/docs/core-software/Stage/setup)
+- **[Stage Overview](https://main--overturedocs.netlify.app/docs/core-software/Stage/overview)**
+- [**Setting up the Development Enviornment**](https://main--overturedocs.netlify.app/docs/core-software/Stage/setup)
+- [**Common Usage Docs**](https://main--overturedocs.netlify.app/docs/core-software/Stage/setup)
 
-##  Development Environment
+## Development Environment
 
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) (v8.3.0 or higher)
@@ -58,27 +54,27 @@ Technical resources for those working with or contributing to the project are av
 
 ## Support & Contributions
 
-- For support, feature requests, and bug reports, please see our [Support Guide](https://main--overturedev.netlify.app/community/support).
+- For support, feature requests, and bug reports, please see our [Support Guide](https://main--overturedocs.netlify.app/community/support).
 
-- For detailed information on how to contribute to this project, please see our [Contributing Guide](https://main--overturedev.netlify.app/docs/contribution).
+- For detailed information on how to contribute to this project, please see our [Contributing Guide](https://main--overturedocs.netlify.app/docs/contribution).
 
-## Related Software 
+## Related Software
 
 The Overture Platform includes the following Overture Components:
 
 </br>
 
-|Software|Description|
-|---|---|
-|[Score](https://github.com/overture-stack/score/)| Transfer data to and from any cloud-based storage system |
-|[Song](https://github.com/overture-stack/song/)| Catalog and manage metadata associated to file data spread across cloud storage systems |
-|[Maestro](https://github.com/overture-stack/maestro/)| Organizing your distributed data into a centralized Elasticsearch index |
-|[Arranger](https://github.com/overture-stack/arranger/)| A search API with reusable search UI components |
-|[Stage](https://github.com/overture-stack/stage)| A React-based web portal scaffolding |
-|[Lyric](https://github.com/overture-stack/lyric)| A model-agnostic, tabular data submission system |
-|[Lectern](https://github.com/overture-stack/lectern)| Schema Manager, designed to validate, store, and manage collections of data dictionaries.  |
+| Software                                                | Description                                                                               |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [Score](https://github.com/overture-stack/score/)       | Transfer data to and from any cloud-based storage system                                  |
+| [Song](https://github.com/overture-stack/song/)         | Catalog and manage metadata associated to file data spread across cloud storage systems   |
+| [Maestro](https://github.com/overture-stack/maestro/)   | Organizing your distributed data into a centralized Elasticsearch index                   |
+| [Arranger](https://github.com/overture-stack/arranger/) | A search API with reusable search UI components                                           |
+| [Stage](https://github.com/overture-stack/stage)        | A React-based web portal scaffolding                                                      |
+| [Lyric](https://github.com/overture-stack/lyric)        | A model-agnostic, tabular data submission system                                          |
+| [Lectern](https://github.com/overture-stack/lectern)    | Schema Manager, designed to validate, store, and manage collections of data dictionaries. |
 
-If you'd like to get started using our platform [check out our quickstart guides](https://main--overturedev.netlify.app/guides/getting-started)
+If you'd like to get started using our platform [check out our quickstart guides](https://main--overturedocs.netlify.app/guides/getting-started)
 
 ## Funding Acknowledgement
 
