@@ -47,7 +47,7 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
    - Ensure all ports are free on your system before starting the environment.
    - You may need to adjust the ports in the `docker-compose.yml` file if you have conflicts with existing services.
 
-   For more information on configuring and using these services, see our [Conductor documentation linked here](/docs/other-software/Conductor)
+   For more information on configuring and using these services, see our [Conductor documentation linked here](https://docs.overture.bio/docs/other-software/Conductor)
 
     </details>
 
@@ -178,7 +178,7 @@ After installation and configuration, verify that Stage is functioning correctly
    - Expected result: A new API key should be generated and displayed on the screen.
 
 :::info Need Help?
-If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](/community/support).
+If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
 :::
 
 :::warning
