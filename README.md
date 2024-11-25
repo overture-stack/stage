@@ -36,7 +36,7 @@ The repository is organized with the following directory structure:
 - **Pages:** The central location for the main application file and all page routes, based on [Next.js Pages Routing system](https://nextjs.org/docs/pages/building-your-application/routing). This contains the root \_app.jsx file and individual folders/files for each navigable page in the site. Implements code found in /global and /components.
 - **Global:** Global: Utilities, definitions and configuration related to core processes for running the application, or used widely throughout the app. Covers functionality such as authentication & authorization, environment & context sharing, URL management and Page construction.
 - **Public:** Static public assets such as SVGs and other images.
-- **Tests:** Unit tests built in Jest for insuring code stability.
+- **Tests:** Unit tests built in Jest for ensuring code stability.
 
 ## Documentation
 
