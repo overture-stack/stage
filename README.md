@@ -42,9 +42,8 @@ The repository is organized with the following directory structure:
 
 Technical resources for those working with or contributing to the project are available from our official documentation site, the following content can also be read and updated within the `/docs` folder of this repository.
 
-- **[Stage Overview](https://docs.overture.bio/docs/core-software/Stage/overview)**
-- [**Setting up the Development Enviornment**](https://docs.overture.bio/docs/core-software/Stage/setup)
-- [**Common Usage Docs**](https://docs.overture.bio/docs/core-software/Stage/setup)
+- [**Stage Overview**](https://docs.overture.bio/docs/core-software/Stage/overview)
+- [**Setting up the Development Environment**](https://docs.overture.bio/docs/core-software/Stage/setup)
 
 ## Development Environment
 
