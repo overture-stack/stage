@@ -140,16 +140,16 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_CORRELATION_API } = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_MRNA_API } = getConfig();
 	const theme = useTheme();
 
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
 
 	const customExporters = [
-		{ label: 'Download', fileName: `correlation-data-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'Download', fileName: `mrna-data-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
 	];
 
-	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_CORRELATION_API, customExporters, theme }));
+	useArrangerTheme(getTableConfigs({ apiHost: NEXT_PUBLIC_ARRANGER_MRNA_API, customExporters, theme }));
 
 	return useMemo(
 		() => (

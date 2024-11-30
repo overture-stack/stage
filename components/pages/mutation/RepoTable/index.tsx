@@ -64,6 +64,7 @@ const getTableConfigs = ({
 			},
 			DownloadButton: {
 				customExporters,
+				exportSelectedRowsField: 'id',
 				downloadUrl: urlJoin(apiHost, 'download'),
 				label: () => (
 					<>

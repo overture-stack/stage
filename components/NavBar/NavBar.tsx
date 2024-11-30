@@ -135,9 +135,18 @@ const NavBar = (): ReactElement => {
 									Mutation Data
 								</StyledListLink>
 							</InternalLink>,
+							<InternalLink path={INTERNAL_PATHS.MRNA}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.MRNA) })}>
+									MRNA Data
+								</StyledListLink>
+							</InternalLink>,
+							<InternalLink path={INTERNAL_PATHS.STRING}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.STRING) })}>
+									STRING Data
+								</StyledListLink>
+							</InternalLink>,
 						]}
 						label="Explore The Data"
-						urls={[INTERNAL_PATHS.MUTATION]}
 					/>
 				</div>
 			</div>

@@ -41,6 +41,8 @@ export enum INTERNAL_PATHS {
 
 	CORRELATION = '/correlation',
 	MUTATION = '/mutation',
+	MRNA = '/mrna',
+	STRING = '/string',
 	ABOUT = '/about'
 }
 
