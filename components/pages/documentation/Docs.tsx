@@ -123,16 +123,22 @@ If you have any questions please don't hesitate to reach out through our <a href
 
 const styles = {
 	container: css`
-		padding: 2rem 0;
-		margin: 0 2rem;
+		padding: 2rem;
+		margin: 0 auto; // Centers the container
 		background-color: ${defaultTheme.colors.main};
 		max-width: 1200px;
+		width: 100%;
+
+		@media (max-width: 768px) {
+			padding: 2rem 1rem; // Reduce padding on smaller screens
+		}
 	`,
+
 	contentWrapper: css`
 		width: 100%;
 		display: flex;
 		gap: 2rem;
-		padding: 0 1rem;
+		max-width: 100%; // Ensure content doesn't overflow
 
 		@media (max-width: 768px) {
 			flex-direction: column;
@@ -219,7 +225,6 @@ const styles = {
 			margin: 1rem 0;
 			line-height: 1.6;
 			color: ${defaultTheme.colors.black};
-			opacity: 0.8;
 		}
 
 		ul,
