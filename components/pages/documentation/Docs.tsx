@@ -40,41 +40,37 @@ The platform's four-component architecture enables researchers to process and an
 
 # Data Submission
 
-## TSV Processing Utility Guide
+### Basic Usage:
 
-### Basic Usage
+	tsv-processor -f path/to/your/data.tsv
 
-<code> tsv-processor -f path/to/your/data.tsv </code>
+### Required Parameters:
 
+- <code>-f, --file</code>: Path to your TSV (tab-separated values) file
 
-### Parameters
+### Optional Parameters:
 
-#### Required
-* -f, --file: Path to your TSV (tab-separated values) file
+- <code>--url</code>: Elasticsearch URL (default: http://localhost:9200)
+- <code>-i, --index</code>: Name for the Elasticsearch index (default: correlation-index)
+- <code>-u, --user</code>: Elasticsearch username (default: elastic)
+- <code>-p, --password</code>: Elasticsearch password (default: myelasticpassword)
+- <code>-b, --batch-size</code>: Number of records to process in each batch (default: 10000)
 
-#### Optional
-* --url: Elasticsearch URL (default: http://localhost:9200)
-* -i, --index: Name for the Elasticsearch index (default: correlation-index)
-* -u, --user: Elasticsearch username (default: elastic)
-* -p, --password: Elasticsearch password (default: myelasticpassword)
-* -b, --batch-size: Number of records to process in each batch (default: 50)
+### Example:
 
-## Example
-bash
-tsv-processor -f data.tsv -i my-index -b 100
+	tsv-processor -f ./data.tsv -i my-index -b 1000 -u elastic -p myelasticpassword
 
-## Process
+## Features:
 
-1. Counts total records in your file
-2. Displays and asks for header confirmation
-3. Shows progress bar during processing
-4. Provides real-time statistics:
-   * Processing speed
-   * Estimated time remaining
-5. Displays completion summary with any failed records
+- Counts total records in your file
+- Displays and asks for header confirmation
+- Shows progress bar during processing
+- Provides real-time statistics:
+   - Processing speed
+   - Estimated time remaining
+- Displays completion summary with any failed records
 
-## Note
-Your TSV file must have headers in the first row and be properly tab-separated.
+**Note**: Your TSV file must have headers in the first row and be properly tab-separated.
     `,
 	},
 	{
@@ -127,16 +123,22 @@ If you have any questions please don't hesitate to reach out through our <a href
 
 const styles = {
 	container: css`
-		padding: 2rem 0;
+		padding: 2rem;
+		margin: 0 auto; // Centers the container
 		background-color: ${defaultTheme.colors.main};
 		max-width: 1200px;
-		margin: 0 auto;
+		width: 100%;
+
+		@media (max-width: 768px) {
+			padding: 2rem 1rem; // Reduce padding on smaller screens
+		}
 	`,
+
 	contentWrapper: css`
 		width: 100%;
 		display: flex;
 		gap: 2rem;
-		padding: 0 1rem;
+		max-width: 100%; // Ensure content doesn't overflow
 
 		@media (max-width: 768px) {
 			flex-direction: column;
@@ -184,12 +186,15 @@ const styles = {
 		li a {
 			color: ${defaultTheme.colors.button};
 			text-decoration: none;
+			transition: 0.3s ease;
 			font-weight: 600;
 			display: block;
 			padding: 0.5rem 0;
 
 			&:hover {
-				text-decoration: underline;
+				text-decoration: none;
+				color: ${defaultTheme.colors.accent};
+				transition: 0.3s ease;
 			}
 		}
 	`,
@@ -203,13 +208,13 @@ const styles = {
 		h1 {
 			color: ${defaultTheme.colors.button};
 			font-size: 1.5rem;
-			font-weight: 700;
+			font-weight: 900;
 			margin-bottom: 1.5rem;
 		}
 
 		h2 {
 			font-size: 1.2rem;
-			font-weight: 500;
+			font-weight: 900;
 			margin: 1.5rem 0 1rem;
 			padding-bottom: 0.5rem;
 			border-bottom: 1px solid ${defaultTheme.colors.main}20;
@@ -220,23 +225,19 @@ const styles = {
 			margin: 1rem 0;
 			line-height: 1.6;
 			color: ${defaultTheme.colors.black};
-			opacity: 0.8;
 		}
 
 		ul,
 		ol {
-			margin: 1rem 0;
 			padding-left: 1.5rem;
 
 			li {
 				margin: 0.5rem 0;
-				line-height: 1.6;
 			}
 		}
 
-		/* Inline code */
-		:not(pre) > code {
-			background: ${defaultTheme.colors.main}10;
+		code {
+			background: ${defaultTheme.colors.main};
 			padding: 0.2rem 0.4rem;
 			border-radius: 3px;
 			font-size: 0.9em;
@@ -244,37 +245,18 @@ const styles = {
 			font-family: monospace;
 		}
 
-		/* Block code */
-		pre {
-			background: ${defaultTheme.colors.main}05;
-			border: 1px solid ${defaultTheme.colors.main}20;
-			border-radius: 6px;
-			padding: 1.5rem;
-			margin: 1.5rem 0;
-			overflow-x: auto;
-			position: relative;
+		a {
+			color: ${defaultTheme.colors.hero};
+			font-weight: 900;
+			text-decoration: none;
+			transition: 0.3s ease;
 
-			&::before {
-				content: 'code';
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				padding: 0.5rem 1rem;
-				background: ${defaultTheme.colors.main}10;
-				border-bottom: 1px solid ${defaultTheme.colors.main}20;
-				font-family: monospace;
-				font-size: 0.9em;
-				color: ${defaultTheme.colors.button};
-				text-transform: uppercase;
-			}
-			code {
-				padding-top: 1.5rem;
-				display: block;
-				font-family: monospace;
-				line-height: 1.6;
+			&:hover {
+				color: ${defaultTheme.colors.accent};
+				transition: 0.3s ease;
 			}
 		}
+
 		img {
 			width: 90%;
 			max-width: 800px;
