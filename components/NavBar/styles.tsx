@@ -28,7 +28,7 @@ export const linkStyles = (theme?: typeof defaultTheme): SerializedStyles => css
 	align-items: center;
 	border-bottom: 5px solid transparent;
 	box-sizing: border-box;
-	color: ${theme?.colors.white};
+	color: ${theme?.colors.black};
 	cursor: pointer;
 	display: flex;
 	flex: 0;
@@ -47,8 +47,8 @@ export const linkStyles = (theme?: typeof defaultTheme): SerializedStyles => css
 
 	&.active,
 	&:hover {
-		border-bottom-color: ${theme?.colors.white};
-		color: ${theme?.colors.grey_highlight};
+		border-bottom-color: ${theme?.colors.accent};
+		color: ${theme?.colors.accent};
 
 		svg path {
 			fill: ${theme?.colors.primary_dark};

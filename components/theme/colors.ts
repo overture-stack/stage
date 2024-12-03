@@ -22,7 +22,7 @@
 const home = {
 	hero: '#65bc45',
 	main: '#f0f1f3',
-	button: '#65bc4550',
+	button: '#50852a',
 }
 
 const base = {

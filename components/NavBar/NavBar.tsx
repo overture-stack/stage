@@ -49,7 +49,7 @@ const NavBar = (): ReactElement => {
 				display: flex;
 				justify-content: flex-start;
 				height: ${theme.dimensions.navbar.height}px;
-				background: ${theme.colors.black};
+				background: ${theme.colors.white};
 				background-size: 281px;
 				${theme.shadow.default};
 				position: sticky;
@@ -91,7 +91,7 @@ const NavBar = (): ReactElement => {
 						/>
 						<span
 							css={css`
-								color: ${theme.colors.white};
+								color: ${theme.colors.black};
 								padding-left: 30px;
 								white-space: nowrap;
 								@media (max-width: 675px) {
@@ -120,6 +120,7 @@ const NavBar = (): ReactElement => {
 						align-items: center;
 						height: 100%;
 						width: 100%;
+						color: ${theme.colors.black};
 					`}
 				>
 					<Dropdown

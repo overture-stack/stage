@@ -18,11 +18,36 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 import { css } from '@emotion/react';
 import { ReactElement } from 'react';
 import HeroBanner from './HeroBanner';
 import SiteMap from './SiteMap';
+import Acknowledgment from './acknowledgement';
+
+const styles = {
+	pageContainer: css`
+		display: flex;
+		gap: 2rem;
+		padding: 0 50px;
+
+		@media (max-width: 768px) {
+			flex-direction: column;
+			padding: 0 20px;
+			gap: 1rem;
+		}
+	`,
+	mainContent: css`
+		flex: 1;
+	`,
+	sidebar: css`
+		width: 300px;
+		align-self: flex-start;
+
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+	`,
+};
 
 const PageContent = (): ReactElement => {
 	return (
@@ -35,16 +60,14 @@ const PageContent = (): ReactElement => {
 			`}
 		>
 			<HeroBanner />
-
-			<article
-				css={css`
-					display: flex;
-					justify-content: center;
-					width: 100%;
-				`}
-			>
-				<SiteMap />
-			</article>
+			<div css={styles.pageContainer}>
+				<div css={styles.mainContent}>
+					<SiteMap />
+				</div>
+				<div css={styles.sidebar}>
+					<Acknowledgment />
+				</div>
+			</div>
 		</main>
 	);
 };
