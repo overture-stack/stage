@@ -43,7 +43,8 @@ export enum INTERNAL_PATHS {
 	MUTATION = '/mutation',
 	MRNA = '/mrna',
 	STRING = '/string',
-	ABOUT = '/about'
+	HOME = '/home',
+	DOCUMENTATION = '/documentation'
 }
 
 // external docs links

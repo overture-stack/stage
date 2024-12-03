@@ -19,16 +19,15 @@
  *
  */
 
-import React from 'react';
+import { ReactElement } from 'react';
 
-import { createPage } from '../global/utils/pages';
-import HomePage from './home';
+import PageContent from './PageContent';
+import PageLayout from '../../PageLayout';
 
-const LandingPage = createPage({
-	getInitialProps: async () => null,
-	isPublic: true,
-})(() => {
-	return <HomePage />;
-});
+const DocumentationPage = (): ReactElement => (
+	<PageLayout>
+		<PageContent />
+	</PageLayout>
+);
 
-export default LandingPage;
+export default DocumentationPage;

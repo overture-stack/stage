@@ -19,6 +19,12 @@
  *
  */
 
+const home = {
+	hero: '#65bc45',
+	main: '#f0f1f3',
+	button: '#65bc4550',
+}
+
 const base = {
 	white: '#fff',
 	black: '#282a35',
@@ -42,7 +48,7 @@ const base = {
   };
   
   const accent = {
-	accent: '#60b3e0',
+	accent: '#65bc45',
 	accent_light: '#afd9ef',
 	accent_dark: '#151c3d',
 	accent_light_rgb: '175, 217, 239',
@@ -103,4 +109,5 @@ const base = {
 	...success,
 	...error,
 	...warning,
+	...home,
   };

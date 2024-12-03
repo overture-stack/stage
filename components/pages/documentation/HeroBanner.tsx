@@ -23,62 +23,90 @@ import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 
 import defaultTheme from '../../theme';
-import { ChevronDown } from '../../theme/icons';
 
-const LowerPane = (): ReactElement => {
+/** Layout notes:
+  - Article is the full-width background for the hero banner
+  - Section centers the content in larger screens
+ ** */
+
+const HeroBanner = (): ReactElement => {
 	const theme: typeof defaultTheme = useTheme();
 
 	return (
 		<article
 			css={css`
-				align-items: center;
-				background-color: ${theme.colors.grey_2};
-				border: 1px solid ${theme.colors.grey_3};
-				border-radius: 5px;
+				background-color: ${theme.colors.hero};
 				box-sizing: border-box;
-				color: ${theme.colors.accent_dark};
+				color: ${theme.colors.white};
 				display: flex;
-				flex-direction: column;
-				margin: 50px;
-				padding: 30px;
-				text-align: center;
-				width: calc(100%);
+				padding: 50px 50px;
+				width: 100%;
+
+				@media (min-width: 1270px) {
+					height: 200px;
+				}
+
+				@media (min-width: 2165px) {
+					padding-left: 50px;
+					justify-content: center;
+				}
+
+				@media (min-width: 2170px) {
+				}
+
+				@media (min-width: 2880px) {
+					padding-left: 50px;
+				}
 			`}
 		>
-			{/* <img src="/images/viral-ai.png" alt="logo for Viral AI" width="180" /> */}
-			<p
+			<section
 				css={css`
-					margin: 20px 0;
-					max-width: 900px;
-				`}
-			>
-				For more information on the Overture suite feel free to check out a pre-release of our new documentation site
-			</p>
-			<a
-				css={css`
-					align-items: center;
-					color: ${theme.colors.primary};
 					display: flex;
-					font-weight: bold;
-					text-decoration: none;
+					flex-direction: column;
+					justify-content: space-between;
+					max-width: 1550px;
+					width: 100%;
+
+					> * {
+						margin: 0;
+
+						&:not(h1) {
+							margin-top: 10px;
+						}
+					}
 				`}
-				href="https://main--overturedev.netlify.app/"
-				rel="noopener noreferrer"
-				target="_blank"
 			>
-				Overture Docs Pre-release
-				<ChevronDown
-					fill={theme.colors.primary}
-					height={11}
-					width={10}
-					style={css`
-						margin-left: 3px;
-						transform: rotate(-90deg);
+				<h2
+					css={css`
+						font-size: 30px;
+						font-weight: normal;
+						position: relative;
+						padding-right: 20%;
+
+						@media (min-width: 1345px) {
+							font-size: 34px;
+						}
 					`}
-				/>
-			</a>
+				>
+					Data Submission
+					<p
+						css={css`
+							font-size: 18px;
+							line-height: 1.5;
+							max-width: 800px;
+							margin-top: 10px; /* Add specific margin here */
+
+							@media (min-width: 1345px) {
+								font-size: 20px;
+							}
+						`}
+					>
+						Submitting data to the drug discovery platform.
+					</p>
+				</h2>
+			</section>
 		</article>
 	);
 };
 
-export default LowerPane;
+export default HeroBanner;

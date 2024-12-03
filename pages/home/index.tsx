@@ -20,16 +20,16 @@
  */
 
 import React from 'react';
-import About from '../../components/pages/about';
+import Home from '../../components/pages/home';
 import { createPage } from '../../global/utils/pages';
 
-const AboutPage = createPage({
+const HomePage = createPage({
 	getInitialProps: async ({ query, egoJwt }) => {
 		return { query, egoJwt };
 	},
 	isPublic: true,
 })(() => {
-	return <About />;
+	return <Home />;
 });
 
-export default AboutPage;
+export default HomePage;

@@ -22,9 +22,7 @@
 import { ReactElement } from 'react';
 import { css, useTheme } from '@emotion/react';
 
-import { INTERNAL_PATHS } from '../../../global/utils/constants';
 import defaultTheme from '../../theme';
-import { StyledLinkAsButton, InternalLink as Link } from '../../Link';
 
 /** Layout notes:
   - Article is the full-width background for the hero banner
@@ -37,7 +35,7 @@ const HeroBanner = (): ReactElement => {
 	return (
 		<article
 			css={css`
-				background-color: ${theme.colors.primary_dark};
+				background-color: ${theme.colors.hero};
 				box-sizing: border-box;
 				color: ${theme.colors.white};
 				display: flex;
@@ -45,7 +43,7 @@ const HeroBanner = (): ReactElement => {
 				width: 100%;
 
 				@media (min-width: 1270px) {
-					height: 400px;
+					height: 200px;
 				}
 
 				@media (min-width: 2165px) {
@@ -73,7 +71,7 @@ const HeroBanner = (): ReactElement => {
 						margin: 0;
 
 						&:not(h1) {
-							margin-top: 20px;
+							margin-top: 10px;
 						}
 					}
 				`}
@@ -90,71 +88,22 @@ const HeroBanner = (): ReactElement => {
 						}
 					`}
 				>
-					Our goal is a sustainable platform that enables the storing, filtering and visualization of drug discovery
-					datasets.
+					Drug Discovery Data Portal
+					<p
+						css={css`
+							font-size: 18px;
+							line-height: 1.5;
+							max-width: 800px;
+							margin-top: 10px; /* Add specific margin here */
+
+							@media (min-width: 1345px) {
+								font-size: 20px;
+							}
+						`}
+					>
+						A comprehensive hub for drug discovery research data.
+					</p>
 				</h2>
-				<p
-					css={css`
-						font-weight: normal;
-						position: relative;
-						padding-right: 40%;
-					`}
-				>
-					The aim of this POC is to simply display a subset of the drug discovery teams data in one single page
-					application, specifically:
-				</p>
-				<ul>
-					<li>Index and display correlation data with sliders to filter correlation parameters </li>
-					<li>Index and display mutation data with standard filter facets</li>
-					<li>Integrate both displays into a single page application</li>
-				</ul>
-
-				<div
-					css={css`
-						display: flex;
-					`}
-				>
-					<Link path={INTERNAL_PATHS.CORRELATION}>
-						<StyledLinkAsButton
-							css={css`
-								${theme.typography.button};
-								background-color: ${theme.colors.black};
-								border-color: ${theme.colors.black};
-								line-height: 20px;
-								margin-right: 15px;
-								padding: 8px 20px;
-								width: fit-content;
-
-								&:hover {
-									color: ${theme.colors.white};
-									background-color: ${theme.colors.grey_6};
-								}
-							`}
-						>
-							Correlation Data
-						</StyledLinkAsButton>
-					</Link>
-					<Link path={INTERNAL_PATHS.MUTATION}>
-						<StyledLinkAsButton
-							css={css`
-								${theme.typography.button};
-								background-color: ${theme.colors.black};
-								border-color: ${theme.colors.black};
-								line-height: 20px;
-								margin-right: 15px;
-								padding: 8px 20px;
-								width: fit-content;
-
-								&:hover {
-									color: ${theme.colors.white};
-									background-color: ${theme.colors.grey_6};
-								}
-							`}
-						>
-							Mutation Data
-						</StyledLinkAsButton>
-					</Link>
-				</div>
 			</section>
 		</article>
 	);

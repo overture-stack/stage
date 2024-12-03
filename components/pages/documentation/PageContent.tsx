@@ -19,15 +19,37 @@
  *
  */
 
+import { css } from '@emotion/react';
 import { ReactElement } from 'react';
+import HeroBanner from './HeroBanner';
+import Docs from './Docs';
 
-import PageContent from './PageContent';
-import PageLayout from '../../PageLayout';
+const PageContent = (): ReactElement => {
+	return (
+		<main
+			css={(theme) => css`
+				display: flex;
+				flex-direction: column;
+				padding-bottom: ${theme.dimensions.footer.height}px;
+				background-color: ${theme.colors.main};
+			`}
+		>
+			<HeroBanner />
 
-const AboutPage = (): ReactElement => (
-	<PageLayout>
-		<PageContent />
-	</PageLayout>
-);
+			<article
+				css={css`
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					max-width: 1680px;
+					margin: 0 auto;
+					padding: 0;
+				`}
+			>
+				<Docs />
+			</article>
+		</main>
+	);
+};
 
-export default AboutPage;
+export default PageContent;

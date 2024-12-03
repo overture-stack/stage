@@ -19,16 +19,34 @@
  *
  */
 
-import React from 'react';
+import { css } from '@emotion/react';
+import { ReactElement } from 'react';
+import HeroBanner from './HeroBanner';
+import SiteMap from './SiteMap';
 
-import { createPage } from '../global/utils/pages';
-import HomePage from './home';
+const PageContent = (): ReactElement => {
+	return (
+		<main
+			css={(theme) => css`
+				display: flex;
+				flex-direction: column;
+				padding-bottom: ${theme.dimensions.footer.height}px;
+				background-color: ${theme.colors.main};
+			`}
+		>
+			<HeroBanner />
 
-const LandingPage = createPage({
-	getInitialProps: async () => null,
-	isPublic: true,
-})(() => {
-	return <HomePage />;
-});
+			<article
+				css={css`
+					display: flex;
+					justify-content: center;
+					width: 100%;
+				`}
+			>
+				<SiteMap />
+			</article>
+		</main>
+	);
+};
 
-export default LandingPage;
+export default PageContent;

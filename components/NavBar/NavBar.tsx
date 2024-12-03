@@ -29,7 +29,7 @@ import { InternalLink } from '../Link';
 import defaultTheme from '../theme';
 
 import Dropdown from './Dropdown';
-import { linkStyles, StyledListLink } from './styles';
+import { linkStyles, StyledLink, StyledListLink } from './styles';
 import labIcon from '@/public/images/navbar-logo.png';
 
 /**
@@ -67,7 +67,7 @@ const NavBar = (): ReactElement => {
 					cursor: pointer;
 				`}
 			>
-				<InternalLink path={INTERNAL_PATHS.ABOUT}>
+				<InternalLink path={INTERNAL_PATHS.HOME}>
 					<a
 						css={(theme) => css`
 							display: flex;
@@ -79,7 +79,7 @@ const NavBar = (): ReactElement => {
 					>
 						<img
 							src={labIcon.src}
-							alt="Drug Discovery POC Logo"
+							alt="Drug Discovery Logo"
 							css={css`
 								width: ${theme.dimensions.labIcon.width}px;
 								height: auto;
@@ -99,7 +99,7 @@ const NavBar = (): ReactElement => {
 								}
 							`}
 						>
-							Drug Discovery POC
+							Drug Discovery Portal
 						</span>
 					</a>
 				</InternalLink>
@@ -148,6 +148,11 @@ const NavBar = (): ReactElement => {
 						]}
 						label="Explore The Data"
 					/>
+					<InternalLink path={INTERNAL_PATHS.DOCUMENTATION}>
+						<StyledLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.DOCUMENTATION) })}>
+							Documentation
+						</StyledLink>
+					</InternalLink>
 				</div>
 			</div>
 		</div>
