@@ -88,7 +88,7 @@ const HeroBanner = (): ReactElement => {
 						}
 					`}
 				>
-					Data Submission
+					Documentation
 					<p
 						css={css`
 							font-size: 18px;
@@ -101,7 +101,7 @@ const HeroBanner = (): ReactElement => {
 							}
 						`}
 					>
-						Submitting data to the drug discovery platform.
+						Bespoke documentation covering basic platform usage and administration
 					</p>
 				</h2>
 			</section>

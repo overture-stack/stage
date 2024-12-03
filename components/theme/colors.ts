@@ -20,7 +20,7 @@
  */
 
 const home = {
-	hero: '#65bc45',
+	hero: '#50852a',
 	main: '#f0f1f3',
 	button: '#50852a',
 }
