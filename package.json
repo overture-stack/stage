@@ -50,7 +50,7 @@
 		"typescript-transform-paths": "^3.4.6"
 	},
 	"prettier": {
-		"printWidth": 100,
+		"printWidth": 120,
 		"trailingComma": "all",
 		"semi": true,
 		"singleQuote": true,

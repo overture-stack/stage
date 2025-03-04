@@ -78,7 +78,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - Filing an [issue](https://github.com/overture-stack/Stage/issues)
 - Making a [contribution](https://github.com/overture-stack/.github/blob/master/CONTRIBUTING.md)
-- Connect with us on [Slack](https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw)
 - Add or Upvote a [feature request](https://github.com/overture-stack/stage/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md)
 
 ## Related Products

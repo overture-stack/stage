@@ -71,45 +71,35 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						>
 							<ul>
 								<li>
-									<b>Ego</b>, is our identity and permission management service, broadly enabling
-									authorization and authentication of all user users and applications. Overture can
-									also integrate with third-party auth service, Keycloak.
+									<b>Ego</b>, is our identity and permission management service, broadly enabling authorization and
+									authentication of all user users and applications. Overture can also integrate with third-party auth
+									service, Keycloak.
 								</li>
 								<li>
-									<b>Song and Score</b> manage data submission, management, and retrieval,
-									automating file-to-metadata tracking and validating data submissions against a
-									customizable model. These services enhance data quality, findability, and
-									interoperability.
+									<b>Song and Score</b> manage data submission, management, and retrieval, automating file-to-metadata
+									tracking and validating data submissions against a customizable model. These services enhance data
+									quality, findability, and interoperability.
 								</li>
 								<li>
-									<b>Maestro</b> indexes submitted metadata from the Song repository into an
-									Elasticsearch index.
+									<b>Maestro</b> indexes submitted metadata from the Song repository into an Elasticsearch index.
 								</li>
 								<li>
-									<b>Arranger</b> references this index to produce a GraphQL search API, connected
-									to our configurable search UI components on the data exploration page.
+									<b>Arranger</b> references this index to produce a GraphQL search API, connected to our configurable
+									search UI components on the data exploration page.
 								</li>
 								<li>
-									<b>Stage</b> integrates these services into the React-based front-data portal UI
-									you're currently viewing.
+									<b>Stage</b> integrates these services into the React-based front-data portal UI you're currently
+									viewing.
 								</li>
 							</ul>
 							<NoteBox title="Get started using Overture">
 								We provide a{' '}
-								<a
-									href="https://overture.bio/getting-started/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
+								<a href="https://overture.bio/getting-started/" target="_blank" rel="noopener noreferrer">
 									QuickStart
 								</a>{' '}
-								for fast and frictionless setup of our data platform locally. This QuickStart
-								complements our continually updated, and{' '}
-								<a
-									href="https://overture.bio/documentation/guides/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
+								for fast and frictionless setup of our data platform locally. This QuickStart complements our
+								continually updated, and{' '}
+								<a href="https://overture.bio/documentation/guides/" target="_blank" rel="noopener noreferrer">
 									more comprehensive guides available here
 								</a>{' '}
 							</NoteBox>
@@ -125,8 +115,8 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 							imageUrl={retrievalOverview.src}
 						>
 							<NoteBox title="Give it a try">
-								This demo portal operates as a read-only environment with a publicly available API
-								Key. To download data, refer to our guide on{' '}
+								This demo portal operates as a read-only environment with a publicly available API Key. To download
+								data, refer to our guide on{' '}
 								<a
 									href="https://overture.bio/documentation/guides/download/clientdownload/"
 									target="_blank"
@@ -158,26 +148,25 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						>
 							<ol>
 								<li>
-									<b>Upload metadata to Song</b> as a JSON document via the Song CLI tool. A single
-									command validates the metadata against the resource's data model. Upon successful
-									validation, the metadta is committed to the database, and the user receives an
-									auto-generated analysis ID. In Overture, the term analysis is a unit of related
-									file data and file metadata.
+									<b>Upload metadata to Song</b> as a JSON document via the Song CLI tool. A single command validates
+									the metadata against the resource's data model. Upon successful validation, the metadta is committed
+									to the database, and the user receives an auto-generated analysis ID. In Overture, the term analysis
+									is a unit of related file data and file metadata.
 								</li>
 								<li>
-									<b>Generate a file manifest:</b> Using the Song Clients manifest command,
-									specifying the local directory of your file data and provide a valid analysis ID.
-									This process enables Song to link the associated metadata within its database to
-									the corresponding file data that will be stored in the cloud following upload.
+									<b>Generate a file manifest:</b> Using the Song Clients manifest command, specifying the local
+									directory of your file data and provide a valid analysis ID. This process enables Song to link the
+									associated metadata within its database to the corresponding file data that will be stored in the
+									cloud following upload.
 								</li>
 								<li>
-									<b>Upload your files:</b> Using the Song Clients upload command, specify the path
-									of your manifest and upload.
+									<b>Upload your files:</b> Using the Song Clients upload command, specify the path of your manifest and
+									upload.
 								</li>
 								<li>
-									<b>Publish your data:</b> Additional publication controls allow administrators and
-									data providers to manage data releases predictably and timely. Analyses are
-									unpublished by default and can be published or suppressed using the Song Client.
+									<b>Publish your data:</b> Additional publication controls allow administrators and data providers to
+									manage data releases predictably and timely. Analyses are unpublished by default and can be published
+									or suppressed using the Song Client.
 								</li>
 							</ol>
 							<NoteBox title="Learn More">
@@ -245,17 +234,12 @@ const Content = ({ activeId }: { activeId: string }): ReactElement => {
 						>
 							<NoteBox title="Let us know">
 								Basic Stage documentation is{' '}
-								<a
-									href="https://www.overture.bio/documentation/stage/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
+								<a href="https://www.overture.bio/documentation/stage/" target="_blank" rel="noopener noreferrer">
 									available here
 								</a>{' '}
-								. We're actively working on enhancing our documentation and guides, and we welcome
-								any suggestions from the community regarding topics they would find useful. If you
-								have a topic suggestion, feel free to reach out through the Slack channel or email
-								address listed in the footer, or by{' '}
+								. We're actively working on enhancing our documentation and guides, and we welcome any suggestions from
+								the community regarding topics they would find useful. If you have a topic suggestion, feel free to
+								reach out through the email address listed in the footer, or by{' '}
 								<a
 									href="https://github.com/overture-stack/website/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md"
 									target="_blank"

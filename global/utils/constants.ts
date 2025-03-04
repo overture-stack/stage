@@ -26,29 +26,28 @@ import { getConfig } from '../config';
 const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } =
 	getConfig();
 
-export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
+export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_SCOPES_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes`;
 
+export const ABOUT_PATH = '/about';
+export const DISCLAIMER_PATH = '/disclaimers';
 export const EXPLORER_PATH = '/explorer';
-export const USER_PATH = '/user';
+export const INFO_PATH = '/info';
 export const LOGIN_PATH = '/login';
-export const INFO_PATH = '/info'
-export const ABOUT_PATH = '/about'
-export const DISCLAIMER_PATH='/disclaimers'
-
+export const USER_PATH = '/user';
 
 // external docs links
-export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'
 export const EMAIL_SETTING_URL = 'admin@example.com';
+export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose';
 export const SCORE_DOCS = 'https://overture.bio/documentation/score/user-guide/client-setup';
 export const SUBMISSION_DOCS = 'https://www.overture.bio/documentation/song/user/submit';
 
 // Footer Links
-export const SLACK = "https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw";
-export const GITHUB = "https://github.com/overture-stack/";
-export const EMAIL = "mailto:contact@overture.bio";
-export const ACKNOWLEDGEMENTS = "https://www.overture.bio/acknowledgements/"
+export const ACKNOWLEDGEMENTS = 'https://www.overture.bio/acknowledgements/';
+export const EMAIL = 'mailto:contact@overture.bio';
+export const GITHUB = 'https://github.com/overture-stack/';
+export const LICENSING = 'https://docs.overture.bio/community/licensing';
 
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(
@@ -56,8 +55,8 @@ export const KEYCLOAK_URL_ISSUER = urlJoin(
 	'realms',
 	NEXT_PUBLIC_KEYCLOAK_REALM,
 );
-export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token');
 export const KEYCLOAK_API_KEY_ENDPOINT = urlJoin(KEYCLOAK_URL_ISSUER, 'apikey/api_key');
+export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token');
 
 export const AUTH_PROVIDER = {
 	EGO: 'ego',
@@ -70,8 +69,8 @@ const PROXY_PROTECTED_API_PATH = '/api/protected';
 export const INTERNAL_API_PROXY = {
 	ARRANGER: urlJoin(PROXY_API_PATH, 'arranger'),
 	PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, 'arranger'),
-	PROTECTED_EGO_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/apikey'),
 	PROTECTED_EGO_API_SCOPES_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/scopes'),
+	PROTECTED_EGO_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/apikey'),
 	PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/apikey'),
 	PROTECTED_KEYCLOAK_TOKEN_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/token'),
 };

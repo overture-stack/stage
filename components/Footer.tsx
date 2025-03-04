@@ -19,13 +19,14 @@
  *
  */
 
-import React from 'react';
 import { css } from '@emotion/react';
+
+import { ACKNOWLEDGEMENTS, DISCLAIMER_PATH, EMAIL, GITHUB, LICENSING } from '@/global/utils/constants';
+import { getConfig } from '@/global/config';
+
+import StyledLink from './Link';
 import defaultTheme from './theme';
 import { OvertureLogoWithText } from './theme/icons';
-import StyledLink from './Link';
-import { SLACK, GITHUB, EMAIL, DISCLAIMER_PATH, ACKNOWLEDGEMENTS } from '../global/utils/constants';
-import { getConfig } from '../global/config';
 
 const Footer = () => {
 	const { NEXT_PUBLIC_UI_VERSION } = getConfig();
@@ -70,8 +71,8 @@ const Footer = () => {
 					padding-right: 10px;
 				`}
 				href={ACKNOWLEDGEMENTS}
-				target="_blank"
 				rel="noopener noreferrer"
+				target="_blank"
 			>
 				Acknowledgements
 			</StyledLink>
@@ -83,9 +84,10 @@ const Footer = () => {
 					padding-right: 10px;
 				`}
 				href={GITHUB}
+				rel="noopener noreferrer"
 				target="_blank"
 			>
-				Check us out on GitHub
+				GitHub
 			</StyledLink>
 			|
 			<StyledLink
@@ -94,10 +96,11 @@ const Footer = () => {
 					padding-left: 10px;
 					padding-right: 10px;
 				`}
-				href={SLACK}
+				href={LICENSING}
+				rel="noopener noreferrer"
 				target="_blank"
 			>
-				Join our Slack
+				Software Licensing
 			</StyledLink>
 			|
 			<StyledLink
@@ -107,6 +110,7 @@ const Footer = () => {
 					padding-right: 10px;
 				`}
 				href={EMAIL}
+				rel="noopener noreferrer"
 				target="_blank"
 			>
 				contact@overture.bio
@@ -126,7 +130,7 @@ const Footer = () => {
 			>
 				{NEXT_PUBLIC_UI_VERSION && `  UI v${NEXT_PUBLIC_UI_VERSION}`} powered by
 			</span>
-			<a href="https://www.overture.bio/" target="_blank">
+			<a href="https://www.overture.bio/" rel="noopener noreferrer" target="_blank">
 				<OvertureLogoWithText width={100} height={18} />
 			</a>
 		</div>
