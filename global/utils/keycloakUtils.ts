@@ -57,9 +57,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
 		if (response.ok) {
 			return await response.json();
 		}
-		return;
 	} catch (error) {
 		console.error('Error during token refresh:', error);
-		return;
 	}
 };

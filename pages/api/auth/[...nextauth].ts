@@ -105,7 +105,7 @@ export const getAuthOptions = (req: GetServerSidePropsContext['req'] | NextApiRe
 					}
 				} else {
 					const tokenExpiresAtMs = token.account.expires_at * 1000;
-					if (Date.now() > tokenExpiresAtMs) {
+					if (Date.now() >= tokenExpiresAtMs) {
 						// Access token has expired. Use the refresh token to obtain a new one.
 						const requestedNewToken = await refreshAccessToken(token.account.refresh_token);
 						token.account = {
