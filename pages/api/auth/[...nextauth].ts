@@ -10,7 +10,7 @@ import { getConfig } from '@/global/config';
 import { KEYCLOAK_URL_ISSUER, AUTH_PROVIDER, KEYCLOAK_URL_TOKEN } from '@/global/utils/constants';
 import { decodeToken, extractUser } from '@/global/utils/egoTokenUtils';
 import { encryptContent } from '@/global/utils/crypt';
-import { permissionBodyParams, scopesFromPermissions } from '@/global/utils/keycloakUtils';
+import { permissionBodyParams, refreshAccessToken, scopesFromPermissions } from '@/global/utils/keycloakUtils';
 
 const {
 	NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
@@ -20,10 +20,7 @@ const {
 	NEXT_PUBLIC_EGO_CLIENT_ID,
 } = getConfig();
 
-const egoLoginUrl = urlJoin(
-	NEXT_PUBLIC_EGO_API_ROOT,
-	`/oauth/ego-token?client_id=${NEXT_PUBLIC_EGO_CLIENT_ID}`,
-);
+const egoLoginUrl = urlJoin(NEXT_PUBLIC_EGO_API_ROOT, `/oauth/ego-token?client_id=${NEXT_PUBLIC_EGO_CLIENT_ID}`);
 
 const fetchEgoToken = async (login_nonce: string) => {
 	const { data } = await axios.post(egoLoginUrl, null, {
@@ -45,9 +42,7 @@ export const fetchScopes = async (accessToken: string) => {
 	return data ? scopesFromPermissions(data) : [];
 };
 
-export const getAuthOptions = (
-	req: GetServerSidePropsContext['req'] | NextApiRequest,
-): AuthOptions => {
+export const getAuthOptions = (req: GetServerSidePropsContext['req'] | NextApiRequest): AuthOptions => {
 	return {
 		secret: SESSION_ENCRYPTION_SECRET,
 		// Configure one or more authentication providers
@@ -99,13 +94,24 @@ export const getAuthOptions = (
 		callbacks: {
 			async jwt({ token, user, account, profile, trigger }: any) {
 				if (trigger === 'signIn') {
-					if (account?.provider == AUTH_PROVIDER.EGO) {
+					const provider = account?.provider;
+					if (provider === AUTH_PROVIDER.EGO) {
 						token.account = account;
 						token.profile = user;
-					} else if (account?.provider == AUTH_PROVIDER.KEYCLOAK) {
+					} else if (provider === AUTH_PROVIDER.KEYCLOAK) {
 						token.account = account;
 						token.profile = profile;
 						token.scopes = await fetchScopes(token.account.access_token);
+					}
+				} else {
+					const tokenExpiresAtMs = token.account.expires_at * 1000;
+					if (Date.now() > tokenExpiresAtMs) {
+						// Access token has expired. Use the refresh token to obtain a new one.
+						const requestedNewToken = await refreshAccessToken(token.account.refresh_token);
+						token.account = {
+							...token.account,
+							...requestedNewToken,
+						};
 					}
 				}
 
@@ -113,7 +119,8 @@ export const getAuthOptions = (
 			},
 			async session({ token, session }: any) {
 				// Send properties to the client, like an access_token and user id from a provider.
-				if (token.account.provider == AUTH_PROVIDER.EGO) {
+				const provider = token.account.provider;
+				if (provider === AUTH_PROVIDER.EGO) {
 					const { egoToken, scope, ...profileWithoutEgoToken } = token.profile;
 					session.account = {
 						accessToken: encryptContent(egoToken),
@@ -121,7 +128,7 @@ export const getAuthOptions = (
 					};
 					session.scopes = scope;
 					session.user = { ...profileWithoutEgoToken };
-				} else if (token.account.provider == AUTH_PROVIDER.KEYCLOAK) {
+				} else if (provider === AUTH_PROVIDER.KEYCLOAK) {
 					session.account = {
 						accessToken: encryptContent(token?.account?.access_token),
 						provider: token?.account?.provider,
