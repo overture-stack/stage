@@ -104,14 +104,16 @@ export const getAuthOptions = (req: GetServerSidePropsContext['req'] | NextApiRe
 						token.scopes = await fetchScopes(token.account.access_token);
 					}
 				} else {
-					const tokenExpiresAtMs = token.account.expires_at * 1000;
-					if (Date.now() >= tokenExpiresAtMs) {
-						// Access token has expired. Use the refresh token to obtain a new one.
-						const requestedNewToken = await refreshAccessToken(token.account.refresh_token);
-						token.account = {
-							...token.account,
-							...requestedNewToken,
-						};
+					if (account?.provider === AUTH_PROVIDER.KEYCLOAK) {
+						const tokenExpiresAtMs = token.account.expires_at * 1000;
+						if (Date.now() >= tokenExpiresAtMs) {
+							// Access token has expired. Use the refresh token to obtain a new one.
+							const requestedNewToken = await refreshAccessToken(token.account.refresh_token);
+							token.account = {
+								...token.account,
+								...requestedNewToken,
+							};
+						}
 					}
 				}
 
