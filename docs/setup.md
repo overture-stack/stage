@@ -6,7 +6,7 @@ Before you begin, ensure you have the following installed on your system:
 
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) (v8.3.0 or higher)
-- [Docker](https://www.docker.com/) (v4.32.0 or higher)
+- [Docker](https://www.docker.com/) (v4.39.0 or higher)
 
 ## Developer Setup
 
