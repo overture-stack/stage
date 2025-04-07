@@ -6,7 +6,7 @@ Before you begin, ensure you have the following installed on your system:
 
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) (v8.3.0 or higher)
-- [Docker](https://www.docker.com/) (v4.32.0 or higher)
+- [Docker](https://www.docker.com/) (v4.39.0 or higher)
 
 ## Developer Setup
 
@@ -25,9 +25,9 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
 
 2. Run the appropriate start command for your operating system:
 
-   | Operating System | Command             |
-   | ---------------- | ------------------- |
-   | Unix/macOS       | `make stageDev`     |
+   | Operating System | Command               |
+   | ---------------- | --------------------- |
+   | Unix/macOS       | `make stageDev`       |
    | Windows          | `./make.bat stageDev` |
 
     <details>
