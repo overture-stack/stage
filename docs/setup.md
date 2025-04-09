@@ -14,13 +14,13 @@ This guide will walk you through setting up a complete development environment, 
 
 ### Setting up supporting services
 
-We'll use our Conductor service, a flexible Docker Compose setup, to spin up Stage's complementary services.
+We'll use our Quickstart service, a flexible Docker Compose setup, to spin up Stage's complementary services.
 
-1. Clone the Conductor repository and move into its directory:
+1. Clone the Quickstart repository and move into its directory:
 
    ```bash
-   git clone https://github.com/overture-stack/conductor.git
-   cd conductor
+   git clone -b quickstart https://github.com/overture-stack/prelude.git
+   cd prelude
    ```
 
 2. Run the appropriate start command for your operating system:
@@ -35,7 +35,7 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
 
    This command will set up all complementary services for Stage development as follows:
 
-   ![Stage Dev](./assets/stageDev.svg 'Stage Dev Environment')
+   ![Stage Dev](./assets/stageDev.svg "Stage Dev Environment")
 
    | Service         | Port   | Description                                     | Purpose in Stage Development                          |
    | --------------- | ------ | ----------------------------------------------- | ----------------------------------------------------- |
@@ -47,7 +47,7 @@ We'll use our Conductor service, a flexible Docker Compose setup, to spin up Sta
    - Ensure all ports are free on your system before starting the environment.
    - You may need to adjust the ports in the `docker-compose.yml` file if you have conflicts with existing services.
 
-   For more information on configuring and using these services, see our [Conductor documentation linked here](https://docs.overture.bio/docs/other-software/Conductor)
+   For more information on configuring and using these services, see our [Quickstart documentation linked here](https://docs.overture.bio/docs/other-software/Quickstart)
 
     </details>
 
