@@ -21,7 +21,7 @@ Technical resources for those working with or contributing to the project are av
 
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) (v8.3.0 or higher)
-- [Docker](https://www.docker.com/) (v4.32.0 or higher)
+- [Docker](https://www.docker.com/) (v4.39.0 or higher)
 
 ## Support & Contributions
 
