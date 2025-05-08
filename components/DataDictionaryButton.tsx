@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { DATA_DICTIONARY_PATH } from '../global/utils/constants';
 import { InternalLink as Link } from './Link';
 
-const DataDictionaryButton:React.ComponentType = () => {
+const DataDictionaryButton: React.ComponentType = () => {
 	return (
 		<div
 			css={(theme) => css`
@@ -32,7 +32,7 @@ const DataDictionaryButton:React.ComponentType = () => {
 						cursor: pointer;
 					`}
 				>
-                    Data Dictionary
+					Data Dictionary
 				</a>
 			</Link>
 		</div>

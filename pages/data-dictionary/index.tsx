@@ -1,17 +1,11 @@
 import { createPage } from '../../global/utils/pages';
+import DataDictionaryPage from '@/components/pages/data-dictionary';
 
-const DataDictionary  = createPage({
+const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	return (
-        <div>
-            Welcome to the Data Dictionary page!
-            <p>
-                This is where all the data will be!
-            </p>
-        </div>
-    ) 
+	return <DataDictionaryPage />;
 });
 
 export default DataDictionary;
