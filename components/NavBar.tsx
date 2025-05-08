@@ -30,6 +30,7 @@ import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
 import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
+import DataDictionaryButton from './DataDictionaryButton';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
@@ -140,6 +141,8 @@ const NavBar: React.ComponentType = () => {
 						</a>
 					</Link>
 				</div>
+
+				<DataDictionaryButton/>
 
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
 					(user ? (
