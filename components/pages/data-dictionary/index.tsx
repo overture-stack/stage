@@ -1,5 +1,5 @@
-import PageLayout from '../../PageLayout';
 import { css } from '@emotion/react';
+import PageLayout from '../../PageLayout';
 
 const DataDictionaryPage = () => {
 	return (

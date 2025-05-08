@@ -1,9 +1,16 @@
-import { css } from '@emotion/react';
-
+import { css, useTheme } from '@emotion/react';
+import { useRouter } from 'next/router';
 import { DATA_DICTIONARY_PATH } from '../global/utils/constants';
 import { InternalLink as Link } from './Link';
+import defaultTheme from './theme';
 
 const DataDictionaryButton: React.ComponentType = () => {
+	const router = useRouter();
+	const theme: typeof defaultTheme = useTheme();
+	const activeLinkStyle = `
+    background-color: ${theme.colors.grey_2};
+    color: ${theme.colors.accent2_dark};
+	`;
 	return (
 		<div
 			css={(theme) => css`
@@ -30,6 +37,7 @@ const DataDictionaryButton: React.ComponentType = () => {
 						text-decoration: none;
 						color: ${theme.colors.accent_dark};
 						cursor: pointer;
+						${router.pathname === DATA_DICTIONARY_PATH ? activeLinkStyle : ''}
 					`}
 				>
 					Data Dictionary
