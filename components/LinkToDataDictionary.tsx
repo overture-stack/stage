@@ -25,7 +25,7 @@ import { DATA_DICTIONARY_PATH } from '../global/utils/constants';
 import { InternalLink as Link } from './Link';
 import defaultTheme from './theme';
 
-const DataDictionaryButton: React.ComponentType = () => {
+const LinkToDataDictionary: React.ComponentType = () => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
 	const activeLinkStyle = `
@@ -68,4 +68,4 @@ const DataDictionaryButton: React.ComponentType = () => {
 	);
 };
 
-export default DataDictionaryButton;
+export default LinkToDataDictionary;
