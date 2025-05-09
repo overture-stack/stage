@@ -37,12 +37,8 @@ const NavBar: React.ComponentType = () => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
 
-	const {
-		NEXT_PUBLIC_AUTH_PROVIDER,
-		NEXT_PUBLIC_LAB_NAME,
-		NEXT_PUBLIC_LOGO_FILENAME,
-		NEXT_PUBLIC_BASE_PATH,
-	} = getConfig();
+	const { NEXT_PUBLIC_AUTH_PROVIDER, NEXT_PUBLIC_LAB_NAME, NEXT_PUBLIC_LOGO_FILENAME, NEXT_PUBLIC_BASE_PATH } =
+		getConfig();
 
 	const activeLinkStyle = `
     background-color: ${theme.colors.grey_2};
@@ -142,7 +138,7 @@ const NavBar: React.ComponentType = () => {
 					</Link>
 				</div>
 
-				<LinkToDataDictionary/>
+				<LinkToDataDictionary />
 
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
 					(user ? (

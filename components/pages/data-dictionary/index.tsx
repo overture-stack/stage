@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -26,17 +26,19 @@ const DataDictionaryPage = () => {
 	return (
 		<PageLayout subtitle="Data Dictionary">
 			<div
-                css ={(theme) => css`
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    height: 100%;
-                    background-color: ${theme.colors.white};
-                    border-radius: 8px;
-                    padding: 20px;
-                `}
-            >Welcome to the Data Dictionary page!</div>
+				css={(theme) => css`
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 100%;
+					background-color: ${theme.colors.white};
+					border-radius: 8px;
+					padding: 20px;
+				`}
+			>
+				Welcome to the Data Dictionary page!
+			</div>
 		</PageLayout>
 	);
 };
