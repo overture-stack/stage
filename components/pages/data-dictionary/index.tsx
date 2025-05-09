@@ -20,7 +20,7 @@
  */
 
 import { css } from '@emotion/react';
-import PageLayout from '../../PageLayout';
+import PageLayout from '@/components/PageLayout';
 
 const DataDictionaryPage = () => {
 	return (

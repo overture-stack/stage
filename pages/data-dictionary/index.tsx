@@ -19,7 +19,7 @@
  *
  */
 
-import { createPage } from '../../global/utils/pages';
+import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 
 const DataDictionary = createPage({
