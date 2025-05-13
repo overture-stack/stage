@@ -1,9 +1,9 @@
+import { default as defaultTheme, default as theme } from '@/components/theme';
+import { Error as ErrorIcon, Info, Warning } from '@/components/theme/icons';
+import Dismiss from '@/components/theme/icons/dismiss';
 import { css } from '@emotion/react';
 import React from 'react';
-import { default as defaultTheme, default as theme } from '../theme';
-import { Error as ErrorIcon, Info, Warning } from '../theme/icons';
-import Dismiss from '../theme/icons/dismiss';
-import { AlertDef } from './types';
+import { AlertDef } from '@/components/SystemAlerts/types';
 
 type Props = {
 	alert: AlertDef;

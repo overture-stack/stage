@@ -21,8 +21,8 @@
 
 import { getConfig } from '@/global/config';
 import React, { useEffect, useState } from 'react';
-import { SystemAlert } from './SystemAlert';
-import { AlertDef, isAlertDefs } from './types';
+import { SystemAlert } from '@/components/SystemAlerts/SystemAlert';
+import { AlertDef, isAlertDefs } from '@/components/SystemAlerts/types';
 
 const LOCAL_STORAGE_KEY = 'SYSTEM_ALERTS_DISMISSED_IDS';
 
