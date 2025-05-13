@@ -16,21 +16,24 @@ const AlertVariants = {
 		backgroundColor: defaultTheme.colors.error_2,
 		icon: <ErrorIcon height={26} width={26} />,
 		textColor: defaultTheme.colors.black,
+		outline: defaultTheme.colors.error_dark,
 	},
 	warning: {
 		backgroundColor: warningColor,
 		icon: <Warning height={26} width={26} />,
 		textColor: defaultTheme.colors.black,
+		outline: defaultTheme.colors.warning_dark,
 	},
 	info: {
 		backgroundColor: defaultTheme.colors.secondary_1,
 		icon: <Info />,
 		textColor: defaultTheme.colors.black,
+		outline: defaultTheme.colors.secondary_dark,
 	},
 };
 
 export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
-	const { backgroundColor, icon, textColor } = AlertVariants[alert.level];
+	const { backgroundColor, icon, textColor, outline } = AlertVariants[alert.level];
 
 	const createMarkup = (msg: string) => ({ __html: msg });
 
@@ -41,6 +44,7 @@ export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 				display: flex;
 				justify-content: space-between;
 				background-color: ${backgroundColor};
+				border-bottom: 1px solid ${outline};
 			`}
 		>
 			<div
