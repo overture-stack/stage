@@ -21,25 +21,52 @@
 
 import { css } from '@emotion/react';
 import PageLayout from '@/components/PageLayout';
-
+import { SystemAlerts } from '@/components/SystemAlerts/SystemAlerts';
+import { ALERT_LEVELS } from '@/components/SystemAlerts/types';
 const DataDictionaryPage = () => {
+	const testAlerts = [
+		{
+			id: '1',
+			title: 'Hello World',
+			message: '<b>This is a test.</b>',
+			level: ALERT_LEVELS.info,
+			dismissable: false,
+		},
+		{
+			id: '2',
+			title: 'Bye World',
+			message: '<b>This is a test.</b>',
+			level: ALERT_LEVELS.critical,
+			dismissable: false,
+		},
+		{
+			id: '3',
+			title: 'Maybe World',
+			message: '<b>This is a test.</b>',
+			level: ALERT_LEVELS.warning,
+			dismissable: false,
+		},
+	];
 	return (
-		<PageLayout subtitle="Data Dictionary">
-			<div
-				css={(theme) => css`
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					width: 100%;
-					height: 100%;
-					background-color: ${theme.colors.white};
-					border-radius: 8px;
-					padding: 20px;
-				`}
-			>
-				Welcome to the Data Dictionary page!
-			</div>
-		</PageLayout>
+		<>
+			<SystemAlerts alerts={testAlerts} />
+			<PageLayout subtitle="Data Dictionary">
+				<div
+					css={(theme) => css`
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 100%;
+						height: 100%;
+						background-color: ${theme.colors.white};
+						border-radius: 8px;
+						padding: 20px;
+					`}
+				>
+					Welcome to the Data Dictionary page!
+				</div>
+			</PageLayout>
+		</>
 	);
 };
 

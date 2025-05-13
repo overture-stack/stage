@@ -36,6 +36,7 @@ import Checkmark from './checkmark';
 import Spinner from './spinner';
 import Error from './error';
 import Warning from './warning';
+import Info from './info';
 
 export {
 	GoogleLogo,
@@ -54,5 +55,6 @@ export {
 	Checkmark,
 	Spinner,
 	Error,
+	Info,
 	Warning,
 };
