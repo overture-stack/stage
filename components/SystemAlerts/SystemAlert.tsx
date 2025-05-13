@@ -1,16 +1,15 @@
 import { css } from '@emotion/react';
 import React from 'react';
-import defaultTheme from '../theme';
-import { Error as ErrorIcon, Info } from '../theme/icons';
-import { Warning } from '../theme/icons';
+import { default as defaultTheme, default as theme } from '../theme';
+import { Error as ErrorIcon, Info, Warning } from '../theme/icons';
 import Dismiss from '../theme/icons/dismiss';
 import { AlertDef } from './types';
-import theme from '../theme';
+
 type Props = {
 	alert: AlertDef;
 	onClose: () => void;
 };
-const warningColor = theme.colors.warning_light;
+
 const AlertVariants = {
 	critical: {
 		backgroundColor: defaultTheme.colors.error_2,
@@ -19,7 +18,7 @@ const AlertVariants = {
 		outline: defaultTheme.colors.error_dark,
 	},
 	warning: {
-		backgroundColor: warningColor,
+		backgroundColor: theme.colors.warning_light,
 		icon: <Warning height={26} width={26} />,
 		textColor: defaultTheme.colors.black,
 		outline: defaultTheme.colors.warning_dark,

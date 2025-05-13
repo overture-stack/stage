@@ -24,32 +24,8 @@ import PageLayout from '@/components/PageLayout';
 import { SystemAlerts } from '@/components/SystemAlerts/SystemAlerts';
 import { ALERT_LEVELS } from '@/components/SystemAlerts/types';
 const DataDictionaryPage = () => {
-	const testAlerts = [
-		{
-			id: '1',
-			title: 'Hello World',
-			message: '<b>This is a test.</b>',
-			level: ALERT_LEVELS.info,
-			dismissable: false,
-		},
-		{
-			id: '2',
-			title: 'Bye World',
-			message: '<b>This is a test.</b>',
-			level: ALERT_LEVELS.critical,
-			dismissable: false,
-		},
-		{
-			id: '3',
-			title: 'Maybe World',
-			message: '<b>This is a test.</b>',
-			level: ALERT_LEVELS.warning,
-			dismissable: false,
-		},
-	];
 	return (
 		<>
-			<SystemAlerts alerts={testAlerts} />
 			<PageLayout subtitle="Data Dictionary">
 				<div
 					css={(theme) => css`
