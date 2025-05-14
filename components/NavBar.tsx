@@ -30,23 +30,20 @@ import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
 import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
+import LinkToDataDictionary from './LinkToDataDictionary';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
 
-	const {
-		NEXT_PUBLIC_AUTH_PROVIDER,
-		NEXT_PUBLIC_LAB_NAME,
-		NEXT_PUBLIC_LOGO_FILENAME,
-		NEXT_PUBLIC_BASE_PATH,
-	} = getConfig();
+	const { NEXT_PUBLIC_AUTH_PROVIDER, NEXT_PUBLIC_LAB_NAME, NEXT_PUBLIC_LOGO_FILENAME, NEXT_PUBLIC_BASE_PATH } =
+		getConfig();
 
 	const activeLinkStyle = `
     background-color: ${theme.colors.grey_2};
     color: ${theme.colors.accent2_dark};
-  `;
+`;
 
 	const labIcon = NEXT_PUBLIC_LOGO_FILENAME ? (
 		<img
@@ -140,6 +137,8 @@ const NavBar: React.ComponentType = () => {
 						</a>
 					</Link>
 				</div>
+
+				<LinkToDataDictionary />
 
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
 					(user ? (
