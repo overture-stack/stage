@@ -25,7 +25,7 @@ const AlertVariants = {
 	},
 	info: {
 		backgroundColor: defaultTheme.colors.secondary_1,
-		icon: <Info />,
+		icon: <Info fill={defaultTheme.colors.secondary_accessible} />,
 		textColor: defaultTheme.colors.black,
 		outline: defaultTheme.colors.secondary_dark,
 	},

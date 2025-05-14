@@ -30,7 +30,7 @@ type Props = {
 	alerts?: AlertDef[];
 };
 
-export const SystemAlerts: React.FC<Props> = ({ alerts }) => {
+export const SystemAlerts: React.ComponentType<Props> = ({ alerts }) => {
 	const [displayAlerts, setDisplayAlerts] = useState<AlertDef[]>([]);
 	const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
@@ -38,10 +38,10 @@ export const SystemAlerts: React.FC<Props> = ({ alerts }) => {
 		try {
 			const { NEXT_PUBLIC_SYSTEM_ALERTS } = getConfig();
 			const parsed = JSON.parse(NEXT_PUBLIC_SYSTEM_ALERTS);
-			if (!isAlertDefs(parsed)) throw new Error('Invalid alert format');
+			if (!isAlertDefs(parsed)) throw new Error('System Alert types are invalid!');
 			return parsed;
 		} catch (e) {
-			console.error('Failed to parse alerts from env:', e);
+			console.error('Failed to parse systems alerts! Using empty array!', e);
 			return [];
 		}
 	};
@@ -60,7 +60,7 @@ export const SystemAlerts: React.FC<Props> = ({ alerts }) => {
 		const stored = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
 		setDismissedIds(stored);
 		setDisplayAlerts(systemAlerts.filter((a) => !stored.includes(a.id)));
-	}, [alerts]);
+	}, []);
 
 	return (
 		<>
