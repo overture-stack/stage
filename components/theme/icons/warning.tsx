@@ -23,7 +23,7 @@ import { css } from '@emotion/react';
 import { IconProps } from './types';
 import theme from '../';
 
-const Warning = ({ height, width, style, fill = theme.colors.error_dark }: IconProps) => {
+const Warning = ({ height, width, style, fill = theme.colors.warning_dark }: IconProps) => {
 	return (
 		<svg
 			css={css`
