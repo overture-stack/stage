@@ -20,12 +20,10 @@
  */
 
 import PageLayout from '@/components/PageLayout';
-import { SystemAlerts } from '@/components/SystemAlerts/SystemAlerts';
 import { css } from '@emotion/react';
 const DataDictionaryPage = () => {
 	return (
 		<>
-			<SystemAlerts />
 			<PageLayout subtitle="Data Dictionary">
 				<div
 					css={(theme) => css`
