@@ -19,7 +19,7 @@
  *
  */
 
-import { default as defaultTheme, default as theme } from '@/components/theme';
+import { default as theme } from '@/components/theme';
 import { Error as ErrorIcon, Info, Warning } from '@/components/theme/icons';
 import Dismiss from '@/components/theme/icons/dismiss';
 import { css } from '@emotion/react';
@@ -33,22 +33,22 @@ type Props = {
 
 const AlertVariants = {
 	critical: {
-		backgroundColor: defaultTheme.colors.error_2,
+		backgroundColor: theme.colors.error_2,
 		icon: <ErrorIcon height={26} width={26} />,
-		textColor: defaultTheme.colors.black,
-		outline: defaultTheme.colors.error_dark,
+		textColor: theme.colors.black,
+		outline: theme.colors.error_dark,
 	},
 	warning: {
 		backgroundColor: theme.colors.warning_light,
 		icon: <Warning height={26} width={26} />,
-		textColor: defaultTheme.colors.black,
-		outline: defaultTheme.colors.warning_dark,
+		textColor: theme.colors.black,
+		outline: theme.colors.warning_dark,
 	},
 	info: {
-		backgroundColor: defaultTheme.colors.secondary_1,
-		icon: <Info fill={defaultTheme.colors.secondary_accessible} />,
-		textColor: defaultTheme.colors.black,
-		outline: defaultTheme.colors.secondary_dark,
+		backgroundColor: theme.colors.secondary_1,
+		icon: <Info fill={theme.colors.secondary_accessible} />,
+		textColor: theme.colors.black,
+		outline: theme.colors.secondary_dark,
 	},
 };
 
@@ -84,7 +84,7 @@ export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 						css={css`
 							color: ${textColor};
 							margin-top: ${alert.message ? '0px' : '6px'};
-							${defaultTheme.typography.heading};
+							${theme.typography.heading};
 						`}
 					>
 						{alert.title}
@@ -94,7 +94,7 @@ export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 							css={css`
 								color: ${textColor};
 								margin-bottom: 8px;
-								${defaultTheme.typography.regular};
+								${theme.typography.regular};
 							`}
 							dangerouslySetInnerHTML={createMarkup(alert.message)}
 						/>
@@ -108,7 +108,7 @@ export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 					`}
 					onClick={onClose}
 				>
-					<Dismiss height={15} width={15} fill={defaultTheme.colors.black} />
+					<Dismiss height={15} width={15} fill={theme.colors.black} />
 				</div>
 			)}
 		</div>
