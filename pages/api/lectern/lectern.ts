@@ -22,14 +22,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as lectern from '@overture-stack/lectern-client';
 
-const lecternUrl = 'http://lectern.example.com'; //Replace with your actual lectern URL
-const dictionaryName = 'dictionary-name'; //Replace with your actual dictionary name
-const version = 'latest'; //Replace with your actual version
-
+const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
+const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
+const version = '1.0'; //Replace with your actual version
 export default async function lecternHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		// add any complex logic here for the actual dictionary
 		const dictionary = await lectern.rest.fetchSchema(lecternUrl, dictionaryName, version);
+		console.log('Fetched lectern schema:', dictionary);
 		res.status(200).json({ dictionary });
 	} catch (error: any) {
 		res.status(500).json({ error: 'Failed to fetch lectern schema' });
