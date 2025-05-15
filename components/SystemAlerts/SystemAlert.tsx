@@ -19,12 +19,12 @@
  *
  */
 
+import { AlertDef } from '@/components/SystemAlerts/types';
 import { default as theme } from '@/components/theme';
 import { Error as ErrorIcon, Info, Warning } from '@/components/theme/icons';
 import Dismiss from '@/components/theme/icons/dismiss';
 import { css } from '@emotion/react';
 import React from 'react';
-import { AlertDef } from '@/components/SystemAlerts/types';
 
 type Props = {
 	alert: AlertDef;
@@ -54,8 +54,6 @@ const AlertVariants = {
 
 export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 	const { backgroundColor, icon, textColor, outline } = AlertVariants[alert.level];
-
-	const createMarkup = (msg: string) => ({ __html: msg });
 
 	return (
 		<div
@@ -96,7 +94,7 @@ export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
 								margin-bottom: 8px;
 								${theme.typography.regular};
 							`}
-							dangerouslySetInnerHTML={createMarkup(alert.message)}
+							dangerouslySetInnerHTML={{ __html: alert.message }}
 						/>
 					)}
 				</div>
