@@ -19,22 +19,54 @@
  *
  */
 
-import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
-import { GetServerSideProps } from 'next';
+import { createPage } from '@/global/utils/pages';
+import { useEffect, useState } from 'react';
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {
 		return {
 			dictionaryHeaderData: {
-				name: 'Clinical Dictionary',
-				description: 'Contains clinical data definitions and schemas',
+				name: 'Dictionary unsuccessfully loaded',
+				description: 'Description is unable to be loaded',
 			},
 		};
 	},
 	isPublic: true,
 })(({ dictionaryHeaderData }) => {
-	return <DataDictionaryPage DictionaryHeaderProp={dictionaryHeaderData} />;
+	const [headerData, setHeaderData] = useState(dictionaryHeaderData);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchDictionaryData = async () => {
+			try {
+				setLoading(true);
+				const res = await fetch('/api/lectern/lectern');
+				const data = await res.json();
+
+				setHeaderData({
+					...headerData,
+					name: data?.dictionary?.name || headerData.name,
+				});
+			} catch (err) {
+				console.error('Error loading dictionary header:', err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchDictionaryData();
+	}, []);
+
+	if (loading) {
+		return (
+			<div>
+				<p>loading</p>
+			</div>
+		);
+	}
+
+	return <DataDictionaryPage DictionaryHeaderProp={headerData} />;
 });
 
 export default DataDictionary;
