@@ -21,12 +21,20 @@
 
 import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
+import { GetServerSideProps } from 'next';
 
 const DataDictionary = createPage({
-	getInitialProps: async () => {},
+	getInitialProps: async () => {
+		return {
+			dictionaryHeaderData: {
+				name: 'Clinical Dictionary',
+				description: 'Contains clinical data definitions and schemas',
+			},
+		};
+	},
 	isPublic: true,
-})(() => {
-	return <DataDictionaryPage />;
+})(({ dictionaryHeaderData }) => {
+	return <DataDictionaryPage DictionaryHeaderProp={dictionaryHeaderData} />;
 });
 
 export default DataDictionary;

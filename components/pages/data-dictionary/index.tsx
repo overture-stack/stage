@@ -19,15 +19,17 @@
  *
  */
 
-import { css } from '@emotion/react';
 import PageLayout from '@/components/PageLayout';
+import { ComponentType } from 'react';
 import DictionaryHeader from './DictionaryHeader';
+import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage = () => {
+const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ DictionaryHeaderProp }) => {
+	const { description, name } = DictionaryHeaderProp;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader description="{Dictionary:description}" name="{Dictionary:name}" />
+				<DictionaryHeader description={description} name={name} />
 			</PageLayout>
 		</>
 	);

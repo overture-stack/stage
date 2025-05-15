@@ -19,8 +19,8 @@
  *
  */
 
-import React from 'react';
 import { css } from '@emotion/react';
+import { ComponentType } from 'react';
 import colours from './styles/colours';
 
 type DictionaryHeaderProps = {
@@ -28,7 +28,7 @@ type DictionaryHeaderProps = {
 	name: string;
 };
 
-const DictionaryHeader: React.ComponentType<DictionaryHeaderProps> = ({ description, name }) => {
+const DictionaryHeader: ComponentType<DictionaryHeaderProps> = ({ description, name }) => {
 	return (
 		<div
 			css={css`
