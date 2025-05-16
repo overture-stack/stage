@@ -19,6 +19,8 @@
  *
  */
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
 import { useEffect, useState } from 'react';
@@ -42,11 +44,14 @@ const DataDictionary = createPage({
 			try {
 				setLoading(true);
 				const res = await fetch('/api/lectern/');
+
+				if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+
 				const data = await res.json();
 
 				setHeaderData({
-					...headerData,
-					name: data?.dictionary?.name || headerData.name,
+					name: data?.dictionary?.name || 'Dictionary',
+					description: data?.dictionary?.description || 'No description available',
 				});
 			} catch (err) {
 				console.error('Error loading dictionary header:', err);
@@ -58,15 +63,14 @@ const DataDictionary = createPage({
 		fetchDictionaryData();
 	}, []);
 
-	if (loading) {
-		return (
-			<div>
-				<p>loading</p>
-			</div>
-		);
-	}
-
-	return <DataDictionaryPage DictionaryHeaderProp={headerData} />;
+	return (
+		<DataDictionaryPage
+			DictionaryHeaderProp={{
+				name: loading ? <Skeleton width={300} height={40} /> : headerData.name,
+				description: loading ? <Skeleton count={2} width={500} /> : headerData.description,
+			}}
+		/>
+	);
 });
 
 export default DataDictionary;
