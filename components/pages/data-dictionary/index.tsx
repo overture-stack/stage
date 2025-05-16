@@ -21,6 +21,7 @@
 
 import { css } from '@emotion/react';
 import PageLayout from '@/components/PageLayout';
+import Table from '@/components/DataTableComponent/Table';
 
 const DataDictionaryPage = () => {
 	return (
@@ -37,7 +38,7 @@ const DataDictionaryPage = () => {
 					padding: 20px;
 				`}
 			>
-				Welcome to the Data Dictionary page!
+				<Table />
 			</div>
 		</PageLayout>
 	);
