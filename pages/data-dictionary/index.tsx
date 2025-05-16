@@ -41,7 +41,7 @@ const DataDictionary = createPage({
 		const fetchDictionaryData = async () => {
 			try {
 				setLoading(true);
-				const res = await fetch('/api/lectern/lectern');
+				const res = await fetch('/api/lectern/');
 				const data = await res.json();
 
 				setHeaderData({
