@@ -25,6 +25,8 @@ import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
 import { useEffect, useState } from 'react';
 
+const schemaMap = new Map<number, any>();
+
 const DataDictionary = createPage({
 	getInitialProps: async () => {
 		return {
@@ -48,6 +50,10 @@ const DataDictionary = createPage({
 				if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
 
 				const data = await res.json();
+
+				data.dictionary.schemas.forEach((schema: any, index: number) => {
+					schemaMap.set(index, schema);
+				});
 
 				setHeaderData({
 					name: data?.dictionary?.name || 'Dictionary',
