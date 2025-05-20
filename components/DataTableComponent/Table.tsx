@@ -1,86 +1,31 @@
 import { css } from '@emotion/react';
-import { createColumnHelper, flexRender, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
-import { FC } from 'react';
-import TableRow from './TableRow';
+import { ColumnDef, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
 import TableHeader from './TableHeader';
+import TableRow from './TableRow';
 
-type Field = {
+type Schema<T> = {
 	name: string;
 	description: string;
-	valueType: string;
-	unique?: boolean;
-	isArray?: boolean;
-	delimiter?: string;
-	restrictions?: {
-		required?: boolean;
-		regex?: string;
-		codeList?: string[];
-	};
-	meta?: {
-		displayName?: string;
-		examples?: string[];
-	};
+	fields: T[];
 };
-type Schema = {
-	name: string;
-	description: string;
-	fields: Field[];
+
+type Props<T> = {
+	schemaMap: Map<number, Schema<T>>;
+	getColumns: () => ColumnDef<T, any>[];
 };
-type Props = {
-	schemaMap: Map<number, any>;
-};
-const columnHelper = createColumnHelper<Field>();
-const getColumns = () => [
-	columnHelper.accessor('name', {
-		header: 'Field',
-		cell: (info) => (
-			<div>
-				<div css={fieldNameStyle}>{info.row.original.meta?.displayName || info.getValue()}</div>
-				<div css={fieldDescStyle}>{info.row.original.description}</div>
-			</div>
-		),
-	}),
-	columnHelper.accessor((row) => row.restrictions?.required ?? false, {
-		id: 'required',
-		header: 'Required',
-		cell: (info) => (info.getValue() ? 'Yes' : 'No'),
-	}),
-	columnHelper.accessor('valueType', {
-		header: 'Type',
-		cell: (info) => {
-			const { valueType, isArray, delimiter } = info.row.original;
-			return (
-				<div>
-					{valueType}
-					{isArray && ', Array'}
-					{delimiter && ` (Delimiter: ${delimiter})`}
-				</div>
-			);
-		},
-	}),
-	columnHelper.accessor((row) => row.meta?.examples ?? [], {
-		id: 'examples',
-		header: 'Examples',
-		cell: (info) => {
-			const examples = info.getValue();
-			const long = examples.join(', ');
-			return long;
-		},
-	}),
-];
 
 const sectionStyle = css`
 	margin-bottom: 48px;
 	max-width: 1200px;
 `;
 
-const schemaTitleStyle = css`
+const schemaTitle = css`
 	font-size: 20px;
-	font-weight: bold ?? [];
+	font-weight: bold;
 	margin-bottom: 10px;
 `;
 
-const schemaDescStyle = css`
+const schemaDescription = css`
 	font-size: 14px;
 	color: #555;
 	margin-bottom: 20px;
@@ -92,20 +37,12 @@ const tableStyle = css`
 	margin-top: 8px;
 `;
 
-const fieldNameStyle = css`
-	font-weight: 600;
-`;
+const SchemaTables = <T,>({ schemaMap, getColumns }: Props<T>) => {
+	const schemaArray = Array.from(schemaMap.values());
 
-const fieldDescStyle = css`
-	font-size: 12px;
-	color: #666;
-`;
-
-const SchemaTables: FC<Props> = ({ schemaMap }) => {
-	var schemaMapArray = Array.from(schemaMap.values());
 	return (
 		<div>
-			{schemaMapArray.map((schema: Schema, i: number) => {
+			{schemaArray.map((schema, i) => {
 				const table = useReactTable({
 					data: schema.fields,
 					columns: getColumns(),
@@ -114,12 +51,12 @@ const SchemaTables: FC<Props> = ({ schemaMap }) => {
 
 				return (
 					<div key={i} css={sectionStyle}>
-						<div css={schemaTitleStyle}>{schema.name}</div>
-						<div css={schemaDescStyle}>{schema.description}</div>
+						<div css={schemaTitle}>{schema.name}</div>
+						<div css={schemaDescription}>{schema.description}</div>
 						<table css={tableStyle}>
 							<thead>
-								{table.getHeaderGroups().map((headerGroup: HeaderGroup<Field>) => (
-									<TableHeader headerGroup={headerGroup} />
+								{table.getHeaderGroups().map((headerGroup: HeaderGroup<T>) => (
+									<TableHeader key={headerGroup.id} headerGroup={headerGroup} />
 								))}
 							</thead>
 							<tbody>
@@ -134,4 +71,5 @@ const SchemaTables: FC<Props> = ({ schemaMap }) => {
 		</div>
 	);
 };
+
 export default SchemaTables;

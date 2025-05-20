@@ -19,14 +19,77 @@
  *
  */
 
-import { css } from '@emotion/react';
-import PageLayout from '@/components/PageLayout';
 import Table from '@/components/DataTableComponent/Table';
+import PageLayout from '@/components/PageLayout';
+import { css } from '@emotion/react';
 
+import { createColumnHelper } from '@tanstack/react-table';
 type DataDictionaryPageProps = {
 	data: any;
 };
+type Field = {
+	name: string;
+	description: string;
+	valueType: string;
+	unique?: boolean;
+	isArray?: boolean;
+	delimiter?: string;
+	restrictions?: {
+		required?: boolean;
+		regex?: string;
+		codeList?: string[];
+	};
+	meta?: {
+		displayName?: string;
+		examples?: string[];
+	};
+};
+const columnHelper = createColumnHelper<Field>();
 
+const getColumns = () => [
+	columnHelper.accessor('name', {
+		header: 'Field',
+		cell: (field) => (
+			<>
+				<div css={fieldNameStyle}>{field.row.original.meta?.displayName}</div>
+				<div css={fieldDescStyle}>{field.row.original.description}</div>
+			</>
+		),
+	}),
+	columnHelper.accessor((row) => row.restrictions?.required ?? false, {
+		id: 'required',
+		header: 'Required',
+		cell: (required) => (required.getValue() ? 'Yes' : 'No'),
+	}),
+	columnHelper.accessor('valueType', {
+		header: 'Type',
+		cell: (type) => {
+			const { valueType, isArray, delimiter } = type.row.original;
+			return (
+				<div>
+					{valueType}
+					{isArray}
+					{delimiter}
+				</div>
+			);
+		},
+	}),
+	columnHelper.accessor((row) => row.meta?.examples ?? [], {
+		id: 'examples',
+		header: 'Examples',
+		cell: (examples) => {
+			return examples.getValue().join(',  ');
+		},
+	}),
+];
+const fieldNameStyle = css`
+	font-weight: 600;
+`;
+
+const fieldDescStyle = css`
+	font-size: 12px;
+	color: #666;
+`;
 const DataDictionaryPage = ({ data }: DataDictionaryPageProps) => {
 	return (
 		<PageLayout subtitle="Data Dictionary">
@@ -42,7 +105,7 @@ const DataDictionaryPage = ({ data }: DataDictionaryPageProps) => {
 					padding: 20px;
 				`}
 			>
-				<Table schemaMap={data} />
+				<Table schemaMap={data} getColumns={getColumns} />
 			</div>
 		</PageLayout>
 	);

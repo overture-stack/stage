@@ -59,7 +59,7 @@ const TableRow = <T,>({ row, index }: Props<T>) => {
 						<td key={cell.id} css={tdStyle}>
 							<span>{isExpanded ? valueStr : valueStr.slice(0, 68) + ' ...'}</span>
 							<span css={linkStyle} onClick={() => toggleExpand(cell.id)}>
-								{!isExpanded ? 'Read more' : 'Read less'}
+								{!isExpanded ? '\nRead more' : '\nRead less'}
 							</span>
 						</td>
 					);
