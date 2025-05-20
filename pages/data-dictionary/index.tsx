@@ -75,6 +75,7 @@ const DataDictionary = createPage({
 				name: loading ? <Skeleton width={300} height={40} /> : headerData.name,
 				description: loading ? <Skeleton count={2} width={500} /> : headerData.description,
 			}}
+			DictionaryData={{ schema: schemaMap }}
 		/>
 	);
 });

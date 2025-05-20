@@ -1,3 +1,4 @@
+import { Dictionary } from './../../../node_modules/@overture-stack/lectern-dictionary/dist/metaSchema/dictionarySchemas.d';
 /*
  *
  * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
@@ -23,7 +24,10 @@ export type DictionaryHeaderProps = {
 	description: string;
 	name: string;
 };
-
+export type DictionaryData = {
+	schema: Map<number, any>;
+};
 export type DictionaryPageProps = {
 	DictionaryHeaderProp: DictionaryHeaderProps;
+	DictionaryData: DictionaryData;
 };
