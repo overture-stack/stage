@@ -1,6 +1,8 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { createColumnHelper, flexRender, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { FC } from 'react';
+import TableRow from './TableRow';
+import TableHeader from './TableHeader';
 
 type Field = {
 	name: string;
@@ -19,19 +21,15 @@ type Field = {
 		examples?: string[];
 	};
 };
-
 type Schema = {
 	name: string;
 	description: string;
 	fields: Field[];
 };
-
 type Props = {
 	schemaMap: Map<number, any>;
 };
-
 const columnHelper = createColumnHelper<Field>();
-
 const getColumns = () => [
 	columnHelper.accessor('name', {
 		header: 'Field',
@@ -65,24 +63,12 @@ const getColumns = () => [
 		header: 'Examples',
 		cell: (info) => {
 			const examples = info.getValue();
-			console.log('examples', examples);
 			const long = examples.join(', ');
-			return long?.length > 80 ? (
-				<div>
-					{long.slice(0, 80)}...
-					<a href="#" css={readMoreStyle}>
-						{' '}
-						Read more
-					</a>
-				</div>
-			) : (
-				long
-			);
+			return long;
 		},
 	}),
 ];
 
-// Emotion styles
 const sectionStyle = css`
 	margin-bottom: 48px;
 `;
@@ -105,19 +91,6 @@ const tableStyle = css`
 	margin-top: 8px;
 `;
 
-const thStyle = css`
-	background: #f3f6f9;
-	text-align: left;
-	padding: 12px;
-	border-bottom: 1px solid #dcdcdc;
-`;
-
-const tdStyle = css`
-	padding: 12px;
-	border-bottom: 1px solid #eaeaea;
-	vertical-align: top;
-`;
-
 const fieldNameStyle = css`
 	font-weight: 600;
 `;
@@ -127,20 +100,11 @@ const fieldDescStyle = css`
 	color: #666;
 `;
 
-const readMoreStyle = css`
-	color: #1976d2;
-	font-size: 12px;
-	text-decoration: none;
-	margin-left: 4px;
-	&:hover {
-		text-decoration: underline;
-	}
-`;
-
-export default function SchemaTables({ schemaMap }: Props) {
+const SchemaTables: FC<Props> = ({ schemaMap }) => {
+	var schemaMapArray = Array.from(schemaMap.values());
 	return (
 		<div>
-			{Array.from(schemaMap.values()).map((schema, i) => {
+			{schemaMapArray.map((schema: Schema, i: number) => {
 				const table = useReactTable({
 					data: schema.fields ?? [],
 					columns: getColumns(),
@@ -151,28 +115,15 @@ export default function SchemaTables({ schemaMap }: Props) {
 					<div key={i} css={sectionStyle}>
 						<div css={schemaTitleStyle}>{schema.name}</div>
 						<div css={schemaDescStyle}>{schema.description}</div>
-
 						<table css={tableStyle}>
 							<thead>
-								{table.getHeaderGroups().map((headerGroup) => (
-									<tr key={headerGroup.id}>
-										{headerGroup.headers.map((header) => (
-											<th key={header.id} css={thStyle}>
-												{flexRender(header.column.columnDef.header, header.getContext())}
-											</th>
-										))}
-									</tr>
+								{table.getHeaderGroups().map((headerGroup: HeaderGroup<Field>) => (
+									<TableHeader headerGroup={headerGroup} />
 								))}
 							</thead>
 							<tbody>
-								{table.getRowModel().rows.map((row) => (
-									<tr key={row.id}>
-										{row.getVisibleCells().map((cell) => (
-											<td key={cell.id} css={tdStyle}>
-												{flexRender(cell.column.columnDef.cell, cell.getContext())}
-											</td>
-										))}
-									</tr>
+								{table.getRowModel().rows.map((row, i: number) => (
+									<TableRow key={row.id} row={row} index={i} />
 								))}
 							</tbody>
 						</table>
@@ -181,4 +132,5 @@ export default function SchemaTables({ schemaMap }: Props) {
 			})}
 		</div>
 	);
-}
+};
+export default SchemaTables;
