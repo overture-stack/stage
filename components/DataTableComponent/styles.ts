@@ -17,6 +17,12 @@ export const schemaDescription = css`
 	margin-bottom: 20px;
 `;
 
+export const thStyle = css`
+	background: #e5edf3;
+	text-align: left;
+	padding: 12px;
+	border-bottom: 1px solid #dcdcdc;
+`;
 export const tableStyle = css`
 	width: 100%;
 	border-collapse: collapse;

@@ -1,14 +1,9 @@
-import { css } from '@emotion/react';
 import { Row, flexRender } from '@tanstack/react-table';
 import { useState } from 'react';
 import { linkStyle, rowStyle, tdStyle } from './styles';
+import { TableRowProps } from './types';
 
-type Props<T> = {
-	row: Row<T>;
-	index: number;
-};
-
-const TableRow = <T,>({ row, index }: Props<T>) => {
+const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});
 
 	const toggleExpand = (cellId: string) => {
