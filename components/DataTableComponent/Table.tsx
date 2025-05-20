@@ -71,6 +71,7 @@ const getColumns = () => [
 
 const sectionStyle = css`
 	margin-bottom: 48px;
+	max-width: 1200px;
 `;
 
 const schemaTitleStyle = css`
@@ -106,7 +107,7 @@ const SchemaTables: FC<Props> = ({ schemaMap }) => {
 		<div>
 			{schemaMapArray.map((schema: Schema, i: number) => {
 				const table = useReactTable({
-					data: schema.fields ?? [],
+					data: schema.fields,
 					columns: getColumns(),
 					getCoreRowModel: getCoreRowModel(),
 				});
