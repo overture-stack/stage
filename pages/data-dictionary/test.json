@@ -9,7 +9,7 @@
 	},
 	"schemas": [
 		{
-			"name": "donor",
+			"name": "Donor",
 			"description": "Core demographic information about donors. One donor can have multiple diagnoses, treatments, and followups.",
 			"fields": [
 				{
@@ -60,7 +60,7 @@
 			}
 		},
 		{
-			"name": "diagnosis",
+			"name": "Diagnosis",
 			"description": "Clinical diagnosis details linked to a donor via donor_id. Each diagnosis belongs to exactly one donor.",
 			"fields": [
 				{

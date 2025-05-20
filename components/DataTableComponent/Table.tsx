@@ -77,13 +77,13 @@ const sectionStyle = css`
 const schemaTitleStyle = css`
 	font-size: 20px;
 	font-weight: bold ?? [];
-	margin-bottom: 4px;
+	margin-bottom: 10px;
 `;
 
 const schemaDescStyle = css`
 	font-size: 14px;
 	color: #555;
-	margin-bottom: 16px;
+	margin-bottom: 20px;
 `;
 
 const tableStyle = css`
