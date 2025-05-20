@@ -1,7 +1,7 @@
-import { css } from '@emotion/react';
 import { ColumnDef, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
+import { schemaDescription, schemaTitle, sectionStyle, tableStyle } from './styles';
 
 type Schema<T> = {
 	name: string;
@@ -13,29 +13,6 @@ type Props<T> = {
 	schemaMap: Map<number, Schema<T>>;
 	getColumns: () => ColumnDef<T, any>[];
 };
-
-const sectionStyle = css`
-	margin-bottom: 48px;
-	max-width: 1200px;
-`;
-
-const schemaTitle = css`
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 10px;
-`;
-
-const schemaDescription = css`
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 20px;
-`;
-
-const tableStyle = css`
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 8px;
-`;
 
 const SchemaTables = <T,>({ schemaMap, getColumns }: Props<T>) => {
 	const schemaArray = Array.from(schemaMap.values());
