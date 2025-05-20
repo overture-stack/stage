@@ -21,6 +21,23 @@
 
 import { ColumnDef, HeaderGroup, Row } from '@tanstack/react-table';
 
+export type Field = {
+	name: string;
+	description: string;
+	valueType: string;
+	unique?: boolean;
+	isArray?: boolean;
+	delimiter?: string;
+	restrictions?: {
+		required?: boolean;
+		regex?: string;
+		codeList?: string[];
+	};
+	meta?: {
+		displayName?: string;
+		examples?: string[];
+	};
+};
 export type tableHeaderProps = {
 	title: string;
 };

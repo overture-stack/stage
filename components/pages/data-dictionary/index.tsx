@@ -42,7 +42,7 @@ const DataDictionaryPage = ({ data }: DataDictionaryPageProps) => {
 					padding: 20px;
 				`}
 			>
-				<Table schemaMap={data} getColumns={getColumns} />
+				{/* <Table schemaMap={data} getColumns={getColumns} /> */}
 			</div>
 		</PageLayout>
 	);

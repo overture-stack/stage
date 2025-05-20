@@ -78,7 +78,7 @@ export const fieldNameStyle = css`
 	font-weight: 600;
 `;
 
-export const fieldDescStyle = css`
+export const fieldDescriptionStyle = css`
 	font-size: 12px;
 	color: #666;
 `;
