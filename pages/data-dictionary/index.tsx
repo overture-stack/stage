@@ -21,12 +21,15 @@
 
 import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
+import testData from './test.json';
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	return <DataDictionaryPage />;
+	const schemaMap = new Map(testData.schemas.map((schema, i) => [i, schema]));
+
+	return <DataDictionaryPage data={schemaMap} />;
 });
 
 export default DataDictionary;
