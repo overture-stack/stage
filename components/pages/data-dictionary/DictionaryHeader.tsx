@@ -19,27 +19,53 @@
  *
  */
 
-import PageLayout from '@/components/PageLayout';
-import { get } from 'lodash';
+import { css } from '@emotion/react';
 import { ComponentType } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import DictionaryHeader from './DictionaryHeader';
-import { DictionaryPageProps } from './types';
+import colours from './styles/colours';
+import { DictionaryHeaderProps } from './types';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
-	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
-
+const DictionaryHeader: ComponentType<DictionaryHeaderProps> = ({ description, name }) => {
 	return (
-		<>
-			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader
-					description={isLoading ? <Skeleton width={300} /> : description}
-					name={isLoading ? <Skeleton width={200} /> : name}
-				/>
-			</PageLayout>
-		</>
+		<div
+			css={css`
+				background-color: ${colours.accent1_1};
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				margin-bottom: 1rem;
+				padding: 2.5rem;
+				max-height: 10%;
+				align-items: flex-start;
+			`}
+		>
+			<div
+				css={css`
+					display: flex;
+					flex-direction: column;
+				`}
+			>
+				<h1
+					css={css`
+						font-weight: 700;
+						font-size: 40px;
+						color: white;
+						line-height: 100%;
+						margin: 0.5rem 0;
+					`}
+				>
+					{name}
+				</h1>
+				<p
+					css={css`
+						color: white;
+						margin: 0;
+					`}
+				>
+					{description}
+				</p>
+			</div>
+		</div>
 	);
 };
-export default DataDictionaryPage;
+
+export default DictionaryHeader;
