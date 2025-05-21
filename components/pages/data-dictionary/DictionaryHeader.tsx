@@ -22,11 +22,7 @@
 import { css } from '@emotion/react';
 import { ComponentType } from 'react';
 import colours from './styles/colours';
-
-type DictionaryHeaderProps = {
-	description: string;
-	name: string;
-};
+import { DictionaryHeaderProps } from './types';
 
 const DictionaryHeader: ComponentType<DictionaryHeaderProps> = ({ description, name }) => {
 	return (
