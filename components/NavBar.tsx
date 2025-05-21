@@ -28,9 +28,9 @@ import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import { DATA_DICTIONARY_PATH, EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
-import LinkToDataDictionary from './LinkToDataDictionary';
+import NavbarLinkButton from './NavbarLinkButton';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
@@ -76,6 +76,7 @@ const NavBar: React.ComponentType = () => {
 					align-items: center;
 					margin-left: 16px;
 					cursor: pointer;
+					gap: 10px;
 				`}
 			>
 				<Link path={EXPLORER_PATH}>
@@ -98,6 +99,8 @@ const NavBar: React.ComponentType = () => {
 						</span>
 					</a>
 				</Link>
+				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
+				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
 			</div>
 			<div
 				css={css`
@@ -105,41 +108,6 @@ const NavBar: React.ComponentType = () => {
 					align-items: center;
 				`}
 			>
-				<div
-					css={(theme) => css`
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						width: 144px;
-						background-color: ${theme.colors.white};
-						height: 100%;
-						&:hover {
-							background-color: ${theme.colors.grey_2};
-						}
-						border-right: 2px solid ${theme.colors.white};
-					`}
-				>
-					<Link path={EXPLORER_PATH}>
-						<a
-							css={(theme) => css`
-								display: flex;
-								flex: 1;
-								height: 100%;
-								justify-content: center;
-								align-items: center;
-								text-decoration: none;
-								color: ${theme.colors.accent_dark};
-								cursor: pointer;
-								${router.pathname === EXPLORER_PATH ? activeLinkStyle : ''}
-							`}
-						>
-							Data Explorer
-						</a>
-					</Link>
-				</div>
-
-				<LinkToDataDictionary />
-
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
 					(user ? (
 						<div

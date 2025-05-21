@@ -21,11 +21,15 @@
 
 import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { DATA_DICTIONARY_PATH } from '../global/utils/constants';
 import { InternalLink as Link } from './Link';
 import defaultTheme from './theme';
 
-const LinkToDataDictionary: React.ComponentType = () => {
+type NavbarLinkProps = {
+	path: string;
+	label: string;
+};
+
+const NavbarLinkButton: React.FC<NavbarLinkProps> = ({ path, label }) => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
 	const activeLinkStyle = `
@@ -47,7 +51,7 @@ const LinkToDataDictionary: React.ComponentType = () => {
 				border-right: 2px solid ${theme.colors.white};
 			`}
 		>
-			<Link path={DATA_DICTIONARY_PATH}>
+			<Link path={path}>
 				<a
 					css={(theme) => css`
 						display: flex;
@@ -58,14 +62,14 @@ const LinkToDataDictionary: React.ComponentType = () => {
 						text-decoration: none;
 						color: ${theme.colors.accent_dark};
 						cursor: pointer;
-						${router.pathname === DATA_DICTIONARY_PATH ? activeLinkStyle : ''}
+						${router.pathname === path ? activeLinkStyle : ''}
 					`}
 				>
-					Data Dictionary
+					{label}
 				</a>
 			</Link>
 		</div>
 	);
 };
 
-export default LinkToDataDictionary;
+export default NavbarLinkButton;
