@@ -20,19 +20,26 @@
  */
 
 import PageLayout from '@/components/PageLayout';
+import { get } from 'lodash';
 import { ComponentType } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ DictionaryHeaderProp }) => {
-	const { description, name } = DictionaryHeaderProp;
+const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
+	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
+	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
+
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader description={description} name={name} />
+				<DictionaryHeader
+					description={isLoading ? <Skeleton width={300} /> : description}
+					name={isLoading ? <Skeleton width={200} /> : name}
+				/>
 			</PageLayout>
 		</>
 	);
 };
-
 export default DataDictionaryPage;

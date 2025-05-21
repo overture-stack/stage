@@ -19,8 +19,6 @@
  *
  */
 
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
 import { useEffect, useState } from 'react';
@@ -28,56 +26,32 @@ import { useEffect, useState } from 'react';
 const schemaMap = new Map<number, any>();
 
 const DataDictionary = createPage({
-	getInitialProps: async () => {
-		return {
-			dictionaryHeaderData: {
-				name: 'Dictionary unsuccessfully loaded',
-				description: 'Description is unable to be loaded',
-			},
-		};
-	},
+	getInitialProps: async () => {},
 	isPublic: true,
-})(({ dictionaryHeaderData }) => {
-	const [headerData, setHeaderData] = useState(dictionaryHeaderData);
+})(() => {
+	const [dictionaryData, setDictionaryData] = useState({});
 	const [loading, setLoading] = useState(true);
-
+	const [error, setError] = useState(false);
 	useEffect(() => {
 		const fetchDictionaryData = async () => {
 			try {
 				setLoading(true);
 				const res = await fetch('/api/lectern/');
-
-				if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-
+				if (!res.ok) {
+					throw new Error(`Failed to fetch: ${res.status}`);
+				}
 				const data = await res.json();
-
-				data.dictionary.schemas.forEach((schema: any, index: number) => {
-					schemaMap.set(index, schema);
-				});
-
-				setHeaderData({
-					name: data?.dictionary?.name || 'Dictionary',
-					description: data?.dictionary?.description || 'No description available',
-				});
+				setDictionaryData(data);
 			} catch (err) {
 				console.error('Error loading dictionary header:', err);
+				setError(true);
 			} finally {
 				setLoading(false);
 			}
 		};
-
 		fetchDictionaryData();
 	}, []);
-
-	return (
-		<DataDictionaryPage
-			DictionaryHeaderProp={{
-				name: loading ? <Skeleton width={300} height={40} /> : headerData.name,
-				description: loading ? <Skeleton count={2} width={500} /> : headerData.description,
-			}}
-			DictionaryData={{ schema: schemaMap }}
-		/>
-	);
+	return <DataDictionaryPage data={dictionaryData} isLoading={loading} hasError={error} />;
 });
 
 export default DataDictionary;

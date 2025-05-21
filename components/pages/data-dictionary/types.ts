@@ -27,6 +27,7 @@ export type DictionaryData = {
 	schema: Map<number, any>;
 };
 export type DictionaryPageProps = {
-	DictionaryHeaderProp: DictionaryHeaderProps;
-	DictionaryData: DictionaryData;
+	data: any;
+	isLoading: boolean;
+	hasError: boolean;
 };
