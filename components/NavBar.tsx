@@ -76,6 +76,7 @@ const NavBar: React.ComponentType = () => {
 					align-items: center;
 					margin-left: 16px;
 					cursor: pointer;
+					gap: 10px;
 				`}
 			>
 				<Link path={EXPLORER_PATH}>
@@ -98,6 +99,8 @@ const NavBar: React.ComponentType = () => {
 						</span>
 					</a>
 				</Link>
+				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
+				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
 			</div>
 			<div
 				css={css`
@@ -105,9 +108,6 @@ const NavBar: React.ComponentType = () => {
 					align-items: center;
 				`}
 			>
-				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
-				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
-
 				{NEXT_PUBLIC_AUTH_PROVIDER &&
 					(user ? (
 						<div
