@@ -23,6 +23,7 @@ import { flexRender } from '@tanstack/react-table';
 import { useState } from 'react';
 import { linkStyle, rowStyle, tdStyle } from './styles';
 import { TableRowProps } from './types';
+import { Lato } from '@/components/pages/data-dictionary/styles/typography';
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});
@@ -39,8 +40,9 @@ const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 			{row.getVisibleCells().map((cell) => {
 				const cellValue = cell.getValue();
 
-				if (cellValue === undefined || cellValue === null || cellValue === '')
+				if (cellValue === undefined || cellValue === null || cellValue === '') {
 					return <td key={cell.id} css={tdStyle}></td>;
+				}
 
 				const valueStr = cellValue.toString();
 				const isLong = valueStr.length > 68;

@@ -20,9 +20,9 @@
  */
 
 import { createColumnHelper } from '@tanstack/react-table';
-import { fieldDescriptionStyle, fieldNameStyle } from './styles';
 import { Field } from './types';
-
+import { Lato } from '../pages/data-dictionary/styles/typography';
+import { css } from '@emotion/react';
 // This file is responsible for defining the columns of the table, depending on user defined types and schemas.
 
 export const columnHelper = createColumnHelper<Field>();
@@ -31,10 +31,16 @@ export const getColumns = () => [
 	columnHelper.accessor('name', {
 		header: 'Field',
 		cell: (field) => (
-			<>
-				<div css={fieldNameStyle}>{field.row.original.meta?.displayName}</div>
-				<div css={fieldDescriptionStyle}>{field.row.original.description}</div>
-			</>
+			<div
+				css={css`
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				`}
+			>
+				<div css={Lato.Paragraph_bold_small}>{field.row.original.meta?.displayName}</div>
+				<div css={Lato.Paragraph_small}>{field.row.original.description}</div>
+			</div>
 		),
 	}),
 	columnHelper.accessor((row) => row.restrictions?.required ?? false, {

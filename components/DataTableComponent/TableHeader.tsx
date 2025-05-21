@@ -19,7 +19,9 @@
  *
  */
 
-import { flexRender, HeaderGroup } from '@tanstack/react-table';
+import { css } from '@emotion/react';
+import { flexRender } from '@tanstack/react-table';
+import { Lato } from '../pages/data-dictionary/styles/typography';
 import { thStyle } from './styles';
 import { TableHeaderProps } from './types';
 
@@ -27,7 +29,14 @@ const TableHeader = <T,>({ headerGroup }: TableHeaderProps<T>) => {
 	return (
 		<tr key={headerGroup.id}>
 			{headerGroup.headers.map((header) => (
-				<th key={header.id} colSpan={header.colSpan} css={thStyle}>
+				<th
+					key={header.id}
+					colSpan={header.colSpan}
+					css={css`
+						${thStyle}
+						${Lato.Subtitle2}
+					`}
+				>
 					{flexRender(header.column.columnDef.header, header.getContext())}
 				</th>
 			))}

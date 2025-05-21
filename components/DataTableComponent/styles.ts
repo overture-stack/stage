@@ -26,18 +26,6 @@ export const sectionStyle = css`
 	max-width: 1200px;
 `;
 
-export const schemaTitle = css`
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 10px;
-`;
-
-export const schemaDescription = css`
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 20px;
-`;
-
 export const thStyle = css`
 	background: #e5edf3;
 	text-align: left;
@@ -72,13 +60,4 @@ export const linkStyle = css`
 	&:hover {
 		text-decoration: underline;
 	}
-`;
-
-export const fieldNameStyle = css`
-	font-weight: 600;
-`;
-
-export const fieldDescriptionStyle = css`
-	font-size: 12px;
-	color: #666;
 `;

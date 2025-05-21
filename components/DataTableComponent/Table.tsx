@@ -22,25 +22,45 @@
 import { getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import { schemaDescription, schemaTitle, sectionStyle, tableStyle } from './styles';
+import { sectionStyle, tableStyle } from './styles';
 import { SchemaTableProps } from './types';
+import { Lato } from '../pages/data-dictionary/styles/typography';
+import { css } from '@emotion/react';
 
-const SchemaTables = <T,>({ schemaMap, getColumns }: SchemaTableProps<T>) => {
-	const schemaArray = Array.from(schemaMap.values());
+const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
+	const schemaArray = data?.dictionary?.schemas || [];
 
 	return (
 		<div>
-			{schemaArray.map((schema, i) => {
+			{schemaArray.map((schema: any, i: number) => {
 				const table = useReactTable({
-					data: schema.fields,
+					data: schema.fields || [],
 					columns: getColumns(),
 					getCoreRowModel: getCoreRowModel(),
 				});
 
 				return (
 					<div key={i} css={sectionStyle}>
-						<div css={schemaTitle}>{schema.name}</div>
-						<div css={schemaDescription}>{schema.description}</div>
+						<div
+							css={[
+								Lato.Paragraph_bold,
+								css`
+									margin-bottom: 10px;
+								`,
+							]}
+						>
+							{schema.name}
+						</div>
+						<div
+							css={[
+								Lato.Paragraph_small,
+								css`
+									margin-bottom: 20px;
+								`,
+							]}
+						>
+							{schema.description}
+						</div>
 						<table css={tableStyle}>
 							<thead>
 								{table.getHeaderGroups().map((headerGroup: HeaderGroup<T>) => (

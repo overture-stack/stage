@@ -26,6 +26,9 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
+import SchemaTables from '@/components/DataTableComponent/Table';
+import { getColumns } from '@/components/DataTableComponent/tableInit';
+import { css } from '@emotion/react';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
@@ -38,8 +41,20 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 					description={isLoading ? <Skeleton width={300} /> : description}
 					name={isLoading ? <Skeleton width={200} /> : name}
 				/>
+				<div
+					css={css`
+						max-width: 1200px;
+						width: 100%;
+						margin: 0 auto;
+						padding: 0 20px;
+						margin-top: 30px;
+					`}
+				>
+					<SchemaTables data={data} getColumns={getColumns} />
+				</div>
 			</PageLayout>
 		</>
 	);
 };
+
 export default DataDictionaryPage;

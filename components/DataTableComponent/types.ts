@@ -49,7 +49,7 @@ export type Schema<T> = {
 };
 
 export type SchemaTableProps<T> = {
-	schemaMap: Map<number, Schema<T>>;
+	data: any;
 	getColumns: () => ColumnDef<T, any>[];
 };
 
