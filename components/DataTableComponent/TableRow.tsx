@@ -44,7 +44,7 @@ const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 				}
 
 				const valueStr = cellValue.toString();
-				const isLong = valueStr.length > 68;
+				const isLong = valueStr.length > 68; // Length for truncation, to best match the Figma design
 				const isExpanded = expandedCells[cell.id];
 
 				if (isLong) {
