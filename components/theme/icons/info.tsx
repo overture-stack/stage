@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,40 +19,34 @@
  *
  */
 
+import { ReactElement } from 'react';
 import { css } from '@emotion/react';
-import { IconProps } from './types';
-import theme from '../';
 
-const Warning = ({ height, width, style, fill = theme.colors.warning_dark }: IconProps) => {
+import { IconProps } from './types';
+
+const Info = ({ fill, size = 30, style }: IconProps): ReactElement => {
 	return (
 		<svg
 			css={css`
-				${style}
-				height: ${height};
-				width: ${width};
+				${style};
+				height: ${size}px;
+				width: ${size}px;
 			`}
-			width={width}
-			height={height}
-			viewBox={'0 0 16 16'}
+			width={size}
+			height={size}
+			viewBox="0 0 30 30"
 		>
 			<g fill="none" fillRule="evenodd">
 				<g fill={fill}>
-					<g>
-						<g>
-							<g>
-								<g>
-									<path
-										d="M7.843 12.556c-1.239 0-2.243.994-2.243 2.222C5.6 16.005 6.604 17 7.843 17c1.239 0 2.242-.995 2.242-2.222 0-1.228-1.003-2.222-2.242-2.222M7.843 1C6.604 1 5.6 1.995 5.6 3.222l.449 6.667c0 .982.803 1.778 1.794 1.778.99 0 1.794-.796 1.794-1.778l.448-6.667C10.085 1.995 9.082 1 7.843 1"
-										transform="translate(-392 -458) translate(367 271.17) translate(25 186)"
-									/>
-								</g>
-							</g>
-						</g>
-					</g>
+					<path d="M15 0c8.284 0 15 6.716 15 15 0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15C0 6.716 6.716 0 15 0z" />
+					<path
+						d="M14.62 10.985c1.104 0 2.019-.888 2.019-1.992S15.724 7 14.619 7c-1.103 0-2.019.889-2.019 1.993s.916 1.992 2.02 1.992zM12.6 21.083c0 1.023.916 1.858 2.02 1.858s2.019-.835 2.019-1.858v-7.217c0-1.023-.915-1.858-2.02-1.858-1.103 0-2.019.835-2.019 1.858v7.217z"
+						fill="white"
+					/>
 				</g>
 			</g>
 		</svg>
 	);
 };
 
-export default Warning;
+export default Info;

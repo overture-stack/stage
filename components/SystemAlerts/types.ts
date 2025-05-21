@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,40 +19,30 @@
  *
  */
 
-import { css } from '@emotion/react';
-import { IconProps } from './types';
-import theme from '../';
+export type AlertLevel = 'info' | 'warning' | 'critical';
 
-const Warning = ({ height, width, style, fill = theme.colors.warning_dark }: IconProps) => {
-	return (
-		<svg
-			css={css`
-				${style}
-				height: ${height};
-				width: ${width};
-			`}
-			width={width}
-			height={height}
-			viewBox={'0 0 16 16'}
-		>
-			<g fill="none" fillRule="evenodd">
-				<g fill={fill}>
-					<g>
-						<g>
-							<g>
-								<g>
-									<path
-										d="M7.843 12.556c-1.239 0-2.243.994-2.243 2.222C5.6 16.005 6.604 17 7.843 17c1.239 0 2.242-.995 2.242-2.222 0-1.228-1.003-2.222-2.242-2.222M7.843 1C6.604 1 5.6 1.995 5.6 3.222l.449 6.667c0 .982.803 1.778 1.794 1.778.99 0 1.794-.796 1.794-1.778l.448-6.667C10.085 1.995 9.082 1 7.843 1"
-										transform="translate(-392 -458) translate(367 271.17) translate(25 186)"
-									/>
-								</g>
-							</g>
-						</g>
-					</g>
-				</g>
-			</g>
-		</svg>
-	);
+export const ALERT_LEVELS = {
+	info: 'info',
+	warning: 'warning',
+	critical: 'critical',
+} as const;
+
+export type AlertDef = {
+	level: AlertLevel;
+	title: string;
+	message?: string;
+	dismissable: boolean;
+	id: string;
 };
 
-export default Warning;
+export const isAlertLevel = (level: any): level is AlertLevel => {
+	return level === 'info' || level === 'warning' || level === 'critical';
+};
+
+export const isAlertDef = (obj: any): obj is AlertDef => {
+	return obj.id && obj.title && obj.dismissable !== undefined && isAlertLevel(obj.level);
+};
+
+export const isAlertDefs = (obj: any): obj is AlertDef[] => {
+	return Array.isArray(obj) && obj.every(isAlertDef);
+};

@@ -75,6 +75,7 @@ const error = {
 };
 
 const warning = {
+	warning_light: '#ffff758c',
 	warning: '#f2d021',
 	warning_dark: '#e6c104',
 };
