@@ -47,7 +47,7 @@ const DataDictionary = createPage({
 				setLoading(true);
 				const res = await fetch('/api/lectern/');
 
-				if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+				if (!res.ok) { throw new Error(`Failed to fetch: ${res.status}`); }
 
 				const data = await res.json();
 
