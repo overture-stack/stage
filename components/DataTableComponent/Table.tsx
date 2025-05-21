@@ -28,11 +28,9 @@ import { Lato } from '../pages/data-dictionary/styles/typography';
 import { css } from '@emotion/react';
 
 const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
-	const schemaArray = data?.dictionary?.schemas || [];
-
 	return (
 		<div>
-			{schemaArray.map((schema: any, i: number) => {
+			{data.map((schema: any, i: number) => {
 				const table = useReactTable({
 					data: schema.fields || [],
 					columns: getColumns(),

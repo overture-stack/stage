@@ -33,7 +33,7 @@ import { css } from '@emotion/react';
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
 	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
-
+	const schemaArray = get(data, 'dictionary.schemas', []);
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -50,7 +50,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
-					<SchemaTables data={data} getColumns={getColumns} />
+					<SchemaTables data={schemaArray} getColumns={getColumns} />
 				</div>
 			</PageLayout>
 		</>

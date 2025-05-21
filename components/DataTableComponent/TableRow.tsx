@@ -23,7 +23,6 @@ import { flexRender } from '@tanstack/react-table';
 import { useState } from 'react';
 import { linkStyle, rowStyle, tdStyle } from './styles';
 import { TableRowProps } from './types';
-import { Lato } from '@/components/pages/data-dictionary/styles/typography';
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});
