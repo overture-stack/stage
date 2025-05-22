@@ -75,23 +75,23 @@ const CurrentUser = () => {
 
 const StyledListLink = styled('a')`
 	${({ theme }) => css`
-    text-decoration: none;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    background: ${theme.colors.white};
-    padding: 6px 12px;
-    color: ${theme.colors.black};
-    background-color: ${theme.colors.white};
-    border: 1px solid ${theme.colors.grey_3};
-    outline: none;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    &:hover {
-      background-color: ${theme.colors.grey_1};
-    }
-  `}
+		text-decoration: none;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		background: ${theme.colors.white};
+		padding: 6px 12px;
+		color: ${theme.colors.black};
+		background-color: ${theme.colors.white};
+		border: 1px solid ${theme.colors.grey_3};
+		outline: none;
+		font-size: 16px;
+		cursor: pointer;
+		width: 100%;
+		&:hover {
+			background-color: ${theme.colors.grey_1};
+		}
+	`}
 `;
 
 const UserDropdown = () => {
@@ -120,14 +120,10 @@ const UserDropdown = () => {
 		};
 	}, [open]);
 
-	const fillColor =
-		router.pathname === USER_PATH ? theme.colors.accent2_dark : theme.colors.accent_dark;
+	const fillColor = router.pathname === USER_PATH ? theme.colors.accent2_dark : theme.colors.accent_dark;
 
 	const handleLogout = () => {
-		if (
-			NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO ||
-			NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK
-		) {
+		if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO || NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) {
 			signOut();
 		}
 	};

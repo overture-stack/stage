@@ -1,3 +1,5 @@
+import { ReactChildren, ReactNode, SyntheticEvent } from 'react';
+
 /*
  *
  * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
@@ -18,7 +20,12 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
+export type NavbarDropDownProps = {
+	MenuItemMap?: Map<string, string>;
+	title: string;
+	disabled?: boolean;
+	children?: ReactNode | ReactChildren;
+};
 export enum UserStatus {
 	APPROVED = 'APPROVED',
 	DISABLED = 'DISABLED',

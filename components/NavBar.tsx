@@ -31,6 +31,7 @@ import { StyledLinkAsButton, InternalLink as Link } from './Link';
 import { DATA_DICTIONARY_PATH, EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
 import { getConfig } from '../global/config';
 import NavbarLinkButton from './NavbarLinkButton';
+import NavbarDropDown from './NavbarDropDown';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
@@ -101,6 +102,15 @@ const NavBar: React.ComponentType = () => {
 				</Link>
 				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
 				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
+				<NavbarDropDown
+					title="Hello World"
+					MenuItemMap={
+						new Map([
+							['Settings', '/settings'],
+							['Logout', '/logout'],
+						])
+					}
+				/>
 			</div>
 			<div
 				css={css`

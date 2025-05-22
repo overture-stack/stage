@@ -23,8 +23,7 @@ import urlJoin from 'url-join';
 
 import { getConfig } from '../config';
 
-const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } =
-	getConfig();
+const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } = getConfig();
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
@@ -35,16 +34,15 @@ export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
 export const DATA_DICTIONARY_PATH = '/data-dictionary';
 
+// paths
+export const INTERNAL_PATHS = [EXPLORER_PATH, DATA_DICTIONARY_PATH, LOGIN_PATH, USER_PATH];
+
 // external docs links
-export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'
+export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose';
 export const EMAIL_SETTING_URL = 'admin@example.com';
 
 // keycloak
-export const KEYCLOAK_URL_ISSUER = urlJoin(
-	NEXT_PUBLIC_KEYCLOAK_HOST,
-	'realms',
-	NEXT_PUBLIC_KEYCLOAK_REALM,
-);
+export const KEYCLOAK_URL_ISSUER = urlJoin(NEXT_PUBLIC_KEYCLOAK_HOST, 'realms', NEXT_PUBLIC_KEYCLOAK_REALM);
 export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token');
 export const KEYCLOAK_API_KEY_ENDPOINT = urlJoin(KEYCLOAK_URL_ISSUER, 'apikey/api_key');
 
