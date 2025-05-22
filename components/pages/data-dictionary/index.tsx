@@ -31,9 +31,9 @@ import { getColumns } from '@/components/DataTableComponent/tableInit';
 import { css } from '@emotion/react';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
-	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
-	const schemaArray = get(data, 'dictionary.schemas', []);
+	const name = get(data, 'data.name', hasError ? 'Error loading dictionary' : '');
+	const description = get(data, 'data.description', hasError ? 'Error loading description' : '');
+	const schemaArray = get(data, 'data.schemas', []);
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">

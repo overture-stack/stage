@@ -21,7 +21,12 @@
 
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
+import * as lectern from '@overture-stack/lectern-client';
 import { useEffect, useState } from 'react';
+
+const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
+const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
+const version = '1.1'; //Replace with your actual version
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {},
@@ -34,11 +39,11 @@ const DataDictionary = createPage({
 		const fetchDictionaryData = async () => {
 			try {
 				setLoading(true);
-				const res = await fetch('/api/lectern/');
-				if (!res.ok) {
-					throw new Error(`Failed to fetch: ${res.status}`);
+				const data = await lectern.rest.getDictionary(lecternUrl, { name: dictionaryName, version: version });
+				if (data.success === false) {
+					setError(true);
+					throw new Error('Failed to fetch dictionary data');
 				}
-				const data = await res.json();
 				setDictionaryData(data);
 			} catch (err) {
 				console.error('Error loading dictionary header:', err);
