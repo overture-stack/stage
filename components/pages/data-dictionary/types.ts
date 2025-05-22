@@ -23,9 +23,6 @@ export type DictionaryHeaderProps = {
 	description: string;
 	name: string;
 };
-export type DictionaryData = {
-	schema: Map<number, any>;
-};
 export type DictionaryPageProps = {
 	data: any;
 	isLoading: boolean;
