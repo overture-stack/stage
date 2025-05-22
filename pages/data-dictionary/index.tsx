@@ -19,14 +19,37 @@
  *
  */
 
-import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
+import { createPage } from '@/global/utils/pages';
+import { useEffect, useState } from 'react';
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	return <DataDictionaryPage />;
+	const [dictionaryData, setDictionaryData] = useState({});
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(false);
+	useEffect(() => {
+		const fetchDictionaryData = async () => {
+			try {
+				setLoading(true);
+				const res = await fetch('/api/lectern/');
+				if (!res.ok) {
+					throw new Error(`Failed to fetch: ${res.status}`);
+				}
+				const data = await res.json();
+				setDictionaryData(data);
+			} catch (err) {
+				console.error('Error loading dictionary header:', err);
+				setError(true);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchDictionaryData();
+	}, []);
+	return <DataDictionaryPage data={dictionaryData} isLoading={loading} hasError={error} />;
 });
 
 export default DataDictionary;

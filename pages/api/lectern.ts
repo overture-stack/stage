@@ -19,27 +19,19 @@
  *
  */
 
-import PageLayout from '@/components/PageLayout';
-import { get } from 'lodash';
-import { ComponentType } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import DictionaryHeader from './DictionaryHeader';
-import { DictionaryPageProps } from './types';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import * as lectern from '@overture-stack/lectern-client';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
-	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
-
-	return (
-		<>
-			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader
-					description={isLoading ? <Skeleton width={300} /> : description}
-					name={isLoading ? <Skeleton width={200} /> : name}
-				/>
-			</PageLayout>
-		</>
-	);
-};
-export default DataDictionaryPage;
+const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
+const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
+const version = '1.0'; //Replace with your actual version
+export default async function lecternHandler(req: NextApiRequest, res: NextApiResponse) {
+	try {
+		// add any complex logic here for the actual dictionary
+		const dictionary = await lectern.rest.fetchSchema(lecternUrl, dictionaryName, version);
+		console.log('Fetched lectern schema:', dictionary);
+		res.status(200).json({ dictionary });
+	} catch (error: any) {
+		res.status(500).json({ error: 'Failed to fetch lectern schema' });
+	}
+}
