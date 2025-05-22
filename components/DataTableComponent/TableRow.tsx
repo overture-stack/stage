@@ -21,7 +21,8 @@
 
 import { flexRender } from '@tanstack/react-table';
 import { useState } from 'react';
-import { linkStyle, rowStyle, tdStyle } from './styles';
+import { ChevronDown } from '../theme/icons';
+import { chevronDownStyle, chevronUpStyle, linkStyle, rowStyle, tdStyle } from './styles';
 import { TableRowProps } from './types';
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
@@ -43,7 +44,7 @@ const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 					return <td key={cell.id} css={tdStyle}></td>;
 				}
 
-				const valueStr = cellValue.toString();
+				const valueStr = cellValue.toString(); // concatenate a large string to test dropdown feature
 				const isLong = valueStr.length > 68; // Length for truncation, to best match the Figma design
 				const isExpanded = expandedCells[cell.id];
 
@@ -53,6 +54,12 @@ const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 							<span>{isExpanded ? valueStr : valueStr.slice(0, 68) + ' ...'}</span>
 							<span css={linkStyle} onClick={() => toggleExpand(cell.id)}>
 								{!isExpanded ? '\nRead more' : '\nRead less'}
+								<ChevronDown
+									style={!isExpanded ? chevronDownStyle : chevronUpStyle}
+									fill="#000"
+									width={10}
+									height={10}
+								/>
 							</span>
 						</td>
 					);

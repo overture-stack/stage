@@ -61,3 +61,11 @@ export const linkStyle = css`
 		text-decoration: underline;
 	}
 `;
+export const chevronDownStyle = css`
+	margin-left: 4px;
+`;
+
+export const chevronUpStyle = css`
+	margin-left: 4px;
+	transform: rotate(180deg);
+`;
