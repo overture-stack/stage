@@ -101,15 +101,6 @@ const NavBar: React.ComponentType = () => {
 				</Link>
 				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
 				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
-				<Dropdown
-					title="Dropdown"
-					MenuItemMap={
-						new Map([
-							['Data Dictionary', DATA_DICTIONARY_PATH],
-							['Data Explorer', EXPLORER_PATH],
-						])
-					}
-				/>
 			</div>
 			<div
 				css={css`
