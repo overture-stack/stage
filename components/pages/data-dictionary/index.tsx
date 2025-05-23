@@ -29,11 +29,11 @@ import { DictionaryPageProps } from './types';
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getColumns } from '@/components/DataTableComponent/tableInit';
 import { css } from '@emotion/react';
+import { Dictionary } from '@overture-stack/lectern-client';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'data.name', hasError ? 'Error loading dictionary' : '');
-	const description = get(data, 'data.description', hasError ? 'Error loading description' : '');
-	const schemaArray = get(data, 'data.schemas', []);
+	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -50,7 +50,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
-					<SchemaTables data={schemaArray} getColumns={getColumns} />
+					{data && <SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getColumns as any} />}
 				</div>
 			</PageLayout>
 		</>

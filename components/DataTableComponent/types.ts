@@ -20,36 +20,15 @@
  */
 
 import { ColumnDef, HeaderGroup, Row } from '@tanstack/react-table';
+import { Dictionary, SchemaField } from '@overture-stack/lectern-client';
 
-export type Field = {
-	name: string;
-	description: string;
-	valueType: string;
-	unique?: boolean;
-	isArray?: boolean;
-	delimiter?: string;
-	restrictions?: {
-		required?: boolean;
-		regex?: string;
-		codeList?: string[];
-	};
-	meta?: {
-		displayName?: string;
-		examples?: string[];
-	};
-};
 export type tableHeaderProps = {
 	title: string;
 };
 
-export type Schema<T> = {
-	name: string;
-	description: string;
-	fields: T[];
-};
-
 export type SchemaTableProps<T> = {
-	data: any;
+	data: T;
+	arrayAccessor?: string;
 	getColumns: () => ColumnDef<T, any>[];
 };
 

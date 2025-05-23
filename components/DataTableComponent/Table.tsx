@@ -26,11 +26,14 @@ import { sectionStyle, tableStyle } from './styles';
 import { SchemaTableProps } from './types';
 import { Lato } from '../pages/data-dictionary/styles/typography';
 import { css } from '@emotion/react';
+import { get } from 'lodash';
 
-const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
+const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
+	// Since the component is generic, we need to be able to access the array data to map
+	const arrayData = get(data, `${arrayAccessor}`) as [];
 	return (
 		<div>
-			{data.map((schema: any, i: number) => {
+			{arrayData?.map((schema: any, i: number) => {
 				const table = useReactTable({
 					data: schema.fields || [],
 					columns: getColumns(),
