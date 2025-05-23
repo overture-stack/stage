@@ -67,14 +67,7 @@ const Button = React.forwardRef<
 	}
 >(
 	(
-		{
-			children,
-			onClick = (e) => {},
-			disabled = false,
-			isAsync = false,
-			className,
-			isLoading: controlledLoadingState,
-		},
+		{ children, onClick = (e) => {}, disabled = false, isAsync = false, className, isLoading: controlledLoadingState },
 		ref = React.createRef(),
 	) => {
 		const [isLoading, setLoading] = React.useState(false);
@@ -117,5 +110,17 @@ const Button = React.forwardRef<
 		);
 	},
 );
-
+export const TransparentButton = styled(ButtonElement)`
+	background: none;
+	border: none;
+	justify-content: flex-start;
+	text-align: left;
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	&:focus,
+	&:hover {
+		background: none;
+	}
+`;
 export default Button;

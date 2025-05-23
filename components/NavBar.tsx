@@ -19,24 +19,24 @@
  *
  */
 
-import React from 'react';
 import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
+import React from 'react';
 
+import { getConfig } from '../global/config';
+import useAuthContext from '../global/hooks/useAuthContext';
+import { DATA_DICTIONARY_PATH, EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import Dropdown from './DropDown/DropDown';
+import { InternalLink as Link, StyledLinkAsButton } from './Link';
+import NavbarLinkButton from './NavbarLinkButton';
 import UserDropdown from './UserDropdown';
 import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
-import useAuthContext from '../global/hooks/useAuthContext';
-import { StyledLinkAsButton, InternalLink as Link } from './Link';
-import { DATA_DICTIONARY_PATH, EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
-import { getConfig } from '../global/config';
-import NavbarLinkButton from './NavbarLinkButton';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
-
 	const { NEXT_PUBLIC_AUTH_PROVIDER, NEXT_PUBLIC_LAB_NAME, NEXT_PUBLIC_LOGO_FILENAME, NEXT_PUBLIC_BASE_PATH } =
 		getConfig();
 
@@ -101,6 +101,15 @@ const NavBar: React.ComponentType = () => {
 				</Link>
 				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
 				<NavbarLinkButton path={DATA_DICTIONARY_PATH} label="Data Dictionary" />
+				<Dropdown
+					title="Dropdown"
+					MenuItemMap={
+						new Map([
+							['Data Dictionary', DATA_DICTIONARY_PATH],
+							['Data Explorer', EXPLORER_PATH],
+						])
+					}
+				/>
 			</div>
 			<div
 				css={css`
