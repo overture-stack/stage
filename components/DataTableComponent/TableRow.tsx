@@ -19,10 +19,9 @@
  *
  */
 
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, Row } from '@tanstack/react-table';
 import { useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import { TableRowProps } from './types';
 import { css } from '@emotion/react';
 
 //Styles
@@ -59,6 +58,11 @@ const chevronUpStyle = css`
 `;
 
 // Component Implementation
+
+type TableRowProps<T> = {
+	row: Row<T>;
+	index: number;
+};
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});

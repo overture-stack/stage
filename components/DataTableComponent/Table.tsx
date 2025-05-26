@@ -20,11 +20,17 @@
  */
 
 import { css } from '@emotion/react';
-import { getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { ColumnDef, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { get } from 'lodash';
 import { Lato } from '../pages/data-dictionary/styles/typography';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import { SchemaTableProps } from './types';
+
+type SchemaTableProps<T> = {
+	data: T;
+	arrayAccessor?: string;
+	getColumns: ColumnDef<T, any>[];
+};
 
 const sectionStyle = css`
 	margin-bottom: 48px;
@@ -36,10 +42,12 @@ const tableStyle = css`
 	margin-top: 8px;
 `;
 
-const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
+const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
+	// Since the component is generic, we need to be able to access the array data to map
+	const arrayData = get(data, `${arrayAccessor}`, []);
 	return (
 		<div>
-			{data.map((schema: any, i: number) => {
+			{arrayData?.map((schema: any, i: number) => {
 				const table = useReactTable({
 					data: schema.fields || [],
 					columns: getColumns,

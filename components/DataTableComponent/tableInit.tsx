@@ -19,17 +19,17 @@
  *
  */
 
-import { createColumnHelper } from '@tanstack/react-table';
-import { Field } from './types';
-import { Lato } from '../pages/data-dictionary/styles/typography';
 import { css } from '@emotion/react';
+import { SchemaField } from '@overture-stack/lectern-client';
+import { createColumnHelper } from '@tanstack/react-table';
+import { Lato } from '../pages/data-dictionary/styles/typography';
 // This file is responsible for defining the columns of the table, depending on user defined types and schemas.
 
-const columnHelper = createColumnHelper<Field>();
+const columnHelper = createColumnHelper<SchemaField>();
 
 export const getSchemaBaseColumns = [
 	columnHelper.accessor('name', {
-		header: 'Field',
+		header: 'SchemaField',
 		cell: (field) => (
 			<div
 				css={css`
@@ -43,11 +43,20 @@ export const getSchemaBaseColumns = [
 			</div>
 		),
 	}),
-	columnHelper.accessor((row) => row.restrictions?.required ?? false, {
-		id: 'required',
-		header: 'Required',
-		cell: (required) => (required.getValue() ? 'Yes' : 'No'),
-	}),
+	columnHelper.accessor(
+		(row) => {
+			const restrictions = row.restrictions || {};
+			if ('required' in restrictions && typeof restrictions !== 'function') {
+				return restrictions.required ?? false;
+			}
+			return false;
+		},
+		{
+			id: 'required',
+			header: 'Required',
+			cell: (required) => (required.getValue() ? 'Yes' : 'No'),
+		},
+	),
 	columnHelper.accessor('valueType', {
 		header: 'Type',
 		cell: (type) => {
@@ -65,7 +74,8 @@ export const getSchemaBaseColumns = [
 		id: 'examples',
 		header: 'Examples',
 		cell: (examples) => {
-			return examples.getValue().join(',  ');
+			const value = examples.getValue();
+			return Array.isArray(value) ? value.join(',  ') : value;
 		},
 	}),
 ];
