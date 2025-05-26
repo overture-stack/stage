@@ -19,17 +19,17 @@
  *
  */
 
+import SchemaTables from '@/components/DataTableComponent/Table';
+import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import PageLayout from '@/components/PageLayout';
+import { css } from '@emotion/react';
+import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { ComponentType } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
-import SchemaTables from '@/components/DataTableComponent/Table';
-import { getColumns } from '@/components/DataTableComponent/tableInit';
-import { css } from '@emotion/react';
-import { Dictionary } from '@overture-stack/lectern-client';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
@@ -50,7 +50,9 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
-					{data && <SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getColumns as any} />}
+					{data && (
+						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+					)}
 				</div>
 			</PageLayout>
 		</>

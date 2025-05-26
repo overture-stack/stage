@@ -25,13 +25,22 @@ import { get } from 'lodash';
 import { Lato } from '../pages/data-dictionary/styles/typography';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import { sectionStyle, tableStyle } from './styles';
 
-export type SchemaTableProps<T> = {
+type SchemaTableProps<T> = {
 	data: T;
 	arrayAccessor?: string;
-	getColumns: () => ColumnDef<T, any>[];
+	getColumns: ColumnDef<T, any>[];
 };
+
+const sectionStyle = css`
+	margin-bottom: 48px;
+	max-width: 1200px;
+`;
+const tableStyle = css`
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 8px;
+`;
 
 const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
 	// Since the component is generic, we need to be able to access the array data to map
@@ -41,12 +50,12 @@ const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<
 			{arrayData?.map((schema: any, i: number) => {
 				const table = useReactTable({
 					data: schema.fields || [],
-					columns: getColumns(),
+					columns: getColumns,
 					getCoreRowModel: getCoreRowModel(),
 				});
 
 				return (
-					<div key={i} css={sectionStyle}>
+					<section key={i} css={sectionStyle}>
 						<div
 							css={[
 								Lato.Paragraph_bold,
@@ -79,7 +88,7 @@ const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<
 								))}
 							</tbody>
 						</table>
-					</div>
+					</section>
 				);
 			})}
 		</div>
