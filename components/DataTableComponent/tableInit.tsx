@@ -25,9 +25,9 @@ import { Lato } from '../pages/data-dictionary/styles/typography';
 import { css } from '@emotion/react';
 // This file is responsible for defining the columns of the table, depending on user defined types and schemas.
 
-export const columnHelper = createColumnHelper<Field>();
+const columnHelper = createColumnHelper<Field>();
 
-export const getColumns = () => [
+export const getSchemaBaseColumns = [
 	columnHelper.accessor('name', {
 		header: 'Field',
 		cell: (field) => (

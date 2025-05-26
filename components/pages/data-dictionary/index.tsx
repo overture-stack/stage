@@ -27,7 +27,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 import SchemaTables from '@/components/DataTableComponent/Table';
-import { getColumns } from '@/components/DataTableComponent/tableInit';
+import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import { css } from '@emotion/react';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
@@ -50,7 +50,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
-					<SchemaTables data={schemaArray} getColumns={getColumns} />
+					<SchemaTables data={schemaArray} getColumns={getSchemaBaseColumns} />
 				</div>
 			</PageLayout>
 		</>

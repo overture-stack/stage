@@ -33,12 +33,12 @@ const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
 			{data.map((schema: any, i: number) => {
 				const table = useReactTable({
 					data: schema.fields || [],
-					columns: getColumns(),
+					columns: getColumns,
 					getCoreRowModel: getCoreRowModel(),
 				});
 
 				return (
-					<div key={i} css={sectionStyle}>
+					<section key={i} css={sectionStyle}>
 						<div
 							css={[
 								Lato.Paragraph_bold,
@@ -71,7 +71,7 @@ const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
 								))}
 							</tbody>
 						</table>
-					</div>
+					</section>
 				);
 			})}
 		</div>

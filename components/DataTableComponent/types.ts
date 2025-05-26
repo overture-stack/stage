@@ -50,7 +50,7 @@ export type Schema<T> = {
 
 export type SchemaTableProps<T> = {
 	data: any;
-	getColumns: () => ColumnDef<T, any>[];
+	getColumns: ColumnDef<T, any>[];
 };
 
 export type TableHeaderProps<T> = {
