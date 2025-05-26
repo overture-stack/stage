@@ -20,6 +20,7 @@
  */
 
 import { DemoStatsFile } from './DemoData';
+import { css } from '@emotion/react';
 
 export const StatsTable = () => {
 	const {
@@ -46,27 +47,113 @@ export const StatsTable = () => {
 	} = DemoStatsFile.statistics;
 
 	return (
-		<>
-			<p>Mapped Reads: {mapped_reads}</p>
-			<p>Mapped Reads Percentage: {mapped_reads_percentage}</p>
-			<p>Forward Strands: {forward_strands}</p>
-			<p>Forward Strands Percentage: {forward_strands_percentage}</p>
-			<p>Proper Pairs: {proper_pairs}</p>
-			<p>Proper Pairs percentage: {proper_pairs_percentage}</p>
-			<p>Singletons: {singletons}</p>
-			<p>Singletons Percentage: {singletons_percentage}</p>
-			<p>Both Mates Mapped: {both_mates_mapped}</p>
-			<p>Both Mates Mapped Percentage: {both_mates_mapped_percentage}</p>
-			<p>Duplicates: {duplicates}</p>
-			<p>Duplicates Percentage: {duplicates_percentage}</p>
-			<p>Failed QC: {failed_qc}</p>
-			<p>First Mates: {first_mates}</p>
-			<p>Last Read Position: {last_read_position}</p>
-			<p>Paired End Reads: {paired_end_reads}</p>
-			<p>Reverse Strands: {reverse_strands}</p>
-			<p>Second Mates: {second_mates}</p>
-			<p>Total Reads: {total_reads}</p>
-			<p>Mean Read Coverage: {mean_read_coverage}</p>
-		</>
+		<div
+			css={css`
+				display: flex;
+				flex-basis: 100%;
+				flex-direction: column;
+				font-size: 10px;
+			`}
+		>
+			<tr
+				css={css`
+					border: 1px solid black;
+					display: flex;
+					flex-basis: 100%;
+
+					th {
+						border: 1px solid black;
+						display: inline-flex;
+						flex: 1;
+					}
+				`}
+			>
+				<th>Mapped Reads</th>
+				<th>Mapped Reads Percentage</th>
+				<th>Forward Strands</th>
+				<th>Forward Strands Percentage</th>
+				<th>Proper Pairs</th>
+				<th>Proper Pairs percentage</th>
+				<th>Singletons</th>
+				<th>Singletons Percentage</th>
+				<th>Both Mates Mapped</th>
+				<th>Both Mates Mapped Percentage</th>
+			</tr>
+			<tr
+				css={css`
+					border: 1px solid black;
+					display: flex;
+					flex-basis: 100%;
+					margin-bottom: 10px;
+
+					td {
+						border: 1px solid black;
+						border-top: none;
+						display: inline-flex;
+						flex: 1;
+					}
+				`}
+			>
+				<td>{mapped_reads}</td>
+				<td>{mapped_reads_percentage}</td>
+				<td>{forward_strands}</td>
+				<td>{forward_strands_percentage}</td>
+				<td>{proper_pairs}</td>
+				<td>{proper_pairs_percentage}</td>
+				<td>{singletons}</td>
+				<td>{singletons_percentage}</td>
+				<td>{both_mates_mapped}</td>
+				<td>{both_mates_mapped_percentage}</td>
+			</tr>
+			<tr
+				css={css`
+					border: 1px solid black;
+					display: flex;
+					flex-basis: 100%;
+
+					th {
+						border: 1px solid black;
+						display: inline-flex;
+						flex: 1;
+					}
+				`}
+			>
+				<th>Duplicates</th>
+				<th>Duplicates Percentage</th>
+				<th>Failed QC</th>
+				<th>First Mates</th>
+				<th>Last Read Position</th>
+				<th>Paired End Reads</th>
+				<th>Reverse Strands</th>
+				<th>Second Mates</th>
+				<th>Total Reads</th>
+				<th>Mean Read Coverage</th>
+			</tr>
+			<tr
+				css={css`
+					border: 1px solid black;
+					display: flex;
+					flex-basis: 100%;
+
+					td {
+						border: 1px solid black;
+						border-top: none;
+						display: inline-flex;
+						flex: 1;
+					}
+				`}
+			>
+				<td>{duplicates}</td>
+				<td>{duplicates_percentage}</td>
+				<td>{failed_qc}</td>
+				<td>{first_mates}</td>
+				<td>{last_read_position}</td>
+				<td>{paired_end_reads}</td>
+				<td>{reverse_strands}</td>
+				<td>{second_mates}</td>
+				<td>{total_reads}</td>
+				<td>{mean_read_coverage}</td>
+			</tr>
+		</div>
 	);
 };
