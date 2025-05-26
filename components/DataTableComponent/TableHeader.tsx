@@ -20,10 +20,13 @@
  */
 
 import { css } from '@emotion/react';
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, HeaderGroup } from '@tanstack/react-table';
 import { Lato } from '../pages/data-dictionary/styles/typography';
 import { thStyle } from './styles';
-import { TableHeaderProps } from './types';
+
+type TableHeaderProps<T> = {
+	headerGroup: HeaderGroup<T>;
+};
 
 const TableHeader = <T,>({ headerGroup }: TableHeaderProps<T>) => {
 	return (

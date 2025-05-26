@@ -19,11 +19,15 @@
  *
  */
 
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, Row } from '@tanstack/react-table';
 import { useState } from 'react';
 import { ChevronDown } from '../theme/icons';
 import { chevronDownStyle, chevronUpStyle, linkStyle, rowStyle, tdStyle } from './styles';
-import { TableRowProps } from './types';
+
+type TableRowProps<T> = {
+	row: Row<T>;
+	index: number;
+};
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});

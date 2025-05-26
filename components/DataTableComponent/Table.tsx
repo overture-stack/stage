@@ -19,14 +19,19 @@
  *
  */
 
-import { getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { css } from '@emotion/react';
+import { ColumnDef, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { get } from 'lodash';
+import { Lato } from '../pages/data-dictionary/styles/typography';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 import { sectionStyle, tableStyle } from './styles';
-import { SchemaTableProps } from './types';
-import { Lato } from '../pages/data-dictionary/styles/typography';
-import { css } from '@emotion/react';
-import { get } from 'lodash';
+
+export type SchemaTableProps<T> = {
+	data: T;
+	arrayAccessor?: string;
+	getColumns: () => ColumnDef<T, any>[];
+};
 
 const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
 	// Since the component is generic, we need to be able to access the array data to map
