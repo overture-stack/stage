@@ -25,8 +25,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Lato } from '../pages/data-dictionary/styles/typography';
 // This file is responsible for defining the columns of the table, depending on user defined types and schemas.
 
-const columnHelper = createColumnHelper<Field>();
-export const columnHelper = createColumnHelper<SchemaField>();
+const columnHelper = createColumnHelper<SchemaField>();
 
 export const getSchemaBaseColumns = [
 	columnHelper.accessor('name', {

@@ -22,7 +22,6 @@
 import { flexRender, Row } from '@tanstack/react-table';
 import { useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import { TableRowProps } from './types';
 import { css } from '@emotion/react';
 
 //Styles
@@ -59,7 +58,6 @@ const chevronUpStyle = css`
 `;
 
 // Component Implementation
-import { chevronDownStyle, chevronUpStyle, linkStyle, rowStyle, tdStyle } from './styles';
 
 type TableRowProps<T> = {
 	row: Row<T>;
