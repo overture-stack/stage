@@ -33,7 +33,6 @@ export type DropDownProps = {
 
 export type DropDownItemProps = {
 	link?: string;
-	label: string;
 	disabled?: boolean;
 	children?: ReactElement<DropDownContentProps> | ReactNode;
 	customStyles?: {

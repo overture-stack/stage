@@ -23,10 +23,10 @@ import { useTheme } from '@emotion/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownButton } from '../Button';
 import { ChevronDown } from '../theme/icons';
-import DropDownContent from './DropDownContent';
 import DropDownItem from './DropDownItem';
 import { ChevronStyle, DropDownTitleStyle, DropdownMenuStyle, ParentStyle } from './styles';
 import { DropDownProps } from './types';
+import DropDownContent from './DropDownContent';
 
 const Dropdown: FC<DropDownProps> = ({
 	MenuItemMap = new Map(),
@@ -45,7 +45,7 @@ const Dropdown: FC<DropDownProps> = ({
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && open) {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
 				setOpen(false);
 			}
 		};
@@ -63,14 +63,9 @@ const Dropdown: FC<DropDownProps> = ({
 	}, []);
 
 	const renderMenuItems = () => {
-		if (!hasMenuItems) {
-			return null;
-		}
 		return IterableMenuMap.map(([label, link]) => (
-			<DropDownItem key={label} label={label}>
-				<DropDownContent>
-					<DropDownItem link={link} label={label} />
-				</DropDownContent>
+			<DropDownItem key={label} link={link}>
+				<DropDownContent>{label}</DropDownContent>
 			</DropDownItem>
 		));
 	};
@@ -80,7 +75,7 @@ const Dropdown: FC<DropDownProps> = ({
 			<div>
 				<DropdownButton onClick={handleToggle} disabled={disabled}>
 					{leftIcon}
-					{titleElement ? titleElement : <span css={DropDownTitleStyle(theme)}>{title}</span>}
+					{titleElement ?? <span css={DropDownTitleStyle(theme)}>{title}</span>}
 					<ChevronDown fill={theme.colors.black} width={18} height={18} style={ChevronStyle(open)} />
 				</DropdownButton>
 

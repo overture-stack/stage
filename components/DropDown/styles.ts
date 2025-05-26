@@ -41,8 +41,7 @@ export const DropdownMenuStyle = (theme: any) => css`
 	position: absolute;
 	top: calc(100% + 5px);
 	left: 0;
-	width: max-content;
-	min-width: 300px;
+	width: 100%;
 	background-color: #f7f7f7;
 	border: 1px solid ${theme.colors.grey_1};
 	border-radius: 4px;

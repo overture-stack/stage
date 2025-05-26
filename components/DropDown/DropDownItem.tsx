@@ -23,14 +23,25 @@ import { FC } from 'react';
 import { StyledListItemStyle } from './styles';
 import { DropDownItemProps } from './types';
 import { useTheme } from '@emotion/react';
-const DropDownItem: FC<DropDownItemProps> = ({ children, label, disabled, link, customStyles }) => {
-	if (disabled) return <a>{label}</a>;
-	if (children) return <>{children}</>;
 
-	return (
-		<a href={link} css={StyledListItemStyle(useTheme(), customStyles)}>
-			{label}
-		</a>
-	);
+const DropDownItem: FC<DropDownItemProps> = ({ children, disabled, link, customStyles }) => {
+	const theme = useTheme();
+
+	if (disabled) {
+		return null;
+	}
+
+	const content = <div css={StyledListItemStyle(theme, customStyles)}>{children}</div>;
+
+	if (link) {
+		return (
+			<a href={link} css={StyledListItemStyle(theme, customStyles)}>
+				{children}
+			</a>
+		);
+	}
+
+	return content;
 };
+
 export default DropDownItem;

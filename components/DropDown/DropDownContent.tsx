@@ -22,8 +22,11 @@
 import { FC } from 'react';
 import { DropDownContentProps } from './types';
 
-const DropDownContent: FC<DropDownContentProps> = ({ children, label, disabled }) => {
-	return <>{!disabled && (children || label)}</>;
+const DropDownContent: FC<DropDownContentProps> = ({ children, disabled }) => {
+	if (disabled) {
+		return null;
+	}
+	return <>{children}</>;
 };
 
 export default DropDownContent;
