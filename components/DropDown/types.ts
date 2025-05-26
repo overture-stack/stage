@@ -19,6 +19,7 @@
  *
  */
 
+import { SerializedStyles } from '@emotion/react';
 import { ReactChildren, ReactElement, ReactNode } from 'react';
 
 export type DropDownProps = {
@@ -34,6 +35,10 @@ export type DropDownItemProps = {
 	label: string;
 	disabled?: boolean;
 	children?: ReactElement<DropDownContentProps> | ReactNode;
+	customStyles?: {
+		hover?: SerializedStyles;
+		base?: SerializedStyles;
+	};
 };
 
 export type DropDownContentProps = {

@@ -39,27 +39,31 @@ export const DropdownMenuStyle = (theme: any) => css`
 	top: calc(100% + 5px);
 	left: 0;
 	width: max-content;
-	min-width: 160px;
+	min-width: 200px;
 	background-color: ${theme.colors.white};
-	box-shadow: 0 8px 21px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+	border: 1px solid ${theme.colors.grey_1};
+	border-radius: 4px;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.08);
 	list-style: none;
+	padding: 4px 0;
 	margin: 0;
-	padding: 0;
 	z-index: 1000;
 `;
-export const StyledListItemStyle = (theme: any) => css`
+
+export const StyledListItemStyle = (theme: any, customStyles?: any) => css`
 	display: flex;
 	align-items: center;
-	width: 100%;
-	padding: 6px 12px;
-	font-size: 16px;
+	padding: 8px 12px;
+	font-size: 14px;
 	color: ${theme.colors.black};
 	background-color: ${theme.colors.white};
-	border: 1px solid ${theme.colors.grey_3};
 	text-decoration: none;
 	cursor: pointer;
+	border: none;
 
 	&:hover {
-		background-color: ${theme.colors.grey_1};
+		background-color: ${theme.colors.secondary_4};
 	}
+
+	${customStyles?.base}
 `;

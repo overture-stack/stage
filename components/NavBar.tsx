@@ -32,6 +32,8 @@ import NavbarLinkButton from './NavbarLinkButton';
 import UserDropdown from './UserDropdown';
 import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
+import DropDownContent from './DropDown/DropDownContent';
+import DropDownItem from './DropDown/DropDownItem';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();

@@ -110,17 +110,31 @@ const Button = React.forwardRef<
 		);
 	},
 );
-export const TransparentButton = styled(ButtonElement)`
-	background: none;
-	border: none;
-	justify-content: flex-start;
-	text-align: left;
-	cursor: pointer;
-	align-items: center;
+export const DropdownButton = styled(ButtonElement)<{ width?: string }>`
 	display: flex;
-	&:focus,
+	align-items: center;
+	gap: 11px;
+	min-width: ${({ width }) => width || '200px'};
+	max-width: 303px;
+	width: 100%;
+	padding: 8px;
+	background-color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.colors.black};
+	border: 1px solid ${({ theme }) => theme.colors.grey_2};
+	border-radius: 9px;
+	font-size: 14px;
+	min-height: 34px;
+	max-height: 42px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+
 	&:hover {
-		background: none;
+		background-color: ${({ theme }) => theme.colors.grey_1};
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 `;
 export default Button;

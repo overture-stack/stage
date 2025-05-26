@@ -21,7 +21,7 @@
 
 import { useTheme } from '@emotion/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { TransparentButton } from '../Button';
+import { DropdownButton } from '../Button';
 import { ChevronDown } from '../theme/icons';
 import DropDownContent from './DropDownContent';
 import DropDownItem from './DropDownItem';
@@ -71,10 +71,10 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, titleElem
 	return (
 		<div ref={dropdownRef} css={ParentStyle}>
 			<div>
-				<TransparentButton onClick={handleToggle} disabled={disabled}>
+				<DropdownButton onClick={handleToggle} disabled={disabled}>
 					{titleElement ? titleElement : <span css={DropDownTitleStyle(theme)}>{title}</span>}
 					<ChevronDown fill={theme.colors.accent_dark} width={12} height={12} style={ChevronStyle(open)} />
-				</TransparentButton>
+				</DropdownButton>
 
 				{open && !disabled && <ul css={DropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}
 			</div>

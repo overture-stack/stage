@@ -21,8 +21,16 @@
 
 import { css } from '@emotion/react';
 import PageLayout from '@/components/PageLayout';
+import Dropdown from '@/components/DropDown/DropDown';
 
 const DataDictionaryPage = () => {
+	const versionMap = new Map<string, string>([
+		['Version 1.28 (2025-02-07)', '/v1.28'],
+		['Version 1.27 (2025-02-06)', '/v1.27'],
+		['Version 1.26 (2025-02-05)', '/v1.26'],
+		['Version 1.25 (2025-02-04)', '/v1.25'],
+		['Version 1.24 (2025-02-03)', '/v1.24'],
+	]);
 	return (
 		<PageLayout subtitle="Data Dictionary">
 			<div
@@ -38,6 +46,7 @@ const DataDictionaryPage = () => {
 				`}
 			>
 				Welcome to the Data Dictionary page!
+				<Dropdown title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} />
 			</div>
 		</PageLayout>
 	);
