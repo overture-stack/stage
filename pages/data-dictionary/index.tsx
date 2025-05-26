@@ -40,12 +40,12 @@ const DataDictionary = createPage({
 		const fetchDictionaryData = async () => {
 			try {
 				setLoading(true);
-				const data = await lectern.rest.getDictionary(lecternUrl, { name: dictionaryName, version: version });
-				if (data.success === false) {
+				const result = await lectern.rest.getDictionary(lecternUrl, { name: dictionaryName, version: version });
+				if (result.success === false) {
 					setError(true);
 					throw new Error('Failed to fetch dictionary data');
 				}
-				setDictionaryData(data.data);
+				setDictionaryData(result.data);
 			} catch (err) {
 				console.error('Error loading dictionary header:', err);
 				setError(true);

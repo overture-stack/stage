@@ -44,7 +44,7 @@ const tableStyle = css`
 
 const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
 	// Since the component is generic, we need to be able to access the array data to map
-	const arrayData = get(data, `${arrayAccessor}`) as [];
+	const arrayData = get(data, `${arrayAccessor}`, []);
 	return (
 		<div>
 			{arrayData?.map((schema: any, i: number) => {

@@ -75,7 +75,7 @@ export const getSchemaBaseColumns = [
 		header: 'Examples',
 		cell: (examples) => {
 			const value = examples.getValue();
-			return Array.isArray(value) ? value.join(',  ') : String(value);
+			return Array.isArray(value) ? value.join(',  ') : value;
 		},
 	}),
 ];
