@@ -18,55 +18,31 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
+import { IconProps } from './types';
 import { css } from '@emotion/react';
 
-export const ParentStyle = css`
-	position: relative;
-	display: inline-block;
-`;
-export const DropDownTitleStyle = (theme: any) => css`
-	padding: 5px 10px;
-	font-size: 20px;
-	font-weight: 400;
-	line-height: 100%;
-	letter-spacing: 0%;
-	color: ${theme.colors.accent_dark};
-`;
-export const ChevronStyle = (open: boolean) => css`
-	transform: ${open ? 'rotate(180deg)' : 'none'};
-	transition: transform 0.2s ease;
-`;
-export const DropdownMenuStyle = (theme: any) => css`
-	position: absolute;
-	top: calc(100% + 5px);
-	left: 0;
-	width: max-content;
-	min-width: 200px;
-	background-color: ${theme.colors.white};
-	border: 1px solid ${theme.colors.grey_1};
-	border-radius: 4px;
-	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.08);
-	list-style: none;
-	padding: 4px 0;
-	margin: 0;
-	z-index: 1000;
-`;
-
-export const StyledListItemStyle = (theme: any, customStyles?: any) => css`
-	display: flex;
-	align-items: center;
-	padding: 8px 12px;
-	font-size: 14px;
-	color: ${theme.colors.black};
-	background-color: ${theme.colors.white};
-	text-decoration: none;
-	cursor: pointer;
-	border: none;
-
-	&:hover {
-		background-color: ${theme.colors.secondary_4};
-	}
-
-	${customStyles?.base}
-`;
+const History = ({ width, height, style }: IconProps) => {
+	return (
+		<svg
+			css={css`
+				${style};
+				height: ${height}px;
+				width: ${width}px;
+			`}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+			<path d="M3 3v5h5" />
+			<path d="M12 7v5l4 2" />
+		</svg>
+	);
+};
+export default History;

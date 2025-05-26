@@ -28,7 +28,14 @@ import DropDownItem from './DropDownItem';
 import { ChevronStyle, DropDownTitleStyle, DropdownMenuStyle, ParentStyle } from './styles';
 import { DropDownProps } from './types';
 
-const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, titleElement, disabled, children }) => {
+const Dropdown: FC<DropDownProps> = ({
+	MenuItemMap = new Map(),
+	title,
+	titleElement,
+	disabled,
+	children,
+	leftIcon,
+}) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
@@ -72,8 +79,9 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, titleElem
 		<div ref={dropdownRef} css={ParentStyle}>
 			<div>
 				<DropdownButton onClick={handleToggle} disabled={disabled}>
+					{leftIcon}
 					{titleElement ? titleElement : <span css={DropDownTitleStyle(theme)}>{title}</span>}
-					<ChevronDown fill={theme.colors.accent_dark} width={12} height={12} style={ChevronStyle(open)} />
+					<ChevronDown fill={theme.colors.black} width={18} height={18} style={ChevronStyle(open)} />
 				</DropdownButton>
 
 				{open && !disabled && <ul css={DropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}

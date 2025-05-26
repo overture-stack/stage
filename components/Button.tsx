@@ -112,18 +112,18 @@ const Button = React.forwardRef<
 );
 export const DropdownButton = styled(ButtonElement)<{ width?: string }>`
 	display: flex;
+	flex-wrap: nowrap;
 	align-items: center;
 	gap: 11px;
 	min-width: ${({ width }) => width || '200px'};
-	max-width: 303px;
+	max-width: 400px;
 	width: 100%;
 	padding: 8px;
-	background-color: ${({ theme }) => theme.colors.white};
+	background-color: #f7f7f7;
 	color: ${({ theme }) => theme.colors.black};
-	border: 1px solid ${({ theme }) => theme.colors.grey_2};
+	border: 1px solid #beb2b294;
 	border-radius: 9px;
 	font-size: 14px;
-	min-height: 34px;
 	max-height: 42px;
 	cursor: pointer;
 	transition: background-color 0.2s ease;

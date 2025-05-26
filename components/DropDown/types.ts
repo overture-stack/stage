@@ -24,6 +24,7 @@ import { ReactChildren, ReactElement, ReactNode } from 'react';
 
 export type DropDownProps = {
 	title?: string;
+	leftIcon?: ReactNode;
 	titleElement?: ReactNode;
 	disabled?: boolean;
 	MenuItemMap?: Map<string, string>;

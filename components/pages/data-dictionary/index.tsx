@@ -22,6 +22,7 @@
 import { css } from '@emotion/react';
 import PageLayout from '@/components/PageLayout';
 import Dropdown from '@/components/DropDown/DropDown';
+import History from '@/components/theme/icons/History';
 
 const DataDictionaryPage = () => {
 	const versionMap = new Map<string, string>([
@@ -46,7 +47,7 @@ const DataDictionaryPage = () => {
 				`}
 			>
 				Welcome to the Data Dictionary page!
-				<Dropdown title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} />
+				<Dropdown leftIcon={<History />} title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} />
 			</div>
 		</PageLayout>
 	);
