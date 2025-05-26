@@ -42,8 +42,8 @@ export const DropdownMenuStyle = (theme: any) => css`
 	top: calc(100% + 5px);
 	left: 0;
 	width: max-content;
-	min-width: 200px;
-	background-color: ${theme.colors.white};
+	min-width: 300px;
+	background-color: #f7f7f7;
 	border: 1px solid ${theme.colors.grey_1};
 	border-radius: 4px;
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.08);
@@ -55,18 +55,21 @@ export const DropdownMenuStyle = (theme: any) => css`
 
 export const StyledListItemStyle = (theme: any, customStyles?: any) => css`
 	display: flex;
+	max-height: 42px;
+	min-height: 100%;
+	height: 100%;
 	align-items: center;
-	padding: 8px 12px;
-	font-size: 14px;
+	padding: 8px;
+	justify-content: center;
+	font-size: 20px;
 	color: ${theme.colors.black};
-	background-color: ${theme.colors.white};
+	background-color: #f7f7f7;
+	border: 1px solid ${theme.colors.grey_1};
 	text-decoration: none;
 	cursor: pointer;
 	border: none;
-
 	&:hover {
-		background-color: ${theme.colors.secondary_4};
+		background-color: ${theme.colors.grey_2};
 	}
-
 	${customStyles?.base}
 `;
