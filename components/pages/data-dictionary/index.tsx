@@ -37,10 +37,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader
-					description={isLoading ? <Skeleton width={300} /> : description}
-					name={isLoading ? <Skeleton width={200} /> : name}
-				/>
+				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
 				<div
 					css={css`
 						max-width: 1200px;

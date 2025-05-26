@@ -22,8 +22,8 @@ import { ReactNode } from 'react';
 import { Dictionary } from '@overture-stack/lectern-client';
 
 export type DictionaryHeaderProps = {
-	description: string | ReactNode;
-	name: string | ReactNode;
+	description: string;
+	name: string;
 };
 export type DictionaryPageProps = {
 	data: Dictionary | null;
