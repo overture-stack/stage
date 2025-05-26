@@ -22,8 +22,43 @@
 import { flexRender } from '@tanstack/react-table';
 import { useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import { chevronDownStyle, chevronUpStyle, linkStyle, rowStyle, tdStyle } from './styles';
 import { TableRowProps } from './types';
+import { css } from '@emotion/react';
+
+//Styles
+const rowStyle = (index: number) => css`
+	background-color: ${index % 2 === 0 ? '' : '#F5F7F8'};
+`;
+
+const tdStyle = css`
+	padding: 12px;
+	border-bottom: 1px solid #eaeaea;
+	max-width: 30vw;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	vertical-align: top;
+`;
+const linkStyle = css`
+	color: #0b75a2;
+	font-size: 12px;
+	cursor: pointer;
+	margin-left: 6px;
+
+	&:hover {
+		text-decoration: underline;
+	}
+`;
+const chevronDownStyle = css`
+	margin-left: 4px;
+`;
+
+const chevronUpStyle = css`
+	margin-left: 4px;
+	transform: rotate(180deg);
+`;
+
+// Component Implementation
 
 const TableRow = <T,>({ row, index }: TableRowProps<T>) => {
 	const [expandedCells, setExpandedCells] = useState<Record<string, boolean>>({});

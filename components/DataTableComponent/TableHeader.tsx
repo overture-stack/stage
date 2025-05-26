@@ -22,8 +22,14 @@
 import { css } from '@emotion/react';
 import { flexRender } from '@tanstack/react-table';
 import { Lato } from '../pages/data-dictionary/styles/typography';
-import { thStyle } from './styles';
 import { TableHeaderProps } from './types';
+
+const thStyle = css`
+	background: #e5edf3;
+	text-align: left;
+	padding: 12px;
+	border-bottom: 1px solid #dcdcdc;
+`;
 
 const TableHeader = <T,>({ headerGroup }: TableHeaderProps<T>) => {
 	return (

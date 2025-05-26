@@ -19,13 +19,22 @@
  *
  */
 
+import { css } from '@emotion/react';
 import { getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { Lato } from '../pages/data-dictionary/styles/typography';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import { sectionStyle, tableStyle } from './styles';
 import { SchemaTableProps } from './types';
-import { Lato } from '../pages/data-dictionary/styles/typography';
-import { css } from '@emotion/react';
+
+const sectionStyle = css`
+	margin-bottom: 48px;
+	max-width: 1200px;
+`;
+const tableStyle = css`
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 8px;
+`;
 
 const SchemaTables = <T,>({ data, getColumns }: SchemaTableProps<T>) => {
 	return (
