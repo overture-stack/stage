@@ -23,7 +23,9 @@ import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import Dropdown from '@/components/DropDown/DropDown';
 import PageLayout from '@/components/PageLayout';
+import FileDownload from '@/components/theme/icons/file_download';
 import History from '@/components/theme/icons/History';
+import ListFilter from '@/components/theme/icons/list_filter';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
@@ -39,7 +41,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 	const dropDownMenuMap = new Map(
 		data?.map((dictionary: Dictionary, index: number) => {
 			return [
-				'Version ' + dictionary.version,
+				'Version ' + dictionary.version + ' (2025-09-26)',
 				() => {
 					setDictionaryIndex(index);
 				},
@@ -58,26 +60,44 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
 				<div
 					css={css`
-						max-width: 1200px;
-						width: 100%;
+						width: 70%;
+						display: flex;
+						flex-direction: column;
+						align-items: start;
 						margin: 0 auto;
-						padding: 0 20px;
-						margin-top: 30px;
 					`}
 				>
 					<div
 						css={css`
-							margin-bottom: 20px;
 							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							margin-bottom: 40px;
+							flex-wrap: wrap;
+							gap: 16px;
+							width: 100%;
 						`}
 					>
 						<Dropdown
 							leftIcon={<History />}
 							MenuItemMap={dropDownMenuMap}
-							title={'Version ' + data?.[dictionaryIndex].version}
+							title={`Version ${data?.[dictionaryIndex].version} (2025-09-26)`}
 							disabled={isLoading}
 						/>
+
+						{/* Right side (Filter + Templates) */}
+						<div
+							css={css`
+								display: flex;
+								gap: 12px;
+								align-items: center;
+							`}
+						>
+							<Dropdown leftIcon={<ListFilter />} title="Required Filter" disabled={isLoading} />
+							{/* <Dropdown leftIcon={<FileDownload />} title="Submission Templates" disabled={isLoading} /> */}
+						</div>
 					</div>
+
 					{data && (
 						<SchemaTables<Dictionary>
 							data={data?.[dictionaryIndex]}

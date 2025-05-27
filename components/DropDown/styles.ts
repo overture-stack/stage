@@ -25,16 +25,20 @@ export const ParentStyle = css`
 	position: relative;
 	display: inline-block;
 `;
+
 export const DropDownTitleStyle = (theme: any) => css`
-	padding: 5px 10px;
+	padding: 10px 16px;
 	font-weight: 400;
-	line-height: 100%;
-	font-size: 20px;
-	letter-spacing: 0%;
+	font-size: 16px;
+	line-height: 1.2;
 	color: ${theme.colors.accent_dark};
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 `;
+
 export const ChevronStyle = (open: boolean) => css`
-	transform: ${open ? 'rotate(180deg)' : 'none'};
+	transform: ${open ? 'rotate(180deg)' : ''};
 	transition: transform 0.2s ease;
 `;
 
@@ -43,33 +47,33 @@ export const DropdownMenuStyle = (theme: any) => css`
 	top: calc(100% + 5px);
 	left: 0;
 	width: 100%;
-	font-size: 14px;
-	background-color: #f7f7f7;
+	max-height: 300px;
+	overflow-y: auto;
+
+	background-color: #fff;
 	border: 1px solid ${theme.colors.grey_1};
 	border-radius: 4px;
-	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.08);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	list-style: none;
-	padding: 4px 0;
+	padding: 0;
 	margin: 0;
 	z-index: 1000;
 `;
 
 export const StyledListItemStyle = (theme: any, customStyles?: any) => css`
 	display: flex;
-	max-height: 42px;
-	min-height: 100%;
-	height: 100%;
 	align-items: center;
-	padding: 8px;
-	justify-content: center;
+	width: 100%;
+	padding: 10px 16px;
 	color: ${theme.colors.black};
-	background-color: #f7f7f7;
-	border: 1px solid ${theme.colors.grey_1};
-	text-decoration: none;
+	background-color: #fff;
 	cursor: pointer;
+	font-size: 14px;
 	border: none;
+
 	&:hover {
 		background-color: ${theme.colors.grey_2};
 	}
+
 	${customStyles?.base}
 `;
