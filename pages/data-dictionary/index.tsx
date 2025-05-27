@@ -61,7 +61,7 @@ const DataDictionary = createPage({
 		const fetchAllDictionaryDataFromVersions = async (versions: lectern.rest.DictionarySummary[]) => {
 			try {
 				setLoading(true);
-				const fetches = versions.map((DictionaryVersion) =>
+				const dictionaryFetches = versions.map((DictionaryVersion) =>
 					lectern.rest.getDictionary(lecternUrl, {
 						name: DictionaryVersion.name,
 						version: DictionaryVersion.version,
@@ -70,7 +70,7 @@ const DataDictionary = createPage({
 
 				// We need to execute all fetches concurrently and wait for all of them to complete such that we have all the successful results
 				//data
-				const results = await Promise.all(fetches);
+				const results = await Promise.all(dictionaryFetches);
 
 				// We need to filter all the successful results and map them to the Dictionary type
 				const validDictionaries: Dictionary[] = results
