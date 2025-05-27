@@ -25,15 +25,33 @@ import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
-import { ComponentType } from 'react';
+import { ComponentType, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
+import Dropdown from '@/components/DropDown/DropDown';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data?.[1], 'name', hasError ? 'Error loading dictionary' : '') as string;
-	const description = get(data?.[1], 'description', hasError ? 'Error loading description' : '') as string;
+	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
+
+	var dropDownMenuMap: Map<string, () => void>;
+	dropDownMenuMap = new Map(
+		data?.map((dictionary: Dictionary, index: number) => {
+			return [
+				'Version: ' + dictionary.version,
+				() => {
+					setDictionaryIndex(index);
+				},
+			];
+		}),
+	);
+	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(
+		data?.[dictionaryIndex],
+		'description',
+		hasError ? 'Error loading description' : '',
+	) as string;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -47,6 +65,12 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
+					<Dropdown
+						MenuItemMap={dropDownMenuMap}
+						title={'Version: ' + data?.[dictionaryIndex].version}
+						leftIcon={null}
+						disabled={isLoading}
+					/>
 					{data && (
 						<SchemaTables<Dictionary> data={data[0]} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
 					)}
