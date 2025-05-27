@@ -32,8 +32,8 @@ import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
-	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
+	const name = get(data?.[1], 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(data?.[1], 'description', hasError ? 'Error loading description' : '') as string;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -48,7 +48,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 					`}
 				>
 					{data && (
-						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+						<SchemaTables<Dictionary> data={data[0]} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
 					)}
 				</div>
 			</PageLayout>

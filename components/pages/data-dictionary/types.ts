@@ -26,7 +26,7 @@ export type DictionaryHeaderProps = {
 	name: string;
 };
 export type DictionaryPageProps = {
-	data: Dictionary | null;
+	data: Dictionary[] | null;
 	isLoading: boolean;
 	hasError: boolean;
 };
