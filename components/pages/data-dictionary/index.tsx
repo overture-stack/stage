@@ -25,7 +25,7 @@ import Dropdown from '@/components/DropDown/DropDown';
 import PageLayout from '@/components/PageLayout';
 import History from '@/components/theme/icons/history';
 import ListFilter from '@/components/theme/icons/list_filter';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { ComponentType, useState } from 'react';
@@ -33,10 +33,46 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
+import { DropdownButton } from '@/components/Button';
+import FileDownload from '@/components/theme/icons/file_download';
+
+const containerStyle = css`
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	margin: 0 auto;
+`;
+
+const buttonsContainerStyle = css`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+	flex-wrap: wrap;
+	gap: 16px;
+	width: 100%;
+`;
+
+const rightButtonsStyle = css`
+	display: flex;
+	gap: 12px;
+	align-items: center;
+`;
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
-
+	const theme = useTheme();
+	const titleStyle = css`
+		padding: 10px 16px;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 1.2;
+		color: ${theme.colors.accent_dark};
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	`;
 	const dropDownMenuMap = new Map(
 		data?.map((dictionary: Dictionary, index: number) => {
 			return [
@@ -57,26 +93,8 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 		<>
 			<PageLayout subtitle="Data Dictionary">
 				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-				<div
-					css={css`
-						width: 70%;
-						display: flex;
-						flex-direction: column;
-						align-items: start;
-						margin: 0 auto;
-					`}
-				>
-					<div
-						css={css`
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
-							margin-bottom: 40px;
-							flex-wrap: wrap;
-							gap: 16px;
-							width: 100%;
-						`}
-					>
+				<div css={containerStyle}>
+					<div css={buttonsContainerStyle}>
 						<Dropdown
 							leftIcon={<History />}
 							MenuItemMap={dropDownMenuMap}
@@ -84,16 +102,12 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 							disabled={isLoading}
 						/>
 
-						{/* Right side (Filter + Templates) */}
-						<div
-							css={css`
-								display: flex;
-								gap: 12px;
-								align-items: center;
-							`}
-						>
+						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" disabled={isLoading} />
-							{/* <Dropdown leftIcon={<FileDownload />} title="Submission Templates" disabled={isLoading} /> */}
+							<DropdownButton>
+								<FileDownload />
+								<span css={titleStyle}>Submission Templates</span>
+							</DropdownButton>
 						</div>
 					</div>
 
