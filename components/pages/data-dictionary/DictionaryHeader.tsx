@@ -19,41 +19,53 @@
  *
  */
 
-import SchemaTables from '@/components/DataTableComponent/Table';
-import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
-import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
-import { Dictionary } from '@overture-stack/lectern-client';
-import { get } from 'lodash';
 import { ComponentType } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import DictionaryHeader from './DictionaryHeader';
-import { DictionaryPageProps } from './types';
+import colours from './styles/colours';
+import { DictionaryHeaderProps } from './types';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
-	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
+const DictionaryHeader: ComponentType<DictionaryHeaderProps> = ({ description, name }) => {
 	return (
-		<>
-			<PageLayout subtitle="Data Dictionary">
-				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-				<div
+		<div
+			css={css`
+				background-color: ${colours.accent1_1};
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				margin-bottom: 1rem;
+				padding: 2.5rem;
+				max-height: 10%;
+				align-items: flex-start;
+			`}
+		>
+			<div
+				css={css`
+					display: flex;
+					flex-direction: column;
+				`}
+			>
+				<h1
 					css={css`
-						max-width: 1200px;
-						width: 100%;
-						margin: 0 auto;
-						padding: 0 20px;
-						margin-top: 30px;
+						font-weight: 700;
+						font-size: 40px;
+						color: white;
+						line-height: 100%;
+						margin: 0.5rem 0;
 					`}
 				>
-					{data && (
-						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
-					)}
-				</div>
-			</PageLayout>
-		</>
+					{name}
+				</h1>
+				<p
+					css={css`
+						color: white;
+						margin: 0;
+					`}
+				>
+					{description}
+				</p>
+			</div>
+		</div>
 	);
 };
 
-export default DataDictionaryPage;
+export default DictionaryHeader;

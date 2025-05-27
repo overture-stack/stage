@@ -19,14 +19,43 @@
  *
  */
 
-import { createPage } from '@/global/utils/pages';
 import DataDictionaryPage from '@/components/pages/data-dictionary';
+import { createPage } from '@/global/utils/pages';
+import * as lectern from '@overture-stack/lectern-client';
+import { Dictionary } from '@overture-stack/lectern-client';
+import { useEffect, useState } from 'react';
+
+const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
+const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
+const version = '1.1'; //Replace with your actual version
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	return <DataDictionaryPage />;
+	const [dictionaryData, setDictionaryData] = useState<Dictionary | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(false);
+	useEffect(() => {
+		const fetchDictionaryData = async () => {
+			try {
+				setLoading(true);
+				const result = await lectern.rest.getDictionary(lecternUrl, { name: dictionaryName, version: version });
+				if (result.success === false) {
+					setError(true);
+					throw new Error('Failed to fetch dictionary data');
+				}
+				setDictionaryData(result.data);
+			} catch (err) {
+				console.error('Error loading dictionary header:', err);
+				setError(true);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchDictionaryData();
+	}, []);
+	return <DataDictionaryPage data={dictionaryData} isLoading={loading} hasError={error} />;
 });
 
 export default DataDictionary;

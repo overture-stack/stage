@@ -1,0 +1,98 @@
+/*
+ *
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
+ *
+ *  This program and the accompanying materials are made available under the terms of
+ *  the GNU Affero General Public License v3.0. You should have received a copy of the
+ *  GNU Affero General Public License along with this program.
+ *   If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+import { css } from '@emotion/react';
+import { ColumnDef, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { get } from 'lodash';
+import { Lato } from '../pages/data-dictionary/styles/typography';
+import TableHeader from './TableHeader';
+import TableRow from './TableRow';
+
+type SchemaTableProps<T> = {
+	data: T;
+	arrayAccessor?: string;
+	getColumns: ColumnDef<T, any>[];
+};
+
+const sectionStyle = css`
+	margin-bottom: 48px;
+	max-width: 1200px;
+`;
+const tableStyle = css`
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 8px;
+`;
+
+const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
+	// Since the component is generic, we need to be able to access the array data to map
+	const arrayData = get(data, `${arrayAccessor}`, []);
+	return (
+		<div>
+			{arrayData?.map((schema: any, i: number) => {
+				const table = useReactTable({
+					data: schema.fields || [],
+					columns: getColumns,
+					getCoreRowModel: getCoreRowModel(),
+				});
+
+				return (
+					<section key={i} css={sectionStyle}>
+						<div
+							css={[
+								Lato.Paragraph_bold,
+								css`
+									margin-bottom: 10px;
+								`,
+							]}
+						>
+							{schema.name}
+						</div>
+						<div
+							css={[
+								Lato.Paragraph_small,
+								css`
+									margin-bottom: 20px;
+								`,
+							]}
+						>
+							{schema.description}
+						</div>
+						<table css={tableStyle}>
+							<thead>
+								{table.getHeaderGroups().map((headerGroup: HeaderGroup<T>) => (
+									<TableHeader key={headerGroup.id} headerGroup={headerGroup} />
+								))}
+							</thead>
+							<tbody>
+								{table.getRowModel().rows.map((row, i: number) => (
+									<TableRow key={row.id} row={row} index={i} />
+								))}
+							</tbody>
+						</table>
+					</section>
+				);
+			})}
+		</div>
+	);
+};
+
+export default SchemaTables;
