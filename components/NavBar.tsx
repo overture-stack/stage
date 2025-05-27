@@ -26,14 +26,15 @@ import React from 'react';
 import { getConfig } from '../global/config';
 import useAuthContext from '../global/hooks/useAuthContext';
 import { DATA_DICTIONARY_PATH, EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
+import Button from './Button';
 import Dropdown from './DropDown/DropDown';
+import DropDownContent from './DropDown/DropDownContent';
+import DropDownItem from './DropDown/DropDownItem';
 import { InternalLink as Link, StyledLinkAsButton } from './Link';
 import NavbarLinkButton from './NavbarLinkButton';
 import UserDropdown from './UserDropdown';
 import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
-import DropDownContent from './DropDown/DropDownContent';
-import DropDownItem from './DropDown/DropDownItem';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();

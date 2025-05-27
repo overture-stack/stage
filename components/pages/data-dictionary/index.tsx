@@ -50,7 +50,7 @@ const DataDictionaryPage = () => {
 			>
 				Welcome to the Data Dictionary page!
 				{/* Example implementation of a dropdown*/}
-				{/* <Dropdown leftIcon={<History />} title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} /> */}
+				<Dropdown leftIcon={<History />} title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} />
 				{/* <Dropdown title="Select Version">
 					<DropDownItem link="/v1.28">
 						<DropDownContent>Version 1.28</DropDownContent>

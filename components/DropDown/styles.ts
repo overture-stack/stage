@@ -27,7 +27,6 @@ export const ParentStyle = css`
 `;
 export const DropDownTitleStyle = (theme: any) => css`
 	padding: 5px 10px;
-	font-size: 20px;
 	font-weight: 400;
 	line-height: 100%;
 	letter-spacing: 0%;
@@ -37,6 +36,7 @@ export const ChevronStyle = (open: boolean) => css`
 	transform: ${open ? 'rotate(180deg)' : 'none'};
 	transition: transform 0.2s ease;
 `;
+
 export const DropdownMenuStyle = (theme: any) => css`
 	position: absolute;
 	top: calc(100% + 5px);
@@ -60,7 +60,6 @@ export const StyledListItemStyle = (theme: any, customStyles?: any) => css`
 	align-items: center;
 	padding: 8px;
 	justify-content: center;
-	font-size: 20px;
 	color: ${theme.colors.black};
 	background-color: #f7f7f7;
 	border: 1px solid ${theme.colors.grey_1};
