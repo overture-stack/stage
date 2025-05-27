@@ -21,7 +21,9 @@
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import Dropdown from '@/components/DropDown/DropDown';
 import PageLayout from '@/components/PageLayout';
+import History from '@/components/theme/icons/History';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
@@ -30,16 +32,14 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
-import Dropdown from '@/components/DropDown/DropDown';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
 
-	var dropDownMenuMap: Map<string, () => void>;
-	dropDownMenuMap = new Map(
+	const dropDownMenuMap = new Map(
 		data?.map((dictionary: Dictionary, index: number) => {
 			return [
-				'Version: ' + dictionary.version,
+				'Version ' + dictionary.version,
 				() => {
 					setDictionaryIndex(index);
 				},
@@ -65,12 +65,19 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						margin-top: 30px;
 					`}
 				>
-					<Dropdown
-						MenuItemMap={dropDownMenuMap}
-						title={'Version: ' + data?.[dictionaryIndex].version}
-						leftIcon={null}
-						disabled={isLoading}
-					/>
+					<div
+						css={css`
+							margin-bottom: 20px;
+							display: flex;
+						`}
+					>
+						<Dropdown
+							leftIcon={<History />}
+							MenuItemMap={dropDownMenuMap}
+							title={'Version ' + data?.[dictionaryIndex].version}
+							disabled={isLoading}
+						/>
+					</div>
 					{data && (
 						<SchemaTables<Dictionary> data={data[0]} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
 					)}

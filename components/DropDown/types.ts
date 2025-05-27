@@ -20,7 +20,7 @@
  */
 
 import { SerializedStyles } from '@emotion/react';
-import { ReactChildren, ReactElement, ReactNode, JSXElementConstructor } from 'react';
+import { ReactChildren, ReactElement, ReactNode } from 'react';
 
 export type DropDownProps = {
 	title?: string;

@@ -29,6 +29,7 @@ export const DropDownTitleStyle = (theme: any) => css`
 	padding: 5px 10px;
 	font-weight: 400;
 	line-height: 100%;
+	font-size: 20px;
 	letter-spacing: 0%;
 	color: ${theme.colors.accent_dark};
 `;
@@ -42,6 +43,7 @@ export const DropdownMenuStyle = (theme: any) => css`
 	top: calc(100% + 5px);
 	left: 0;
 	width: 100%;
+	font-size: 14px;
 	background-color: #f7f7f7;
 	border: 1px solid ${theme.colors.grey_1};
 	border-radius: 4px;
