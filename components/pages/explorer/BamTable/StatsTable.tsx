@@ -19,10 +19,12 @@
  *
  */
 
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+import defaultTheme from '../../../theme/';
 import { type FileTableData } from '../fileTypes';
 
 export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?: string }) => {
+	const theme: typeof defaultTheme = useTheme();
 	const fileAccess = file?.file_access;
 	const fileDataType = file?.data_type;
 	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
@@ -42,14 +44,24 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 		>
 			<tr
 				css={css`
-					border: 1px solid black;
+					border: 1px solid #aeafb3;
+					border-bottom: 0;
 					display: flex;
 					flex-basis: 100%;
 
 					th {
-						border: 1px solid black;
+						border-right: 1px solid #aeafb3;
+						:last-child {
+							border-right: 0;
+						}
 						display: inline-flex;
 						flex: 1;
+						font-weight: 700;
+						font-size: 13px;
+						line-height: 14px;
+						letter-spacing: 0px;
+						padding: 5px;
+						vertical-align: middle;
 					}
 				`}
 			>
@@ -64,16 +76,25 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 			</tr>
 			<tr
 				css={css`
-					border: 1px solid black;
+					border: 1px solid #aeafb3;
 					display: flex;
 					flex-basis: 100%;
 					margin-bottom: 10px;
 
 					td {
-						border: 1px solid black;
-						border-top: none;
+						border-right: 1px solid #aeafb3;
+						:last-child {
+							border-right: 0;
+						}
+						border-top: 0;
 						display: inline-flex;
 						flex: 1;
+						font-weight: 400;
+						font-size: 13px;
+						line-height: 14px;
+						letter-spacing: 0px;
+						padding: 5px;
+						vertical-align: middle;
 					}
 				`}
 			>
