@@ -51,9 +51,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [loading, setLoading] = useState(true);
 
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
-
-	// Todo: Update fileName definition
-	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
+	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
@@ -86,8 +84,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			console.error('No File Data');
 		}
 	}, [fileUrl, file]);
-	console.log('fileMetaData', fileMetaData);
-	console.log('file', file);
 	return (
 		<TableContextProvider>
 			{/* TODO: Remove Demo Data Button */}
@@ -100,7 +96,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				setLoading={setLoading}
 				theme={theme}
 			/>
-			<h2>{fileName}</h2>
+			<h2>{fileId}</h2>
 			{loading || !fileUrl ? (
 				<Loader />
 			) : (
@@ -186,7 +182,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 							)}
 						</div>
 					</div>
-					<StatsTable />
+					{file && <StatsTable file={file} fileId={fileId} />}
 				</>
 			)}
 		</TableContextProvider>

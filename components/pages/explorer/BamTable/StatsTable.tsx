@@ -19,32 +19,17 @@
  *
  */
 
-import { DemoStatsFile } from './DemoData';
 import { css } from '@emotion/react';
+import { type FileTableData } from '../fileTypes';
 
-export const StatsTable = () => {
-	const {
-		mapped_reads,
-		mapped_reads_percentage,
-		forward_strands,
-		forward_strands_percentage,
-		proper_pairs,
-		proper_pairs_percentage,
-		singletons,
-		singletons_percentage,
-		both_mates_mapped,
-		both_mates_mapped_percentage,
-		duplicates,
-		duplicates_percentage,
-		failed_qc,
-		first_mates,
-		last_read_position,
-		paired_end_reads,
-		reverse_strands,
-		second_mates,
-		total_reads,
-		mean_read_coverage,
-	} = DemoStatsFile.statistics;
+export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?: string }) => {
+	const fileAccess = file?.file_access;
+	const fileDataType = file?.data_type;
+	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
+	const fileFormat = file?.file_type; // format
+	const fileSize = file?.file.size;
+	const fileStudy = file?.analysis?.collaborator.hits.edges[0].node.name;
+	const fileStrategy = file?.analysis?.experiment.experimentalStrategy;
 
 	return (
 		<div
@@ -68,16 +53,14 @@ export const StatsTable = () => {
 					}
 				`}
 			>
-				<th>Mapped Reads</th>
-				<th>Mapped Reads Percentage</th>
-				<th>Forward Strands</th>
-				<th>Forward Strands Percentage</th>
-				<th>Proper Pairs</th>
-				<th>Proper Pairs percentage</th>
-				<th>Singletons</th>
-				<th>Singletons Percentage</th>
-				<th>Both Mates Mapped</th>
-				<th>Both Mates Mapped Percentage</th>
+				<th>File ID</th>
+				<th>Donor ID</th>
+				<th>Study</th>
+				<th>Data Type</th>
+				<th>Strategy</th>
+				<th>Format</th>
+				<th>Size</th>
+				<th>File Access</th>
 			</tr>
 			<tr
 				css={css`
@@ -94,65 +77,14 @@ export const StatsTable = () => {
 					}
 				`}
 			>
-				<td>{mapped_reads}</td>
-				<td>{mapped_reads_percentage}</td>
-				<td>{forward_strands}</td>
-				<td>{forward_strands_percentage}</td>
-				<td>{proper_pairs}</td>
-				<td>{proper_pairs_percentage}</td>
-				<td>{singletons}</td>
-				<td>{singletons_percentage}</td>
-				<td>{both_mates_mapped}</td>
-				<td>{both_mates_mapped_percentage}</td>
-			</tr>
-			<tr
-				css={css`
-					border: 1px solid black;
-					display: flex;
-					flex-basis: 100%;
-
-					th {
-						border: 1px solid black;
-						display: inline-flex;
-						flex: 1;
-					}
-				`}
-			>
-				<th>Duplicates</th>
-				<th>Duplicates Percentage</th>
-				<th>Failed QC</th>
-				<th>First Mates</th>
-				<th>Last Read Position</th>
-				<th>Paired End Reads</th>
-				<th>Reverse Strands</th>
-				<th>Second Mates</th>
-				<th>Total Reads</th>
-				<th>Mean Read Coverage</th>
-			</tr>
-			<tr
-				css={css`
-					border: 1px solid black;
-					display: flex;
-					flex-basis: 100%;
-
-					td {
-						border: 1px solid black;
-						border-top: none;
-						display: inline-flex;
-						flex: 1;
-					}
-				`}
-			>
-				<td>{duplicates}</td>
-				<td>{duplicates_percentage}</td>
-				<td>{failed_qc}</td>
-				<td>{first_mates}</td>
-				<td>{last_read_position}</td>
-				<td>{paired_end_reads}</td>
-				<td>{reverse_strands}</td>
-				<td>{second_mates}</td>
-				<td>{total_reads}</td>
-				<td>{mean_read_coverage}</td>
+				<td>{fileId}</td>
+				<td>{fileDonorId}</td>
+				<td>{fileStudy}</td>
+				<td>{fileDataType}</td>
+				<td>{fileStrategy}</td>
+				<td>{fileFormat}</td>
+				<td>{fileSize}</td>
+				<td>{fileAccess}</td>
 			</tr>
 		</div>
 	);
