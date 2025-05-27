@@ -79,7 +79,11 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						/>
 					</div>
 					{data && (
-						<SchemaTables<Dictionary> data={data[0]} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+						<SchemaTables<Dictionary>
+							data={data?.[dictionaryIndex]}
+							arrayAccessor="schemas"
+							getColumns={getSchemaBaseColumns as any}
+						/>
 					)}
 				</div>
 			</PageLayout>
