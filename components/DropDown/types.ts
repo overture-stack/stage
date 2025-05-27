@@ -26,12 +26,12 @@ export type DropDownProps = {
 	title?: string;
 	leftIcon?: ReactNode;
 	disabled?: boolean;
-	MenuItemMap?: Map<string, string>;
+	MenuItemMap?: Map<string, string | (() => void)>;
 	children?: ReactNode | ReactChildren;
 };
 
 export type DropDownItemProps = {
-	link?: string;
+	action?: string | (() => void);
 	disabled?: boolean;
 	children: ReactElement<DropDownContentProps> | ReactNode;
 	customStyles?: {
