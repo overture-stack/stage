@@ -85,7 +85,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 		}
 	}, [fileUrl, file]);
 	return (
-		<TableContextProvider>
+		<>
 			{/* TODO: Remove Demo Data Button */}
 			<DemoDataButton
 				file={file}
@@ -97,16 +97,16 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				theme={theme}
 			/>
 			<h2>{fileId}</h2>
+			<ToggleButtonPanel
+				elementState={elementState}
+				updateElements={updateElements}
+				theme={theme}
+			/>
 			{loading || !fileUrl ? (
 				<Loader />
 			) : (
 				<>
 					<IobioDataBroker alignmentUrl={fileUrl} />
-					<ToggleButtonPanel
-						elementState={elementState}
-						updateElements={updateElements}
-						theme={theme}
-					/>
 					<div
 						css={css`
 							display: flex;
@@ -182,10 +182,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 							)}
 						</div>
 					</div>
-					{file && <StatsTable file={file} fileId={fileId} />}
 				</>
 			)}
-		</TableContextProvider>
+			{file && <StatsTable file={file} fileId={fileId} />}
+		</>
 	);
 };
 

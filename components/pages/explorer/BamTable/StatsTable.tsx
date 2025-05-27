@@ -20,10 +20,12 @@
  */
 
 import { css, useTheme } from '@emotion/react';
+import { useTableContext } from '@overture-stack/arranger-components';
 import defaultTheme from '../../../theme/';
 import { type FileTableData } from '../fileTypes';
 
 export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?: string }) => {
+	const { selectedRows } = useTableContext({ callerName: 'File Metadata Table' });
 	const theme: typeof defaultTheme = useTheme();
 	const fileAccess = file?.file_access;
 	const fileDataType = file?.data_type;
@@ -42,15 +44,25 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 				font-size: 10px;
 			`}
 		>
+			<span
+				css={css`
+					font-size: 16px;
+					font-weight: 700;
+					line-height: 24px;
+					letter-spacing: 0px;
+				`}
+			>
+				{selectedRows.length} File{`${selectedRows.length > 1 ? 's' : ''}`} Selected
+			</span>
 			<tr
 				css={css`
-					border: 1px solid #aeafb3;
+					border: 1px solid ${theme.colors.grey_5};
 					border-bottom: 0;
 					display: flex;
 					flex-basis: 100%;
 
 					th {
-						border-right: 1px solid #aeafb3;
+						border-right: 1px solid ${theme.colors.grey_5};
 						:last-child {
 							border-right: 0;
 						}
@@ -76,13 +88,13 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 			</tr>
 			<tr
 				css={css`
-					border: 1px solid #aeafb3;
+					border: 1px solid ${theme.colors.grey_5};
 					display: flex;
 					flex-basis: 100%;
 					margin-bottom: 10px;
 
 					td {
-						border-right: 1px solid #aeafb3;
+						border-right: 1px solid ${theme.colors.grey_5};
 						:last-child {
 							border-right: 0;
 						}
