@@ -24,7 +24,7 @@ import { StyledListItemStyle } from './styles';
 import { DropDownItemProps } from './types';
 import { useTheme } from '@emotion/react';
 
-const DropDownItem: FC<DropDownItemProps> = ({ children, disabled, link, customStyles }) => {
+const DropDownItem: FC<DropDownItemProps> = ({ children, disabled, action, customStyles }) => {
 	const theme = useTheme();
 
 	if (disabled) {
@@ -33,9 +33,15 @@ const DropDownItem: FC<DropDownItemProps> = ({ children, disabled, link, customS
 
 	const content = <div css={StyledListItemStyle(theme, customStyles)}>{children}</div>;
 
-	if (link) {
+	if (action && typeof action === 'string') {
 		return (
-			<a href={link} css={StyledListItemStyle(theme, customStyles)}>
+			<a href={action} css={StyledListItemStyle(theme, customStyles)}>
+				{children}
+			</a>
+		);
+	} else if (action && typeof action === 'function') {
+		return (
+			<a onClick={action} css={StyledListItemStyle(theme, customStyles)}>
 				{children}
 			</a>
 		);

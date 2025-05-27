@@ -56,8 +56,8 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, disabled,
 	}, []);
 
 	const renderMenuItems = () => {
-		return IterableMenuMap.map(([label, link]) => (
-			<DropDownItem key={label} link={link}>
+		return IterableMenuMap.map(([label, action]) => (
+			<DropDownItem key={label} action={action}>
 				<DropDownContent>{label}</DropDownContent>
 			</DropDownItem>
 		));
