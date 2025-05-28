@@ -19,7 +19,8 @@
  *
  */
 
-import { css } from '@emotion/react';
+import SchemaTables from '@/components/DataTableComponent/Table';
+import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import PageLayout from '@/components/PageLayout';
 import Dropdown from '@/components/DropDown/DropDown';
 import History from '@/components/theme/icons/History';
