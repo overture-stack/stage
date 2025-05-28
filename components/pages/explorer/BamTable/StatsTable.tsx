@@ -66,11 +66,12 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 					css={css`
 						align-items: center;
 						display: inline-flex;
-						border-radius: 5px;
 						border: 1px solid ${theme.colors.grey_3};
+						border-radius: 5px;
 						font-size: 11px;
 						font-weight: 700;
 						line-height: 24px;
+						min-width: 100px;
 					`}
 					onClick={() => {
 						setShowTable(!showTable);
@@ -80,20 +81,20 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 					<div
 						css={css`
 							background-color: ${theme.colors.white};
-							border-radius: 3px;
 							border: 1px solid ${theme.colors.grey_5};
+							border-radius: 3px;
 							height: 13px;
+							width: 13px;
 							margin-left: 10px;
 							padding: 2px;
-							${showTable ? 'transform: rotate(180deg);' : 'transform: rotate(0deg);'}
-
-							svg {
+							span {
+								font-size: 16px;
 								position: relative;
-								top: -3px;
+								top: -6px;
 							}
 						`}
 					>
-						<ChevronDown height={13} width={13} fill={theme.colors.grey_5} />
+						<span>{showTable ? '-' : '+'}</span>
 					</div>
 				</button>
 			</div>
