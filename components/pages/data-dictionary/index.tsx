@@ -19,7 +19,11 @@
  *
  */
 
+import SchemaTables from '@/components/DataTableComponent/Table';
+import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import PageLayout from '@/components/PageLayout';
+import { css } from '@emotion/react';
+import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { ComponentType } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -28,18 +32,28 @@ import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'dictionary.name', hasError ? 'Error loading dictionary' : '');
-	const description = get(data, 'dictionary.description', hasError ? 'Error loading description' : '');
-
+	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
-				<DictionaryHeader
-					description={isLoading ? <Skeleton width={300} /> : description}
-					name={isLoading ? <Skeleton width={200} /> : name}
-				/>
+				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
+				<div
+					css={css`
+						max-width: 1200px;
+						width: 100%;
+						margin: 0 auto;
+						padding: 0 20px;
+						margin-top: 30px;
+					`}
+				>
+					{data && (
+						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+					)}
+				</div>
 			</PageLayout>
 		</>
 	);
 };
+
 export default DataDictionaryPage;

@@ -18,13 +18,15 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import { ReactNode } from 'react';
+import { Dictionary } from '@overture-stack/lectern-client';
 
 export type DictionaryHeaderProps = {
 	description: string;
 	name: string;
 };
 export type DictionaryPageProps = {
-	data: any;
+	data: Dictionary | null;
 	isLoading: boolean;
 	hasError: boolean;
 };

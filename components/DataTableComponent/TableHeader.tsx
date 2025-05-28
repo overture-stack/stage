@@ -19,19 +19,38 @@
  *
  */
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import * as lectern from '@overture-stack/lectern-client';
+import { css } from '@emotion/react';
+import { flexRender, HeaderGroup } from '@tanstack/react-table';
+import { Lato } from '../pages/data-dictionary/styles/typography';
 
-const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
-const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
-const version = '1.0'; //Replace with your actual version
-export default async function lecternHandler(req: NextApiRequest, res: NextApiResponse) {
-	try {
-		// add any complex logic here for the actual dictionary
-		const dictionary = await lectern.rest.fetchSchema(lecternUrl, dictionaryName, version);
-		console.log('Fetched lectern schema:', dictionary);
-		res.status(200).json({ dictionary });
-	} catch (error: any) {
-		res.status(500).json({ error: 'Failed to fetch lectern schema' });
-	}
-}
+const thStyle = css`
+	background: #e5edf3;
+	text-align: left;
+	padding: 12px;
+	border-bottom: 1px solid #dcdcdc;
+`;
+
+type TableHeaderProps<T> = {
+	headerGroup: HeaderGroup<T>;
+};
+
+const TableHeader = <T,>({ headerGroup }: TableHeaderProps<T>) => {
+	return (
+		<tr key={headerGroup.id}>
+			{headerGroup.headers.map((header) => (
+				<th
+					key={header.id}
+					colSpan={header.colSpan}
+					css={css`
+						${thStyle}
+						${Lato.Subtitle2}
+					`}
+				>
+					{flexRender(header.column.columnDef.header, header.getContext())}
+				</th>
+			))}
+		</tr>
+	);
+};
+
+export default TableHeader;
