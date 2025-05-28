@@ -24,12 +24,8 @@ import { StyledListItemStyle } from './styles';
 import { DropDownItemProps } from './types';
 import { useTheme } from '@emotion/react';
 
-const DropDownItem: FC<DropDownItemProps> = ({ children, disabled, action, customStyles }) => {
+const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
 	const theme = useTheme();
-
-	if (disabled) {
-		return null;
-	}
 
 	const content = <div css={StyledListItemStyle(theme, customStyles)}>{children}</div>;
 

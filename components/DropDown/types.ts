@@ -31,7 +31,6 @@ export type DropDownProps = {
 
 export type DropDownItemProps = {
 	action?: string | (() => void);
-	disabled?: boolean;
 	children: ReactElement<DropDownContentProps> | ReactNode;
 	customStyles?: {
 		hover?: SerializedStyles;
@@ -41,6 +40,5 @@ export type DropDownItemProps = {
 
 export type DropDownContentProps = {
 	label?: string;
-	disabled?: boolean;
 	children?: ReactNode | ReactChildren;
 };
