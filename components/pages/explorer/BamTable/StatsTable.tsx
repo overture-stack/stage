@@ -48,7 +48,7 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 					flex-basis: 100%;
 					flex-direction: row;
 					justify-content: space-between;
-					padding: 5px;
+					padding: 5px 0px;
 				`}
 			>
 				<span
