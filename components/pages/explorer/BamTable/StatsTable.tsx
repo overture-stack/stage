@@ -26,7 +26,7 @@ import { useState } from 'react';
 import defaultTheme from '../../../theme/';
 import { type FileTableData } from '../fileTypes';
 
-const extractTableData = (file: FileTableData) => {
+const getTableData = (file: FileTableData) => {
 	const fileAccess = file?.file_access;
 	const fileDataType = file?.data_type;
 	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
@@ -53,7 +53,7 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 	const { selectedRows } = useTableContext({ callerName: 'File Metadata Table' });
 	const theme: typeof defaultTheme = useTheme();
 	const { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileSize, fileStrategy } =
-		extractTableData(file);
+		getTableData(file);
 
 	return (
 		<>
