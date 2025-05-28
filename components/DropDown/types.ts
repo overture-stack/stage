@@ -25,7 +25,6 @@ import { ReactChildren, ReactElement, ReactNode, JSXElementConstructor } from 'r
 export type DropDownProps = {
 	title?: string;
 	leftIcon?: ReactNode;
-	disabled?: boolean;
 	MenuItemMap?: Map<string, string | (() => void)>;
 	children?: ReactNode | ReactChildren;
 };
