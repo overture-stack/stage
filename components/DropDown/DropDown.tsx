@@ -44,13 +44,6 @@ const dropDownTitleStyle = (theme: any) => css`
 	color: ${theme.colors.accent_dark};
 `;
 
-type DropDownProps = {
-	title?: string;
-	leftIcon?: ReactNode;
-	MenuItemMap?: Map<string, string | (() => void)>;
-	children?: ReactNode | ReactChildren;
-};
-
 const dropdownMenuStyle = (theme: any) => css`
 	position: absolute;
 	top: calc(100% + 5px);
@@ -66,13 +59,24 @@ const dropdownMenuStyle = (theme: any) => css`
 	z-index: 1000;
 `;
 
-const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, children, leftIcon }) => {
+type MenuItem = {
+	label: string;
+	action: string | (() => void);
+};
+
+type DropDownProps = {
+	title?: string;
+	leftIcon?: ReactNode;
+	menuItems?: MenuItem[];
+	children?: ReactNode | ReactChildren;
+};
+
+const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon }) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
 
-	const hasMenuItems = MenuItemMap.size > 0;
-	const IterableMenuMap = hasMenuItems ? Array.from(MenuItemMap.entries()) : [];
+	const hasMenuItems = menuItems.length > 0;
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -94,7 +98,7 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, children,
 	}, []);
 
 	const renderMenuItems = () => {
-		return IterableMenuMap.map(([label, action]) => (
+		return menuItems.map(({ label, action }) => (
 			<DropDownItem key={label} action={action}>
 				<DropDownContent>{label}</DropDownContent>
 			</DropDownItem>
