@@ -23,7 +23,7 @@ import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import Dropdown from '@/components/DropDown/DropDown';
 import PageLayout from '@/components/PageLayout';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { ComponentType, useState } from 'react';
@@ -33,6 +33,8 @@ import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 import { DropdownButton } from '@/components/Button';
 import FileDownload from '@/components/theme/icons/file_download';
+import ListFilter from '@/components/theme/icons/list_filter';
+import History from '@/components/theme/icons/history';
 
 const containerStyle = css`
 	width: 70%;
@@ -71,16 +73,15 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 		overflow: hidden;
 		text-overflow: ellipsis;
 	`;
-	const dropDownMenuMap = new Map(
-		data?.map((dictionary: Dictionary, index: number) => {
-			return [
-				'Version ' + dictionary.version + ' (2025-09-26)',
-				() => {
-					setDictionaryIndex(index);
-				},
-			];
-		}),
-	);
+	const dropDownMenuObj = data?.map((dictionary: Dictionary, index: number) => {
+		return {
+			label: 'Version ' + dictionary.version + ' (2025-09-26)',
+			action: () => {
+				setDictionaryIndex(index);
+			},
+		};
+	});
+
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(
 		data?.[dictionaryIndex],
@@ -95,13 +96,12 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 					<div css={buttonsContainerStyle}>
 						<Dropdown
 							leftIcon={<History />}
-							MenuItemMap={dropDownMenuMap}
+							menuItems={dropDownMenuObj}
 							title={`Version ${data?.[dictionaryIndex].version} (2025-09-26)`}
-							disabled={isLoading}
 						/>
 
 						<div css={rightButtonsStyle}>
-							<Dropdown leftIcon={<ListFilter />} title="Required Filter" disabled={isLoading} />
+							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
 							<DropdownButton>
 								<FileDownload />
 								<span css={titleStyle}>Submission Templates</span>
