@@ -20,8 +20,7 @@
  */
 
 import { FC, ReactElement, ReactNode } from 'react';
-import { StyledListItemStyle } from './styles';
-import { SerializedStyles, useTheme } from '@emotion/react';
+import { css, SerializedStyles, useTheme } from '@emotion/react';
 import { DropDownContentProps } from './DropDownContent';
 
 type DropDownItemProps = {
@@ -33,20 +32,40 @@ type DropDownItemProps = {
 	};
 };
 
+const styledListItemStyle = (theme: any, customStyles?: any) => css`
+	display: flex;
+	max-height: 42px;
+	min-height: 100%;
+	height: 100%;
+	align-items: center;
+	padding: 8px;
+	justify-content: center;
+	color: ${theme.colors.black};
+	background-color: #f7f7f7;
+	border: 1px solid ${theme.colors.grey_1};
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	&:hover {
+		background-color: ${theme.colors.grey_2};
+	}
+	${customStyles?.base}
+`;
+
 const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
 	const theme = useTheme();
 
-	const content = <div css={StyledListItemStyle(theme, customStyles)}>{children}</div>;
+	const content = <div css={styledListItemStyle(theme, customStyles)}>{children}</div>;
 
 	if (action && typeof action === 'string') {
 		return (
-			<a href={action} css={StyledListItemStyle(theme, customStyles)}>
+			<a href={action} css={styledListItemStyle(theme, customStyles)}>
 				{children}
 			</a>
 		);
 	} else if (action && typeof action === 'function') {
 		return (
-			<a onClick={action} css={StyledListItemStyle(theme, customStyles)}>
+			<a onClick={action} css={styledListItemStyle(theme, customStyles)}>
 				{children}
 			</a>
 		);
