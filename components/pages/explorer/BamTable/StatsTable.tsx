@@ -87,14 +87,17 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 							width: 13px;
 							margin-left: 10px;
 							padding: 2px;
-							span {
-								font-size: 16px;
-								position: relative;
-								top: -6px;
-							}
 						`}
 					>
-						<span>{showTable ? '-' : '+'}</span>
+						<span
+							css={css`
+								font-size: 16px;
+								position: relative;
+								top: -5px;
+							`}
+						>
+							{showTable ? '-' : '+'}
+						</span>
 					</div>
 				</button>
 			</div>
