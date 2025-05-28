@@ -82,28 +82,3 @@ export const DemoDataButton = ({
 		</div>
 	);
 };
-
-export const DemoStatsFile = {
-	statistics: {
-		mapped_reads: 92917,
-		mapped_reads_percentage: 0.9976,
-		forward_strands: 46736,
-		forward_strands_percentage: 0.5018,
-		proper_pairs: 91702,
-		proper_pairs_percentage: 0.9846,
-		singletons: 220,
-		singletons_percentage: 0.002362,
-		both_mates_mapped: 92697,
-		both_mates_mapped_percentage: 0.9953,
-		duplicates: 397,
-		duplicates_percentage: 0.004263,
-		failed_qc: 0,
-		first_mates: 46553,
-		last_read_position: 4467990,
-		paired_end_reads: 93136,
-		reverse_strands: 46400,
-		second_mates: 46583,
-		total_reads: 93136,
-		mean_read_coverage: 52,
-	},
-};
