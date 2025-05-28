@@ -19,10 +19,19 @@
  *
  */
 
-import { FC } from 'react';
+import { FC, ReactElement, ReactNode } from 'react';
 import { StyledListItemStyle } from './styles';
-import { DropDownItemProps } from './types';
-import { useTheme } from '@emotion/react';
+import { SerializedStyles, useTheme } from '@emotion/react';
+import { DropDownContentProps } from './DropDownContent';
+
+type DropDownItemProps = {
+	action?: string | (() => void);
+	children: ReactElement<DropDownContentProps> | ReactNode;
+	customStyles?: {
+		hover?: SerializedStyles;
+		base?: SerializedStyles;
+	};
+};
 
 const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
 	const theme = useTheme();
