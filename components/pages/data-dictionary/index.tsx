@@ -22,47 +22,37 @@
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import PageLayout from '@/components/PageLayout';
-import Dropdown from '@/components/DropDown/DropDown';
-import History from '@/components/theme/icons/History';
-import DropDownContent from '@/components/DropDown/DropDownContent';
-import DropDownItem from '@/components/DropDown/DropDownItem';
+import { css } from '@emotion/react';
+import { Dictionary } from '@overture-stack/lectern-client';
+import { get } from 'lodash';
+import { ComponentType } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import DictionaryHeader from './DictionaryHeader';
+import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage = () => {
-	const versionMap = new Map<string, string>([
-		['Version 1.28 (2025-02-07)', '/v1.28'],
-		['Version 1.27 (2025-02-06)', '/v1.27'],
-		['Version 1.26 (2025-02-05)', '/v1.26'],
-		['Version 1.25 (2025-02-04)', '/v1.25'],
-		['Version 1.24 (2025-02-03)', '/v1.24'],
-	]);
+const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
+	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
 	return (
-		<PageLayout subtitle="Data Dictionary">
-			<div
-				css={(theme) => css`
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					width: 100%;
-					height: 100%;
-					background-color: ${theme.colors.white};
-					border-radius: 8px;
-					padding: 20px;
-				`}
-			>
-				Welcome to the Data Dictionary page!
-				{/* Example implementation of a dropdown*/}
-				<Dropdown leftIcon={<History />} title="Version 1.10 (yy-mm-dd)" MenuItemMap={versionMap} />
-				{/* <Dropdown title="Select Version">
-					<DropDownItem link="/v1.28">
-						<DropDownContent>Version 1.28</DropDownContent>
-					</DropDownItem>
-
-					<DropDownItem link="/v1.27">
-						<DropDownContent>Version 1.27</DropDownContent>
-					</DropDownItem>
-				</Dropdown> */}
-			</div>
-		</PageLayout>
+		<>
+			<PageLayout subtitle="Data Dictionary">
+				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
+				<div
+					css={css`
+						max-width: 1200px;
+						width: 100%;
+						margin: 0 auto;
+						padding: 0 20px;
+						margin-top: 30px;
+					`}
+				>
+					{data && (
+						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+					)}
+				</div>
+			</PageLayout>
+		</>
 	);
 };
 
