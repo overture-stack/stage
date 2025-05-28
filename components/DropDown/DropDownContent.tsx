@@ -19,13 +19,14 @@
  *
  */
 
-import { FC } from 'react';
-import { DropDownContentProps } from './types';
+import { FC, ReactChildren, ReactNode } from 'react';
 
-const DropDownContent: FC<DropDownContentProps> = ({ children, disabled, label }) => {
-	if (disabled) {
-		return null;
-	}
+export type DropDownContentProps = {
+	label?: string;
+	children?: ReactNode | ReactChildren;
+};
+
+const DropDownContent: FC<DropDownContentProps> = ({ children, label }) => {
 	return <>{children || label}</>;
 };
 

@@ -20,21 +20,63 @@
  */
 
 import { useTheme } from '@emotion/react';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, ReactChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownButton } from '../Button';
 import { ChevronDown } from '../theme/icons';
 import DropDownContent from './DropDownContent';
 import DropDownItem from './DropDownItem';
-import { ChevronStyle, DropDownTitleStyle, DropdownMenuStyle, ParentStyle } from './styles';
-import { DropDownProps } from './types';
+import { css } from '@emotion/react';
 
-const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, disabled, children, leftIcon }) => {
+const parentStyle = css`
+	position: relative;
+	display: inline-block;
+`;
+
+const chevronStyle = (open: boolean) => css`
+	transform: ${open ? 'rotate(180deg)' : 'none'};
+	transition: transform 0.2s ease;
+`;
+const dropDownTitleStyle = (theme: any) => css`
+	padding: 5px 10px;
+	font-weight: 400;
+	line-height: 100%;
+	letter-spacing: 0%;
+	color: ${theme.colors.accent_dark};
+`;
+
+const dropdownMenuStyle = (theme: any) => css`
+	position: absolute;
+	top: calc(100% + 5px);
+	left: 0;
+	width: 100%;
+	background-color: #f7f7f7;
+	border: 1px solid ${theme.colors.grey_1};
+	border-radius: 4px;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.08);
+	list-style: none;
+	padding: 4px 0;
+	margin: 0;
+	z-index: 1000;
+`;
+
+type MenuItem = {
+	label: string;
+	action: string | (() => void);
+};
+
+type DropDownProps = {
+	title?: string;
+	leftIcon?: ReactNode;
+	menuItems?: MenuItem[];
+	children?: ReactNode | ReactChildren;
+};
+
+const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon }) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
 
-	const hasMenuItems = MenuItemMap.size > 0;
-	const IterableMenuMap = hasMenuItems ? Array.from(MenuItemMap.entries()) : [];
+	const hasMenuItems = menuItems.length > 0;
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -56,7 +98,7 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, disabled,
 	}, []);
 
 	const renderMenuItems = () => {
-		return IterableMenuMap.map(([label, action]) => (
+		return menuItems.map(({ label, action }) => (
 			<DropDownItem key={label} action={action}>
 				<DropDownContent>{label}</DropDownContent>
 			</DropDownItem>
@@ -64,15 +106,15 @@ const Dropdown: FC<DropDownProps> = ({ MenuItemMap = new Map(), title, disabled,
 	};
 
 	return (
-		<div ref={dropdownRef} css={ParentStyle}>
+		<div ref={dropdownRef} css={parentStyle}>
 			<div>
-				<DropdownButton onClick={handleToggle} disabled={disabled}>
+				<DropdownButton onClick={handleToggle}>
 					{leftIcon}
-					<span css={DropDownTitleStyle(theme)}>{title}</span>
-					<ChevronDown fill={theme.colors.black} width={18} height={18} style={ChevronStyle(open)} />
+					<span css={dropDownTitleStyle(theme)}>{title}</span>
+					<ChevronDown fill={theme.colors.black} width={18} height={18} style={chevronStyle(open)} />
 				</DropdownButton>
 
-				{open && !disabled && <ul css={DropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}
+				{open && <ul css={dropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}
 			</div>
 		</div>
 	);
