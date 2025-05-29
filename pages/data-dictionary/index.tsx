@@ -61,10 +61,10 @@ const DataDictionary = createPage({
 		const fetchAllDictionaryDataFromVersions = async (versions: lectern.rest.DictionarySummary[]) => {
 			try {
 				setLoading(true);
-				const dictionaryFetches = versions.map((DictionaryVersion) =>
+				const dictionaryFetches = versions.map((dictionaryVersion) =>
 					lectern.rest.getDictionary(lecternUrl, {
-						name: DictionaryVersion.name,
-						version: DictionaryVersion.version,
+						name: dictionaryVersion.name,
+						version: dictionaryVersion.version,
 					}),
 				);
 
