@@ -67,14 +67,7 @@ const Button = React.forwardRef<
 	}
 >(
 	(
-		{
-			children,
-			onClick = (e) => {},
-			disabled = false,
-			isAsync = false,
-			className,
-			isLoading: controlledLoadingState,
-		},
+		{ children, onClick = (e) => {}, disabled = false, isAsync = false, className, isLoading: controlledLoadingState },
 		ref = React.createRef(),
 	) => {
 		const [isLoading, setLoading] = React.useState(false);
@@ -117,5 +110,4 @@ const Button = React.forwardRef<
 		);
 	},
 );
-
 export default Button;
