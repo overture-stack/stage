@@ -23,7 +23,7 @@ import { css, useTheme } from '@emotion/react';
 import { FC, ReactChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownButton } from '../Button';
 import { ChevronDown } from '../theme/icons';
-import DropDownItem from './DropDownItem';
+import DropDownItem from './DropdownItem';
 
 const parentStyle = css`
 	position: relative;
@@ -112,7 +112,7 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon
 					<ChevronDown fill={theme.colors.black} width={18} height={18} style={chevronStyle(open)} />
 				</DropdownButton>
 
-				{open && <ul css={dropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}
+				{open && <ul css={dropdownMenuStyle(theme)}>{renderMenuItems()}</ul>}
 			</div>
 		</div>
 	);
