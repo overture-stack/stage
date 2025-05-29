@@ -36,8 +36,8 @@ const ListFilter = ({ style, height, width }: IconProps) => {
 			fill="none"
 			stroke="currentColor"
 			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
+			strokeLinecap="round"
+			strokeLinejoin="round"
 		>
 			<path d="M3 6h18" />
 			<path d="M7 12h10" />

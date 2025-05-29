@@ -35,6 +35,7 @@ import { DropdownButton } from '@/components/Button';
 import FileDownload from '@/components/theme/icons/file_download';
 import ListFilter from '@/components/theme/icons/list_filter';
 import History from '@/components/theme/icons/history';
+import VersionSwitcher from '@/components/VersionSwitcher';
 
 const containerStyle = css`
 	width: 70%;
@@ -73,14 +74,6 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 		overflow: hidden;
 		text-overflow: ellipsis;
 	`;
-	const versionSwitcherObject = data?.map((dictionary: Dictionary, index: number) => {
-		return {
-			label: 'Version ' + dictionary.version + ' (2025-09-26)',
-			action: () => {
-				setDictionaryIndex(index);
-			},
-		};
-	});
 
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(
@@ -94,10 +87,10 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
 				<div css={containerStyle}>
 					<div css={buttonsContainerStyle}>
-						<Dropdown
-							leftIcon={<History />}
-							menuItems={versionSwitcherObject}
-							title={`Version ${data?.[dictionaryIndex].version} (2025-09-26)`}
+						<VersionSwitcher
+							dictionaryIndex={dictionaryIndex}
+							dictionaryData={data}
+							onVersionChange={setDictionaryIndex}
 						/>
 
 						<div css={rightButtonsStyle}>
