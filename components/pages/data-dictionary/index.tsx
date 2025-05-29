@@ -19,7 +19,6 @@
  *
  */
 
-import { DropdownButton } from '@/components/Button';
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import Dropdown from '@/components/DropDown/Dropdown';
@@ -95,10 +94,6 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 
 						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
-							<DropdownButton>
-								<FileDownload />
-								<span css={titleStyle(theme)}>Submission Templates</span>
-							</DropdownButton>
 						</div>
 					</div>
 

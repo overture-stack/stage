@@ -19,8 +19,8 @@
  *
  */
 
-import { FC, ReactElement, ReactNode } from 'react';
 import { css, SerializedStyles, useTheme } from '@emotion/react';
+import { FC, ReactNode } from 'react';
 
 type DropDownItemProps = {
 	action?: string | (() => void);
@@ -53,9 +53,7 @@ const styledListItemStyle = (theme: any, customStyles?: any) => css`
 
 const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
 	const theme = useTheme();
-
 	const content = <div css={styledListItemStyle(theme, customStyles)}>{children}</div>;
-
 	if (action && typeof action === 'function') {
 		return (
 			<a onClick={action} css={styledListItemStyle(theme, customStyles)}>
