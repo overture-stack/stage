@@ -19,31 +19,15 @@
  *
  */
 
-import { Dictionary } from '@overture-stack/lectern-client';
-import { useState, FC } from 'react';
-import Dropdown from './DropDown/Dropdown';
-import History from './theme/icons/history';
-type VersionSwitcherProps = {
-	dictionaryData: Dictionary[] | null;
-	onVersionChange: (index: number) => void;
-	dictionaryIndex: number;
-};
-const VersionSwitcher: FC<VersionSwitcherProps> = ({ dictionaryIndex, dictionaryData, onVersionChange }) => {
-	const versionSwitcherObject = dictionaryData?.map((dictionary: Dictionary, index: number) => {
-		return {
-			label: 'Version ' + dictionary.version + ' (2025-09-26)',
-			action: () => {
-				onVersionChange(index);
-			},
-		};
-	});
-	return (
-		<Dropdown
-			leftIcon={<History />}
-			menuItems={versionSwitcherObject}
-			title={`Version ${dictionaryData?.[dictionaryIndex].version} (2025-09-26)`}
-		/>
-	);
+import { FC, ReactChildren, ReactNode } from 'react';
+
+export type DropDownContentProps = {
+	label?: string;
+	children?: ReactNode | ReactChildren;
 };
 
-export default VersionSwitcher;
+const DropDownContent: FC<DropDownContentProps> = ({ children, label }) => {
+	return <>{children || label}</>;
+};
+
+export default DropDownContent;
