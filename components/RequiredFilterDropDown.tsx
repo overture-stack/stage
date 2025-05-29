@@ -19,25 +19,34 @@
  *
  */
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Dropdown from './DropDown/DropDown';
 import ListFilter from './theme/icons/list_filter';
 type RequiredFilterDropDownProps = {
 	onChange: (tableColumn: any) => void;
+	setIsFiltered: (bool: boolean) => void;
 	columns: any[];
+	isFiltered: boolean;
 };
 // This component is going to take in a list of columns and return an array of columns with certain columns filtered out based
 // on the required filter
-const RequiredFilterDropDown: FC<RequiredFilterDropDownProps> = ({ onChange, columns }) => {
+const RequiredFilterDropDown: FC<RequiredFilterDropDownProps> = ({ setIsFiltered, isFiltered, onChange, columns }) => {
 	//Note the indexing is fully reliant on the order of the columns in the array which is done in the tableInit.ts
+
 	const dropDownOptionsOb = [
 		{
-			label: 'Filter by Required',
+			label: isFiltered ? 'Show All Columns' : 'Filter by Required',
 			action: () => {
-				const filteredColumns = columns.filter(
-					(column) => column.header === 'Required' || column.header === 'SchemaField',
-				);
-				onChange(filteredColumns);
+				if (isFiltered) {
+					onChange(columns);
+					setIsFiltered(false);
+				} else {
+					const filteredColumns = columns.filter(
+						(column) => column.header === 'Required' || column.header === 'SchemaField',
+					);
+					onChange(filteredColumns);
+					setIsFiltered(true);
+				}
 			},
 		},
 	];
