@@ -19,31 +19,50 @@
  *
  */
 
-import { Dictionary } from '@overture-stack/lectern-client';
-import { useState, FC } from 'react';
-import Dropdown from './Dropdown/Dropdown';
-import History from './theme/icons/history';
-type VersionSwitcherProps = {
-	dictionaryData: Dictionary[] | null;
-	onVersionChange: (index: number) => void;
-	dictionaryIndex: number;
-};
-const VersionSwitcher: FC<VersionSwitcherProps> = ({ dictionaryIndex, dictionaryData, onVersionChange }) => {
-	const versionSwitcherObject = dictionaryData?.map((dictionary: Dictionary, index: number) => {
-		return {
-			label: 'Version ' + dictionary.version + ' (2025-09-26)',
-			action: () => {
-				onVersionChange(index);
-			},
-		};
-	});
-	return (
-		<Dropdown
-			leftIcon={<History />}
-			menuItems={versionSwitcherObject}
-			title={`Version ${dictionaryData?.[dictionaryIndex].version} (2025-09-26)`}
-		/>
-	);
+import { css, SerializedStyles, useTheme } from '@emotion/react';
+import { FC, ReactNode } from 'react';
+
+type DropDownItemProps = {
+	action?: string | (() => void);
+	children: ReactNode;
+	customStyles?: {
+		hover?: SerializedStyles;
+		base?: SerializedStyles;
+	};
 };
 
-export default VersionSwitcher;
+const styledListItemStyle = (theme: any, customStyles?: any) => css`
+	display: flex;
+	max-height: 42px;
+	min-height: 100%;
+	height: 100%;
+	align-items: center;
+	padding: 8px;
+	justify-content: center;
+	color: ${theme.colors.black};
+	background-color: #f7f7f7;
+	border: 1px solid ${theme.colors.grey_1};
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	&:hover {
+		background-color: ${theme.colors.grey_2};
+	}
+	${customStyles?.base}
+`;
+
+const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
+	const theme = useTheme();
+	const content = <div css={styledListItemStyle(theme, customStyles)}>{children}</div>;
+	if (action && typeof action === 'function') {
+		return (
+			<a onClick={action} css={styledListItemStyle(theme, customStyles)}>
+				{children}
+			</a>
+		);
+	}
+
+	return content;
+};
+
+export default DropDownItem;
