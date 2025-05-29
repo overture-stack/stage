@@ -131,10 +131,5 @@ export const DropdownButton = styled(ButtonElement)<{ width?: string }>`
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.grey_1};
 	}
-
-	&:disabled {
-		opacity: 0.6;
-		cursor: not-allowed;
-	}
 `;
 export default Button;
