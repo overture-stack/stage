@@ -73,7 +73,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 		overflow: hidden;
 		text-overflow: ellipsis;
 	`;
-	const dropDownMenuObj = data?.map((dictionary: Dictionary, index: number) => {
+	const versionSwitcherObject = data?.map((dictionary: Dictionary, index: number) => {
 		return {
 			label: 'Version ' + dictionary.version + ' (2025-09-26)',
 			action: () => {
@@ -96,7 +96,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 					<div css={buttonsContainerStyle}>
 						<Dropdown
 							leftIcon={<History />}
-							menuItems={dropDownMenuObj}
+							menuItems={versionSwitcherObject}
 							title={`Version ${data?.[dictionaryIndex].version} (2025-09-26)`}
 						/>
 
