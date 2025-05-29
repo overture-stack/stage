@@ -112,7 +112,7 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon
 					<ChevronDown fill={theme.colors.black} width={18} height={18} style={chevronStyle(open)} />
 				</DropdownButton>
 
-				{open && <ul css={dropdownMenuStyle(theme)}>{hasMenuItems ? renderMenuItems() : children}</ul>}
+{open && <ul css={dropdownMenuStyle(theme)}>{renderMenuItems()}</ul>}
 			</div>
 		</div>
 	);
