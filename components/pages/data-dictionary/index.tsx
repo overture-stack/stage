@@ -19,10 +19,14 @@
  *
  */
 
+import { DropdownButton } from '@/components/Button';
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import Dropdown from '@/components/DropDown/DropDown';
 import PageLayout from '@/components/PageLayout';
+import FileDownload from '@/components/theme/icons/file_download';
+import ListFilter from '@/components/theme/icons/list_filter';
+import VersionSwitcher from '@/components/VersionSwitcher';
 import { css, useTheme } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
@@ -31,11 +35,8 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
-import { DropdownButton } from '@/components/Button';
-import FileDownload from '@/components/theme/icons/file_download';
-import ListFilter from '@/components/theme/icons/list_filter';
-import History from '@/components/theme/icons/history';
-import VersionSwitcher from '@/components/VersionSwitcher';
+import { table } from 'console';
+import RequiredFilterDropDown from '@/components/RequiredFilterDropDown';
 
 const containerStyle = css`
 	width: 70%;
@@ -63,6 +64,8 @@ const rightButtonsStyle = css`
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
+	const [tableColumns, setTableColumns] = useState<any[]>(getSchemaBaseColumns);
+	console.log(getSchemaBaseColumns);
 	const theme = useTheme();
 	const titleStyle = css`
 		padding: 10px 16px;
@@ -94,7 +97,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						/>
 
 						<div css={rightButtonsStyle}>
-							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
+							<RequiredFilterDropDown onChange={setTableColumns} columns={tableColumns} />
 							<DropdownButton>
 								<FileDownload />
 								<span css={titleStyle}>Submission Templates</span>
@@ -106,7 +109,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 						<SchemaTables<Dictionary>
 							data={data?.[dictionaryIndex]}
 							arrayAccessor="schemas"
-							getColumns={getSchemaBaseColumns as any}
+							getColumns={tableColumns}
 						/>
 					)}
 				</div>
