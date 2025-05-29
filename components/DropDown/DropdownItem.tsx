@@ -21,11 +21,10 @@
 
 import { FC, ReactElement, ReactNode } from 'react';
 import { css, SerializedStyles, useTheme } from '@emotion/react';
-import { DropDownContentProps } from './DropdownContent';
 
 type DropDownItemProps = {
 	action?: string | (() => void);
-	children: ReactElement<DropDownContentProps> | ReactNode;
+	children: ReactNode;
 	customStyles?: {
 		hover?: SerializedStyles;
 		base?: SerializedStyles;
@@ -57,13 +56,7 @@ const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles })
 
 	const content = <div css={styledListItemStyle(theme, customStyles)}>{children}</div>;
 
-	if (action && typeof action === 'string') {
-		return (
-			<a href={action} css={styledListItemStyle(theme, customStyles)}>
-				{children}
-			</a>
-		);
-	} else if (action && typeof action === 'function') {
+	if (action && typeof action === 'function') {
 		return (
 			<a onClick={action} css={styledListItemStyle(theme, customStyles)}>
 				{children}

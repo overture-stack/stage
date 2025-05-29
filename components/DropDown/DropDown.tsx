@@ -21,9 +21,7 @@
 
 import { useTheme } from '@emotion/react';
 import { FC, ReactChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { DropdownButton } from '../Button';
 import { ChevronDown } from '../theme/icons';
-import DropDownContent from './DropdownContent';
 import DropDownItem from './DropdownItem';
 import { css } from '@emotion/react';
 
