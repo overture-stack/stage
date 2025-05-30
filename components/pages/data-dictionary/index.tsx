@@ -34,6 +34,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
+import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
 
 const containerStyle = css`
 	width: 70%;
@@ -55,19 +56,9 @@ const buttonsContainerStyle = css`
 
 const rightButtonsStyle = css`
 	display: flex;
-	gap: 12px;
+	justify-content: space-between;
+	gap: 100px;
 	align-items: center;
-`;
-
-const titleStyle = (theme: any) => css`
-	padding: 10px 16px;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 1.2;
-	color: ${theme.colors.accent_dark};
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `;
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
@@ -94,6 +85,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 
 						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
+							<DictionaryDownloadButton />
 						</div>
 					</div>
 
