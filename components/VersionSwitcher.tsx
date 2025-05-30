@@ -21,7 +21,7 @@
 
 import { Dictionary } from '@overture-stack/lectern-client';
 import { useState, FC } from 'react';
-import Dropdown from './DropDown/Dropdown';
+import Dropdown from './Dropdown/Dropdown';
 import History from './theme/icons/history';
 type VersionSwitcherProps = {
 	dictionaryData: Dictionary[] | null;

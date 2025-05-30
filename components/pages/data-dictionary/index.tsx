@@ -21,7 +21,7 @@
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
-import Dropdown from '@/components/DropDown/Dropdown';
+import Dropdown from '@/components/Dropdown/Dropdown';
 import PageLayout from '@/components/PageLayout';
 import FileDownload from '@/components/theme/icons/file_download';
 import ListFilter from '@/components/theme/icons/list_filter';
