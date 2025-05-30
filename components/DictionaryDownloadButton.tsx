@@ -1,8 +1,7 @@
 import { css, useTheme } from '@emotion/react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import FileDownload from './theme/icons/file_download';
 import Button from './Button';
-type DictionaryDownloadButtonProps = {};
 
 export const actionItemStyle = (theme: any, width?: string) => css`
 	display: flex;
@@ -43,10 +42,57 @@ export const actionItemStyle = (theme: any, width?: string) => css`
 	}
 `;
 
-const DictionaryDownloadButton: FC<DictionaryDownloadButtonProps> = () => {
+type DictionaryDownloadButtonProps = {
+	version: string;
+	name: string;
+	lecternUrl: string;
+	fileType?: 'tsv' | 'csv';
+};
+
+const DictionaryDownloadButton: FC<DictionaryDownloadButtonProps> = ({
+	version,
+	name,
+	lecternUrl,
+	fileType = 'tsv',
+}) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const theme = useTheme();
+
+	const fetchUrl = `${lecternUrl}/dictionaries/template/download?${new URLSearchParams({
+		name,
+		version,
+		fileType,
+	})}`;
+
+	const downloadDictionary = async () => {
+		try {
+			setIsLoading(true);
+			const res = await fetch(fetchUrl);
+
+			if (!res.ok) {
+				throw new Error(`Failed with status ${res.status}`);
+			}
+
+			const blob = await res.blob();
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${name}_${version}_templates.zip`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+
+			URL.revokeObjectURL(url);
+		} catch (error) {
+			console.error('Error downloading dictionary:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	return (
-		<Button css={actionItemStyle(theme)}>
+		<Button css={actionItemStyle(theme)} onClick={downloadDictionary} disabled={isLoading}>
 			<FileDownload />
 			<span>Submission Templates</span>
 		</Button>

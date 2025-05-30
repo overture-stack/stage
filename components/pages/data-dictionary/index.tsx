@@ -21,9 +21,9 @@
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import PageLayout from '@/components/PageLayout';
-import FileDownload from '@/components/theme/icons/file_download';
 import ListFilter from '@/components/theme/icons/list_filter';
 import VersionSwitcher from '@/components/VersionSwitcher';
 import { css, useTheme } from '@emotion/react';
@@ -34,7 +34,6 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
-import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
 
 const containerStyle = css`
 	width: 70%;
@@ -57,7 +56,7 @@ const buttonsContainerStyle = css`
 const rightButtonsStyle = css`
 	display: flex;
 	justify-content: space-between;
-	gap: 100px;
+	gap: 20px;
 	align-items: center;
 `;
 
@@ -71,6 +70,8 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 		'description',
 		hasError ? 'Error loading description' : '',
 	) as string;
+	const version = get(data?.[dictionaryIndex], 'version', '') as string;
+	console.log(version);
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -85,7 +86,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 
 						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
-							<DictionaryDownloadButton />
+							<DictionaryDownloadButton name={name} version={version} lecternUrl="http://localhost:3031" />
 						</div>
 					</div>
 
