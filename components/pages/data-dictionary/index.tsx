@@ -71,7 +71,7 @@ const titleStyle = (theme: any) => css`
 `;
 
 const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
+	const [dictionaryIndex, setDictionaryIndex] = useState(0);
 	const theme = useTheme();
 
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
