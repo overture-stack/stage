@@ -28,6 +28,7 @@ const dropdownButtonStyle = (theme: any, width?: string) => css`
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
+	justify-content: space-between;
 	gap: 11px;
 	min-width: ${width || '200px'};
 	max-width: 400px;
