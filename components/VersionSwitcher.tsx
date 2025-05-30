@@ -20,14 +20,16 @@
  */
 
 import { Dictionary } from '@overture-stack/lectern-client';
-import { useState, FC } from 'react';
+import { FC } from 'react';
 import Dropdown from './Dropdown/Dropdown';
 import History from './theme/icons/history';
+
 type VersionSwitcherProps = {
 	dictionaryData: Dictionary[] | null;
 	onVersionChange: (index: number) => void;
 	dictionaryIndex: number;
 };
+
 const VersionSwitcher: FC<VersionSwitcherProps> = ({ dictionaryIndex, dictionaryData, onVersionChange }) => {
 	const versionSwitcherObject = dictionaryData?.map((dictionary: Dictionary, index: number) => {
 		return {
