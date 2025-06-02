@@ -19,7 +19,32 @@
  *
  */
 
+import { type FileTableData } from '../fileTypes';
 import { Theme } from '@emotion/react';
+
+const getFileSizeString = (numFileSize: number) =>
+	numFileSize < 10 ** 3
+		? `${numFileSize} bytes`
+		: numFileSize < 10 ** 6
+		? `${(numFileSize / 10 ** 3).toFixed(2)} KB`
+		: numFileSize < 10 ** 9
+		? `${(numFileSize / 10 ** 6).toFixed(2)} MB`
+		: numFileSize < 10 ** 12
+		? `${(numFileSize / 10 ** 9).toFixed(2)} GB`
+		: `${(numFileSize / 10 ** 12).toFixed(2)} TB`;
+
+export const getTableData = (file: FileTableData) => {
+	const fileAccess = file?.file_access;
+	const fileDataType = file?.data_type;
+	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
+	const fileFormat = file?.file_type;
+	const fileStudy = file?.analysis?.collaborator?.hits.edges[0].node.name;
+	const fileStrategy = file?.analysis?.experiment?.experimentalStrategy;
+	const numFileSize = file?.file.size ?? 0;
+	const fileSize = getFileSizeString(numFileSize);
+
+	return { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileStrategy, fileSize };
+};
 
 export const getToggleButtonStyles = (active: boolean, theme: Theme) => {
 	const {

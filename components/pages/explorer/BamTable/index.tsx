@@ -21,10 +21,8 @@
 
 'use client';
 
-import { css, Theme, useTheme } from '@emotion/react';
-import { TableContextProvider } from '@overture-stack/arranger-components';
+import { css, useTheme } from '@emotion/react';
 import {
-	BamKeys,
 	BamDisplayNames as displayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
@@ -35,72 +33,15 @@ import {
 	isOutlierKey,
 	percentKeys,
 	type BamContext,
-	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
+import { FileMetaData, FileTableData } from '../fileTypes';
+import { getFileMetaData, isFileMetaData } from '../fileUtils';
 import { DemoDataButton, demoFileMetadata } from './DemoData';
-import { FileMetaData, FileTableData } from './fileTypes';
-import { getFileMetaData, isFileMetaData } from './fileUtils';
-import { getToggleButtonStyles } from './getButtonStyles';
-
-const ToggleButtonPanel = ({
-	elementState,
-	updateElements,
-	theme,
-}: {
-	elementState: BamContext;
-	updateElements: (key: BamKey, value: boolean) => void;
-	theme: Theme;
-}) => (
-	<div
-		css={css`
-			display: flex;
-		`}
-	>
-		<div
-			css={css`
-				display: inline-flex;
-				min-width: fit-content;
-				padding-top: 6px;
-			`}
-		>
-			Show / Hide:{' '}
-		</div>
-		<div
-			css={css`
-				display: inline-flex;
-				flex-wrap: wrap;
-			`}
-		>
-			{BamKeys.map((key) => {
-				const active = elementState[key];
-				const toggleButtonStyles = getToggleButtonStyles(active, theme);
-
-				return (
-					<button
-						css={css`
-							display: inline-block;
-							border: 2px solid ${theme.colors.accent};
-							border-radius: 20px;
-							margin: 5px;
-							min-width: fit-content;
-							padding: 3px 10px;
-							${toggleButtonStyles}
-						`}
-						key={key}
-						onClick={() => {
-							updateElements(key, elementState[key]);
-						}}
-					>
-						{displayNames[key]}
-					</button>
-				);
-			})}
-		</div>
-	</div>
-);
+import { ToggleButtonPanel } from './ToggleButtonPanel';
+import { StatsTable } from './StatsTable';
 
 const BamTable = ({ file }: { file?: FileTableData }) => {
 	const theme = useTheme();
@@ -109,9 +50,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [loading, setLoading] = useState(true);
 
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
-
-	// Todo: Update fileName definition
-	const fileName = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
+	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
@@ -144,9 +83,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			console.error('No File Data');
 		}
 	}, [fileUrl, file]);
-
 	return (
-		<TableContextProvider>
+		<>
 			{/* TODO: Remove Demo Data Button */}
 			<DemoDataButton
 				file={file}
@@ -157,17 +95,17 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				setLoading={setLoading}
 				theme={theme}
 			/>
-			<h2>{fileName}</h2>
+			<h2>{fileId}</h2>
+			<ToggleButtonPanel
+				elementState={elementState}
+				updateElements={updateElements}
+				theme={theme}
+			/>
 			{loading || !fileUrl ? (
 				<Loader />
 			) : (
 				<>
 					<IobioDataBroker alignmentUrl={fileUrl} />
-					<ToggleButtonPanel
-						elementState={elementState}
-						updateElements={updateElements}
-						theme={theme}
-					/>
 					<div
 						css={css`
 							display: flex;
@@ -245,7 +183,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					</div>
 				</>
 			)}
-		</TableContextProvider>
+			{file && <StatsTable file={file} fileId={fileId} />}
+		</>
 	);
 };
 

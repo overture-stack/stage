@@ -30,12 +30,12 @@ import { useEffect, useMemo, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 import { File, Screen } from '../../theme/icons';
 
-import BamTable from './BamTable';
+import BamTable from './BamTable/index';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
-import { getToggleButtonStyles } from './getButtonStyles';
+import { getToggleButtonStyles } from './BamTable/tableUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 

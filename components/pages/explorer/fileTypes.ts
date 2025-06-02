@@ -41,4 +41,35 @@ export type ScoreDownloadParams = {
 	offset: string;
 };
 
-export type FileTableData = { id: string; file_type?: string; file: { size: number } };
+export type FileTableData = {
+	id: string;
+	analysis?: {
+		collaborator?: {
+			hits: {
+				edges: [
+					{
+						node: {
+							name: string;
+						};
+					},
+				];
+			};
+		};
+		experiment?: { experimentalStrategy: string; platform: string };
+	};
+	data_type?: string;
+	donors?: {
+		hits: {
+			edges: [
+				{
+					node: {
+						submitter_donor_id: string;
+					};
+				},
+			];
+		};
+	};
+	file_access?: string;
+	file_type?: string;
+	file: { size: number };
+};

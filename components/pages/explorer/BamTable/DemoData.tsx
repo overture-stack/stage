@@ -22,8 +22,8 @@
 /* TODO: Remove Demo Data logic */
 import { css, Theme } from '@emotion/react';
 import { SetStateAction } from 'react';
-import { FileMetaData, FileTableData } from './fileTypes';
-import { getToggleButtonStyles } from './getButtonStyles';
+import { FileMetaData, FileTableData } from '../fileTypes';
+import { getToggleButtonStyles } from './tableUtils';
 
 export const demoFileMetadata: FileMetaData = {
 	objectId: 'demoFileData',
