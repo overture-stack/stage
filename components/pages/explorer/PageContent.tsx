@@ -35,7 +35,7 @@ import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
-import { getToggleButtonStyles } from './getButtonStyles';
+import { getToggleButtonStyles } from './BamTable/tableUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 

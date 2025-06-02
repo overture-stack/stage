@@ -23,35 +23,13 @@ import { css, useTheme } from '@emotion/react';
 import { useTableContext } from '@overture-stack/arranger-components';
 import { useState } from 'react';
 
-import defaultTheme from '../../../theme/';
 import { type FileTableData } from '../fileTypes';
-
-const getTableData = (file: FileTableData) => {
-	const fileAccess = file?.file_access;
-	const fileDataType = file?.data_type;
-	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
-	const fileFormat = file?.file_type;
-	const fileStudy = file?.analysis?.collaborator.hits.edges[0].node.name;
-	const fileStrategy = file?.analysis?.experiment.experimentalStrategy;
-	const numFileSize = file?.file.size ?? 0;
-	const fileSize =
-		numFileSize < 10 ** 3
-			? `${numFileSize} bytes`
-			: numFileSize < 10 ** 6
-			? `${(numFileSize / 10 ** 3).toFixed(2)} KB`
-			: numFileSize < 10 ** 9
-			? `${(numFileSize / 10 ** 6).toFixed(2)} MB`
-			: numFileSize < 10 ** 12
-			? `${(numFileSize / 10 ** 9).toFixed(2)} GB`
-			: `${(numFileSize / 10 ** 12).toFixed(2)} TB`;
-
-	return { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileStrategy, fileSize };
-};
+import { getTableData } from './tableUtils';
 
 export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?: string }) => {
 	const [showTable, setShowTable] = useState(true);
 	const { selectedRows } = useTableContext({ callerName: 'File Metadata Table' });
-	const theme: typeof defaultTheme = useTheme();
+	const theme = useTheme();
 	const { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileSize, fileStrategy } =
 		getTableData(file);
 

@@ -22,7 +22,6 @@
 'use client';
 
 import { css, useTheme } from '@emotion/react';
-import { TableContextProvider } from '@overture-stack/arranger-components';
 import {
 	BamDisplayNames as displayNames,
 	histogramKeys,

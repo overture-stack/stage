@@ -44,7 +44,7 @@ export type ScoreDownloadParams = {
 export type FileTableData = {
 	id: string;
 	analysis?: {
-		collaborator: {
+		collaborator?: {
 			hits: {
 				edges: [
 					{
@@ -55,7 +55,7 @@ export type FileTableData = {
 				];
 			};
 		};
-		experiment: { experimentalStrategy: string; platform: string };
+		experiment?: { experimentalStrategy: string; platform: string };
 	};
 	data_type?: string;
 	donors?: {
