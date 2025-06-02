@@ -94,6 +94,9 @@ const DictionaryDownloadButton: FC<DictionaryDownloadButtonProps> = ({
 				throw new Error(`Failed with status ${res.status}`);
 			}
 
+			//Triggers a file download in the browser by creating a temporary link to a Blob
+			// and simulating a click.
+
 			const blob = await res.blob();
 			const url = URL.createObjectURL(blob);
 
