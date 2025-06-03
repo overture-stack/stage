@@ -18,41 +18,64 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import { css } from '@emotion/react';
+import { get } from 'lodash';
+import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import FilterDropdown from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
-import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
-import { get } from 'lodash';
-import { ComponentType } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
+const DataDictionaryPage: React.FC<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
+
+	const [filteredData, setFilteredData] = useState<Dictionary | null>(null);
+	const [isFiltered, setIsFiltered] = useState(false);
+
+	useEffect(() => {
+		if (data) {
+			setFilteredData(data);
+			setIsFiltered(false);
+		}
+	}, [data]);
 	return (
-		<>
-			<PageLayout subtitle="Data Dictionary">
-				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-				<div
-					css={css`
-						max-width: 1200px;
-						width: 100%;
-						margin: 0 auto;
-						padding: 0 20px;
-						margin-top: 30px;
-					`}
-				>
-					{data && (
-						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
-					)}
-				</div>
-			</PageLayout>
-		</>
+		<PageLayout subtitle="Data Dictionary">
+			{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
+
+			<div
+				css={css`
+					max-width: 1200px;
+					width: 100%;
+					margin: 0 auto;
+					padding: 0 20px;
+					margin-top: 30px;
+				`}
+			>
+				{data && (
+					<FilterDropdown
+						data={data}
+						isFiltered={isFiltered}
+						setFilteredData={setFilteredData}
+						setIsFiltered={setIsFiltered}
+					/>
+				)}
+
+				{(filteredData || data) && (
+					<SchemaTables<Dictionary>
+						data={filteredData || (data as Dictionary)}
+						arrayAccessor="schemas"
+						getColumns={getSchemaBaseColumns as any}
+					/>
+				)}
+			</div>
+		</PageLayout>
 	);
 };
 
