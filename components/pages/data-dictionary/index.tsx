@@ -58,14 +58,14 @@ const DataDictionaryPage: React.FC<DictionaryPageProps> = ({ data, isLoading, ha
 					margin-top: 30px;
 				`}
 			>
-				{data && (
+				{/* {data && (
 					<FilterDropdown
 						data={data}
 						isFiltered={isFiltered}
 						setFilteredData={setFilteredData}
 						setIsFiltered={setIsFiltered}
 					/>
-				)}
+				)} */}
 
 				{(filteredData || data) && (
 					<SchemaTables<Dictionary>
