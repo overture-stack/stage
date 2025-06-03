@@ -42,24 +42,21 @@ export const FullScreenButton = ({
 	setFullScreen: (value: SetStateAction<boolean>) => void;
 	theme: Theme;
 }) => (
-	<div
+	<button
 		css={css`
-			margin: 10px 0px;
+			border: 2px solid ${theme.colors.accent};
+			border-radius: 5px;
+			display: inline-flex;
+			min-width: fit-content;
+			padding: 6px;
+			position: relative;
+			left: -50%;
+			${getToggleButtonStyles(isFullScreen, theme)}
 		`}
+		onClick={() => setFullScreen(!isFullScreen)}
 	>
-		<button
-			css={css`
-				border: 2px solid ${theme.colors.accent};
-				border-radius: 5px;
-				min-width: fit-content;
-				padding: 3px 10px;
-				${getToggleButtonStyles(isFullScreen, theme)}
-			`}
-			onClick={() => setFullScreen(!isFullScreen)}
-		>
-			Full Screen
-		</button>
-	</div>
+		Full Screen
+	</button>
 );
 
 /* TODO: In current state, this button should not be disabled when Bam Visualizer is active 
@@ -84,6 +81,7 @@ export const BamFileButton = ({
 		css={css`
 			border: 2px solid ${theme.colors.accent};
 			border-radius: 5px;
+			display: inline-flex;
 			padding: 6px;
 			${getToggleButtonStyles(isFileTableActive, theme)}
 			:disabled {

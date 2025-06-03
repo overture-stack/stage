@@ -30,11 +30,11 @@ import { useEffect, useMemo, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable/index';
+import { BamFileButton, FullScreenButton } from './BamTable/Buttons';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
-import { BamFileButton } from './BamTable/Buttons';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 
@@ -169,6 +169,7 @@ const PageContent = () => {
 						>
 							<QueryBar />
 
+							{/* Visualizer Header */}
 							<article
 								css={css`
 									background-color: ${theme.colors.white};
@@ -180,6 +181,8 @@ const PageContent = () => {
 							>
 								<div
 									css={css`
+										display: flex;
+										justify-content: space-between;
 										margin-bottom: 8px;
 									`}
 								>
@@ -190,6 +193,9 @@ const PageContent = () => {
 										switchTable={switchTable}
 										theme={theme}
 									/>
+									{isFileTableActive ? null : (
+										<FullScreenButton isFullScreen={false} setFullScreen={() => {}} theme={theme} />
+									)}
 								</div>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>
