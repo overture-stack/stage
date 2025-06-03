@@ -24,13 +24,13 @@ import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage: React.FC<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
+const DataDictionaryPage: FC<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
 	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
 
