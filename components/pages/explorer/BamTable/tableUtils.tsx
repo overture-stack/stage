@@ -20,7 +20,6 @@
  */
 
 import { type FileTableData } from '../fileTypes';
-import { Theme } from '@emotion/react';
 
 const getFileSizeString = (numFileSize: number) =>
 	numFileSize < 10 ** 3
@@ -44,14 +43,4 @@ export const getTableData = (file: FileTableData) => {
 	const fileSize = getFileSizeString(numFileSize);
 
 	return { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileStrategy, fileSize };
-};
-
-export const getToggleButtonStyles = (active: boolean, theme: Theme) => {
-	const {
-		colors: { accent, white },
-	} = theme;
-	return `
-			background-color: ${active ? white : accent};
-			color: ${active ? accent : white};
-		`;
 };

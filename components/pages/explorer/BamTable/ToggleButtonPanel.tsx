@@ -27,7 +27,7 @@ import {
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-import { getToggleButtonStyles } from './tableUtils';
+import { getToggleButtonStyles } from './Buttons';
 
 export const ToggleButtonPanel = ({
 	elementState,

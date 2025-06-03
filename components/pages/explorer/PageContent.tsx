@@ -28,14 +28,13 @@ import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
-import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable/index';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
-import { getToggleButtonStyles } from './BamTable/tableUtils';
+import { BamFileButton } from './BamTable/Buttons';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 
@@ -146,9 +145,7 @@ const PageContent = () => {
 							background-color: ${theme.colors.white};
 							z-index: 1;
 							${theme.shadow.right};
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
+							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
 							overflow-y: scroll;
 						`}
 					>
@@ -159,9 +156,7 @@ const PageContent = () => {
 							display: flex;
 							flex-direction: column;
 							width: 100%;
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
+							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
 							overflow-y: scroll;
 						`}
 					>
@@ -188,46 +183,13 @@ const PageContent = () => {
 										margin-bottom: 8px;
 									`}
 								>
-									{/* TODO: In current state, this button should not be disabled when Bam Visualizer is active, to allow navigation back to File Table.
-										Final UI mockups will change how navigation and disabled states are handled.
-										*/}
-									<button
-										disabled={!isBamFileSelected && isFileTableActive}
-										css={css`
-											border: 2px solid ${theme.colors.accent};
-											border-radius: 5px;
-											padding: 6px;
-											${getToggleButtonStyles(isFileTableActive, theme)}
-											:disabled {
-												background-color: ${theme.colors.grey_1};
-												border: 2px solid ${theme.colors.grey_4};
-												color: ${theme.colors.grey_4};
-											}
-										`}
-										onClick={switchTable}
-									>
-										{isFileTableActive ? (
-											<span>
-												<File
-													fill={iconColor}
-													style={css`
-														vertical-align: middle;
-													`}
-												/>{' '}
-												Files
-											</span>
-										) : (
-											<span>
-												<Screen
-													fill={iconColor}
-													style={css`
-														vertical-align: middle;
-													`}
-												/>{' '}
-												Visualization
-											</span>
-										)}
-									</button>
+									<BamFileButton
+										iconColor={iconColor}
+										isBamFileSelected={isBamFileSelected}
+										isFileTableActive={isFileTableActive}
+										switchTable={switchTable}
+										theme={theme}
+									/>
 								</div>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>

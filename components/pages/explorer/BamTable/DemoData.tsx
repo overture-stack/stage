@@ -23,7 +23,7 @@
 import { css, Theme } from '@emotion/react';
 import { SetStateAction } from 'react';
 import { FileMetaData, FileTableData } from '../fileTypes';
-import { getToggleButtonStyles } from './tableUtils';
+import { getToggleButtonStyles } from './Buttons';
 
 export const demoFileMetadata: FileMetaData = {
 	objectId: 'demoFileData',
