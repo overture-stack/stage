@@ -1,6 +1,6 @@
+import { Dictionary } from '@overture-stack/lectern-client';
 import { FC } from 'react';
 import Dropdown from './Dropdown/Dropdown';
-import { Dictionary } from '@overture-stack/lectern-client';
 
 type FilterDropdownProps = {
 	data: Dictionary;

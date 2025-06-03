@@ -18,17 +18,15 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import SchemaTables from '@/components/DataTableComponent/Table';
+import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
+import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
-import SchemaTables from '@/components/DataTableComponent/Table';
-import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
-import FilterDropdown from '@/components/FilterDropdown';
-import PageLayout from '@/components/PageLayout';
-import { Dictionary } from '@overture-stack/lectern-client';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
