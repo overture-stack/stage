@@ -51,7 +51,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
-
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
 		const data = await getFileMetaData(file);
@@ -85,6 +84,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	}, [fileUrl, file]);
 	return (
 		<>
+			<h2>{fileId}</h2>
+			<ToggleButtonPanel elementState={elementState} updateElements={updateElements} theme={theme} />
 			{/* TODO: Remove Demo Data Button */}
 			<DemoDataButton
 				file={file}
@@ -93,12 +94,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				loading={loading}
 				setFileMetaData={setFileMetaData}
 				setLoading={setLoading}
-				theme={theme}
-			/>
-			<h2>{fileId}</h2>
-			<ToggleButtonPanel
-				elementState={elementState}
-				updateElements={updateElements}
 				theme={theme}
 			/>
 			{loading || !fileUrl ? (
@@ -131,11 +126,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPercentBox
-												label={displayNames[key]}
-												percentKey={key}
-												totalKey="total_reads"
-											/>
+											<IobioPercentBox label={displayNames[key]} percentKey={key} totalKey="total_reads" />
 										</div>
 									),
 							)}
@@ -171,11 +162,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioHistogram
-												brokerKey={key}
-												ignoreOutliers={isOutlierKey(key)}
-												label={displayNames[key]}
-											/>
+											<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} label={displayNames[key]} />
 										</div>
 									),
 							)}

@@ -66,7 +66,11 @@ export const DemoDataButton = ({
 	}
 
 	return (
-		<div>
+		<div
+			css={css`
+				margin: 10px 0px;
+			`}
+		>
 			<button
 				css={css`
 					border: 2px solid ${theme.colors.accent};
