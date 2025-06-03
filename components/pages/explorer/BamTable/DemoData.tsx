@@ -41,7 +41,9 @@ export const DemoDataButton = ({
 	loading,
 	setFileMetaData,
 	setLoading,
-	theme,
+	theme: {
+		colors: { accent, white },
+	},
 }: {
 	isDemoData: boolean;
 	file?: FileTableData;
@@ -73,11 +75,11 @@ export const DemoDataButton = ({
 		>
 			<button
 				css={css`
-					border: 2px solid ${theme.colors.accent};
+					border: 2px solid ${accent};
 					border-radius: 5px;
 					min-width: fit-content;
 					padding: 3px 10px;
-					${getToggleButtonStyles(isDemoData, theme)}
+					${getToggleButtonStyles(isDemoData, accent, white)}
 				`}
 				onClick={loadDemoFile}
 			>

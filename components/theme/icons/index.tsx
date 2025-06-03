@@ -38,6 +38,8 @@ import Spinner from './spinner';
 import Screen from './screen';
 import Error from './error';
 import Warning from './warning';
+import FullScreen from './fullScreen';
+import OncoJS from './oncoJS';
 
 export {
 	GoogleLogo,
@@ -51,6 +53,8 @@ export {
 	ChevronDown,
 	Download,
 	File,
+	FullScreen,
+	OncoJS,
 	OvertureLogo,
 	OvertureLogoWithText,
 	OvertureUser,

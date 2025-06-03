@@ -32,7 +32,9 @@ import { getToggleButtonStyles } from './Buttons';
 export const ToggleButtonPanel = ({
 	elementState,
 	updateElements,
-	theme,
+	theme: {
+		colors: { accent, white },
+	},
 }: {
 	elementState: BamContext;
 	updateElements: (key: BamKey, value: boolean) => void;
@@ -60,13 +62,13 @@ export const ToggleButtonPanel = ({
 		>
 			{BamKeys.map((key) => {
 				const active = elementState[key];
-				const toggleButtonStyles = getToggleButtonStyles(active, theme);
+				const toggleButtonStyles = getToggleButtonStyles(active, accent, white);
 
 				return (
 					<button
 						css={css`
 							display: inline-block;
-							border: 2px solid ${theme.colors.accent};
+							border: 2px solid ${accent};
 							border-radius: 20px;
 							margin: 5px;
 							min-width: fit-content;

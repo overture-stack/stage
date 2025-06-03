@@ -21,22 +21,24 @@
 
 import { css, Theme } from '@emotion/react';
 import { SetStateAction } from 'react';
-import { File, Screen } from '../../../theme/icons';
+import { ChevronDown, FullScreen, OncoJS } from '../../../theme/icons';
 
-export const getToggleButtonStyles = (active: boolean, theme: Theme) => {
-	const {
-		colors: { accent, white },
-	} = theme;
-	return `
+export const getToggleButtonStyles = (active: boolean, accent: string, white: string) => `
+			border: 2px solid ${accent};
+			border-radius: 5px;
+			display: inline-flex;
+			min-width: fit-content;
+			padding: 6px;
 			background-color: ${active ? white : accent};
 			color: ${active ? accent : white};
 		`;
-};
 
 export const FullScreenButton = ({
 	isFullScreen,
 	setFullScreen,
-	theme,
+	theme: {
+		colors: { accent, white },
+	},
 }: {
 	isFullScreen: boolean;
 	setFullScreen: (value: SetStateAction<boolean>) => void;
@@ -44,17 +46,20 @@ export const FullScreenButton = ({
 }) => (
 	<button
 		css={css`
-			border: 2px solid ${theme.colors.accent};
-			border-radius: 5px;
-			display: inline-flex;
-			min-width: fit-content;
-			padding: 6px;
 			position: relative;
-			left: -50%;
-			${getToggleButtonStyles(isFullScreen, theme)}
+			right: 50%;
+			${getToggleButtonStyles(isFullScreen, accent, white)}
 		`}
 		onClick={() => setFullScreen(!isFullScreen)}
 	>
+		<FullScreen
+			width={16}
+			height={16}
+			fill={white}
+			style={css`
+				vertical-align: middle;
+			`}
+		/>{' '}
 		Full Screen
 	</button>
 );
@@ -68,7 +73,9 @@ export const BamFileButton = ({
 	isBamFileSelected,
 	isFileTableActive,
 	switchTable,
-	theme,
+	theme: {
+		colors: { accent2, grey_1, grey_4, white },
+	},
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
@@ -79,38 +86,39 @@ export const BamFileButton = ({
 	<button
 		disabled={!isBamFileSelected && isFileTableActive}
 		css={css`
-			border: 2px solid ${theme.colors.accent};
-			border-radius: 5px;
-			display: inline-flex;
-			padding: 6px;
-			${getToggleButtonStyles(isFileTableActive, theme)}
+			${getToggleButtonStyles(false, accent2, white)}
 			:disabled {
-				background-color: ${theme.colors.grey_1};
-				border: 2px solid ${theme.colors.grey_4};
-				color: ${theme.colors.grey_4};
+				background-color: ${grey_1};
+				border: 2px solid ${grey_4};
+				color: ${grey_4};
 			}
 		`}
 		onClick={switchTable}
 	>
 		{isFileTableActive ? (
 			<span>
-				<File
-					fill={iconColor}
-					style={css`
-						vertical-align: middle;
-					`}
-				/>{' '}
-				Files
-			</span>
-		) : (
-			<span>
-				<Screen
+				<OncoJS
+					width={16}
+					height={16}
 					fill={iconColor}
 					style={css`
 						vertical-align: middle;
 					`}
 				/>{' '}
 				Visualization
+			</span>
+		) : (
+			<span>
+				<ChevronDown
+					fill={iconColor}
+					width={10}
+					height={10}
+					style={css`
+						transform: rotate(-90deg);
+						vertical-align: middle;
+					`}
+				/>{' '}
+				File Repository
 			</span>
 		)}
 	</button>
