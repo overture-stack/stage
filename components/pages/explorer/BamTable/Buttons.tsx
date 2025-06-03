@@ -55,9 +55,8 @@ export const FullScreenButton = ({
 		<FullScreen
 			width={16}
 			height={16}
-			fill={white}
 			style={css`
-				vertical-align: middle;
+				vertical-align: bottom;
 			`}
 		/>{' '}
 		Full Screen
@@ -102,7 +101,7 @@ export const BamFileButton = ({
 					height={16}
 					fill={iconColor}
 					style={css`
-						vertical-align: middle;
+						vertical-align: bottom;
 					`}
 				/>{' '}
 				Visualization
@@ -114,8 +113,7 @@ export const BamFileButton = ({
 					width={10}
 					height={10}
 					style={css`
-						transform: rotate(-90deg);
-						vertical-align: middle;
+						transform: rotate(90deg);
 					`}
 				/>{' '}
 				File Repository
