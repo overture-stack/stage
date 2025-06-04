@@ -60,35 +60,38 @@ const getTableConfigs = ({
 			},
 			DownloadButton: {
 				customExporters,
+				css: css`
+					:hover {
+						color: ${theme.colors.accent_dark};
+						svg {
+							background-color: ${theme.colors.secondary_light};
+							path {
+								fill: ${theme.colors.accent_dark};
+							}
+						}
+					}
+					:disabled {
+						svg {
+							background-color: ${theme.colors.secondary_light};
+						}
+						path {
+							fill: ${theme.colors.grey_5};
+						}
+					}
+				`,
 				downloadUrl: urlJoin(apiHost, 'download'),
 				label: () => (
-					<span
-						css={css`
-							:hover {
-								color: ${theme.colors.accent_dark};
-								svg {
-									background-color: ${theme.colors.secondary_light};
-									path {
-										fill: ${theme.colors.accent_dark};
-									}
-								}
-							}
-						`}
-					>
+					<>
 						<Download
 							fill={theme.colors.white}
 							style={css`
 								color: ${theme.colors.white};
 								background-color: ${theme.colors.accent_dark};
 								margin-right: 0.2rem;
-
-								[disabled] & > path {
-									fill: ${theme.colors.grey_5};
-								}
 							`}
 						/>{' '}
 						Download
-					</span>
+					</>
 				),
 				ListWrapper: {
 					width: '11rem',
@@ -102,8 +105,10 @@ const getTableConfigs = ({
 				css: css`
 					${theme.typography.subheading2}
 					line-height: 1.3rem;
-					[disabled] & > path {
-						fill: ${theme.colors.accent_dark};
+					:disabled {
+						path {
+							fill: ${theme.colors.grey_5};
+						}
 					}
 					:hover {
 						color: ${theme.colors.accent_dark};
@@ -213,7 +218,14 @@ const RepoTable = () => {
 		() => (
 			<>
 				<Toolbar />
-				<Table />
+				<Table
+					theme={{
+						// CountDisplay theme only allows font properties so this hides the element in the Table
+						CountDisplay: {
+							fontSize: '0px',
+						},
+					}}
+				/>
 				<CountDisplay />
 				<Pagination />
 			</>
