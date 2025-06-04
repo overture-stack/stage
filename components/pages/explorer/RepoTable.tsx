@@ -20,7 +20,7 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { Pagination, Table, Toolbar, useArrangerTheme } from '@overture-stack/arranger-components';
+import { CountDisplay, Pagination, Table, Toolbar, useArrangerTheme } from '@overture-stack/arranger-components';
 import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
 import { useMemo } from 'react';
@@ -62,10 +62,24 @@ const getTableConfigs = ({
 				customExporters,
 				downloadUrl: urlJoin(apiHost, 'download'),
 				label: () => (
-					<>
+					<span
+						css={css`
+							:hover {
+								color: ${theme.colors.accent_dark};
+								svg {
+									background-color: ${theme.colors.secondary_light};
+									path {
+										fill: ${theme.colors.accent_dark};
+									}
+								}
+							}
+						`}
+					>
 						<Download
-							fill={theme.colors.accent_dark}
+							fill={theme.colors.white}
 							style={css`
+								color: ${theme.colors.white};
+								background-color: ${theme.colors.accent_dark};
 								margin-right: 0.2rem;
 
 								[disabled] & > path {
@@ -74,23 +88,34 @@ const getTableConfigs = ({
 							`}
 						/>{' '}
 						Download
-					</>
+					</span>
 				),
 				ListWrapper: {
 					width: '11rem',
 				},
 			},
 			DropDown: {
-				arrowColor: '#151c3d',
+				arrowColor: theme.colors.white,
 				arrowTransition: 'all 0s',
-				background: theme.colors.white,
+				background: theme.colors.accent_dark,
 				borderColor: theme.colors.grey_5,
 				css: css`
 					${theme.typography.subheading2}
 					line-height: 1.3rem;
+					[disabled] & > path {
+						fill: ${theme.colors.accent_dark};
+					}
+					:hover {
+						color: ${theme.colors.accent_dark};
+						svg {
+							path {
+								fill: ${theme.colors.accent_dark};
+							}
+						}
+					}
 				`,
-				fontColor: theme.colors.accent_dark,
 				disabledFontColor: theme.colors.grey_5,
+				fontColor: theme.colors.white,
 				hoverBackground: theme.colors.secondary_light,
 
 				ListWrapper: {
@@ -189,6 +214,7 @@ const RepoTable = () => {
 			<>
 				<Toolbar />
 				<Table />
+				<CountDisplay />
 				<Pagination />
 			</>
 		),
