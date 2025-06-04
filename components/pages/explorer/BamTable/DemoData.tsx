@@ -23,7 +23,7 @@
 import { css, Theme } from '@emotion/react';
 import { SetStateAction } from 'react';
 import { FileMetaData, FileTableData } from '../fileTypes';
-import { getToggleButtonStyles } from './Buttons';
+import { getToggleButtonStyles } from '../HeaderButtons';
 
 export const demoFileMetadata: FileMetaData = {
 	objectId: 'demoFileData',
@@ -79,7 +79,7 @@ export const DemoDataButton = ({
 					border-radius: 5px;
 					min-width: fit-content;
 					padding: 3px 10px;
-					${getToggleButtonStyles(isDemoData, accent, white)}
+					${getToggleButtonStyles({ active: isDemoData, accent, white })}
 				`}
 				onClick={loadDemoFile}
 			>

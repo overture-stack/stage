@@ -20,8 +20,7 @@
  */
 
 import { css, Theme } from '@emotion/react';
-import { BamFileButton, FullScreenButton } from './BamTable/Buttons';
-import { type FileTableData } from './fileTypes';
+import { BamFileButton, FullScreenButton } from './HeaderButtons';
 
 const TableHeader = ({
 	iconColor,

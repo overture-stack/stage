@@ -27,14 +27,20 @@ import {
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-import { getToggleButtonStyles } from './Buttons';
+const getActiveButtonStyles = (active: boolean, theme: Theme) => {
+	const {
+		colors: { accent, white },
+	} = theme;
+	return `
+			background-color: ${active ? white : accent};
+			color: ${active ? accent : white};
+		`;
+};
 
 export const ToggleButtonPanel = ({
 	elementState,
 	updateElements,
-	theme: {
-		colors: { accent, white },
-	},
+	theme,
 }: {
 	elementState: BamContext;
 	updateElements: (key: BamKey, value: boolean) => void;
@@ -62,7 +68,10 @@ export const ToggleButtonPanel = ({
 		>
 			{BamKeys.map((key) => {
 				const active = elementState[key];
-				const toggleButtonStyles = getToggleButtonStyles(active, accent, white);
+				const toggleButtonStyles = getActiveButtonStyles(active, theme);
+				const {
+					colors: { accent },
+				} = theme;
 
 				return (
 					<button
