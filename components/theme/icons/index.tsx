@@ -39,7 +39,7 @@ import Screen from './screen';
 import Error from './error';
 import Warning from './warning';
 import FullScreen from './fullScreen';
-import OncoJS from './oncoJS';
+import BarGraph from './barGraph';
 
 export {
 	GoogleLogo,
@@ -54,7 +54,7 @@ export {
 	Download,
 	File,
 	FullScreen,
-	OncoJS,
+	BarGraph,
 	OvertureLogo,
 	OvertureLogoWithText,
 	OvertureUser,
