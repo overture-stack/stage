@@ -24,7 +24,7 @@ import { SetStateAction } from 'react';
 import { ChevronDown, FullScreen, BarGraph } from '../../../theme/icons';
 
 export const getToggleButtonStyles = (active: boolean, accent: string, white: string) => `
-			border: 2px solid ${accent};
+			border: 1px solid ${accent};
 			border-radius: 0.5rem;
 			display: inline-flex;
 			min-width: fit-content;
@@ -86,7 +86,7 @@ export const BamFileButton = ({
 			${getToggleButtonStyles(false, accent2, white)}
 			:disabled {
 				background-color: ${grey_1};
-				border: 2px solid ${grey_4};
+				border: 1px solid ${grey_4};
 				color: ${grey_4};
 			}
 		`}

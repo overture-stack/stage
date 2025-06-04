@@ -30,13 +30,13 @@ import { useEffect, useMemo, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable/index';
-import { BamFileButton, FullScreenButton } from './BamTable/Buttons';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
+import TableHeader from './TableHeader';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',
@@ -167,8 +167,6 @@ const PageContent = () => {
 							`}
 						>
 							<QueryBar />
-
-							{/* Visualizer Header */}
 							<article
 								css={css`
 									background-color: ${theme.colors.white};
@@ -178,24 +176,13 @@ const PageContent = () => {
 									${theme.shadow.default};
 								`}
 							>
-								<div
-									css={css`
-										display: flex;
-										justify-content: space-between;
-										${isFileTableActive ? 'position: absolute;' : ''}
-									`}
-								>
-									<BamFileButton
-										iconColor={iconColor}
-										isBamFileSelected={isBamFileSelected}
-										isFileTableActive={isFileTableActive}
-										switchTable={switchTable}
-										theme={theme}
-									/>
-									{isFileTableActive ? null : (
-										<FullScreenButton isFullScreen={false} setFullScreen={() => {}} theme={theme} />
-									)}
-								</div>
+								<TableHeader
+									iconColor={iconColor}
+									isFileTableActive={isFileTableActive}
+									isBamFileSelected={isBamFileSelected}
+									switchTable={switchTable}
+									theme={theme}
+								/>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>
 						</div>
