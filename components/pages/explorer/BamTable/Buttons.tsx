@@ -65,10 +65,6 @@ export const FullScreenButton = ({
 	</button>
 );
 
-/* TODO: In current state, this button should not be disabled when Bam Visualizer is active 
-  to allow navigation back to File Table.
-  Final UI mockups will change how navigation and disabled states are handled.
-*/
 export const BamFileButton = ({
 	iconColor,
 	isBamFileSelected,
