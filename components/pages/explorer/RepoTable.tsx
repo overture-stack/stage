@@ -56,11 +56,14 @@ const getTableConfigs = ({
 
 			// Child components
 			CountDisplay: {
-				fontColor: 'inherit',
+				// Table CountDisplay is hidden in order to position CountDisplay with Pagination
+				fontSize: '0px',
 			},
 			DownloadButton: {
 				customExporters,
 				css: css`
+					border-radius: 0.5rem;
+					padding: 0.5rem 0.8rem;
 					:hover {
 						color: ${theme.colors.accent_dark};
 						svg {
@@ -104,7 +107,9 @@ const getTableConfigs = ({
 				borderColor: theme.colors.grey_5,
 				css: css`
 					${theme.typography.subheading2}
+					border-radius: 0.5rem;
 					line-height: 1.3rem;
+					padding: 0.5rem 0.8rem;
 					:disabled {
 						path {
 							fill: ${theme.colors.grey_5};
@@ -218,16 +223,36 @@ const RepoTable = () => {
 		() => (
 			<>
 				<Toolbar />
-				<Table
-					theme={{
-						// CountDisplay theme only allows font properties so this hides the element in the Table
-						CountDisplay: {
-							fontSize: '0px',
-						},
-					}}
+				<div
+					css={css`
+						position: relative;
+						top: -2px;
+					`}
+				>
+					<Table />
+				</div>
+				<div
+					css={css`
+						position: relative;
+					`}
+				>
+					<CountDisplay
+						css={css`
+							color: ${theme.colors.black};
+							left: 170px;
+							position: absolute;
+							top: 3px;
+						`}
+						theme={{
+							fontSize: '0.8rem',
+						}}
+					/>
+				</div>
+				<Pagination
+					css={css`
+						color: ${theme.colors.black};
+					`}
 				/>
-				<CountDisplay />
-				<Pagination />
 			</>
 		),
 		[],

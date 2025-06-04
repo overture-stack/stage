@@ -25,10 +25,10 @@ import { ChevronDown, FullScreen, OncoJS } from '../../../theme/icons';
 
 export const getToggleButtonStyles = (active: boolean, accent: string, white: string) => `
 			border: 2px solid ${accent};
-			border-radius: 5px;
+			border-radius: 0.5rem;
 			display: inline-flex;
 			min-width: fit-content;
-			padding: 6px;
+			padding: 0.5rem 0.8rem;
 			background-color: ${active ? white : accent};
 			color: ${active ? accent : white};
 		`;

@@ -137,7 +137,6 @@ const PageContent = () => {
 					>
 						Show
 					</button> */}
-
 					<aside
 						css={css`
 							flex: 0 0 ${sidebarWidth}px;
@@ -183,7 +182,7 @@ const PageContent = () => {
 									css={css`
 										display: flex;
 										justify-content: space-between;
-										margin-bottom: 8px;
+										${isFileTableActive ? 'position: absolute;' : ''}
 									`}
 								>
 									<BamFileButton
