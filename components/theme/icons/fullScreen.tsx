@@ -26,15 +26,18 @@ import { IconProps } from './types';
 const FullScreen = ({ width, height, style }: IconProps) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		css={css`
-			${style};
-		`}
 		width={width}
 		height={height}
+		css={css`
+			${style}
+		`}
 		fill="none"
 		viewBox="0 0 16 15"
 	>
-		<path stroke="#fff" strokeWidth="2" d="M1 1.182h14v12.546H1z"></path>
+		<path
+			fill="#fff"
+			d="M2 12.728h4v2H0V9.272h2zm14 2h-6v-2h4V9.272h2zM6 2.182H2v3.455H0V.182h6zm10 3.455h-2V2.182h-4v-2h6z"
+		></path>
 	</svg>
 );
 

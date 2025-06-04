@@ -52,14 +52,16 @@ export const FullScreenButton = ({
 		`}
 		onClick={() => setFullScreen(!isFullScreen)}
 	>
-		<FullScreen
-			width={16}
-			height={16}
-			style={css`
-				vertical-align: bottom;
-			`}
-		/>{' '}
-		Full Screen
+		<span>
+			<FullScreen
+				width={16}
+				height={16}
+				style={css`
+					vertical-align: bottom;
+				`}
+			/>{' '}
+			Full Screen
+		</span>
 	</button>
 );
 
