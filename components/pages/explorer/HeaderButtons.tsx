@@ -20,7 +20,6 @@
  */
 
 import { css, Theme } from '@emotion/react';
-import { SetStateAction } from 'react';
 import { ChevronDown, FullScreen, BarGraph } from '../../theme/icons';
 
 export const getToggleButtonStyles = ({
@@ -49,16 +48,19 @@ export const FullScreenButton = ({
 	},
 }: {
 	isFullScreen: boolean;
-	setFullScreen: (value: SetStateAction<boolean>) => void;
+	setFullScreen: () => void;
 	theme: Theme;
 }) => (
 	<button
 		css={css`
+			path {
+				fill: ${isFullScreen ? accent : white};
+			}
 			position: relative;
 			right: 50%;
 			${getToggleButtonStyles({ active: isFullScreen, accent, white })}
 		`}
-		onClick={() => setFullScreen(!isFullScreen)}
+		onClick={setFullScreen}
 	>
 		<span>
 			<FullScreen
@@ -96,6 +98,9 @@ export const BamFileButton = ({
 				background-color: ${grey_1};
 				border: 1px solid ${grey_4};
 				color: ${grey_4};
+				path {
+					fill: ${grey_4};
+				}
 			}
 		`}
 		onClick={switchTable}

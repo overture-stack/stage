@@ -25,7 +25,7 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
@@ -47,20 +47,18 @@ const PageContent = () => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
-
 	// TODO: abstract this param handling into an Arranger integration.
 	const contextProps: Partial<UseTableContextProps> = {
 		callerName: 'Explorer-PageContent',
 	};
 	const arrangerData = useArrangerData(contextProps);
 	const { sqon, setSQON } = arrangerData;
-
 	const tableContext = useTableContext(contextProps);
 	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
-
 	const [firstRender, setFirstRender] = useState<boolean>(true);
+	const [isFullScreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
 		deSerialize: (v) => {
@@ -68,6 +66,14 @@ const PageContent = () => {
 		},
 		serialize: (v) => (v ? stringify(v) : ''),
 	});
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	const isBamFileSelected = Boolean(currentBamFile);
+	const pageContentRef = useRef<HTMLElement>(null);
+	const iconColor = isFileTableActive
+		? isBamFileSelected
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
 	useEffect(() => {
 		if (firstRender) {
@@ -81,7 +87,6 @@ const PageContent = () => {
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
 	// Disable Visualization button unless only 1 BAM Compatible file is selected
-	// TODO: Add User Error messaging
 	useEffect(() => {
 		const oneFileSelected = selectedRows.length === 1;
 		if (oneFileSelected) {
@@ -104,13 +109,15 @@ const PageContent = () => {
 		setTableType(nextTableValue);
 	};
 
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
-	const isBamFileSelected = Boolean(currentBamFile);
-	const iconColor = isFileTableActive
-		? isBamFileSelected
-			? theme.colors.accent
-			: theme.colors.grey_4
-		: theme.colors.white;
+	const toggleFullScreen = () => {
+		if (!isFullScreen && pageContentRef.current) {
+			pageContentRef.current.requestFullscreen();
+			setFullscreen(true);
+		} else {
+			document.exitFullscreen();
+			setFullscreen(false);
+		}
+	};
 
 	return useMemo(
 		() => (
@@ -175,11 +182,14 @@ const PageContent = () => {
 									padding: 8px;
 									${theme.shadow.default};
 								`}
+								ref={pageContentRef}
 							>
 								<TableHeader
 									iconColor={iconColor}
-									isFileTableActive={isFileTableActive}
 									isBamFileSelected={isBamFileSelected}
+									isFileTableActive={isFileTableActive}
+									isFullScreen={isFullScreen}
+									toggleFullScreen={toggleFullScreen}
 									switchTable={switchTable}
 									theme={theme}
 								/>

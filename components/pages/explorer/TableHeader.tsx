@@ -24,14 +24,18 @@ import { BamFileButton, FullScreenButton } from './HeaderButtons';
 
 const TableHeader = ({
 	iconColor,
-	isFileTableActive,
 	isBamFileSelected,
+	isFileTableActive,
+	isFullScreen,
+	toggleFullScreen,
 	switchTable,
 	theme,
 }: {
 	iconColor: string;
-	isFileTableActive: boolean;
 	isBamFileSelected: boolean;
+	isFileTableActive: boolean;
+	isFullScreen: boolean;
+	toggleFullScreen: () => void;
 	switchTable: () => void;
 	theme: Theme;
 }) => (
@@ -49,7 +53,9 @@ const TableHeader = ({
 			switchTable={switchTable}
 			theme={theme}
 		/>
-		{isFileTableActive ? null : <FullScreenButton isFullScreen={false} setFullScreen={() => {}} theme={theme} />}
+		{isFileTableActive ? null : (
+			<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} theme={theme} />
+		)}
 	</div>
 );
 
