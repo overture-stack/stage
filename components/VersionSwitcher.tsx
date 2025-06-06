@@ -20,20 +20,21 @@
  */
 
 import { Dictionary } from '@overture-stack/lectern-client';
-import { FC } from 'react';
 import Dropdown from './Dropdown/Dropdown';
 import History from './theme/icons/history';
 
 type VersionSwitcherProps = {
-	dictionaryData: Dictionary[] | null;
+	dictionaryData: Dictionary[];
 	onVersionChange: (index: number) => void;
 	dictionaryIndex: number;
 };
 
-const VersionSwitcher: FC<VersionSwitcherProps> = ({ dictionaryIndex, dictionaryData, onVersionChange }) => {
+const VersionSwitcher = ({ dictionaryIndex, dictionaryData, onVersionChange }: VersionSwitcherProps) => {
 	const versionSwitcherObject = dictionaryData?.map((dictionary: Dictionary, index: number) => {
+		// TODO: We should either remove the version date stamp requirement or update the date to be dynamic via
+		// lectern-client
 		return {
-			label: 'Version ' + dictionary.version + ' (2025-09-26)',
+			label: 'Version ' + dictionary.version,
 			action: () => {
 				onVersionChange(index);
 			},
@@ -43,7 +44,7 @@ const VersionSwitcher: FC<VersionSwitcherProps> = ({ dictionaryIndex, dictionary
 		<Dropdown
 			leftIcon={<History />}
 			menuItems={versionSwitcherObject}
-			title={`Version ${dictionaryData?.[dictionaryIndex].version} (2025-09-26)`}
+			title={`Version ${dictionaryData?.[dictionaryIndex].version}`}
 		/>
 	);
 };
