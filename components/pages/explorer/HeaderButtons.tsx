@@ -30,7 +30,8 @@ export const getToggleButtonStyles = ({
 	active: boolean;
 	accent: string;
 	white: string;
-}) => `
+}) => {
+	return `
 			border: 1px solid ${accent};
 			border-radius: 0.5rem;
 			display: inline-flex;
@@ -39,6 +40,7 @@ export const getToggleButtonStyles = ({
 			background-color: ${active ? white : accent};
 			color: ${active ? accent : white};
 		`;
+};
 
 export const FullScreenButton = ({
 	isFullScreen,
@@ -58,7 +60,8 @@ export const FullScreenButton = ({
 			}
 			position: relative;
 			right: 50%;
-			${getToggleButtonStyles({ active: isFullScreen, accent, white })}
+			transform: translate(50%);
+			${getToggleButtonStyles({ active: isFullScreen, accent, white })};
 		`}
 		onClick={setFullScreen}
 	>
