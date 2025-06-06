@@ -94,7 +94,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				loading={loading}
 				setFileMetaData={setFileMetaData}
 				setLoading={setLoading}
-				theme={theme}
 			/>
 			{loading || !fileUrl ? (
 				<Loader />

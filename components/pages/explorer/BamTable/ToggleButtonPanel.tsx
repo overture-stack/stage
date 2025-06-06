@@ -19,7 +19,7 @@
  *
  */
 
-import { css, Theme, useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import {
 	BamKeys,
 	BamDisplayNames as displayNames,
@@ -27,10 +27,10 @@ import {
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-const getActiveButtonStyles = (active: boolean, theme: Theme) => {
+const getActiveButtonStyles = ({ active }: { active: boolean }) => {
 	const {
 		colors: { accent, white },
-	} = theme;
+	} = useTheme();
 	return `
 			background-color: ${active ? white : accent};
 			color: ${active ? accent : white};
@@ -44,7 +44,9 @@ export const ToggleButtonPanel = ({
 	bamContext: BamContext;
 	onToggle: (key: BamKey, value: boolean) => void;
 }) => {
-	const theme = useTheme();
+	const {
+		colors: { accent },
+	} = useTheme();
 	return (
 		<div
 			css={css`
@@ -68,10 +70,7 @@ export const ToggleButtonPanel = ({
 			>
 				{BamKeys.map((key) => {
 					const active = bamContext[key];
-					const toggleButtonStyles = getActiveButtonStyles(active, theme);
-					const {
-						colors: { accent },
-					} = theme;
+					const toggleButtonStyles = getActiveButtonStyles({ active });
 
 					return (
 						<button

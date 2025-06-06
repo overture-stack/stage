@@ -191,7 +191,6 @@ const PageContent = () => {
 									isFullScreen={isFullScreen}
 									toggleFullScreen={toggleFullScreen}
 									switchTable={switchTable}
-									theme={theme}
 								/>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>

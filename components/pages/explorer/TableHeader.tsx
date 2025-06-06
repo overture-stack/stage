@@ -29,7 +29,6 @@ const TableHeader = ({
 	isFullScreen,
 	toggleFullScreen,
 	switchTable,
-	theme,
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
@@ -37,7 +36,6 @@ const TableHeader = ({
 	isFullScreen: boolean;
 	toggleFullScreen: () => void;
 	switchTable: () => void;
-	theme: Theme;
 }) => (
 	<div
 		css={css`
@@ -51,11 +49,8 @@ const TableHeader = ({
 			isBamFileSelected={isBamFileSelected}
 			isFileTableActive={isFileTableActive}
 			switchTable={switchTable}
-			theme={theme}
 		/>
-		{isFileTableActive ? null : (
-			<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} theme={theme} />
-		)}
+		{isFileTableActive ? null : <FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />}
 	</div>
 );
 

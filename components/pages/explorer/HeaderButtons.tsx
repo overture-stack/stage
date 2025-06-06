@@ -19,18 +19,13 @@
  *
  */
 
-import { css, Theme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { ChevronDown, FullScreen, BarGraph } from '../../theme/icons';
 
-export const getToggleButtonStyles = ({
-	active,
-	accent,
-	white,
-}: {
-	active: boolean;
-	accent: string;
-	white: string;
-}) => {
+export const getToggleButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
+	const {
+		colors: { white },
+	} = useTheme();
 	return `
 			border: 1px solid ${accent};
 			border-radius: 0.5rem;
@@ -45,93 +40,95 @@ export const getToggleButtonStyles = ({
 export const FullScreenButton = ({
 	isFullScreen,
 	setFullScreen,
-	theme: {
-		colors: { accent, white },
-	},
 }: {
 	isFullScreen: boolean;
 	setFullScreen: () => void;
-	theme: Theme;
-}) => (
-	<button
-		css={css`
-			path {
-				fill: ${isFullScreen ? accent : white};
-			}
-			position: relative;
-			right: 50%;
-			transform: translate(50%);
-			${getToggleButtonStyles({ active: isFullScreen, accent, white })};
-		`}
-		onClick={setFullScreen}
-	>
-		<span>
-			<FullScreen
-				width={16}
-				height={16}
-				style={css`
-					vertical-align: bottom;
-				`}
-			/>{' '}
-			Full Screen
-		</span>
-	</button>
-);
+}) => {
+	const {
+		colors: { accent, white },
+	} = useTheme();
+	return (
+		<button
+			css={css`
+				path {
+					fill: ${isFullScreen ? accent : white};
+				}
+				position: relative;
+				right: 50%;
+				transform: translate(50%);
+				${getToggleButtonStyles({ active: isFullScreen, accent })};
+			`}
+			onClick={setFullScreen}
+		>
+			<span>
+				<FullScreen
+					width={16}
+					height={16}
+					style={css`
+						vertical-align: bottom;
+					`}
+				/>{' '}
+				Full Screen
+			</span>
+		</button>
+	);
+};
 
 export const BamFileButton = ({
 	iconColor,
 	isBamFileSelected,
 	isFileTableActive,
 	switchTable,
-	theme: {
-		colors: { accent2, grey_1, grey_4, white },
-	},
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
 	isFileTableActive: boolean;
 	switchTable: () => void;
-	theme: Theme;
-}) => (
-	<button
-		disabled={!isBamFileSelected && isFileTableActive}
-		css={css`
-			${getToggleButtonStyles({ active: false, accent: accent2, white })}
-			:disabled {
-				background-color: ${grey_1};
-				border: 1px solid ${grey_4};
-				color: ${grey_4};
-				path {
-					fill: ${grey_4};
+}) => {
+	const {
+		colors: { accent2, grey_1, grey_4 },
+	} = useTheme();
+	return (
+		<button
+			disabled={!isBamFileSelected && isFileTableActive}
+			css={css`
+				${getToggleButtonStyles({ active: false, accent: accent2 })}
+				:disabled {
+					background-color: ${grey_1};
+					border: 1px solid ${grey_4};
+					color: ${grey_4};
+					path {
+						fill: ${grey_4};
+					}
 				}
-			}
-		`}
-		onClick={switchTable}
-	>
-		{isFileTableActive ? (
-			<span>
-				<BarGraph
-					width={16}
-					height={16}
-					fill={iconColor}
-					style={css`
-						vertical-align: bottom;
-					`}
-				/>{' '}
-				Visualization
-			</span>
-		) : (
-			<span>
-				<ChevronDown
-					fill={iconColor}
-					width={10}
-					height={10}
-					style={css`
-						transform: rotate(90deg);
-					`}
-				/>{' '}
-				File Repository
-			</span>
-		)}
-	</button>
-);
+			`}
+			onClick={switchTable}
+		>
+			{isFileTableActive ? (
+				<span>
+					<BarGraph
+						width={16}
+						height={16}
+						fill={iconColor}
+						style={css`
+							vertical-align: bottom;
+						`}
+					/>{' '}
+					Visualization
+				</span>
+			) : (
+				<span>
+					<ChevronDown
+						fill={iconColor}
+						width={10}
+						height={10}
+						style={css`
+							transform: rotate(90deg);
+						`}
+					/>{' '}
+					File Repository
+				</span>
+			)}
+		</button>
+	);
+};
