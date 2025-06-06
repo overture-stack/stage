@@ -241,7 +241,7 @@ const RepoTable = () => {
 							color: ${theme.colors.black};
 							left: 170px;
 							position: absolute;
-							top: 3px;
+							top: 2px;
 						`}
 						theme={{
 							fontSize: '0.8rem',
