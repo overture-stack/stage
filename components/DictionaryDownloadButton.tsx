@@ -70,12 +70,7 @@ type DictionaryDownloadButtonProps = {
 	fileType?: 'tsv' | 'csv';
 };
 
-const DictionaryDownloadButton: FC<DictionaryDownloadButtonProps> = ({
-	version,
-	name,
-	lecternUrl,
-	fileType = 'tsv',
-}) => {
+const DictionaryDownloadButton = ({ version, name, lecternUrl, fileType = 'tsv' }: DictionaryDownloadButtonProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const theme = useTheme();
 
