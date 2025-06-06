@@ -23,7 +23,7 @@ import { css } from '@emotion/react';
 
 import { IconProps } from './types';
 
-const FullScreen = ({ width, height, style }: IconProps) => (
+const BarGraph = ({ width, height, style }: IconProps) => (
 	<svg
 		css={css`
 			${style};
@@ -263,4 +263,4 @@ const FullScreen = ({ width, height, style }: IconProps) => (
 	</svg>
 );
 
-export default FullScreen;
+export default BarGraph;
