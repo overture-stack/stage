@@ -22,7 +22,7 @@
 import { css, useTheme } from '@emotion/react';
 import { ChevronDown, FullScreen, BarGraph } from '../../theme/icons';
 
-export const getToggleButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
+export const getHeaderButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
 	const {
 		colors: { white },
 	} = useTheme();
@@ -30,6 +30,8 @@ export const getToggleButtonStyles = ({ active, accent }: { active: boolean; acc
 			border: 1px solid ${accent};
 			border-radius: 0.5rem;
 			display: inline-flex;
+			font-size: 14px;
+			line-height: 1.3rem;
 			min-width: fit-content;
 			padding: 0.5rem 0.8rem;
 			background-color: ${active ? white : accent};
@@ -56,7 +58,7 @@ export const FullScreenButton = ({
 				position: relative;
 				right: 50%;
 				transform: translate(50%);
-				${getToggleButtonStyles({ active: isFullScreen, accent })};
+				${getHeaderButtonStyles({ active: isFullScreen, accent })};
 			`}
 			onClick={setFullScreen}
 		>
@@ -65,7 +67,7 @@ export const FullScreenButton = ({
 					width={16}
 					height={16}
 					style={css`
-						vertical-align: bottom;
+						vertical-align: text-bottom;
 					`}
 				/>{' '}
 				Full Screen
@@ -92,7 +94,7 @@ export const BamFileButton = ({
 		<button
 			disabled={!isBamFileSelected && isFileTableActive}
 			css={css`
-				${getToggleButtonStyles({ active: false, accent: accent2 })}
+				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 				:disabled {
 					background-color: ${grey_1};
 					border: 1px solid ${grey_4};
@@ -111,7 +113,7 @@ export const BamFileButton = ({
 						height={16}
 						fill={iconColor}
 						style={css`
-							vertical-align: bottom;
+							vertical-align: text-bottom;
 						`}
 					/>{' '}
 					Visualization
