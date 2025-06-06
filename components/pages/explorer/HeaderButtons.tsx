@@ -33,7 +33,7 @@ export const getHeaderButtonStyles = ({ active, accent }: { active: boolean; acc
 			font-size: 14px;
 			line-height: 1.3rem;
 			min-width: fit-content;
-			padding: 0.5rem 0.8rem;
+			padding: 0.3rem 0.8rem;
 			background-color: ${active ? white : accent};
 			color: ${active ? accent : white};
 		`;

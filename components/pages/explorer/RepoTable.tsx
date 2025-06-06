@@ -63,7 +63,7 @@ const getTableConfigs = ({
 				customExporters,
 				css: css`
 					border-radius: 0.5rem;
-					padding: 0.5rem 0.8rem;
+					padding: 0.3rem 0.8rem;
 					:hover {
 						color: ${theme.colors.accent_dark};
 						svg {
@@ -109,7 +109,7 @@ const getTableConfigs = ({
 					${theme.typography.subheading2}
 					border-radius: 0.5rem;
 					line-height: 1.3rem;
-					padding: 0.5rem 0.8rem;
+					padding: 0.3rem 0.8rem;
 					:disabled {
 						path {
 							fill: ${theme.colors.grey_5};
