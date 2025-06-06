@@ -19,7 +19,7 @@
  *
  */
 
-import { css, Theme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import {
 	BamKeys,
 	BamDisplayNames as displayNames,
@@ -38,61 +38,62 @@ const getActiveButtonStyles = (active: boolean, theme: Theme) => {
 };
 
 export const ToggleButtonPanel = ({
-	elementState,
-	updateElements,
-	theme,
+	bamContext,
+	onToggle,
 }: {
-	elementState: BamContext;
-	updateElements: (key: BamKey, value: boolean) => void;
-	theme: Theme;
-}) => (
-	<div
-		css={css`
-			display: flex;
-		`}
-	>
+	bamContext: BamContext;
+	onToggle: (key: BamKey, value: boolean) => void;
+}) => {
+	const theme = useTheme();
+	return (
 		<div
 			css={css`
-				display: inline-flex;
-				min-width: fit-content;
-				padding-top: 6px;
+				display: flex;
 			`}
 		>
-			Show / Hide:{' '}
-		</div>
-		<div
-			css={css`
-				display: inline-flex;
-				flex-wrap: wrap;
-			`}
-		>
-			{BamKeys.map((key) => {
-				const active = elementState[key];
-				const toggleButtonStyles = getActiveButtonStyles(active, theme);
-				const {
-					colors: { accent },
-				} = theme;
+			<div
+				css={css`
+					display: inline-flex;
+					min-width: fit-content;
+					padding-top: 6px;
+				`}
+			>
+				Show / Hide:{' '}
+			</div>
+			<div
+				css={css`
+					display: inline-flex;
+					flex-wrap: wrap;
+				`}
+			>
+				{BamKeys.map((key) => {
+					const active = bamContext[key];
+					const toggleButtonStyles = getActiveButtonStyles(active, theme);
+					const {
+						colors: { accent },
+					} = theme;
 
-				return (
-					<button
-						css={css`
-							display: inline-block;
-							border: 2px solid ${accent};
-							border-radius: 20px;
-							margin: 5px;
-							min-width: fit-content;
-							padding: 3px 10px;
-							${toggleButtonStyles}
-						`}
-						key={key}
-						onClick={() => {
-							updateElements(key, elementState[key]);
-						}}
-					>
-						{displayNames[key]}
-					</button>
-				);
-			})}
+					return (
+						<button
+							css={css`
+								display: inline-block;
+								border: 2px solid ${accent};
+								border-radius: 20px;
+								margin: 5px;
+								min-width: fit-content;
+								padding: 3px 10px;
+								${toggleButtonStyles}
+							`}
+							key={key}
+							onClick={() => {
+								onToggle(key, bamContext[key]);
+							}}
+						>
+							{displayNames[key]}
+						</button>
+					);
+				})}
+			</div>
 		</div>
-	</div>
-);
+	);
+};

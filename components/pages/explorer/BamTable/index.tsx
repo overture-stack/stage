@@ -85,7 +85,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	return (
 		<>
 			<h2>{fileId}</h2>
-			<ToggleButtonPanel elementState={elementState} updateElements={updateElements} theme={theme} />
+			<ToggleButtonPanel bamContext={elementState} onToggle={updateElements} />
 			{/* TODO: Remove Demo Data Button */}
 			<DemoDataButton
 				file={file}
