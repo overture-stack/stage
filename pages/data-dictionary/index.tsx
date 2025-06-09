@@ -22,39 +22,74 @@
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
 import * as lectern from '@overture-stack/lectern-client';
+import { DictionarySummary } from '@overture-stack/lectern-client/dist/rest';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { useEffect, useState } from 'react';
 
 const lecternUrl = 'http://localhost:3031'; //Replace with your actual lectern URL
 const dictionaryName = 'example-dictionary'; //Replace with your actual dictionary name
-const version = '1.1'; //Replace with your actual version
 
 const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	const [dictionaryData, setDictionaryData] = useState<Dictionary | null>(null);
+	const [dictionaryVersions, setDictionaryVersions] = useState<DictionarySummary[] | null>(null);
+	const [dictionaryData, setDictionaryData] = useState<Dictionary[] | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
+
 	useEffect(() => {
-		const fetchDictionaryData = async () => {
+		const fetchAllDictionaryData = async () => {
 			try {
 				setLoading(true);
-				const result = await lectern.rest.getDictionary(lecternUrl, { name: dictionaryName, version: version });
-				if (result.success === false) {
-					setError(true);
-					throw new Error('Failed to fetch dictionary data');
+				const fetchedDictionaryVersions = await lectern.rest.listDictionaries(lecternUrl, {
+					name: dictionaryName,
+				});
+				if (!fetchedDictionaryVersions.success) {
+					throw new Error('Failed to fetch dictionary versions');
 				}
-				setDictionaryData(result.data);
+				setDictionaryVersions(fetchedDictionaryVersions.data);
+				// Now that we have versions, we can fetch the associated dictionary data from the versions
+				await fetchAllDictionaryDataFromVersions(fetchedDictionaryVersions.data);
 			} catch (err) {
-				console.error('Error loading dictionary header:', err);
+				console.error('Error loading dictionary versions:', err);
 				setError(true);
 			} finally {
 				setLoading(false);
 			}
 		};
-		fetchDictionaryData();
+
+		const fetchAllDictionaryDataFromVersions = async (versions: lectern.rest.DictionarySummary[]) => {
+			try {
+				setLoading(true);
+				const dictionaryFetches = versions.map((dictionaryVersion) =>
+					lectern.rest.getDictionary(lecternUrl, {
+						name: dictionaryVersion.name,
+						version: dictionaryVersion.version,
+					}),
+				);
+
+				// We need to execute all fetches concurrently and wait for all of them to complete such that we have all the successful results
+				//data
+				const results = await Promise.all(dictionaryFetches);
+
+				// We need to filter all the successful results and map them to the Dictionary type
+				const validDictionaries: Dictionary[] = results
+					.filter((res) => res.success)
+					.map((res) => res.data as Dictionary);
+
+				setDictionaryData(validDictionaries);
+			} catch (err) {
+				console.error('Error loading dictionary data:', err);
+				setError(true);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchAllDictionaryData();
 	}, []);
+
 	return <DataDictionaryPage data={dictionaryData} isLoading={loading} hasError={error} />;
 });
 

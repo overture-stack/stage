@@ -18,15 +18,31 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import { ReactNode } from 'react';
-import { Dictionary } from '@overture-stack/lectern-client';
 
-export type DictionaryHeaderProps = {
-	description: string;
-	name: string;
+import { css } from '@emotion/react';
+import { IconProps } from './types';
+const ListFilter = ({ style, height, width }: IconProps) => {
+	return (
+		<svg
+			css={css`
+				${style};
+				height: ${height}px;
+				width: ${width}px;
+			`}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<path d="M3 6h18" />
+			<path d="M7 12h10" />
+			<path d="M10 18h4" />
+		</svg>
+	);
 };
-export type DictionaryPageProps = {
-	data: Dictionary[] | null;
-	isLoading: boolean;
-	hasError: boolean;
-};
+export default ListFilter;

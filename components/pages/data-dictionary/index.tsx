@@ -21,34 +21,86 @@
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import Dropdown from '@/components/Dropdown/Dropdown';
 import PageLayout from '@/components/PageLayout';
+import ListFilter from '@/components/theme/icons/list_filter';
+import VersionSwitcher from '@/components/VersionSwitcher';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
-import { ComponentType } from 'react';
+import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
-	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
+const containerStyle = css`
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	margin: 0 auto;
+`;
+
+const buttonsContainerStyle = css`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+	flex-wrap: wrap;
+	gap: 16px;
+	width: 100%;
+`;
+
+const rightButtonsStyle = css`
+	display: flex;
+	gap: 12px;
+	align-items: center;
+`;
+
+const titleStyle = (theme: any) => css`
+	padding: 10px 16px;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.2;
+	color: ${theme.colors.accent_dark};
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`;
+
+const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
+	const [dictionaryIndex, setDictionaryIndex] = useState(0);
+
+	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(
+		data?.[dictionaryIndex],
+		'description',
+		hasError ? 'Error loading description' : '',
+	) as string;
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
 				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-				<div
-					css={css`
-						max-width: 1200px;
-						width: 100%;
-						margin: 0 auto;
-						padding: 0 20px;
-						margin-top: 30px;
-					`}
-				>
+				<div css={containerStyle}>
+					<div css={buttonsContainerStyle}>
+						<VersionSwitcher
+							dictionaryIndex={dictionaryIndex}
+							dictionaryData={data as Dictionary[]}
+							onVersionChange={setDictionaryIndex}
+						/>
+
+						<div css={rightButtonsStyle}>
+							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
+						</div>
+					</div>
+
 					{data && (
-						<SchemaTables<Dictionary> data={data} arrayAccessor="schemas" getColumns={getSchemaBaseColumns as any} />
+						<SchemaTables<Dictionary>
+							data={data?.[dictionaryIndex]}
+							arrayAccessor="schemas"
+							getColumns={getSchemaBaseColumns as any}
+						/>
 					)}
 				</div>
 			</PageLayout>

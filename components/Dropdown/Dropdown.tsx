@@ -20,9 +20,9 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { FC, ReactChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import DropDownItem from './DropdownItem';
+import DropdownItem from './DropdownItem';
 
 const dropdownButtonStyle = (theme: any, width?: string) => css`
 	display: flex;
@@ -119,9 +119,9 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon
 
 	const renderMenuItems = () => {
 		return menuItems.map(({ label, action }) => (
-			<DropDownItem key={label} action={action}>
+			<DropdownItem key={label} action={action}>
 				{label}
-			</DropDownItem>
+			</DropdownItem>
 		));
 	};
 

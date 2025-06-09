@@ -19,11 +19,11 @@
  *
  */
 
-import { FC, ReactElement, ReactNode } from 'react';
 import { css, SerializedStyles, useTheme } from '@emotion/react';
+import { FC, ReactNode } from 'react';
 
 type DropDownItemProps = {
-	action?: string | (() => void);
+	action?: () => void;
 	children: ReactNode;
 	customStyles?: {
 		hover?: SerializedStyles;
