@@ -34,29 +34,38 @@ import {
 	percentKeys,
 	type BamContext,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { FileMetaData, FileTableData } from '../fileTypes';
-import { getFileMetaData, isFileMetaData } from '../fileUtils';
+import { getFileMetaData, isFileMetaData, getIndexFileData } from '../fileUtils';
 import { DemoDataButton, demoFileMetadata } from './DemoData';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
 const BamTable = ({ file }: { file?: FileTableData }) => {
+	const { apiFetcher } = useArrangerData({ callerName: 'GetIndexFileData' });
 	const theme = useTheme();
-	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [elementState, setElementState] = useState(initElementState);
+	const [indexFileData, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
+	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
+	const indexFileUrl = indexFileData?.parts[0]?.url || null;
+
 	const loadAndSetFile = async (file: FileTableData) => {
 		// TODO: Add Client Error Handling
-		const data = await getFileMetaData(file);
+		const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
+		const indexFile = indexFileResponse?.data?.file.hits.edges[0]?.node.file.index_file;
 
-		if (isFileMetaData(data)) {
-			setFileMetaData(data);
+		const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
+
+		if (isFileMetaData(fileMetaData)) {
+			setFileMetaData(fileMetaData);
+			setIndexFileData(indexFileMetaData);
 		} else {
 			setFileMetaData(undefined);
 			console.error('Error retrieving Score File Data');
@@ -99,7 +108,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				<Loader />
 			) : (
 				<>
-					<IobioDataBroker alignmentUrl={fileUrl} />
+					<IobioDataBroker alignmentUrl={fileUrl} indexUrl={indexFileUrl} />
 					<div
 						css={css`
 							display: flex;

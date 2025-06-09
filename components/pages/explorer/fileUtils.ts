@@ -21,6 +21,7 @@
 
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
+import { type APIFetcherFn } from '@overture-stack/arranger-components/dist/DataContext/types';
 import axios from 'axios';
 import urlJoin from 'url-join';
 import { baseScoreDownloadParams } from './constants';
@@ -37,17 +38,13 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
-export const getScoreDownloadUrls = async (fileData: FileTableData) => {
+export const getScoreDownload = async ({ length, object_id }: { length: string; object_id: string }) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const length = fileData.file?.size?.toString();
-	const object_id = fileData.id;
-
 	const scoreDownloadParams: ScoreDownloadParams = {
 		...baseScoreDownloadParams,
 		length,
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
-
 	try {
 		const response = await axios.get(
 			urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
@@ -65,7 +62,54 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 	}
 };
 
-export const getFileMetaData = async (selectedBamFile: FileTableData) => {
-	const fileMetaData = await getScoreDownloadUrls(selectedBamFile);
-	return fileMetaData;
+export const IndexFileQuery = `query IndexFile ($sqon: JSON) {
+  file {
+		hits (filters: $sqon) {
+			total
+			edges {
+				node {
+					file {
+						index_file {
+							name
+							object_id
+							size
+						}
+					}
+				}
+			}
+		} 
+  }
+}`;
+
+export const getIndexFileData = async ({
+	apiFetcher,
+	fileId,
+}: {
+	apiFetcher: APIFetcherFn;
+	fileId: string | undefined;
+}) =>
+	await apiFetcher({
+		endpointTag: 'GetIndexFileData',
+		body: {
+			query: IndexFileQuery,
+			variables: {
+				first: 1,
+				sqon: {
+					content: [{ op: 'in', content: { fieldName: '_id', value: fileId } }],
+					op: 'and',
+				},
+			},
+		},
+	});
+
+export const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
+	const fileSize = selectedBamFile.file?.size?.toString();
+	const fileObjectId = selectedBamFile.id;
+
+	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
+
+	const fileMetaData = await getScoreDownload({ length: fileSize, object_id: fileObjectId });
+	const indexFileMetaData = await getScoreDownload({ length: indexFileSize, object_id: indexObjectId });
+
+	return { fileMetaData, indexFileMetaData };
 };
