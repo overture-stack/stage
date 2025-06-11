@@ -19,7 +19,14 @@
  *
  */
 
-import { css, Theme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+import { ColumnsSelectButton, DownloadButton, useArrangerTheme } from '@overture-stack/arranger-components';
+import urlJoin from 'url-join';
+
+import StyledLink from '@/components/Link';
+import { Download } from '@/components/theme/icons';
+import { getConfig } from '@/global/config';
+import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 import { BamFileButton, FullScreenButton } from './HeaderButtons';
 
 const TableHeader = ({
@@ -36,22 +43,165 @@ const TableHeader = ({
 	isFullScreen: boolean;
 	toggleFullScreen: () => void;
 	switchTable: () => void;
-}) => (
-	<div
-		css={css`
-			display: flex;
-			justify-content: space-between;
-			${isFileTableActive ? 'position: absolute;' : ''}
-		`}
-	>
-		<BamFileButton
-			iconColor={iconColor}
-			isBamFileSelected={isBamFileSelected}
-			isFileTableActive={isFileTableActive}
-			switchTable={switchTable}
-		/>
-		{isFileTableActive ? null : <FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />}
-	</div>
-);
+}) => {
+	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
+	const theme = useTheme();
+
+	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
+		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
+		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
+	const customExporters = [
+		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
+		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
+		{
+			label: () => (
+				<span
+					css={css`
+						border-top: 1px solid ${theme.colors.grey_3};
+						margin-top: -3px;
+						padding-top: 7px;
+						white-space: pre-line;
+
+						a {
+							margin-left: 3px;
+						}
+					`}
+				>
+					To download files using a file manifest, please follow these
+					<StyledLink
+						css={css`
+							line-height: inherit;
+						`}
+						href="https://www.overture.bio/documentation/guides/download/clientdownload/"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						instructions
+					</StyledLink>
+					.
+				</span>
+			),
+		},
+	];
+
+	const buttonStyles = {
+		callerName: 'TableHeader',
+		components: {
+			Table: {
+				DownloadButton: {
+					customExporters,
+					css: css`
+						border-radius: 0.5rem;
+						padding: 0.3rem 0.8rem;
+						margin-left: 0.5rem;
+						:hover {
+							color: ${theme.colors.accent_dark};
+							svg {
+								background-color: ${theme.colors.secondary_light};
+								path {
+									fill: ${theme.colors.accent_dark};
+								}
+							}
+						}
+						:disabled {
+							svg {
+								background-color: ${theme.colors.secondary_light};
+							}
+							path {
+								fill: ${theme.colors.grey_5};
+							}
+						}
+					`,
+					downloadUrl: urlJoin(INTERNAL_API_PROXY.ARRANGER, 'download'),
+					label: () => (
+						<>
+							<Download
+								fill={theme.colors.white}
+								style={css`
+									color: ${theme.colors.white};
+									background-color: ${theme.colors.accent};
+									margin-right: 0.2rem;
+								`}
+							/>{' '}
+							Download
+						</>
+					),
+					ListWrapper: {
+						width: '11rem',
+					},
+				},
+				DropDown: {
+					arrowColor: theme.colors.white,
+					arrowTransition: 'all 0s',
+					background: theme.colors.accent,
+					borderColor: theme.colors.grey_5,
+					css: css`
+						${theme.typography.subheading2}
+						border-radius: 0.5rem;
+						line-height: 1.3rem;
+						padding: 0.3rem 0.8rem;
+						:disabled {
+							path {
+								fill: ${theme.colors.grey_5};
+							}
+						}
+						:hover {
+							color: ${theme.colors.accent_dark};
+							svg {
+								path {
+									fill: ${theme.colors.accent_dark};
+								}
+							}
+						}
+					`,
+					disabledFontColor: theme.colors.grey_5,
+					fontColor: theme.colors.white,
+					hoverBackground: theme.colors.secondary_light,
+
+					ListWrapper: {
+						background: theme.colors.white,
+						css: css`
+							${theme.shadow.default}
+						`,
+						fontColor: theme.colors.black,
+						fontSize: '0.7rem',
+						hoverBackground: theme.colors.secondary_light,
+					},
+				},
+			},
+		},
+	};
+
+	useArrangerTheme(buttonStyles);
+
+	return (
+		<div
+			css={css`
+				display: flex;
+				justify-content: space-between;
+			`}
+		>
+			<BamFileButton
+				iconColor={iconColor}
+				isBamFileSelected={isBamFileSelected}
+				isFileTableActive={isFileTableActive}
+				switchTable={switchTable}
+			/>
+			{isFileTableActive ? (
+				<div
+					css={css`
+						display: inline-flex;
+					`}
+				>
+					<ColumnsSelectButton />
+					<DownloadButton />
+				</div>
+			) : (
+				<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />
+			)}
+		</div>
+	);
+};
 
 export default TableHeader;
