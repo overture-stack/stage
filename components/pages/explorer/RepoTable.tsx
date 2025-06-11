@@ -20,7 +20,13 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { CountDisplay, Pagination, Table, useArrangerTheme } from '@overture-stack/arranger-components';
+import {
+	CountDisplay,
+	MaxRowsSelector,
+	PageSelector,
+	Table,
+	useArrangerTheme,
+} from '@overture-stack/arranger-components';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
 import { useMemo } from 'react';
 import { DMSThemeInterface } from '@/components/theme';
@@ -87,36 +93,37 @@ const RepoTable = () => {
 	return useMemo(
 		() => (
 			<>
+				<Table />
 				<div
 					css={css`
-						position: relative;
-						top: -2px;
+						display: flex;
 					`}
 				>
-					<Table />
-				</div>
-				<div
-					css={css`
-						position: relative;
-					`}
-				>
+					<MaxRowsSelector
+						css={css`
+							margin-left: 0.3rem;
+
+							.Spinner {
+								justify-content: space-between;
+								width: 65%;
+							}
+						`}
+					/>
 					<CountDisplay
 						css={css`
-							color: ${theme.colors.black};
-							left: 170px;
-							position: absolute;
-							top: 2px;
+							margin-left: 2rem;
 						`}
 						theme={{
+							fontColor: theme.colors.black,
 							fontSize: '0.8rem',
 						}}
 					/>
+					<PageSelector
+						theme={{
+							fontColor: theme.colors.black,
+						}}
+					/>
 				</div>
-				<Pagination
-					css={css`
-						color: ${theme.colors.black};
-					`}
-				/>
 			</>
 		),
 		[],
