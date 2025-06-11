@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,28 +19,26 @@
  *
  */
 
-import { type FileTableData } from '../fileTypes';
+import { css } from '@emotion/react';
 
-const getFileSizeString = (numFileSize: number) =>
-	numFileSize < 10 ** 3
-		? `${numFileSize} bytes`
-		: numFileSize < 10 ** 6
-		? `${(numFileSize / 10 ** 3).toFixed(2)} KB`
-		: numFileSize < 10 ** 9
-		? `${(numFileSize / 10 ** 6).toFixed(2)} MB`
-		: numFileSize < 10 ** 12
-		? `${(numFileSize / 10 ** 9).toFixed(2)} GB`
-		: `${(numFileSize / 10 ** 12).toFixed(2)} TB`;
+import { IconProps } from './types';
 
-export const getTableData = (file: FileTableData) => {
-	const fileAccess = file?.file_access;
-	const fileDataType = file?.data_type;
-	const fileDonorId = file?.donors?.hits.edges[0].node.submitter_donor_id;
-	const fileFormat = file?.file_type;
-	const fileStudy = file?.analysis?.collaborator?.hits.edges[0].node.name;
-	const fileStrategy = file?.analysis?.experiment?.experimentalStrategy;
-	const numFileSize = file?.file.size ?? 0;
-	const fileSize = getFileSizeString(numFileSize);
+const FullScreen = ({ width, height, style }: IconProps) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width={width}
+		height={height}
+		css={css`
+			${style}
+		`}
+		fill="none"
+		viewBox="0 0 16 15"
+	>
+		<path
+			fill="#fff"
+			d="M2 12.728h4v2H0V9.272h2zm14 2h-6v-2h4V9.272h2zM6 2.182H2v3.455H0V.182h6zm10 3.455h-2V2.182h-4v-2h6z"
+		></path>
+	</svg>
+);
 
-	return { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileStrategy, fileSize };
-};
+export default FullScreen;

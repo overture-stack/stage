@@ -20,27 +20,18 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { Pagination, Table, Toolbar, useArrangerTheme } from '@overture-stack/arranger-components';
-import { CustomExporterInput } from '@overture-stack/arranger-components/dist/Table/DownloadButton/types';
+import {
+	CountDisplay,
+	MaxRowsSelector,
+	PageSelector,
+	Table,
+	useArrangerTheme,
+} from '@overture-stack/arranger-components';
 import { UseThemeContextProps } from '@overture-stack/arranger-components/dist/ThemeContext/types';
 import { useMemo } from 'react';
-import urlJoin from 'url-join';
-
-import StyledLink from '@/components/Link';
 import { DMSThemeInterface } from '@/components/theme';
-import { Download } from '@/components/theme/icons';
-import { getConfig } from '@/global/config';
-import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
-const getTableConfigs = ({
-	apiHost,
-	customExporters,
-	theme,
-}: {
-	apiHost: string;
-	customExporters?: CustomExporterInput;
-	theme: DMSThemeInterface;
-}): UseThemeContextProps => ({
+const getTableConfigs = ({ theme }: { theme: DMSThemeInterface }): UseThemeContextProps => ({
 	callerName: 'RepoTable',
 	components: {
 		Table: {
@@ -56,52 +47,8 @@ const getTableConfigs = ({
 
 			// Child components
 			CountDisplay: {
-				fontColor: 'inherit',
-			},
-			DownloadButton: {
-				customExporters,
-				downloadUrl: urlJoin(apiHost, 'download'),
-				label: () => (
-					<>
-						<Download
-							fill={theme.colors.accent_dark}
-							style={css`
-								margin-right: 0.2rem;
-
-								[disabled] & > path {
-									fill: ${theme.colors.grey_5};
-								}
-							`}
-						/>{' '}
-						Download
-					</>
-				),
-				ListWrapper: {
-					width: '11rem',
-				},
-			},
-			DropDown: {
-				arrowColor: '#151c3d',
-				arrowTransition: 'all 0s',
-				background: theme.colors.white,
-				borderColor: theme.colors.grey_5,
-				css: css`
-					${theme.typography.subheading2}
-					line-height: 1.3rem;
-				`,
-				fontColor: theme.colors.accent_dark,
-				disabledFontColor: theme.colors.grey_5,
-				hoverBackground: theme.colors.secondary_light,
-
-				ListWrapper: {
-					background: theme.colors.white,
-					css: css`
-						${theme.shadow.default}
-					`,
-					fontColor: theme.colors.black,
-					fontSize: '0.7rem',
-					hoverBackground: theme.colors.secondary_light,
-				},
+				// Table CountDisplay is hidden in order to position CountDisplay with Pagination
+				fontSize: '0px',
 			},
 			HeaderRow: {
 				borderColor: theme.colors.grey_3,
@@ -135,50 +82,9 @@ const getTableConfigs = ({
 });
 
 const RepoTable = () => {
-	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
 
-	const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-	const manifestColumns = NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS.split(',')
-		.filter((field) => field.trim()) // break it into arrays, and ensure there's no empty field names
-		.map((fieldName) => fieldName.replace(/['"]+/g, '').trim());
-	const customExporters = [
-		{ label: 'File Table', fileName: `data-explorer-table-export.${today}.tsv` }, // exports a TSV with what is displayed on the table (columns selected, etc.)
-		{ label: 'File Manifest', fileName: `score-manifest.${today}.tsv`, columns: manifestColumns }, // exports a TSV with the manifest columns
-		{
-			label: () => (
-				<span
-					css={css`
-						border-top: 1px solid ${theme.colors.grey_3};
-						margin-top: -3px;
-						padding-top: 7px;
-						white-space: pre-line;
-
-						a {
-							margin-left: 3px;
-						}
-					`}
-				>
-					To download files using a file manifest, please follow these
-					<StyledLink
-						css={css`
-							line-height: inherit;
-						`}
-						href="https://www.overture.bio/documentation/guides/download/clientdownload/"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						instructions
-					</StyledLink>
-					.
-				</span>
-			),
-		},
-	];
-
 	const tableConfig = getTableConfigs({
-		apiHost: INTERNAL_API_PROXY.ARRANGER,
-		customExporters,
 		theme,
 	});
 
@@ -187,9 +93,37 @@ const RepoTable = () => {
 	return useMemo(
 		() => (
 			<>
-				<Toolbar />
 				<Table />
-				<Pagination />
+				<div
+					css={css`
+						display: flex;
+					`}
+				>
+					<MaxRowsSelector
+						css={css`
+							margin-left: 0.3rem;
+
+							.Spinner {
+								justify-content: space-between;
+								width: 65%;
+							}
+						`}
+					/>
+					<CountDisplay
+						css={css`
+							margin-left: 2rem;
+						`}
+						theme={{
+							fontColor: theme.colors.black,
+							fontSize: '0.8rem',
+						}}
+					/>
+					<PageSelector
+						theme={{
+							fontColor: theme.colors.black,
+						}}
+					/>
+				</div>
 			</>
 		),
 		[],

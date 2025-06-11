@@ -25,19 +25,18 @@ import { SQONType } from '@overture-stack/arranger-components/dist/DataContext/t
 import { type UseTableContextProps } from '@overture-stack/arranger-components/dist/Table/types';
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
-import { File, Screen } from '../../theme/icons';
 
 import BamTable from './BamTable/index';
 import { BamFileExtensions } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
-import { getToggleButtonStyles } from './BamTable/tableUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
+import TableHeader from './TableHeader';
 
 const tableTypes = {
 	REPO_TABLE: 'repoTable',
@@ -48,20 +47,18 @@ const PageContent = () => {
 	const theme = useTheme();
 	const [showSidebar, setShowSidebar] = useState(true);
 	const sidebarWidth = showSidebar ? theme.dimensions.facets.width : 0;
-
 	// TODO: abstract this param handling into an Arranger integration.
 	const contextProps: Partial<UseTableContextProps> = {
 		callerName: 'Explorer-PageContent',
 	};
 	const arrangerData = useArrangerData(contextProps);
 	const { sqon, setSQON } = arrangerData;
-
 	const tableContext = useTableContext(contextProps);
 	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
-
 	const [firstRender, setFirstRender] = useState<boolean>(true);
+	const [isFullScreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
 		prepare: (v) => v.replace('"field"', '"fieldName"'),
 		deSerialize: (v) => {
@@ -69,6 +66,14 @@ const PageContent = () => {
 		},
 		serialize: (v) => (v ? stringify(v) : ''),
 	});
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	const isBamFileSelected = Boolean(currentBamFile);
+	const pageContentRef = useRef<HTMLElement>(null);
+	const iconColor = isFileTableActive
+		? isBamFileSelected
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
 	useEffect(() => {
 		if (firstRender) {
@@ -82,7 +87,6 @@ const PageContent = () => {
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
 	// Disable Visualization button unless only 1 BAM Compatible file is selected
-	// TODO: Add User Error messaging
 	useEffect(() => {
 		const oneFileSelected = selectedRows.length === 1;
 		if (oneFileSelected) {
@@ -105,13 +109,15 @@ const PageContent = () => {
 		setTableType(nextTableValue);
 	};
 
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
-	const isBamFileSelected = Boolean(currentBamFile);
-	const iconColor = isFileTableActive
-		? isBamFileSelected
-			? theme.colors.accent
-			: theme.colors.grey_4
-		: theme.colors.white;
+	const toggleFullScreen = () => {
+		if (!isFullScreen && pageContentRef.current) {
+			pageContentRef.current.requestFullscreen();
+			setFullscreen(true);
+		} else {
+			document.exitFullscreen();
+			setFullscreen(false);
+		}
+	};
 
 	return useMemo(
 		() => (
@@ -138,7 +144,6 @@ const PageContent = () => {
 					>
 						Show
 					</button> */}
-
 					<aside
 						css={css`
 							flex: 0 0 ${sidebarWidth}px;
@@ -146,9 +151,7 @@ const PageContent = () => {
 							background-color: ${theme.colors.white};
 							z-index: 1;
 							${theme.shadow.right};
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
+							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
 							overflow-y: scroll;
 						`}
 					>
@@ -159,9 +162,7 @@ const PageContent = () => {
 							display: flex;
 							flex-direction: column;
 							width: 100%;
-							height: calc(
-								100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px
-							);
+							height: calc(100vh - ${theme.dimensions.footer.height + theme.dimensions.navbar.height}px);
 							overflow-y: scroll;
 						`}
 					>
@@ -173,7 +174,6 @@ const PageContent = () => {
 							`}
 						>
 							<QueryBar />
-
 							<article
 								css={css`
 									background-color: ${theme.colors.white};
@@ -182,53 +182,16 @@ const PageContent = () => {
 									padding: 8px;
 									${theme.shadow.default};
 								`}
+								ref={pageContentRef}
 							>
-								<div
-									css={css`
-										margin-bottom: 8px;
-									`}
-								>
-									{/* TODO: In current state, this button should not be disabled when Bam Visualizer is active, to allow navigation back to File Table.
-										Final UI mockups will change how navigation and disabled states are handled.
-										*/}
-									<button
-										disabled={!isBamFileSelected && isFileTableActive}
-										css={css`
-											border: 2px solid ${theme.colors.accent};
-											border-radius: 5px;
-											padding: 6px;
-											${getToggleButtonStyles(isFileTableActive, theme)}
-											:disabled {
-												background-color: ${theme.colors.grey_1};
-												border: 2px solid ${theme.colors.grey_4};
-												color: ${theme.colors.grey_4};
-											}
-										`}
-										onClick={switchTable}
-									>
-										{isFileTableActive ? (
-											<span>
-												<File
-													fill={iconColor}
-													style={css`
-														vertical-align: middle;
-													`}
-												/>{' '}
-												Files
-											</span>
-										) : (
-											<span>
-												<Screen
-													fill={iconColor}
-													style={css`
-														vertical-align: middle;
-													`}
-												/>{' '}
-												Visualization
-											</span>
-										)}
-									</button>
-								</div>
+								<TableHeader
+									iconColor={iconColor}
+									isBamFileSelected={isBamFileSelected}
+									isFileTableActive={isFileTableActive}
+									isFullScreen={isFullScreen}
+									toggleFullScreen={toggleFullScreen}
+									switchTable={switchTable}
+								/>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>
 						</div>

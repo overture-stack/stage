@@ -20,10 +20,10 @@
  */
 
 /* TODO: Remove Demo Data logic */
-import { css, Theme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { SetStateAction } from 'react';
 import { FileMetaData, FileTableData } from '../fileTypes';
-import { getToggleButtonStyles } from './tableUtils';
+import { getHeaderButtonStyles } from '../HeaderButtons';
 
 export const demoFileMetadata: FileMetaData = {
 	objectId: 'demoFileData',
@@ -41,7 +41,6 @@ export const DemoDataButton = ({
 	loading,
 	setFileMetaData,
 	setLoading,
-	theme,
 }: {
 	isDemoData: boolean;
 	file?: FileTableData;
@@ -49,8 +48,11 @@ export const DemoDataButton = ({
 	loading: boolean;
 	setFileMetaData: (value: SetStateAction<FileMetaData | undefined>) => void;
 	setLoading: (value: SetStateAction<boolean>) => void;
-	theme: Theme;
 }) => {
+	const {
+		colors: { accent },
+	} = useTheme();
+
 	const loadDemoFile = async () => {
 		setLoading(true);
 		setFileMetaData(undefined);
@@ -66,14 +68,18 @@ export const DemoDataButton = ({
 	}
 
 	return (
-		<div>
+		<div
+			css={css`
+				margin: 10px 0px;
+			`}
+		>
 			<button
 				css={css`
-					border: 2px solid ${theme.colors.accent};
+					border: 2px solid ${accent};
 					border-radius: 5px;
 					min-width: fit-content;
 					padding: 3px 10px;
-					${getToggleButtonStyles(isDemoData, theme)}
+					${getHeaderButtonStyles({ active: isDemoData, accent })}
 				`}
 				onClick={loadDemoFile}
 			>
