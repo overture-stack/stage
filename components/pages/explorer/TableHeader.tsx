@@ -27,7 +27,7 @@ import StyledLink from '@/components/Link';
 import { Download } from '@/components/theme/icons';
 import { getConfig } from '@/global/config';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
-import { BamFileButton, FullScreenButton } from './HeaderButtons';
+import { FileButton, FullScreenButton, VisualizerButton } from './HeaderButtons';
 
 const TableHeader = ({
 	iconColor,
@@ -42,7 +42,7 @@ const TableHeader = ({
 	isFileTableActive: boolean;
 	isFullScreen: boolean;
 	toggleFullScreen: () => void;
-	switchTable: () => void;
+	switchTable: (t: string) => void;
 }) => {
 	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
@@ -182,23 +182,28 @@ const TableHeader = ({
 				justify-content: space-between;
 			`}
 		>
-			<BamFileButton
-				iconColor={iconColor}
-				isBamFileSelected={isBamFileSelected}
-				isFileTableActive={isFileTableActive}
-				switchTable={switchTable}
-			/>
 			{isFileTableActive ? (
-				<div
-					css={css`
-						display: inline-flex;
-					`}
-				>
-					<ColumnsSelectButton />
-					<DownloadButton />
-				</div>
+				<>
+					<VisualizerButton
+						iconColor={iconColor}
+						isBamFileSelected={isBamFileSelected}
+						isFileTableActive={isFileTableActive}
+						switchTable={switchTable}
+					/>
+					<div
+						css={css`
+							display: inline-flex;
+						`}
+					>
+						<ColumnsSelectButton />
+						<DownloadButton />
+					</div>
+				</>
 			) : (
-				<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />
+				<>
+					<FileButton switchTable={switchTable} />
+					<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />
+				</>
 			)}
 		</div>
 	);
