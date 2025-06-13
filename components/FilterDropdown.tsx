@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import Dropdown from './Dropdown/Dropdown';
-import { FilterMapping } from './pages/data-dictionary';
 import type { FilterOptions } from './pages/data-dictionary';
+import { FilterMapping } from './pages/data-dictionary';
 type FilterDropdownProps = {
 	filters: FilterMapping;
 	setFilters: (filters: FilterMapping) => void;
