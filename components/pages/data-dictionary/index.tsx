@@ -20,29 +20,49 @@
  */
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import FilterDropdown from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
-import { FC, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
-const DataDictionaryPage: FC<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
+export type FilterMapping = {
+	constraints?: FilterOptions[];
+	active: boolean;
+};
+export type FilterOptions = 'Required' | 'All Fields';
+
+const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
 	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
-
-	const [filteredData, setFilteredData] = useState<Dictionary | null>(null);
-	const [isFiltered, setIsFiltered] = useState(false);
-
-	useEffect(() => {
-		if (data) {
-			setFilteredData(data);
-			setIsFiltered(false);
+	const [filters, setFilters] = useState<FilterMapping>({ active: false, constraints: [] });
+	const displayData = () => {
+		// If the filter is not active or we just have nothing to filter, return the original data
+		if (!filters.active || !filters.constraints?.length) {
+			return data;
 		}
-	}, [data]);
+		return {
+			...data,
+			schemas: data?.schemas.map((schema) => ({
+				...schema,
+				fields: schema.fields.filter((field: any) => {
+					// we are going to filter via the constraints that are given
+					if (filters.constraints?.includes('Required')) {
+						return !field?.restrictions?.required === true;
+					}
+					if (filters.constraints?.includes('All Fields')) {
+						return true; // If All Fields is selected, we include all fields
+					}
+				}),
+			})),
+		};
+	};
+
 	return (
 		<PageLayout subtitle="Data Dictionary">
 			{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
@@ -56,18 +76,11 @@ const DataDictionaryPage: FC<DictionaryPageProps> = ({ data, isLoading, hasError
 					margin-top: 30px;
 				`}
 			>
-				{/* {data && (
-					<FilterDropdown
-						data={data}
-						isFiltered={isFiltered}
-						setFilteredData={setFilteredData}
-						setIsFiltered={setIsFiltered}
-					/>
-				)} */}
+				{data && <FilterDropdown filters={filters} setFilters={setFilters} />}
 
-				{(filteredData || data) && (
+				{displayData && (
 					<SchemaTables<Dictionary>
-						data={filteredData || (data as Dictionary)}
+						data={displayData() as Dictionary}
 						arrayAccessor="schemas"
 						getColumns={getSchemaBaseColumns as any}
 					/>

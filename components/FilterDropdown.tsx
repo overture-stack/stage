@@ -1,47 +1,30 @@
-import { Dictionary } from '@overture-stack/lectern-client';
 import { FC } from 'react';
 import Dropdown from './Dropdown/Dropdown';
-
+import { FilterMapping } from './pages/data-dictionary';
+import type { FilterOptions } from './pages/data-dictionary';
 type FilterDropdownProps = {
-	data: Dictionary;
-	isFiltered: boolean;
-	setFilteredData: (dict: Dictionary) => void;
-	setIsFiltered: (bool: boolean) => void;
+	filters: FilterMapping;
+	setFilters: (filters: FilterMapping) => void;
 };
 
-const FilterDropdown: FC<FilterDropdownProps> = ({ data, isFiltered, setFilteredData, setIsFiltered }) => {
-	const handleFilterSelect = (selectedFilterName: string) => {
-		if (isFiltered) {
-			setFilteredData(data);
-			setIsFiltered(false);
+const FilterDropdown = ({ filters, setFilters }: FilterDropdownProps) => {
+	const handleFilterSelect = (selectedFilterName: FilterOptions) => {
+		// If we click the filter again then we want to toggle it off, iff it is the same filter being clicked
+		// and it is currently active
+		if (filters.active && filters.constraints?.includes(selectedFilterName)) {
+			setFilters({ active: false, constraints: [] });
 			return;
 		}
-
-		if (selectedFilterName === 'Required') {
-			const filteredDictionary: Dictionary = {
-				...data,
-				schemas: data.schemas.map((schema) => ({
-					...schema,
-					fields: schema.fields.filter((field: any) => field?.restrictions?.required === true),
-				})),
-			};
-			setFilteredData(filteredDictionary);
-		}
-		// Add more filters here as needed
-		// Follow the same pattern as above for additional filters
-		// If we have a lot of filtering logic, we might want to consider moving this logic into a separate utility function
-		else {
-			setFilteredData(data);
-		}
-
-		setIsFiltered(true);
+		setFilters({ active: true, constraints: [selectedFilterName] });
 	};
-
-	// We can easily define more filters here in the future
 	const menuItems = [
 		{
-			label: 'Required',
+			label: 'Required Only',
 			action: () => handleFilterSelect('Required'),
+		},
+		{
+			label: 'All Fields',
+			action: () => handleFilterSelect('All Fields'),
 		},
 	];
 
