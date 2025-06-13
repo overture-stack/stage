@@ -1,11 +1,16 @@
 import Dropdown from './Dropdown/Dropdown';
-import type { FilterOptions } from './pages/data-dictionary';
-import { FilterMapping } from './pages/data-dictionary';
-type FilterDropdownProps = {
+
+export type FilterDropdownProps = {
 	filters: FilterMapping;
 	setFilters: (filters: FilterMapping) => void;
 };
 
+export type FilterMapping = {
+	constraints?: FilterOptions[];
+	active: boolean;
+};
+
+export type FilterOptions = 'Required' | 'All Fields';
 const FilterDropdown = ({ filters, setFilters }: FilterDropdownProps) => {
 	const handleFilterSelect = (selectedFilterName: FilterOptions) => {
 		// If we click the filter again then we want to toggle it off, iff it is the same filter being clicked

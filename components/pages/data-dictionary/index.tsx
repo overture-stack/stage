@@ -20,7 +20,7 @@
  */
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
-import FilterDropdown from '@/components/FilterDropdown';
+import FilterDropdown, { FilterMapping } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
@@ -30,12 +30,6 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
-
-export type FilterMapping = {
-	constraints?: FilterOptions[];
-	active: boolean;
-};
-export type FilterOptions = 'Required' | 'All Fields';
 
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
 	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
