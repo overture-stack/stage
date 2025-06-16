@@ -20,10 +20,10 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { actionItemStyle } from '../DictionaryDownloadButton';
 import { ChevronDown } from '../theme/icons';
 import DropdownItem from './DropdownItem';
-import { actionItemStyle } from '../DictionaryDownloadButton';
 const parentStyle = css`
 	position: relative;
 	display: inline-block;
@@ -67,7 +67,7 @@ type DropDownProps = {
 	menuItems?: MenuItem[];
 };
 
-const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, leftIcon }) => {
+const Dropdown = ({ menuItems = [], title, leftIcon }: DropDownProps) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
