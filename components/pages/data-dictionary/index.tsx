@@ -23,7 +23,7 @@ import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit'
 import FilterDropdown, { FilterMapping } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
 import { css } from '@emotion/react';
-import { Dictionary } from '@overture-stack/lectern-client';
+import { Dictionary, Schema, SchemaField } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -71,14 +71,7 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 				`}
 			>
 				{data && <FilterDropdown filters={filters} setFilters={setFilters} />}
-
-				{displayData && (
-					<SchemaTables<Dictionary>
-						data={displayData() as Dictionary}
-						arrayAccessor="schemas"
-						getColumns={getSchemaBaseColumns as any}
-					/>
-				)}
+				<SchemaTables data={displayData()} arrayAccessor="schemas" getColumns={getSchemaBaseColumns} />
 			</div>
 		</PageLayout>
 	);
