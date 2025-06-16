@@ -119,20 +119,51 @@ export const VisualizerModal = ({
 						display: flex;
 						height: 100%;
 
-						button {
+						.file-badge {
 							display: inline-flex;
-							width: 33%;
+							border: none;
+							border-radius: 20px;
+							margin: 5px;
+							min-width: fit-content;
+							padding: 3px 10px;
+							background-color: ${theme.colors.accent};
+							color: ${theme.colors.white};
+
+							&.file-format {
+								background-color: ${theme.colors.accent_light};
+							}
+						}
+
+						.visualizer-card {
+							display: inline-flex;
 							background: unset;
 							border: 1px solid ${theme.colors.grey_5};
 							border-radius: 16px;
+							font-family: 'Lato', sans-serif;
 							margin: 0 0.5rem;
 							padding: 10px;
+							width: 33%;
+
+							p {
+								font-weight: 400;
+								font-size: 16px;
+								line-height: 16px;
+								margin-top: 0px;
+								text-align: left;
+								height: 30%;
+							}
 
 							h4 {
-								font-family: 'Lato', sans-serif;
 								font-size: 18px;
 								display: inline-block;
 								margin: 0.5rem;
+							}
+
+							h5 {
+								font-weight: 700;
+								font-size: 16px;
+								margin: 0.5rem 0;
+								text-align: left;
 							}
 						}
 
@@ -154,6 +185,7 @@ export const VisualizerModal = ({
 					`}
 				>
 					<button
+						className="visualizer-card"
 						onClick={() => {
 							setTable(tableTypes['JBROWSE_TABLE']);
 							closeModal();
@@ -175,9 +207,23 @@ export const VisualizerModal = ({
 								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
 								<h4>JBrowse</h4>
 							</div>
+							<p>
+								A fully featured genome browser that is capable of visualizing diverse types of genome-located data.
+							</p>
+							<h5>Files:</h5>
+							<div
+								css={css`
+									display: flex;
+								`}
+							>
+								<button className={'file-badge'}>5 Max</button>
+								<button className={'file-badge file-format'}>.VCF</button>
+								<button className={'file-badge file-format'}>.BAM</button>
+							</div>
 						</div>
 					</button>
 					<button
+						className="visualizer-card"
 						onClick={() => {
 							setTable(tableTypes['BAM_TABLE']);
 							closeModal();
@@ -199,9 +245,20 @@ export const VisualizerModal = ({
 								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
 								<h4>IOBIO</h4>
 							</div>
+							<p>Examine your sequence alignment file in seconds.</p>
+							<h5>Files:</h5>
+							<div
+								css={css`
+									display: flex;
+								`}
+							>
+								<button className={'file-badge'}>1 Max</button>
+								<button className={'file-badge file-format'}>.BAM</button>
+							</div>
 						</div>
 					</button>
 					<button
+						className="visualizer-card"
 						onClick={() => {
 							setTable(tableTypes['CBIO_TABLE']);
 							closeModal();
@@ -222,6 +279,17 @@ export const VisualizerModal = ({
 							>
 								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
 								<h4>cBioPortal</h4>
+							</div>
+							<p>Provides visualization, analysis and download of large-scale cancer genomics data sets.</p>
+							<h5>Files:</h5>
+							<div
+								css={css`
+									display: flex;
+								`}
+							>
+								<button className={'file-badge'}>2 Max</button>
+								<button className={'file-badge file-format'}>.PDF</button>
+								<button className={'file-badge file-format'}>.TSV</button>
 							</div>
 						</div>
 					</button>
