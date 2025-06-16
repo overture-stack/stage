@@ -30,7 +30,6 @@ import ReactModal from 'react-modal';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
-import { Dismiss } from '../../theme/icons';
 import BamTable from './BamTable/index';
 import { BamFileExtensions, tableTypes } from './constants';
 import Facets from './Facets';
@@ -39,6 +38,7 @@ import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 import TableHeader from './TableHeader';
+import VisualizerModal from './VisualizerModal';
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -107,6 +107,10 @@ const PageContent = () => {
 		setTableType(nextTableValue);
 	};
 
+	const closeModal = () => {
+		setModalOpen(false);
+	};
+
 	const openModal = () => {
 		setModalOpen(true);
 	};
@@ -130,115 +134,12 @@ const PageContent = () => {
 					width: 100vw;
 				`}
 			>
-				<ReactModal
-					ariaHideApp={!!firstRender}
-					isOpen={isModalOpen}
-					style={{
-						overlay: {
-							zIndex: 10,
-							backgroundColor: 'rgba(0,0,0,0.7)',
-						},
-						content: {
-							top: '30%',
-							left: '25%',
-							width: '50%',
-							height: '40%',
-						},
-					}}
-				>
-					<div
-						css={css`
-							display: flex;
-							flex-direction: column;
-							height: 100%;
-						`}
-					>
-						<div
-							css={css`
-								display: flex;
-								justify-content: end;
-							`}
-						>
-							<button
-								css={css`
-									background: unset;
-									border: unset;
-									:hover {
-										svg {
-											path {
-												fill: ${theme.colors.grey_5};
-											}
-										}
-									}
-								`}
-								onClick={() => {
-									setModalOpen(!isModalOpen);
-								}}
-							>
-								<Dismiss height={12} width={12} fill={theme.colors.accent_dark} />
-							</button>
-						</div>
-						<h3
-							css={css`
-								margin: 0.25rem 0.5rem;
-							`}
-						>
-							Select Visualization App:
-						</h3>
-						<p
-							css={css`
-								margin: 0.5rem;
-							`}
-						>
-							Choose the appropriate app to analyze your selected data.
-						</p>
-						<div
-							css={css`
-								display: flex;
-								height: 100%;
-							`}
-						>
-							<div
-								css={css`
-									display: inline-flex;
-									width: 33%;
-									border: 1px solid ${theme.colors.grey_4};
-									border-radius: 16px;
-									margin: 0 0.5rem;
-								`}
-							>
-								JBrowse
-							</div>
-							<button
-								css={css`
-									display: inline-flex;
-									width: 33%;
-									background: unset;
-									border: 1px solid ${theme.colors.grey_4};
-									border-radius: 16px;
-									margin: 0 0.5rem;
-								`}
-								onClick={() => {
-									setTable(tableTypes['BAM_TABLE']);
-									setModalOpen(!isModalOpen);
-								}}
-							>
-								Iobio
-							</button>
-							<div
-								css={css`
-									display: inline-flex;
-									width: 33%;
-									border: 1px solid ${theme.colors.grey_4};
-									border-radius: 16px;
-									margin: 0 0.5rem;
-								`}
-							>
-								CBio Portal
-							</div>
-						</div>
-					</div>
-				</ReactModal>
+				<VisualizerModal
+					closeModal={closeModal}
+					firstRender={firstRender}
+					isModalOpen={isModalOpen}
+					setTable={setTable}
+				/>
 				<div
 					css={css`
 						display: flex;

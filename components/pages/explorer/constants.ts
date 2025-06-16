@@ -33,4 +33,6 @@ export const baseScoreDownloadParams = {
 export const tableTypes = {
 	REPO_TABLE: 'repoTable',
 	BAM_TABLE: 'bamTable',
+	JBROWSE_TABLE: 'jbrowseTable',
+	CBIO_TABLE: 'cbioTable',
 };
