@@ -18,15 +18,35 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import { ReactNode } from 'react';
-import { Dictionary } from '@overture-stack/lectern-client';
 
-export type DictionaryHeaderProps = {
-	description: string;
-	name: string;
+import { Dictionary } from '@overture-stack/lectern-client';
+import Dropdown from './Dropdown/Dropdown';
+import History from './theme/icons/history';
+
+type VersionSwitcherProps = {
+	dictionaryData: Dictionary[];
+	onVersionChange: (index: number) => void;
+	dictionaryIndex: number;
 };
-export type DictionaryPageProps = {
-	data: Dictionary[] | null;
-	isLoading: boolean;
-	hasError: boolean;
+
+const VersionSwitcher = ({ dictionaryIndex, dictionaryData, onVersionChange }: VersionSwitcherProps) => {
+	const versionSwitcherObject = dictionaryData?.map((dictionary: Dictionary, index: number) => {
+		// TODO: We should either remove the version date stamp requirement or update the date to be dynamic via
+		// lectern-client
+		return {
+			label: 'Version ' + dictionary.version,
+			action: () => {
+				onVersionChange(index);
+			},
+		};
+	});
+	return (
+		<Dropdown
+			leftIcon={<History />}
+			menuItems={versionSwitcherObject}
+			title={`Version ${dictionaryData?.[dictionaryIndex].version}`}
+		/>
+	);
 };
+
+export default VersionSwitcher;

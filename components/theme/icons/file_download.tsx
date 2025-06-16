@@ -18,15 +18,33 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import { ReactNode } from 'react';
-import { Dictionary } from '@overture-stack/lectern-client';
 
-export type DictionaryHeaderProps = {
-	description: string;
-	name: string;
+import { css } from '@emotion/react';
+import { IconProps } from './types';
+
+const FileDownload = ({ style, height, width }: IconProps) => {
+	return (
+		<svg
+			css={css`
+				${style};
+				height: ${height}px;
+				width: ${width}px;
+			`}
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+			<path d="M14 2v4a2 2 0 0 0 2 2h4" />
+			<path d="M12 18v-6" />
+			<path d="m9 15 3 3 3-3" />
+		</svg>
+	);
 };
-export type DictionaryPageProps = {
-	data: Dictionary[] | null;
-	isLoading: boolean;
-	hasError: boolean;
-};
+export default FileDownload;

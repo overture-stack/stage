@@ -20,8 +20,10 @@
  */
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
 import FilterDropdown, { FilterMapping } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
+import VersionSwitcher from '@/components/VersionSwitcher';
 import { css } from '@emotion/react';
 import { Dictionary, Schema, SchemaField } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
@@ -31,18 +33,52 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
 import { DictionaryPageProps } from './types';
 
+const containerStyle = css`
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	margin: 0 auto;
+`;
+
+const buttonsContainerStyle = css`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+	flex-wrap: wrap;
+	gap: 16px;
+	width: 100%;
+`;
+
+const rightButtonsStyle = css`
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	align-items: center;
+`;
+
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
-	const name = get(data, 'name', hasError ? 'Error loading dictionary' : '') as string;
-	const description = get(data, 'description', hasError ? 'Error loading description' : '') as string;
+	const [dictionaryIndex, setDictionaryIndex] = useState(0);
 	const [filters, setFilters] = useState<FilterMapping>({ active: false, constraints: [] });
+
+	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
+	const description = get(
+		data?.[dictionaryIndex],
+		'description',
+		hasError ? 'Error loading description' : '',
+	) as string;
+	const version = data?.[dictionaryIndex]?.version || '';
+
 	const displayData = () => {
+		const currentDictionary = data?.[dictionaryIndex];
 		// If the filter is not active or we just have nothing to filter, return the original data
 		if (!filters.active || !filters.constraints?.length) {
-			return data;
+			return currentDictionary;
 		}
 		return {
-			...data,
-			schemas: data?.schemas.map((schema) => ({
+			...currentDictionary,
+			schemas: currentDictionary?.schemas?.map((schema: Schema) => ({
 				...schema,
 				fields: schema.fields.filter((field: any) => {
 					// we are going to filter via the constraints that are given
@@ -52,6 +88,7 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 					if (filters.constraints?.includes('All Fields')) {
 						return true; // If All Fields is selected, we include all fields
 					}
+					return false;
 				}),
 			})),
 		};
@@ -60,17 +97,18 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 	return (
 		<PageLayout subtitle="Data Dictionary">
 			{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-
-			<div
-				css={css`
-					max-width: 1200px;
-					width: 100%;
-					margin: 0 auto;
-					padding: 0 20px;
-					margin-top: 30px;
-				`}
-			>
-				{data && <FilterDropdown filters={filters} setFilters={setFilters} />}
+			<div css={containerStyle}>
+				<div css={buttonsContainerStyle}>
+					<VersionSwitcher
+						dictionaryIndex={dictionaryIndex}
+						dictionaryData={data as Dictionary[]}
+						onVersionChange={setDictionaryIndex}
+					/>
+					<div css={rightButtonsStyle}>
+						<FilterDropdown filters={filters} setFilters={setFilters} />
+						<DictionaryDownloadButton name={name} version={version} lecternUrl="http://localhost:3031" fileType="tsv" />
+					</div>
+				</div>
 				<SchemaTables data={displayData()} arrayAccessor="schemas" getColumns={getSchemaBaseColumns} />
 			</div>
 		</PageLayout>

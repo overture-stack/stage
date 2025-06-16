@@ -22,32 +22,8 @@
 import { css, useTheme } from '@emotion/react';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import DropDownItem from './DropdownItem';
-
-const dropdownButtonStyle = (theme: any, width?: string) => css`
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: 11px;
-	min-width: ${width || '200px'};
-	max-width: 400px;
-	width: 100%;
-	padding: 8px;
-	background-color: #f7f7f7;
-	color: ${theme.colors.black};
-	border: 1px solid #beb2b294;
-	border-radius: 9px;
-	font-size: 14px;
-	max-height: 42px;
-	cursor: pointer;
-	transition: background-color 0.2s ease;
-
-	&:hover {
-		background-color: ${theme.colors.grey_1};
-	}
-`;
-
+import DropdownItem from './DropdownItem';
+import { actionItemStyle } from '../DictionaryDownloadButton';
 const parentStyle = css`
 	position: relative;
 	display: inline-block;
@@ -117,21 +93,20 @@ const Dropdown = ({ menuItems = [], title, leftIcon }: DropDownProps) => {
 
 	const renderMenuItems = () => {
 		return menuItems.map(({ label, action }) => (
-			<DropDownItem key={label} action={action} onClose={() => setOpen(false)}>
+			<DropdownItem key={label} action={action} onClose={() => setOpen(false)}>
 				{label}
-			</DropDownItem>
+			</DropdownItem>
 		));
 	};
 
 	return (
 		<div ref={dropdownRef} css={parentStyle}>
 			<div>
-				<div css={dropdownButtonStyle(theme)} onClick={handleToggle}>
+				<div css={actionItemStyle(theme)} onClick={handleToggle}>
 					{leftIcon}
 					<span css={dropDownTitleStyle(theme)}>{title}</span>
 					<ChevronDown fill={theme.colors.black} width={18} height={18} style={chevronStyle(open)} />
 				</div>
-
 				{open && <ul css={dropdownMenuStyle(theme)}>{renderMenuItems()}</ul>}
 			</div>
 		</div>

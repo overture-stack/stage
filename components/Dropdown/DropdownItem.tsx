@@ -23,7 +23,7 @@ import { css, SerializedStyles, useTheme } from '@emotion/react';
 import { ReactNode } from 'react';
 
 type DropDownItemProps = {
-	action?: string | (() => void);
+	action?: () => void;
 	children: ReactNode;
 	onClose?: () => void;
 	customStyles?: {
