@@ -25,7 +25,7 @@ import FilterDropdown, { FilterMapping } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
 import VersionSwitcher from '@/components/VersionSwitcher';
 import { css } from '@emotion/react';
-import { Dictionary, Schema, SchemaField } from '@overture-stack/lectern-client';
+import { Dictionary, Schema } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -58,6 +58,29 @@ const rightButtonsStyle = css`
 	align-items: center;
 `;
 
+const displayData = (data: Dictionary[], filters: FilterMapping, dictionaryIndex: number) => {
+	const currentDictionary = data?.[dictionaryIndex];
+	// If the filter is not active or we just have nothing to filter, return the original data
+	if (!filters.active || !filters.constraints?.length) {
+		return currentDictionary;
+	}
+	return {
+		...currentDictionary,
+		schemas: currentDictionary?.schemas?.map((schema: Schema) => ({
+			...schema,
+			fields: schema.fields.filter((field: any) => {
+				// we are going to filter via the constraints that are given
+				if (filters.constraints?.includes('Required')) {
+					return !field?.restrictions?.required === true;
+				}
+				if (filters.constraints?.includes('All Fields')) {
+					return true; // If All Fields is selected, we include all fields
+				}
+				return false;
+			}),
+		})),
+	};
+};
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState(0);
 	const [filters, setFilters] = useState<FilterMapping>({ active: false, constraints: [] });
@@ -69,30 +92,6 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 		hasError ? 'Error loading description' : '',
 	) as string;
 	const version = data?.[dictionaryIndex]?.version || '';
-
-	const displayData = () => {
-		const currentDictionary = data?.[dictionaryIndex];
-		// If the filter is not active or we just have nothing to filter, return the original data
-		if (!filters.active || !filters.constraints?.length) {
-			return currentDictionary;
-		}
-		return {
-			...currentDictionary,
-			schemas: currentDictionary?.schemas?.map((schema: Schema) => ({
-				...schema,
-				fields: schema.fields.filter((field: any) => {
-					// we are going to filter via the constraints that are given
-					if (filters.constraints?.includes('Required')) {
-						return field?.restrictions?.required === true;
-					}
-					if (filters.constraints?.includes('All Fields')) {
-						return true; // If All Fields is selected, we include all fields
-					}
-					return false;
-				}),
-			})),
-		};
-	};
 
 	return (
 		<PageLayout subtitle="Data Dictionary">
@@ -109,7 +108,11 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 						<DictionaryDownloadButton name={name} version={version} lecternUrl="http://localhost:3031" fileType="tsv" />
 					</div>
 				</div>
-				<SchemaTables data={displayData()} arrayAccessor="schemas" getColumns={getSchemaBaseColumns} />
+				<SchemaTables
+					data={displayData(data as Dictionary[], filters, dictionaryIndex)}
+					arrayAccessor="schemas"
+					getColumns={getSchemaBaseColumns}
+				/>
 			</div>
 		</PageLayout>
 	);
