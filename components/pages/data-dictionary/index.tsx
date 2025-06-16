@@ -71,7 +71,7 @@ const displayData = (data: Dictionary[], filters: FilterMapping, dictionaryIndex
 			fields: schema.fields.filter((field: any) => {
 				// we are going to filter via the constraints that are given
 				if (filters.constraints?.includes('Required')) {
-					return !field?.restrictions?.required === true;
+					return field?.restrictions?.required === true;
 				}
 				if (filters.constraints?.includes('All Fields')) {
 					return true; // If All Fields is selected, we include all fields
