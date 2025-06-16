@@ -26,6 +26,7 @@ import { type UseTableContextProps } from '@overture-stack/arranger-components/d
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import ReactModal from 'react-modal';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
@@ -51,6 +52,7 @@ const PageContent = () => {
 	const tableContext = useTableContext(contextProps);
 	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
+	const [isModalOpen, setModalOpen] = useState(false);
 	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [isFullScreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
@@ -73,6 +75,7 @@ const PageContent = () => {
 	useEffect(() => {
 		if (firstRender) {
 			currentFilters && setSQON(currentFilters);
+			ReactModal.setAppElement('#pageContent');
 			setFirstRender(false);
 		}
 	}, [currentFilters, firstRender, setSQON]);
@@ -99,8 +102,12 @@ const PageContent = () => {
 		}
 	}, [selectedRows]);
 
-	const switchTable = (nextTableValue: string) => {
+	const setTable = (nextTableValue: string) => {
 		setTableType(nextTableValue);
+	};
+
+	const openModal = () => {
+		setModalOpen(true);
 	};
 
 	const toggleFullScreen = () => {
@@ -116,11 +123,41 @@ const PageContent = () => {
 	return useMemo(
 		() => (
 			<div
+				id={'pageContent'}
 				css={css`
 					flex: 1;
 					width: 100vw;
 				`}
 			>
+				<ReactModal
+					ariaHideApp={!!firstRender}
+					isOpen={isModalOpen}
+					style={{
+						overlay: {
+							zIndex: 10,
+						},
+						content: {
+							top: '33%',
+							left: '25%',
+							width: '50%',
+							height: '33%',
+						},
+					}}
+				>
+					<div
+						css={css`
+							display: flex;
+						`}
+					>
+						<button
+							onClick={() => {
+								setModalOpen(!isModalOpen);
+							}}
+						>
+							Close Modal
+						</button>
+					</div>
+				</ReactModal>
 				<div
 					css={css`
 						display: flex;
@@ -183,8 +220,9 @@ const PageContent = () => {
 									isBamFileSelected={isBamFileSelected}
 									isFileTableActive={isFileTableActive}
 									isFullScreen={isFullScreen}
+									setTable={setTable}
+									openModal={openModal}
 									toggleFullScreen={toggleFullScreen}
-									switchTable={switchTable}
 								/>
 								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
 							</article>

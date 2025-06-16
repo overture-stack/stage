@@ -35,14 +35,16 @@ const TableHeader = ({
 	isFileTableActive,
 	isFullScreen,
 	toggleFullScreen,
-	switchTable,
+	setTable,
+	openModal,
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
 	isFileTableActive: boolean;
 	isFullScreen: boolean;
 	toggleFullScreen: () => void;
-	switchTable: (t: string) => void;
+	setTable: (s: string) => void;
+	openModal: () => void;
 }) => {
 	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
 	const theme = useTheme();
@@ -188,7 +190,7 @@ const TableHeader = ({
 						iconColor={iconColor}
 						isBamFileSelected={isBamFileSelected}
 						isFileTableActive={isFileTableActive}
-						switchTable={switchTable}
+						openModal={openModal}
 					/>
 					<div
 						css={css`
@@ -201,7 +203,7 @@ const TableHeader = ({
 				</>
 			) : (
 				<>
-					<FileButton switchTable={switchTable} />
+					<FileButton setTable={setTable} />
 					<FullScreenButton isFullScreen={isFullScreen} setFullScreen={toggleFullScreen} />
 				</>
 			)}

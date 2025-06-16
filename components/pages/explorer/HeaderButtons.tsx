@@ -81,12 +81,12 @@ export const VisualizerButton = ({
 	iconColor,
 	isBamFileSelected,
 	isFileTableActive,
-	switchTable, // change to open modal
+	openModal,
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
 	isFileTableActive: boolean;
-	switchTable: (t: string) => void;
+	openModal: () => void;
 }) => {
 	const {
 		colors: { accent2, grey_1, grey_4 },
@@ -105,7 +105,7 @@ export const VisualizerButton = ({
 					}
 				}
 			`}
-			onClick={() => switchTable(tableTypes['BAM_TABLE'])}
+			onClick={() => openModal()}
 		>
 			<span>
 				<BarGraph
@@ -122,7 +122,7 @@ export const VisualizerButton = ({
 	);
 };
 
-export const FileButton = ({ switchTable }: { switchTable: (t: string) => void }) => {
+export const FileButton = ({ setTable }: { setTable: (t: string) => void }) => {
 	const {
 		colors: { accent2, white },
 	} = useTheme();
@@ -131,7 +131,7 @@ export const FileButton = ({ switchTable }: { switchTable: (t: string) => void }
 			css={css`
 				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 			`}
-			onClick={() => switchTable(tableTypes['REPO_TABLE'])}
+			onClick={() => setTable(tableTypes['REPO_TABLE'])}
 		>
 			<span>
 				<ChevronDown
