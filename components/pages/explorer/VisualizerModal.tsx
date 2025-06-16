@@ -49,10 +49,10 @@ export const VisualizerModal = ({
 					backgroundColor: 'rgba(0,0,0,0.7)',
 				},
 				content: {
-					top: '30%',
-					left: '25%',
-					width: '50%',
-					height: '40%',
+					top: '20%',
+					left: '20%',
+					width: '60%',
+					height: '60%',
 				},
 			}}
 		>
@@ -126,11 +126,29 @@ export const VisualizerModal = ({
 							border: 1px solid ${theme.colors.grey_5};
 							border-radius: 16px;
 							margin: 0 0.5rem;
+							padding: 10px;
 
 							h4 {
 								font-family: 'Lato', sans-serif;
 								font-size: 18px;
 								display: inline-block;
+								margin: 0.5rem;
+							}
+						}
+
+						.logo {
+							width: 18px;
+							height: 18px;
+							vertical-align: text-bottom;
+						}
+
+						.preview {
+							width: 100%;
+							max-height: 33%;
+							overflow-y: hidden;
+
+							img {
+								width: 100%;
 							}
 						}
 					`}
@@ -141,18 +159,20 @@ export const VisualizerModal = ({
 							closeModal();
 						}}
 					>
-						<div>
-							<div>
+						<div
+							css={css`
+								width: 100%;
+							`}
+						>
+							<div className={'preview'}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Preview.png')} />
 							</div>
-							<div>
-								<img
-									css={css`
-										width: 18px;
-										height: 18px;
-									`}
-									src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')}
-								/>
+							<div
+								css={css`
+									text-align: left;
+								`}
+							>
+								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
 								<h4>JBrowse</h4>
 							</div>
 						</div>
@@ -163,18 +183,20 @@ export const VisualizerModal = ({
 							closeModal();
 						}}
 					>
-						<div>
-							<div>
+						<div
+							css={css`
+								width: 100%;
+							`}
+						>
+							<div className={'preview'}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Preview.png')} />
 							</div>
-							<div>
-								<img
-									css={css`
-										width: 18px;
-										height: 18px;
-									`}
-									src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')}
-								/>
+							<div
+								css={css`
+									text-align: left;
+								`}
+							>
+								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
 								<h4>IOBIO</h4>
 							</div>
 						</div>
@@ -185,18 +207,20 @@ export const VisualizerModal = ({
 							closeModal();
 						}}
 					>
-						<div>
-							<div>
+						<div
+							css={css`
+								width: 100%;
+							`}
+						>
+							<div className={'preview'}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Preview.png')} />
 							</div>
-							<div>
-								<img
-									css={css`
-										width: 18px;
-										height: 18px;
-									`}
-									src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')}
-								/>
+							<div
+								css={css`
+									text-align: left;
+								`}
+							>
+								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
 								<h4>cBioPortal</h4>
 							</div>
 						</div>
