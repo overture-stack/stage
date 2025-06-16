@@ -67,7 +67,7 @@ type DictionaryDownloadButtonProps = {
 	version: string;
 	name: string;
 	lecternUrl: string;
-	fileType?: 'tsv' | 'csv';
+	fileType: 'tsv' | 'csv';
 };
 
 const DictionaryDownloadButton = ({ version, name, lecternUrl, fileType = 'tsv' }: DictionaryDownloadButtonProps) => {

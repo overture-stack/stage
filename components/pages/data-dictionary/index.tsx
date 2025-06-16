@@ -69,8 +69,7 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 		'description',
 		hasError ? 'Error loading description' : '',
 	) as string;
-	const version = get(data?.[dictionaryIndex], 'version', '') as string;
-	console.log(version);
+	const version = data?.[dictionaryIndex].version || '';
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -85,7 +84,12 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 
 						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
-							<DictionaryDownloadButton name={name} version={version} lecternUrl="http://localhost:3031" />
+							<DictionaryDownloadButton
+								name={name}
+								version={version}
+								lecternUrl="http://localhost:3031"
+								fileType="tsv"
+							/>
 						</div>
 					</div>
 
