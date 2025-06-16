@@ -32,7 +32,7 @@ const FilterDropdown = ({ filters, setFilters }: FilterDropdownProps) => {
 		},
 	];
 
-	return <Dropdown title="Filter" menuItems={menuItems} />;
+	return <Dropdown title="Filter By" menuItems={menuItems} />;
 };
 
 export default FilterDropdown;
