@@ -20,9 +20,9 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { FC, useState } from 'react';
-import FileDownload from './theme/icons/file_download';
+import { useState } from 'react';
 import Button from './Button';
+import FileDownload from './theme/icons/file_download';
 
 export const actionItemStyle = (theme: any, width?: string) => css`
 	display: flex;
