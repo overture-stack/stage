@@ -20,7 +20,7 @@
  */
 
 import { css, useTheme } from '@emotion/react';
-import { FC, ReactChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown } from '../theme/icons';
 import DropDownItem from './DropdownItem';
 
@@ -91,12 +91,10 @@ type DropDownProps = {
 	menuItems?: MenuItem[];
 };
 
-const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon }) => {
+const Dropdown = ({ menuItems = [], title, leftIcon }: DropDownProps) => {
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
-
-	const hasMenuItems = menuItems.length > 0;
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -119,7 +117,7 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, children, leftIcon
 
 	const renderMenuItems = () => {
 		return menuItems.map(({ label, action }) => (
-			<DropDownItem key={label} action={action}>
+			<DropDownItem key={label} action={action} onClose={() => setOpen(false)}>
 				{label}
 			</DropDownItem>
 		));
