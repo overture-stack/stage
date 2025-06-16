@@ -31,7 +31,6 @@ const DictionaryHeader: ComponentType<DictionaryHeaderProps> = ({ description, n
 				background-color: ${colours.accent1_1};
 				display: flex;
 				flex-direction: column;
-				width: 100%;
 				margin-bottom: 1rem;
 				padding: 2.5rem;
 				max-height: 10%;

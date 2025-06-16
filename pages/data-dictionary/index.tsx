@@ -22,6 +22,7 @@
 import DataDictionaryPage from '@/components/pages/data-dictionary';
 import { createPage } from '@/global/utils/pages';
 import * as lectern from '@overture-stack/lectern-client';
+import { DictionarySummary } from '@overture-stack/lectern-client/dist/rest';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { useEffect, useState } from 'react';
 
@@ -32,7 +33,7 @@ const DataDictionary = createPage({
 	getInitialProps: async () => {},
 	isPublic: true,
 })(() => {
-	const [dictionaryVersions, setDictionaryVersions] = useState<lectern.rest.DictionarySummary[] | null>(null);
+	const [dictionaryVersions, setDictionaryVersions] = useState<DictionarySummary[] | null>(null);
 	const [dictionaryData, setDictionaryData] = useState<Dictionary[] | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);

@@ -26,10 +26,10 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 import PageLayout from '@/components/PageLayout';
 import ListFilter from '@/components/theme/icons/list_filter';
 import VersionSwitcher from '@/components/VersionSwitcher';
-import { css, useTheme } from '@emotion/react';
+import { css } from '@emotion/react';
 import { Dictionary } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
-import { ComponentType, useState } from 'react';
+import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DictionaryHeader from './DictionaryHeader';
@@ -60,9 +60,8 @@ const rightButtonsStyle = css`
 	align-items: center;
 `;
 
-const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoading, hasError }) => {
-	const [dictionaryIndex, setDictionaryIndex] = useState<number>(0);
-	const theme = useTheme();
+const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
+	const [dictionaryIndex, setDictionaryIndex] = useState(0);
 
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(
@@ -80,7 +79,7 @@ const DataDictionaryPage: ComponentType<DictionaryPageProps> = ({ data, isLoadin
 					<div css={buttonsContainerStyle}>
 						<VersionSwitcher
 							dictionaryIndex={dictionaryIndex}
-							dictionaryData={data}
+							dictionaryData={data as Dictionary[]}
 							onVersionChange={setDictionaryIndex}
 						/>
 

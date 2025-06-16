@@ -22,7 +22,7 @@
 import { css, useTheme } from '@emotion/react';
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown } from '../theme/icons';
-import DropDownItem from './DropdownItem';
+import DropdownItem from './DropdownItem';
 import { actionItemStyle } from '../DictionaryDownloadButton';
 const parentStyle = css`
 	position: relative;
@@ -72,8 +72,6 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, leftIcon }) => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const theme = useTheme();
 
-	const hasMenuItems = menuItems.length > 0;
-
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -95,9 +93,9 @@ const Dropdown: FC<DropDownProps> = ({ menuItems = [], title, leftIcon }) => {
 
 	const renderMenuItems = () => {
 		return menuItems.map(({ label, action }) => (
-			<DropDownItem key={label} action={action}>
+			<DropdownItem key={label} action={action}>
 				{label}
-			</DropDownItem>
+			</DropdownItem>
 		));
 	};
 
