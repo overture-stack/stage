@@ -21,6 +21,7 @@
 
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
+import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import PageLayout from '@/components/PageLayout';
 import ListFilter from '@/components/theme/icons/list_filter';
@@ -54,19 +55,9 @@ const buttonsContainerStyle = css`
 
 const rightButtonsStyle = css`
 	display: flex;
-	gap: 12px;
+	justify-content: space-between;
+	gap: 20px;
 	align-items: center;
-`;
-
-const titleStyle = (theme: any) => css`
-	padding: 10px 16px;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 1.2;
-	color: ${theme.colors.accent_dark};
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `;
 
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
@@ -78,6 +69,7 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 		'description',
 		hasError ? 'Error loading description' : '',
 	) as string;
+	const version = data?.[dictionaryIndex].version || '';
 	return (
 		<>
 			<PageLayout subtitle="Data Dictionary">
@@ -92,6 +84,12 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 
 						<div css={rightButtonsStyle}>
 							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
+							<DictionaryDownloadButton
+								name={name}
+								version={version}
+								lecternUrl="http://localhost:3031"
+								fileType="tsv"
+							/>
 						</div>
 					</div>
 
