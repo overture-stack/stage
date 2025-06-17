@@ -135,8 +135,15 @@ export const VisualizerModal = ({
 								background-color: ${theme.colors.accent};
 								color: ${theme.colors.white};
 
+								&.disabled {
+									background-color: ${theme.colors.grey_6};
+								}
+
 								&.format {
 									background-color: ${theme.colors.accent_light};
+									&.disabled {
+										background-color: ${theme.colors.grey_5};
+									}
 								}
 							}
 						}
@@ -152,6 +159,10 @@ export const VisualizerModal = ({
 							padding: 10px;
 							position: relative;
 							width: 33%;
+
+							:disabled {
+								cursor: not-allowed;
+							}
 
 							p {
 								font-weight: 400;
@@ -195,6 +206,7 @@ export const VisualizerModal = ({
 				>
 					<button
 						className="visualizer-card"
+						disabled={true}
 						onClick={() => {
 							setTable(tableTypes['JBROWSE_TABLE']);
 							closeModal();
@@ -226,9 +238,9 @@ export const VisualizerModal = ({
 										display: flex;
 									`}
 								>
-									<div className={'badge'}>5 Max</div>
-									<div className={'badge format'}>.VCF</div>
-									<div className={'badge format'}>.BAM</div>
+									<div className={'badge disabled'}>5 Max</div>
+									<div className={'badge format disabled'}>.VCF</div>
+									<div className={'badge format disabled'}>.BAM</div>
 								</div>
 							</div>
 						</div>
@@ -272,6 +284,7 @@ export const VisualizerModal = ({
 					</button>
 					<button
 						className="visualizer-card"
+						disabled={true}
 						onClick={() => {
 							setTable(tableTypes['CBIO_TABLE']);
 							closeModal();
@@ -301,9 +314,9 @@ export const VisualizerModal = ({
 										display: flex;
 									`}
 								>
-									<div className={'badge'}>2 Max</div>
-									<div className={'badge format'}>.PDF</div>
-									<div className={'badge format'}>.TSV</div>
+									<div className={'badge disabled'}>2 Max</div>
+									<div className={'badge format disabled'}>.PDF</div>
+									<div className={'badge format disabled'}>.TSV</div>
 								</div>
 							</div>
 						</div>
