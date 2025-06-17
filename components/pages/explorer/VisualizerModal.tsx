@@ -49,10 +49,11 @@ export const VisualizerModal = ({
 					backgroundColor: 'rgba(0,0,0,0.7)',
 				},
 				content: {
-					top: '20%',
+					top: '15%',
 					left: '20%',
 					width: '60%',
-					height: '60%',
+					height: '70%',
+					padding: '12px',
 				},
 			}}
 		>
@@ -74,6 +75,7 @@ export const VisualizerModal = ({
 						css={css`
 							background: unset;
 							border: unset;
+							cursor: pointer;
 							:hover {
 								svg {
 									path {
@@ -119,29 +121,36 @@ export const VisualizerModal = ({
 						display: flex;
 						height: 100%;
 
-						.file-badge {
-							display: inline-flex;
-							border: none;
-							border-radius: 20px;
-							margin: 5px;
-							min-width: fit-content;
-							padding: 3px 10px;
-							background-color: ${theme.colors.accent};
-							color: ${theme.colors.white};
+						.file-container {
+							bottom: 10px;
+							position: absolute;
 
-							&.file-format {
-								background-color: ${theme.colors.accent_light};
+							.badge {
+								display: inline-flex;
+								border: none;
+								border-radius: 20px;
+								margin: 5px;
+								min-width: fit-content;
+								padding: 3px 10px;
+								background-color: ${theme.colors.accent};
+								color: ${theme.colors.white};
+
+								&.format {
+									background-color: ${theme.colors.accent_light};
+								}
 							}
 						}
 
 						.visualizer-card {
-							display: inline-flex;
 							background: unset;
 							border: 1px solid ${theme.colors.grey_5};
 							border-radius: 16px;
+							cursor: pointer;
+							display: inline-flex;
 							font-family: 'Lato', sans-serif;
 							margin: 0 0.5rem;
 							padding: 10px;
+							position: relative;
 							width: 33%;
 
 							p {
@@ -154,29 +163,29 @@ export const VisualizerModal = ({
 							}
 
 							h4 {
-								font-size: 18px;
 								display: inline-block;
+								font-size: 18px;
 								margin: 0.5rem;
 							}
 
 							h5 {
 								font-weight: 700;
 								font-size: 16px;
-								margin: 0.5rem 0;
+								margin: 0.25rem 0;
 								text-align: left;
 							}
 						}
 
 						.logo {
-							width: 18px;
 							height: 18px;
 							vertical-align: text-bottom;
+							width: 18px;
 						}
 
 						.preview {
-							width: 100%;
-							max-height: 33%;
+							max-height: 28%;
 							overflow-y: hidden;
+							width: 100%;
 
 							img {
 								width: 100%;
@@ -210,15 +219,17 @@ export const VisualizerModal = ({
 							<p>
 								A fully featured genome browser that is capable of visualizing diverse types of genome-located data.
 							</p>
-							<h5>Files:</h5>
-							<div
-								css={css`
-									display: flex;
-								`}
-							>
-								<button className={'file-badge'}>5 Max</button>
-								<button className={'file-badge file-format'}>.VCF</button>
-								<button className={'file-badge file-format'}>.BAM</button>
+							<div className={'file-container'}>
+								<h5>Files:</h5>
+								<div
+									css={css`
+										display: flex;
+									`}
+								>
+									<div className={'badge'}>5 Max</div>
+									<div className={'badge format'}>.VCF</div>
+									<div className={'badge format'}>.BAM</div>
+								</div>
 							</div>
 						</div>
 					</button>
@@ -246,14 +257,16 @@ export const VisualizerModal = ({
 								<h4>IOBIO</h4>
 							</div>
 							<p>Examine your sequence alignment file in seconds.</p>
-							<h5>Files:</h5>
-							<div
-								css={css`
-									display: flex;
-								`}
-							>
-								<button className={'file-badge'}>1 Max</button>
-								<button className={'file-badge file-format'}>.BAM</button>
+							<div className={'file-container'}>
+								<h5>Files:</h5>
+								<div
+									css={css`
+										display: flex;
+									`}
+								>
+									<div className={'badge'}>1 Max</div>
+									<div className={'badge format'}>.BAM</div>
+								</div>
 							</div>
 						</div>
 					</button>
@@ -281,15 +294,17 @@ export const VisualizerModal = ({
 								<h4>cBioPortal</h4>
 							</div>
 							<p>Provides visualization, analysis and download of large-scale cancer genomics data sets.</p>
-							<h5>Files:</h5>
-							<div
-								css={css`
-									display: flex;
-								`}
-							>
-								<button className={'file-badge'}>2 Max</button>
-								<button className={'file-badge file-format'}>.PDF</button>
-								<button className={'file-badge file-format'}>.TSV</button>
+							<div className={'file-container'}>
+								<h5>Files:</h5>
+								<div
+									css={css`
+										display: flex;
+									`}
+								>
+									<div className={'badge'}>2 Max</div>
+									<div className={'badge format'}>.PDF</div>
+									<div className={'badge format'}>.TSV</div>
+								</div>
 							</div>
 						</div>
 					</button>
