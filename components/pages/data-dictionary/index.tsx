@@ -21,7 +21,7 @@
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
-import FilterDropdown, { FilterMapping } from '@/components/FilterDropdown';
+import FilterDropdown, { FilterOptions } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
 import VersionSwitcher from '@/components/VersionSwitcher';
 import { css } from '@emotion/react';
@@ -58,10 +58,10 @@ const rightButtonsStyle = css`
 	align-items: center;
 `;
 
-const displayData = (data: Dictionary[], filters: FilterMapping, dictionaryIndex: number) => {
+const displayData = (data: Dictionary[], filters: FilterOptions[], dictionaryIndex: number) => {
 	const currentDictionary = data?.[dictionaryIndex];
 	// If the filter is not active or we just have nothing to filter, return the original data
-	if (!filters.active || !filters.constraints?.length) {
+	if (!filters?.length) {
 		return currentDictionary;
 	}
 	return {
@@ -70,10 +70,10 @@ const displayData = (data: Dictionary[], filters: FilterMapping, dictionaryIndex
 			...schema,
 			fields: schema.fields.filter((field: any) => {
 				// we are going to filter via the constraints that are given
-				if (filters.constraints?.includes('Required')) {
-					return field?.restrictions?.required === true;
+				if (filters?.includes('Required')) {
+					return !field?.restrictions?.required === true;
 				}
-				if (filters.constraints?.includes('All Fields')) {
+				if (filters?.includes('All Fields')) {
 					return true; // If All Fields is selected, we include all fields
 				}
 				return false;
@@ -83,7 +83,7 @@ const displayData = (data: Dictionary[], filters: FilterMapping, dictionaryIndex
 };
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState(0);
-	const [filters, setFilters] = useState<FilterMapping>({ active: false, constraints: [] });
+	const [filters, setFilters] = useState<FilterOptions[]>([]);
 
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(

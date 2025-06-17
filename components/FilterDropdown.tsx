@@ -1,13 +1,8 @@
 import Dropdown from './Dropdown/Dropdown';
 
 export type FilterDropdownProps = {
-	filters: FilterMapping;
-	setFilters: (filters: FilterMapping) => void;
-};
-
-export type FilterMapping = {
-	constraints?: FilterOptions[];
-	active: boolean;
+	filters: FilterOptions[];
+	setFilters: (filters: FilterOptions[]) => void;
 };
 
 export type FilterOptions = 'Required' | 'All Fields';
@@ -15,11 +10,11 @@ const FilterDropdown = ({ filters, setFilters }: FilterDropdownProps) => {
 	const handleFilterSelect = (selectedFilterName: FilterOptions) => {
 		// If we click the filter again then we want to toggle it off, iff it is the same filter being clicked
 		// and it is currently active
-		if (filters.active && filters.constraints?.includes(selectedFilterName)) {
-			setFilters({ active: false, constraints: [] });
+		if (filters?.includes(selectedFilterName)) {
+			setFilters([]);
 			return;
 		}
-		setFilters({ active: true, constraints: [selectedFilterName] });
+		setFilters([selectedFilterName]);
 	};
 	const menuItems = [
 		{
