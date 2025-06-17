@@ -79,21 +79,21 @@ export const FullScreenButton = ({
 
 export const VisualizerButton = ({
 	iconColor,
-	isBamFileSelected,
 	isFileTableActive,
 	openModal,
+	visualizersEnabled,
 }: {
 	iconColor: string;
-	isBamFileSelected: boolean;
 	isFileTableActive: boolean;
 	openModal: () => void;
+	visualizersEnabled: boolean;
 }) => {
 	const {
 		colors: { accent2, grey_1, grey_4 },
 	} = useTheme();
 	return (
 		<button
-			disabled={!isBamFileSelected && isFileTableActive}
+			disabled={!visualizersEnabled && isFileTableActive}
 			css={css`
 				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 				:disabled {

@@ -46,12 +46,7 @@ module.exports = withPlugins([withTranspileModules], {
 			...config.experiments,
 			topLevelAwait: true,
 		};
-		config.resolve.alias['@emotion/react'] = path.resolve(
-			__dirname,
-			'.',
-			'node_modules',
-			'@emotion/react',
-		);
+		config.resolve.alias['@emotion/react'] = path.resolve(__dirname, '.', 'node_modules', '@emotion/react');
 		config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
 
 		process.env.NODE_ENV === 'development' && (config.optimization.minimize = false);
@@ -80,6 +75,9 @@ module.exports = withPlugins([withTranspileModules], {
 		NEXT_PUBLIC_LOGO_FILENAME: process.env.NEXT_PUBLIC_LOGO_FILENAME,
 		NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
 		NEXT_PUBLIC_SSO_PROVIDERS: process.env.NEXT_PUBLIC_SSO_PROVIDERS,
+		NEXT_PUBLIC_JBROWSE_ENABLED: process.env.NEXT_PUBLIC_JBROWSE_ENABLED,
+		NEXT_PUBLIC_IOBIO_ENABLED: process.env.NEXT_PUBLIC_IOBIO_ENABLED,
+		NEXT_PUBLIC_CBIOPORTAL_ENABLED: process.env.NEXT_PUBLIC_CBIOPORTAL_ENABLED,
 		NEXT_PUBLIC_UI_VERSION: process.env.npm_package_version,
 	},
 	assetPrefix: process.env.ASSET_PREFIX || '',

@@ -19,6 +19,7 @@
  *
  */
 
+import { type SetStateAction } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { ColumnsSelectButton, DownloadButton, useArrangerTheme } from '@overture-stack/arranger-components';
 import urlJoin from 'url-join';
@@ -31,7 +32,7 @@ import { FileButton, FullScreenButton, VisualizerButton } from './HeaderButtons'
 
 const TableHeader = ({
 	iconColor,
-	isBamFileSelected,
+	visualizersEnabled,
 	isFileTableActive,
 	isFullScreen,
 	toggleFullScreen,
@@ -39,11 +40,11 @@ const TableHeader = ({
 	openModal,
 }: {
 	iconColor: string;
-	isBamFileSelected: boolean;
+	visualizersEnabled: boolean;
 	isFileTableActive: boolean;
 	isFullScreen: boolean;
 	toggleFullScreen: () => void;
-	setTable: (s: string) => void;
+	setTable: (value: SetStateAction<string>) => void;
 	openModal: () => void;
 }) => {
 	const { NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS } = getConfig();
@@ -188,7 +189,7 @@ const TableHeader = ({
 				<>
 					<VisualizerButton
 						iconColor={iconColor}
-						isBamFileSelected={isBamFileSelected}
+						visualizersEnabled={visualizersEnabled}
 						isFileTableActive={isFileTableActive}
 						openModal={openModal}
 					/>

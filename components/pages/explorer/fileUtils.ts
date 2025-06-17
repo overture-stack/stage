@@ -23,13 +23,13 @@ import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import axios from 'axios';
 import urlJoin from 'url-join';
-import { baseScoreDownloadParams } from './constants';
+import { baseScoreDownloadParams, JBrowseFileExtensions } from './constants';
 import { type FileMetaData, type FileTableData, type ScoreDownloadParams } from './fileTypes';
 
 // Type Check for Table Data unknown[]
 export const rowIsFileData = (row: unknown): row is FileTableData => {
 	const rowData = row as FileTableData;
-	return Boolean(rowData?.id && rowData?.file_type);
+	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
 };
 
 // Type Check for Score Data response

@@ -21,8 +21,10 @@
 
 const bamFileExtension = 'BAM';
 const cramFileExtension = 'CRAM';
+const vcfFileExtension = 'VCF';
 
 export const BamFileExtensions = [bamFileExtension, cramFileExtension];
+export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
 
 export const baseScoreDownloadParams = {
 	external: 'true',

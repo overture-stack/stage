@@ -19,15 +19,18 @@
  *
  */
 
+import { type SetStateAction } from 'react';
 import ReactModal from 'react-modal';
 import { css, useTheme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { Dismiss } from '../../theme/icons';
 import { getConfig } from '../../../global/config';
-import { tableTypes } from './constants';
+import { BamFileExtensions, tableTypes } from './constants';
+import { FileTableData } from './fileTypes';
 
 export const VisualizerModal = ({
 	closeModal,
+	currentFiles,
 	firstRender,
 	isModalOpen,
 	setTable,
@@ -35,10 +38,25 @@ export const VisualizerModal = ({
 	closeModal: () => void;
 	firstRender: boolean;
 	isModalOpen: boolean;
-	setTable: (s: string) => void;
+	setTable: (value: SetStateAction<string>) => void;
+	currentFiles: FileTableData[];
 }) => {
 	const theme = useTheme();
-	const { NEXT_PUBLIC_BASE_PATH } = getConfig();
+	const {
+		NEXT_PUBLIC_BASE_PATH,
+		NEXT_PUBLIC_IOBIO_ENABLED,
+		NEXT_PUBLIC_JBROWSE_ENABLED,
+		NEXT_PUBLIC_CBIOPORTAL_ENABLED,
+	} = getConfig();
+
+	const isJbrowseEnabled = NEXT_PUBLIC_JBROWSE_ENABLED && currentFiles.length <= 5;
+	const isCBioEnabled = NEXT_PUBLIC_CBIOPORTAL_ENABLED && currentFiles.length <= 2;
+	const isIobioEnabled =
+		NEXT_PUBLIC_IOBIO_ENABLED &&
+		currentFiles.length === 1 &&
+		currentFiles[0].file_type &&
+		BamFileExtensions.includes(currentFiles[0].file_type);
+
 	return (
 		<ReactModal
 			ariaHideApp={!!firstRender}
@@ -206,9 +224,10 @@ export const VisualizerModal = ({
 				>
 					<button
 						className="visualizer-card"
-						disabled={true}
+						disabled={!isJbrowseEnabled}
 						onClick={() => {
-							setTable(tableTypes['JBROWSE_TABLE']);
+							// TODO: Add JBrowse & cBio Tables
+							setTable(tableTypes['REPO_TABLE']);
 							closeModal();
 						}}
 					>
@@ -238,15 +257,16 @@ export const VisualizerModal = ({
 										display: flex;
 									`}
 								>
-									<div className={'badge disabled'}>5 Max</div>
-									<div className={'badge format disabled'}>.VCF</div>
-									<div className={'badge format disabled'}>.BAM</div>
+									<div className={`badge ${isJbrowseEnabled ? '' : 'disabled'}`}>5 Max</div>
+									<div className={`badge format ${isJbrowseEnabled ? '' : 'disabled'}`}>.VCF</div>
+									<div className={`badge format ${isJbrowseEnabled ? '' : 'disabled'}`}>.BAM</div>
 								</div>
 							</div>
 						</div>
 					</button>
 					<button
 						className="visualizer-card"
+						disabled={!isIobioEnabled}
 						onClick={() => {
 							setTable(tableTypes['BAM_TABLE']);
 							closeModal();
@@ -276,17 +296,18 @@ export const VisualizerModal = ({
 										display: flex;
 									`}
 								>
-									<div className={'badge'}>1 Max</div>
-									<div className={'badge format'}>.BAM</div>
+									<div className={`badge ${isIobioEnabled ? '' : 'disabled'}`}>1 Max</div>
+									<div className={`badge format ${isIobioEnabled ? '' : 'disabled'}`}>.BAM</div>
 								</div>
 							</div>
 						</div>
 					</button>
 					<button
 						className="visualizer-card"
-						disabled={true}
+						disabled={!isCBioEnabled}
 						onClick={() => {
-							setTable(tableTypes['CBIO_TABLE']);
+							// TODO: Add JBrowse & cBio Tables
+							setTable(tableTypes['REPO_TABLE']);
 							closeModal();
 						}}
 					>
@@ -314,9 +335,9 @@ export const VisualizerModal = ({
 										display: flex;
 									`}
 								>
-									<div className={'badge disabled'}>2 Max</div>
-									<div className={'badge format disabled'}>.PDF</div>
-									<div className={'badge format disabled'}>.TSV</div>
+									<div className={`badge ${isCBioEnabled ? '' : 'disabled'}`}>2 Max</div>
+									<div className={`badge format ${isCBioEnabled ? '' : 'disabled'}`}>.VCF</div>
+									<div className={`badge format ${isCBioEnabled ? '' : 'disabled'}`}>.BAM</div>
 								</div>
 							</div>
 						</div>
