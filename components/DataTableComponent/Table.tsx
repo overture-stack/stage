@@ -26,10 +26,10 @@ import { Lato } from '../pages/data-dictionary/styles/typography';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 
-type SchemaTableProps<T> = {
-	data: T;
+type SchemaTableProps<C, R> = {
+	data: R;
 	arrayAccessor?: string;
-	getColumns: ColumnDef<T, any>[];
+	getColumns: ColumnDef<C, any>[];
 };
 
 const sectionStyle = css`
@@ -42,7 +42,7 @@ const tableStyle = css`
 	margin-top: 8px;
 `;
 
-const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<T>) => {
+const SchemaTables = <C, R>({ data, getColumns, arrayAccessor }: SchemaTableProps<C, R>) => {
 	// Since the component is generic, we need to be able to access the array data to map
 	const arrayData = get(data, `${arrayAccessor}`, []);
 	return (
@@ -78,7 +78,7 @@ const SchemaTables = <T,>({ data, getColumns, arrayAccessor }: SchemaTableProps<
 						</div>
 						<table css={tableStyle}>
 							<thead>
-								{table.getHeaderGroups().map((headerGroup: HeaderGroup<T>) => (
+								{table.getHeaderGroups().map((headerGroup: HeaderGroup<C>) => (
 									<TableHeader key={headerGroup.id} headerGroup={headerGroup} />
 								))}
 							</thead>

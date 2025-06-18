@@ -20,11 +20,12 @@
  */
 
 import { css, SerializedStyles, useTheme } from '@emotion/react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type DropDownItemProps = {
 	action?: () => void;
 	children: ReactNode;
+	onClose?: () => void;
 	customStyles?: {
 		hover?: SerializedStyles;
 		base?: SerializedStyles;
@@ -50,19 +51,20 @@ const styledListItemStyle = (theme: any, customStyles?: any) => css`
 	}
 	${customStyles?.base}
 `;
-
-const DropDownItem: FC<DropDownItemProps> = ({ children, action, customStyles }) => {
+const DropDownItem = ({ children, action, onClose, customStyles }: DropDownItemProps) => {
 	const theme = useTheme();
-	const content = <div css={styledListItemStyle(theme, customStyles)}>{children}</div>;
-	if (typeof action === 'function') {
-		return (
-			<a onClick={action} css={styledListItemStyle(theme, customStyles)}>
-				{children}
-			</a>
-		);
-	}
-
-	return content;
+	const handleClick = () => {
+		if (typeof action === 'function') {
+			action();
+		}
+		if (onClose) {
+			onClose();
+		}
+	};
+	return (
+		<div css={styledListItemStyle(theme, customStyles)} onClick={handleClick}>
+			{children}
+		</div>
+	);
 };
-
 export default DropDownItem;

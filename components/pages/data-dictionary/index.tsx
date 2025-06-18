@@ -18,16 +18,14 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 import SchemaTables from '@/components/DataTableComponent/Table';
 import { getSchemaBaseColumns } from '@/components/DataTableComponent/tableInit';
 import DictionaryDownloadButton from '@/components/DictionaryDownloadButton';
-import Dropdown from '@/components/Dropdown/Dropdown';
+import FilterDropdown, { FilterOptions } from '@/components/FilterDropdown';
 import PageLayout from '@/components/PageLayout';
-import ListFilter from '@/components/theme/icons/list_filter';
 import VersionSwitcher from '@/components/VersionSwitcher';
 import { css } from '@emotion/react';
-import { Dictionary } from '@overture-stack/lectern-client';
+import { Dictionary, Schema } from '@overture-stack/lectern-client';
 import { get } from 'lodash';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -60,8 +58,29 @@ const rightButtonsStyle = css`
 	align-items: center;
 `;
 
+const displayData = (data: Dictionary[], filters: FilterOptions[], dictionaryIndex: number) => {
+	const currentDictionary = data?.[dictionaryIndex];
+	// If the filter is not active or we just have nothing to filter, return the original data
+	if (!filters?.length) {
+		return currentDictionary;
+	}
+	return {
+		...currentDictionary,
+		schemas: currentDictionary?.schemas?.map((schema: Schema) => ({
+			...schema,
+			fields: schema.fields.filter((field: any) => {
+				// we are going to filter via the constraints that are given
+				if (filters?.includes('Required')) {
+					return field?.restrictions?.required === true;
+				}
+				return filters?.includes('All Fields');
+			}),
+		})),
+	};
+};
 const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) => {
 	const [dictionaryIndex, setDictionaryIndex] = useState(0);
+	const [filters, setFilters] = useState<FilterOptions[]>([]);
 
 	const name = get(data?.[dictionaryIndex], 'name', hasError ? 'Error loading dictionary' : '') as string;
 	const description = get(
@@ -69,40 +88,30 @@ const DataDictionaryPage = ({ data, isLoading, hasError }: DictionaryPageProps) 
 		'description',
 		hasError ? 'Error loading description' : '',
 	) as string;
-	const version = data?.[dictionaryIndex].version || '';
+	const version = data?.[dictionaryIndex]?.version || '';
+
 	return (
-		<>
-			<PageLayout subtitle="Data Dictionary">
-				{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
-				<div css={containerStyle}>
-					<div css={buttonsContainerStyle}>
-						<VersionSwitcher
-							dictionaryIndex={dictionaryIndex}
-							dictionaryData={data as Dictionary[]}
-							onVersionChange={setDictionaryIndex}
-						/>
-
-						<div css={rightButtonsStyle}>
-							<Dropdown leftIcon={<ListFilter />} title="Required Filter" />
-							<DictionaryDownloadButton
-								name={name}
-								version={version}
-								lecternUrl="http://localhost:3031"
-								fileType="tsv"
-							/>
-						</div>
+		<PageLayout subtitle="Data Dictionary">
+			{isLoading ? <Skeleton width={300} /> : <DictionaryHeader description={description} name={name} />}
+			<div css={containerStyle}>
+				<div css={buttonsContainerStyle}>
+					<VersionSwitcher
+						dictionaryIndex={dictionaryIndex}
+						dictionaryData={data as Dictionary[]}
+						onVersionChange={setDictionaryIndex}
+					/>
+					<div css={rightButtonsStyle}>
+						<FilterDropdown filters={filters} setFilters={setFilters} />
+						<DictionaryDownloadButton name={name} version={version} lecternUrl="http://localhost:3031" fileType="tsv" />
 					</div>
-
-					{data && (
-						<SchemaTables<Dictionary>
-							data={data?.[dictionaryIndex]}
-							arrayAccessor="schemas"
-							getColumns={getSchemaBaseColumns as any}
-						/>
-					)}
 				</div>
-			</PageLayout>
-		</>
+				<SchemaTables
+					data={displayData(data as Dictionary[], filters, dictionaryIndex)}
+					arrayAccessor="schemas"
+					getColumns={getSchemaBaseColumns}
+				/>
+			</div>
+		</PageLayout>
 	);
 };
 

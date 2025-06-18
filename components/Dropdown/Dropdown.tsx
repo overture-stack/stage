@@ -21,9 +21,9 @@
 
 import { css, useTheme } from '@emotion/react';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { actionItemStyle } from '../DictionaryDownloadButton';
 import { ChevronDown } from '../theme/icons';
 import DropdownItem from './DropdownItem';
+import { actionItemStyle } from '../DictionaryDownloadButton';
 const parentStyle = css`
 	position: relative;
 	display: inline-block;
@@ -93,7 +93,7 @@ const Dropdown = ({ menuItems = [], title, leftIcon }: DropDownProps) => {
 
 	const renderMenuItems = () => {
 		return menuItems.map(({ label, action }) => (
-			<DropdownItem key={label} action={action}>
+			<DropdownItem key={label} action={action} onClose={() => setOpen(false)}>
 				{label}
 			</DropdownItem>
 		));
