@@ -73,10 +73,7 @@ const displayData = (data: Dictionary[], filters: FilterOptions[], dictionaryInd
 				if (filters?.includes('Required')) {
 					return !field?.restrictions?.required === true;
 				}
-				if (filters?.includes('All Fields')) {
-					return true; // If All Fields is selected, we include all fields
-				}
-				return false;
+return filters?.includes('All Fields')
 			}),
 		})),
 	};
