@@ -105,7 +105,7 @@ export const VisualizerButton = ({
 					}
 				}
 			`}
-			onClick={() => openModal()}
+			onClick={openModal}
 		>
 			<span>
 				<BarGraph

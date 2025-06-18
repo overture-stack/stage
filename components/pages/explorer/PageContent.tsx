@@ -65,7 +65,8 @@ const PageContent = () => {
 		serialize: (v) => (v ? stringify(v) : ''),
 	});
 	const pageContentRef = useRef<HTMLElement>(null);
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
+	// TODO: Remove 2nd condition here when adding JBrowse & cBio tables
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'] || !(tableType === tableTypes['BAM_TABLE']);
 	const iconColor = isFileTableActive
 		? currentFiles.length
 			? theme.colors.accent

@@ -21,12 +21,99 @@
 
 import { type SetStateAction } from 'react';
 import ReactModal from 'react-modal';
-import { css, useTheme } from '@emotion/react';
+import { css, useTheme, Theme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { Dismiss } from '../../theme/icons';
 import { getConfig } from '../../../global/config';
 import { BamFileExtensions, tableTypes } from './constants';
 import { FileTableData } from './fileTypes';
+
+const getCardContainerStyle = (theme: Theme) => css`
+	display: flex;
+	height: 100%;
+
+	.file-container {
+		bottom: 10px;
+		position: absolute;
+
+		.badge {
+			display: inline-flex;
+			border: none;
+			border-radius: 20px;
+			margin: 5px;
+			min-width: fit-content;
+			padding: 3px 10px;
+			background-color: ${theme.colors.accent};
+			color: ${theme.colors.white};
+
+			&.disabled {
+				background-color: ${theme.colors.grey_6};
+			}
+
+			&.format {
+				background-color: ${theme.colors.accent_light};
+				&.disabled {
+					background-color: ${theme.colors.grey_5};
+				}
+			}
+		}
+	}
+
+	.visualizer-card {
+		background: unset;
+		border: 1px solid ${theme.colors.grey_5};
+		border-radius: 16px;
+		cursor: pointer;
+		display: inline-flex;
+		font-family: 'Lato', sans-serif;
+		margin: 0 0.5rem;
+		padding: 10px;
+		position: relative;
+		width: 33%;
+
+		:disabled {
+			cursor: not-allowed;
+		}
+
+		p {
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 16px;
+			margin-top: 0px;
+			text-align: left;
+			height: 30%;
+		}
+
+		h4 {
+			display: inline-block;
+			font-size: 18px;
+			margin: 0.5rem;
+		}
+
+		h5 {
+			font-weight: 700;
+			font-size: 16px;
+			margin: 0.25rem 0;
+			text-align: left;
+		}
+	}
+
+	.logo {
+		height: 18px;
+		vertical-align: text-bottom;
+		width: 18px;
+	}
+
+	.preview {
+		max-height: 28%;
+		overflow-y: hidden;
+		width: 100%;
+
+		img {
+			width: 100%;
+		}
+	}
+`;
 
 export const VisualizerModal = ({
 	closeModal,
@@ -134,100 +221,12 @@ export const VisualizerModal = ({
 				>
 					Choose the appropriate app to analyze your selected data.
 				</p>
-				<div
-					css={css`
-						display: flex;
-						height: 100%;
-
-						.file-container {
-							bottom: 10px;
-							position: absolute;
-
-							.badge {
-								display: inline-flex;
-								border: none;
-								border-radius: 20px;
-								margin: 5px;
-								min-width: fit-content;
-								padding: 3px 10px;
-								background-color: ${theme.colors.accent};
-								color: ${theme.colors.white};
-
-								&.disabled {
-									background-color: ${theme.colors.grey_6};
-								}
-
-								&.format {
-									background-color: ${theme.colors.accent_light};
-									&.disabled {
-										background-color: ${theme.colors.grey_5};
-									}
-								}
-							}
-						}
-
-						.visualizer-card {
-							background: unset;
-							border: 1px solid ${theme.colors.grey_5};
-							border-radius: 16px;
-							cursor: pointer;
-							display: inline-flex;
-							font-family: 'Lato', sans-serif;
-							margin: 0 0.5rem;
-							padding: 10px;
-							position: relative;
-							width: 33%;
-
-							:disabled {
-								cursor: not-allowed;
-							}
-
-							p {
-								font-weight: 400;
-								font-size: 16px;
-								line-height: 16px;
-								margin-top: 0px;
-								text-align: left;
-								height: 30%;
-							}
-
-							h4 {
-								display: inline-block;
-								font-size: 18px;
-								margin: 0.5rem;
-							}
-
-							h5 {
-								font-weight: 700;
-								font-size: 16px;
-								margin: 0.25rem 0;
-								text-align: left;
-							}
-						}
-
-						.logo {
-							height: 18px;
-							vertical-align: text-bottom;
-							width: 18px;
-						}
-
-						.preview {
-							max-height: 28%;
-							overflow-y: hidden;
-							width: 100%;
-
-							img {
-								width: 100%;
-							}
-						}
-					`}
-				>
+				<div css={getCardContainerStyle(theme)}>
 					<button
 						className="visualizer-card"
 						disabled={!isJbrowseEnabled}
 						onClick={() => {
-							// TODO: Add JBrowse & cBio Tables
-							setTable(tableTypes['REPO_TABLE']);
+							setTable(tableTypes['JBROWSE_TABLE']);
 							closeModal();
 						}}
 					>
@@ -306,8 +305,7 @@ export const VisualizerModal = ({
 						className="visualizer-card"
 						disabled={!isCBioEnabled}
 						onClick={() => {
-							// TODO: Add JBrowse & cBio Tables
-							setTable(tableTypes['REPO_TABLE']);
+							setTable(tableTypes['CBIO_TABLE']);
 							closeModal();
 						}}
 					>
