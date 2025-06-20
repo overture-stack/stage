@@ -189,8 +189,7 @@ const TableHeader = ({
 				<>
 					<VisualizerButton
 						iconColor={iconColor}
-						visualizersEnabled={visualizersEnabled}
-						isFileTableActive={isFileTableActive}
+						disabled={!visualizersEnabled && isFileTableActive}
 						openModal={openModal}
 					/>
 					<div

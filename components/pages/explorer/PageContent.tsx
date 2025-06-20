@@ -197,9 +197,9 @@ const PageContent = () => {
 								{/* TODO: Add JBrowse & cBio Tables */}
 								{isFileTableActive ? (
 									<RepoTable />
-								) : tableType === tableTypes['JBROWSE_TABLE'] ? (
+								) : tableType === tableTypes.JBROWSE_TABLE ? (
 									<RepoTable />
-								) : tableType === tableTypes['BAM_TABLE'] ? (
+								) : tableType === tableTypes.BAM_TABLE ? (
 									<BamTable file={currentFiles[0]} />
 								) : (
 									<RepoTable />

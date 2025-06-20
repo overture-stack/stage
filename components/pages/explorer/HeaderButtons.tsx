@@ -79,21 +79,19 @@ export const FullScreenButton = ({
 
 export const VisualizerButton = ({
 	iconColor,
-	isFileTableActive,
+	disabled,
 	openModal,
-	visualizersEnabled,
 }: {
+	disabled: boolean;
 	iconColor: string;
-	isFileTableActive: boolean;
-	openModal: () => void;
-	visualizersEnabled: boolean;
+	openModal?: () => void;
 }) => {
 	const {
 		colors: { accent2, grey_1, grey_4 },
 	} = useTheme();
 	return (
 		<button
-			disabled={!visualizersEnabled && isFileTableActive}
+			disabled={disabled}
 			css={css`
 				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 				:disabled {
@@ -122,7 +120,7 @@ export const VisualizerButton = ({
 	);
 };
 
-export const FileButton = ({ setTable }: { setTable: (t: string) => void }) => {
+export const FileButton = ({ setTable }: { setTable: (tableName: string) => void }) => {
 	const {
 		colors: { accent2, white },
 	} = useTheme();
