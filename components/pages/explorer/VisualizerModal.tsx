@@ -28,38 +28,84 @@ import { getConfig } from '../../../global/config';
 import { BamFileExtensions, tableTypes } from './constants';
 import { FileTableData } from './fileTypes';
 
-const getCardContainerStyle = (theme: Theme) => css`
-	display: flex;
-	height: 100%;
+export const VisualizerModal = ({
+	closeModal,
+	currentFiles,
+	firstRender,
+	isModalOpen,
+	setTable,
+}: {
+	closeModal: () => void;
+	firstRender: boolean;
+	isModalOpen: boolean;
+	setTable: (value: SetStateAction<string>) => void;
+	currentFiles: FileTableData[];
+}) => {
+	const theme = useTheme();
+	const {
+		NEXT_PUBLIC_BASE_PATH,
+		NEXT_PUBLIC_IOBIO_ENABLED,
+		NEXT_PUBLIC_JBROWSE_ENABLED,
+		NEXT_PUBLIC_CBIOPORTAL_ENABLED,
+	} = getConfig();
 
-	.file-container {
+	const isJbrowseEnabled = NEXT_PUBLIC_JBROWSE_ENABLED && currentFiles.length <= 5;
+	const isCBioEnabled = NEXT_PUBLIC_CBIOPORTAL_ENABLED && currentFiles.length <= 2;
+	const isIobioEnabled =
+		NEXT_PUBLIC_IOBIO_ENABLED &&
+		currentFiles.length === 1 &&
+		currentFiles[0].file_type &&
+		BamFileExtensions.includes(currentFiles[0].file_type);
+
+	const fileContainerStyle = css`
 		bottom: 10px;
 		position: absolute;
+	`;
 
-		.badge {
-			display: inline-flex;
-			border: none;
-			border-radius: 20px;
-			margin: 5px;
-			min-width: fit-content;
-			padding: 3px 10px;
-			background-color: ${theme.colors.accent};
-			color: ${theme.colors.white};
+	const badgeStyle = css`
+		display: inline-flex;
+		border: none;
+		border-radius: 20px;
+		margin: 5px;
+		min-width: fit-content;
+		padding: 3px 10px;
+		background-color: ${theme.colors.accent};
+		color: ${theme.colors.white};
 
-			&.disabled {
-				background-color: ${theme.colors.grey_6};
-			}
-
-			&.format {
-				background-color: ${theme.colors.accent_light};
-				&.disabled {
-					background-color: ${theme.colors.grey_5};
-				}
-			}
+		&.disabled {
+			background-color: ${theme.colors.grey_6};
 		}
-	}
+	`;
 
-	.visualizer-card {
+	const formatBadgeStyle = css`
+		${badgeStyle}
+		background-color: ${theme.colors.accent_light};
+		&.disabled {
+			background-color: ${theme.colors.grey_5};
+		}
+	`;
+
+	const cardContainerStyle = css`
+		display: flex;
+		height: 100%;
+	`;
+
+	const logoStyle = css`
+		height: 18px;
+		vertical-align: text-bottom;
+		width: 18px;
+	`;
+
+	const previewStyle = css`
+		max-height: 28%;
+		overflow-y: hidden;
+
+		img {
+			width: 100%;
+		}
+	`;
+
+	const visualizerCardStyle = css`
 		background: unset;
 		border: 1px solid ${theme.colors.grey_5};
 		border-radius: 16px;
@@ -96,53 +142,7 @@ const getCardContainerStyle = (theme: Theme) => css`
 			margin: 0.25rem 0;
 			text-align: left;
 		}
-	}
-
-	.logo {
-		height: 18px;
-		vertical-align: text-bottom;
-		width: 18px;
-	}
-
-	.preview {
-		max-height: 28%;
-		overflow-y: hidden;
-		width: 100%;
-
-		img {
-			width: 100%;
-		}
-	}
-`;
-
-export const VisualizerModal = ({
-	closeModal,
-	currentFiles,
-	firstRender,
-	isModalOpen,
-	setTable,
-}: {
-	closeModal: () => void;
-	firstRender: boolean;
-	isModalOpen: boolean;
-	setTable: (value: SetStateAction<string>) => void;
-	currentFiles: FileTableData[];
-}) => {
-	const theme = useTheme();
-	const {
-		NEXT_PUBLIC_BASE_PATH,
-		NEXT_PUBLIC_IOBIO_ENABLED,
-		NEXT_PUBLIC_JBROWSE_ENABLED,
-		NEXT_PUBLIC_CBIOPORTAL_ENABLED,
-	} = getConfig();
-
-	const isJbrowseEnabled = NEXT_PUBLIC_JBROWSE_ENABLED && currentFiles.length <= 5;
-	const isCBioEnabled = NEXT_PUBLIC_CBIOPORTAL_ENABLED && currentFiles.length <= 2;
-	const isIobioEnabled =
-		NEXT_PUBLIC_IOBIO_ENABLED &&
-		currentFiles.length === 1 &&
-		currentFiles[0].file_type &&
-		BamFileExtensions.includes(currentFiles[0].file_type);
+	`;
 
 	return (
 		<ReactModal
@@ -221,21 +221,17 @@ export const VisualizerModal = ({
 				>
 					Choose the appropriate app to analyze your selected data.
 				</p>
-				<div css={getCardContainerStyle(theme)}>
+				<div css={cardContainerStyle}>
 					<button
-						className="visualizer-card"
+						css={visualizerCardStyle}
 						disabled={!isJbrowseEnabled}
 						onClick={() => {
 							setTable(tableTypes['JBROWSE_TABLE']);
 							closeModal();
 						}}
 					>
-						<div
-							css={css`
-								width: 100%;
-							`}
-						>
-							<div className="preview">
+						<div>
+							<div css={previewStyle}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Preview.png')} />
 							</div>
 							<div
@@ -243,40 +239,42 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
+								<img css={logoStyle} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
 								<h4>JBrowse</h4>
 							</div>
 							<p>
 								A fully featured genome browser that is capable of visualizing diverse types of genome-located data.
 							</p>
-							<div className="file-container">
+							<div css={fileContainerStyle}>
 								<h5>Files:</h5>
 								<div
 									css={css`
 										display: flex;
 									`}
 								>
-									<div className={`badge ${isJbrowseEnabled ? '' : 'disabled'}`}>5 Max</div>
-									<div className={`badge format ${isJbrowseEnabled ? '' : 'disabled'}`}>.VCF</div>
-									<div className={`badge format ${isJbrowseEnabled ? '' : 'disabled'}`}>.BAM</div>
+									<div css={badgeStyle} className={`${isJbrowseEnabled ? '' : 'disabled'}`}>
+										5 Max
+									</div>
+									<div css={formatBadgeStyle} className={`${isJbrowseEnabled ? '' : 'disabled'}`}>
+										.VCF
+									</div>
+									<div css={formatBadgeStyle} className={`${isJbrowseEnabled ? '' : 'disabled'}`}>
+										.BAM
+									</div>
 								</div>
 							</div>
 						</div>
 					</button>
 					<button
-						className="visualizer-card"
+						css={visualizerCardStyle}
 						disabled={!isIobioEnabled}
 						onClick={() => {
 							setTable(tableTypes['BAM_TABLE']);
 							closeModal();
 						}}
 					>
-						<div
-							css={css`
-								width: 100%;
-							`}
-						>
-							<div className="preview">
+						<div>
+							<div css={previewStyle}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Preview.png')} />
 							</div>
 							<div
@@ -284,37 +282,37 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
+								<img css={logoStyle} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
 								<h4>IOBIO</h4>
 							</div>
 							<p>Examine your sequence alignment file in seconds.</p>
-							<div className="file-container">
+							<div css={fileContainerStyle}>
 								<h5>Files:</h5>
 								<div
 									css={css`
 										display: flex;
 									`}
 								>
-									<div className={`badge ${isIobioEnabled ? '' : 'disabled'}`}>1 Max</div>
-									<div className={`badge format ${isIobioEnabled ? '' : 'disabled'}`}>.BAM</div>
+									<div css={badgeStyle} className={`${isIobioEnabled ? '' : 'disabled'}`}>
+										1 Max
+									</div>
+									<div css={formatBadgeStyle} className={`${isIobioEnabled ? '' : 'disabled'}`}>
+										.BAM
+									</div>
 								</div>
 							</div>
 						</div>
 					</button>
 					<button
-						className="visualizer-card"
+						css={visualizerCardStyle}
 						disabled={!isCBioEnabled}
 						onClick={() => {
 							setTable(tableTypes['CBIO_TABLE']);
 							closeModal();
 						}}
 					>
-						<div
-							css={css`
-								width: 100%;
-							`}
-						>
-							<div className="preview">
+						<div>
+							<div css={previewStyle}>
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Preview.png')} />
 							</div>
 							<div
@@ -322,20 +320,26 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
+								<img css={logoStyle} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
 								<h4>cBioPortal</h4>
 							</div>
 							<p>Provides visualization, analysis and download of large-scale cancer genomics data sets.</p>
-							<div className="file-container">
+							<div css={fileContainerStyle}>
 								<h5>Files:</h5>
 								<div
 									css={css`
 										display: flex;
 									`}
 								>
-									<div className={`badge ${isCBioEnabled ? '' : 'disabled'}`}>2 Max</div>
-									<div className={`badge format ${isCBioEnabled ? '' : 'disabled'}`}>.VCF</div>
-									<div className={`badge format ${isCBioEnabled ? '' : 'disabled'}`}>.BAM</div>
+									<div css={badgeStyle} className={`${isCBioEnabled ? '' : 'disabled'}`}>
+										2 Max
+									</div>
+									<div css={formatBadgeStyle} className={`${isCBioEnabled ? '' : 'disabled'}`}>
+										.VCF
+									</div>
+									<div css={formatBadgeStyle} className={`format ${isCBioEnabled ? '' : 'disabled'}`}>
+										.BAM
+									</div>
 								</div>
 							</div>
 						</div>
