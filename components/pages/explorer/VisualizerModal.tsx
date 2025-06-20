@@ -235,7 +235,7 @@ export const VisualizerModal = ({
 								width: 100%;
 							`}
 						>
-							<div className={'preview'}>
+							<div className="preview">
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Preview.png')} />
 							</div>
 							<div
@@ -243,13 +243,13 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
+								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png')} />
 								<h4>JBrowse</h4>
 							</div>
 							<p>
 								A fully featured genome browser that is capable of visualizing diverse types of genome-located data.
 							</p>
-							<div className={'file-container'}>
+							<div className="file-container">
 								<h5>Files:</h5>
 								<div
 									css={css`
@@ -276,7 +276,7 @@ export const VisualizerModal = ({
 								width: 100%;
 							`}
 						>
-							<div className={'preview'}>
+							<div className="preview">
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Preview.png')} />
 							</div>
 							<div
@@ -284,11 +284,11 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
+								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png')} />
 								<h4>IOBIO</h4>
 							</div>
 							<p>Examine your sequence alignment file in seconds.</p>
-							<div className={'file-container'}>
+							<div className="file-container">
 								<h5>Files:</h5>
 								<div
 									css={css`
@@ -314,7 +314,7 @@ export const VisualizerModal = ({
 								width: 100%;
 							`}
 						>
-							<div className={'preview'}>
+							<div className="preview">
 								<img src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Preview.png')} />
 							</div>
 							<div
@@ -322,11 +322,11 @@ export const VisualizerModal = ({
 									text-align: left;
 								`}
 							>
-								<img className={'logo'} src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
+								<img className="logo" src={urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png')} />
 								<h4>cBioPortal</h4>
 							</div>
 							<p>Provides visualization, analysis and download of large-scale cancer genomics data sets.</p>
-							<div className={'file-container'}>
+							<div className="file-container">
 								<h5>Files:</h5>
 								<div
 									css={css`
