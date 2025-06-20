@@ -54,7 +54,6 @@ const PageContent = () => {
 	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
 	const [isModalOpen, setModalOpen] = useState(false);
-	const [currentFiles, setCurrentFiles] = useState<FileTableData[]>([]);
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [isFullScreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -67,11 +66,6 @@ const PageContent = () => {
 	const pageContentRef = useRef<HTMLElement>(null);
 	// TODO: Remove 2nd condition here when adding JBrowse & cBio tables
 	const isFileTableActive = tableType === tableTypes['REPO_TABLE'] || !(tableType === tableTypes['BAM_TABLE']);
-	const iconColor = isFileTableActive
-		? currentFiles.length
-			? theme.colors.accent
-			: theme.colors.grey_4
-		: theme.colors.white;
 
 	useEffect(() => {
 		if (firstRender) {
@@ -85,14 +79,14 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
-	useEffect(() => {
-		const fileData = tableData.filter(rowIsFileData) as FileTableData[];
-		const selectedFileData = fileData.filter((row) => selectedRows.includes(row.id));
+	const fileData = tableData.filter(rowIsFileData) as FileTableData[];
+	const currentFiles = fileData.filter((row) => selectedRows.includes(row.id));
 
-		if (selectedFileData.length > 0) {
-			setCurrentFiles(selectedFileData);
-		}
-	}, [selectedRows]);
+	const iconColor = isFileTableActive
+		? currentFiles.length
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
 	const closeModal = () => {
 		setModalOpen(false);
