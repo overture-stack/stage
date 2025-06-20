@@ -30,18 +30,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable/index';
-import { BamFileExtensions } from './constants';
+import { BamFileExtensions, tableTypes } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 import TableHeader from './TableHeader';
-
-const tableTypes = {
-	REPO_TABLE: 'repoTable',
-	BAM_TABLE: 'bamTable',
-};
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -104,8 +99,7 @@ const PageContent = () => {
 		}
 	}, [selectedRows]);
 
-	const switchTable = () => {
-		const nextTableValue = isFileTableActive ? tableTypes['BAM_TABLE'] : tableTypes['REPO_TABLE'];
+	const switchTable = (nextTableValue: string) => {
 		setTableType(nextTableValue);
 	};
 

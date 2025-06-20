@@ -29,3 +29,8 @@ export const baseScoreDownloadParams = {
 	offset: '0',
 	'User-Agent': 'unknown',
 };
+
+export const tableTypes = {
+	REPO_TABLE: 'repoTable',
+	BAM_TABLE: 'bamTable',
+};

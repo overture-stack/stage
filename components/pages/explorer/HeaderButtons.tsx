@@ -21,6 +21,7 @@
 
 import { css, useTheme } from '@emotion/react';
 import { ChevronDown, FullScreen, BarGraph } from '../../theme/icons';
+import { tableTypes } from './constants';
 
 export const getHeaderButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
 	const {
@@ -76,16 +77,16 @@ export const FullScreenButton = ({
 	);
 };
 
-export const BamFileButton = ({
+export const VisualizerButton = ({
 	iconColor,
 	isBamFileSelected,
 	isFileTableActive,
-	switchTable,
+	switchTable, // change to open modal
 }: {
 	iconColor: string;
 	isBamFileSelected: boolean;
 	isFileTableActive: boolean;
-	switchTable: () => void;
+	switchTable: (t: string) => void;
 }) => {
 	const {
 		colors: { accent2, grey_1, grey_4 },
@@ -104,33 +105,45 @@ export const BamFileButton = ({
 					}
 				}
 			`}
-			onClick={switchTable}
+			onClick={() => switchTable(tableTypes['BAM_TABLE'])}
 		>
-			{isFileTableActive ? (
-				<span>
-					<BarGraph
-						width={16}
-						height={16}
-						fill={iconColor}
-						style={css`
-							vertical-align: text-bottom;
-						`}
-					/>{' '}
-					Visualization
-				</span>
-			) : (
-				<span>
-					<ChevronDown
-						fill={iconColor}
-						width={10}
-						height={10}
-						style={css`
-							transform: rotate(90deg);
-						`}
-					/>{' '}
-					File Repository
-				</span>
-			)}
+			<span>
+				<BarGraph
+					width={16}
+					height={16}
+					fill={iconColor}
+					style={css`
+						vertical-align: text-bottom;
+					`}
+				/>{' '}
+				Visualization
+			</span>
+		</button>
+	);
+};
+
+export const FileButton = ({ switchTable }: { switchTable: (t: string) => void }) => {
+	const {
+		colors: { accent2, white },
+	} = useTheme();
+	return (
+		<button
+			css={css`
+				${getHeaderButtonStyles({ active: false, accent: accent2 })}
+			`}
+			onClick={() => switchTable(tableTypes['REPO_TABLE'])}
+		>
+			<span>
+				<ChevronDown
+					fill={white}
+					width={10}
+					height={10}
+					style={css`
+						transform: rotate(90deg);
+					`}
+				/>{' '}
+				File Repository
+			</span>
 		</button>
 	);
 };
