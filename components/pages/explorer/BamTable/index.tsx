@@ -39,7 +39,6 @@ import { useEffect, useState } from 'react';
 import Loader from '@/components/Loader';
 import { FileMetaData, FileTableData } from '../fileTypes';
 import { getFileMetaData, isFileMetaData } from '../fileUtils';
-import { DemoDataButton, demoFileMetadata } from './DemoData';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
@@ -86,15 +85,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 		<>
 			<h2>{fileId}</h2>
 			<ToggleButtonPanel bamContext={elementState} onToggle={updateElements} />
-			{/* TODO: Remove Demo Data Button */}
-			<DemoDataButton
-				file={file}
-				isDemoData={fileMetaData?.objectId === demoFileMetadata.objectId}
-				loadAndSetFile={loadAndSetFile}
-				loading={loading}
-				setFileMetaData={setFileMetaData}
-				setLoading={setLoading}
-			/>
 			{loading || !fileUrl ? (
 				<Loader />
 			) : (
