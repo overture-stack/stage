@@ -38,7 +38,8 @@ import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 import TableHeader from './TableHeader';
-import VisualizerModal from './VisualizerModal';
+import ModalContainer from './Modal';
+import { VisualizerModal } from './Modal/components';
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -115,13 +116,9 @@ const PageContent = () => {
 					width: 100vw;
 				`}
 			>
-				<VisualizerModal
-					closeModal={closeModal}
-					currentFiles={currentFiles}
-					firstRender={firstRender}
-					isModalOpen={isModalOpen}
-					setTable={setTableType}
-				/>
+				<ModalContainer appRootId={'#pageContent'} closeModal={closeModal} isModalOpen={isModalOpen}>
+					<VisualizerModal closeModal={closeModal} setTable={setTableType} currentFiles={currentFiles} />
+				</ModalContainer>
 				<div
 					css={css`
 						display: flex;
