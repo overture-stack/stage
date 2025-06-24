@@ -83,11 +83,15 @@ export const VizDetail = ({ title, description, previewImage, logoImage }: VizDe
 
 export const Badges = ({ isEnabled, badges }: { isEnabled: boolean; badges: BadgeItem[] }) => {
 	const theme = useTheme();
-	const badgeGroup = badges.map((badge) => {
+	const badgeGroup = badges.map((badge, index) => {
 		const badgeCss = badge.isAccent
 			? accentBadgeStyle({ theme, isDisabled: !isEnabled })
 			: badgeStyle({ theme, isDisabled: !isEnabled });
-		return <div css={badgeCss}>{badge.label}</div>;
+		return (
+			<div key={`badge-${index}`} css={badgeCss}>
+				{badge.label}
+			</div>
+		);
 	});
 	return <>{badgeGroup}</>;
 };
