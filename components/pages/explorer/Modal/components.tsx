@@ -19,15 +19,50 @@
  *
  */
 
-import { css, useTheme } from '@emotion/react';
+import { css, useTheme, Theme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { getConfig } from '../../../../global/config';
 import { BamFileExtensions, tableTypes } from '../constants';
 import { FileTableData } from '../fileTypes';
-import { badgeStyle, accentBadgeStyle, optionStyle } from './styles';
-import { BadgeItem, VizDetailProps } from './types';
+import { BadgeItem, VisualizerDetailProps } from './types';
 
-export const VizDetail = ({ title, description, previewImage, logoImage }: VizDetailProps) => {
+const accentBadgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
+	${badgeStyle({ theme, isDisabled })}
+	background-color: ${theme.colors.accent_light};
+	margin-left: 5px;
+	${isDisabled ? `background-color: ${theme.colors.grey_5};` : ''}
+`;
+
+const badgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
+	display: inline-flex;
+	border: none;
+	border-radius: 20px;
+	margin: 5px;
+	margin-left: 0px;
+	min-width: fit-content;
+	padding: 3px 10px;
+	background-color: ${theme.colors.accent};
+	color: ${theme.colors.white};
+
+	${isDisabled ? `background-color: ${theme.colors.grey_6};` : ''}
+`;
+
+const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean }) => css`
+	background: unset;
+	border: 1px solid ${theme.colors.grey_5};
+	border-radius: 16px;
+	cursor: pointer;
+	display: inline-flex;
+	flex: 1;
+	font-family: 'Lato', sans-serif;
+	margin: 0 0.5rem;
+	padding: 10px;
+	position: relative;
+
+	${isEnabled ? '' : `cursor: not-allowed;`}
+`;
+
+export const VisualizerDetail = ({ title, description, previewImage, logoImage }: VisualizerDetailProps) => {
 	return (
 		<>
 			<div
@@ -96,14 +131,14 @@ export const Badges = ({ isEnabled, badges }: { isEnabled: boolean; badges: Badg
 	return <>{badgeGroup}</>;
 };
 
-export const VizualizerOption = ({
+export const VisualizerOption = ({
 	badges,
 	details: { title, description, previewImage, logoImage },
 	isEnabled,
 	onClick,
 }: {
 	badges: BadgeItem[];
-	details: VizDetailProps;
+	details: VisualizerDetailProps;
 	isEnabled: boolean;
 	onClick: () => void;
 }) => {
@@ -111,7 +146,7 @@ export const VizualizerOption = ({
 	return (
 		<button css={optionStyle({ theme, isEnabled })} disabled={!isEnabled} onClick={onClick}>
 			<div>
-				<VizDetail title={title} description={description} previewImage={previewImage} logoImage={logoImage} />
+				<VisualizerDetail title={title} description={description} previewImage={previewImage} logoImage={logoImage} />
 
 				<div
 					css={css`
@@ -171,20 +206,20 @@ export const VisualizerModal = ({
 		currentFiles[0].file_type &&
 		BamFileExtensions.includes(currentFiles[0].file_type);
 
-	const selectViz = (tableType: string) => () => {
+	const selectVisualizer = (tableType: string) => () => {
 		setTable(tableType);
 		closeModal();
 	};
 
 	return (
 		<>
-			<VizualizerOption
+			<VisualizerOption
 				badges={[
 					{ label: '5 Max', isAccent: false },
 					{ label: '.VCF', isAccent: true },
 					{ label: '.BAM', isAccent: true },
 				]}
-				onClick={selectViz(tableTypes.JBROWSE_TABLE)}
+				onClick={selectVisualizer(tableTypes.JBROWSE_TABLE)}
 				isEnabled={isJbrowseEnabled}
 				details={{
 					title: 'JBrowse',
@@ -194,12 +229,12 @@ export const VisualizerModal = ({
 					logoImage: urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/jBrowse_Logo.png'),
 				}}
 			/>
-			<VizualizerOption
+			<VisualizerOption
 				badges={[
 					{ label: '1 Max', isAccent: false },
 					{ label: '.BAM', isAccent: true },
 				]}
-				onClick={selectViz(tableTypes.BAM_TABLE)}
+				onClick={selectVisualizer(tableTypes.BAM_TABLE)}
 				isEnabled={!!isIobioEnabled}
 				details={{
 					title: 'IOBIO',
@@ -208,7 +243,7 @@ export const VisualizerModal = ({
 					logoImage: urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/IOBIO_Logo.png'),
 				}}
 			/>
-			<VizualizerOption
+			<VisualizerOption
 				badges={[
 					{ label: '2 Max', isAccent: false },
 					{ label: '.VCF', isAccent: true },
@@ -221,7 +256,7 @@ export const VisualizerModal = ({
 					logoImage: urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png'),
 				}}
 				isEnabled={isCBioEnabled}
-				onClick={selectViz(tableTypes.CBIO_TABLE)}
+				onClick={selectVisualizer(tableTypes.CBIO_TABLE)}
 			/>
 		</>
 	);

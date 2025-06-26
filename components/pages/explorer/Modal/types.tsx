@@ -24,7 +24,7 @@ export type BadgeItem = {
 	isAccent: boolean;
 };
 
-export type VizDetailProps = {
+export type VisualizerDetailProps = {
 	title: string;
 	description: string;
 	previewImage: string;
