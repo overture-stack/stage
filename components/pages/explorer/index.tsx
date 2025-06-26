@@ -64,11 +64,7 @@ const configsQuery = `
 
 const RepositoryPage = () => {
 	const theme = useTheme();
-	const {
-		NEXT_PUBLIC_ARRANGER_API,
-		NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-		NEXT_PUBLIC_ARRANGER_INDEX,
-	} = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
 	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
 	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
