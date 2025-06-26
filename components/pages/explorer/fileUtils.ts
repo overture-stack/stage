@@ -38,7 +38,7 @@ export const isFileMetaData = (file: any): file is FileMetaData => {
 	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
-export const getScoreDownload = async ({ length, object_id }: { length: string; object_id: string }) => {
+export const getScoreDownloadUrls = async ({ length, object_id }: { length: string; object_id: string }) => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const scoreDownloadParams: ScoreDownloadParams = {
 		...baseScoreDownloadParams,
@@ -108,8 +108,8 @@ export const getFileMetaData = async (selectedBamFile: FileTableData, indexFile:
 
 	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
 
-	const fileMetaData = await getScoreDownload({ length: fileSize, object_id: fileObjectId });
-	const indexFileMetaData = await getScoreDownload({ length: indexFileSize, object_id: indexObjectId });
+	const fileMetaData = await getScoreDownloadUrls({ length: fileSize, object_id: fileObjectId });
+	const indexFileMetaData = await getScoreDownloadUrls({ length: indexFileSize, object_id: indexObjectId });
 
 	return { fileMetaData, indexFileMetaData };
 };
