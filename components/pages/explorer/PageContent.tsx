@@ -26,7 +26,6 @@ import { type UseTableContextProps } from '@overture-stack/arranger-components/d
 import stringify from 'fast-json-stable-stringify';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import ReactModal from 'react-modal';
 
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
