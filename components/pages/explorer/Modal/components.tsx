@@ -150,6 +150,7 @@ export const VisualizerOption = ({
 
 				<div
 					css={css`
+						position: absolute;
 						bottom: 10px;
 					`}
 				>
