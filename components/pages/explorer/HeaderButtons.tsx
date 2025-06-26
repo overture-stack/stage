@@ -79,21 +79,19 @@ export const FullScreenButton = ({
 
 export const VisualizerButton = ({
 	iconColor,
-	isBamFileSelected,
-	isFileTableActive,
-	switchTable, // change to open modal
+	disabled,
+	openModal,
 }: {
+	disabled: boolean;
 	iconColor: string;
-	isBamFileSelected: boolean;
-	isFileTableActive: boolean;
-	switchTable: (t: string) => void;
+	openModal?: () => void;
 }) => {
 	const {
 		colors: { accent2, grey_1, grey_4 },
 	} = useTheme();
 	return (
 		<button
-			disabled={!isBamFileSelected && isFileTableActive}
+			disabled={disabled}
 			css={css`
 				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 				:disabled {
@@ -105,7 +103,7 @@ export const VisualizerButton = ({
 					}
 				}
 			`}
-			onClick={() => switchTable(tableTypes['BAM_TABLE'])}
+			onClick={openModal}
 		>
 			<span>
 				<BarGraph
@@ -122,7 +120,7 @@ export const VisualizerButton = ({
 	);
 };
 
-export const FileButton = ({ switchTable }: { switchTable: (t: string) => void }) => {
+export const FileButton = ({ setTable }: { setTable: (tableName: string) => void }) => {
 	const {
 		colors: { accent2, white },
 	} = useTheme();
@@ -131,7 +129,7 @@ export const FileButton = ({ switchTable }: { switchTable: (t: string) => void }
 			css={css`
 				${getHeaderButtonStyles({ active: false, accent: accent2 })}
 			`}
-			onClick={() => switchTable(tableTypes['REPO_TABLE'])}
+			onClick={() => setTable(tableTypes['REPO_TABLE'])}
 		>
 			<span>
 				<ChevronDown

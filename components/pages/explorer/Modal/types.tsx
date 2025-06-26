@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,22 +19,14 @@
  *
  */
 
-const bamFileExtension = 'BAM';
-const cramFileExtension = 'CRAM';
-const vcfFileExtension = 'VCF';
-
-export const BamFileExtensions = [bamFileExtension, cramFileExtension];
-export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
-
-export const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
+export type BadgeItem = {
+	label: string;
+	isAccent: boolean;
 };
 
-export const tableTypes = {
-	REPO_TABLE: 'repoTable',
-	BAM_TABLE: 'bamTable',
-	JBROWSE_TABLE: 'jbrowseTable',
-	CBIO_TABLE: 'cbioTable',
+export type VisualizerDetailProps = {
+	title: string;
+	description: string;
+	previewImage: string;
+	logoImage: string;
 };
