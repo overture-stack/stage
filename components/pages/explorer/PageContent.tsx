@@ -71,7 +71,6 @@ const PageContent = () => {
 	useEffect(() => {
 		if (firstRender) {
 			currentFilters && setSQON(currentFilters);
-			ReactModal.setAppElement('#pageContent');
 			setFirstRender(false);
 		}
 	}, [currentFilters, firstRender, setSQON]);
