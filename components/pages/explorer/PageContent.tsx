@@ -30,13 +30,15 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable/index';
-import { BamFileExtensions, tableTypes } from './constants';
+import { tableTypes } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
 import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 import TableHeader from './TableHeader';
+import ModalContainer from './Modal';
+import { VisualizerModal } from './Modal/components';
 
 const PageContent = () => {
 	const theme = useTheme();
@@ -51,7 +53,7 @@ const PageContent = () => {
 	const tableContext = useTableContext(contextProps);
 	const { selectedRows, tableData } = tableContext;
 	const [tableType, setTableType] = useState(tableTypes['REPO_TABLE']);
-	const [currentBamFile, setCurrentBamFile] = useState<FileTableData | undefined>(undefined);
+	const [isModalOpen, setModalOpen] = useState(false);
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [isFullScreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
 	const [currentFilters, setCurrentFilters] = useUrlParamState<SQONType | null>('filters', null, {
@@ -61,14 +63,9 @@ const PageContent = () => {
 		},
 		serialize: (v) => (v ? stringify(v) : ''),
 	});
-	const isFileTableActive = tableType === tableTypes['REPO_TABLE'];
-	const isBamFileSelected = Boolean(currentBamFile);
 	const pageContentRef = useRef<HTMLElement>(null);
-	const iconColor = isFileTableActive
-		? isBamFileSelected
-			? theme.colors.accent
-			: theme.colors.grey_4
-		: theme.colors.white;
+	// TODO: Remove 2nd condition here when adding JBrowse & cBio tables
+	const isFileTableActive = tableType === tableTypes['REPO_TABLE'] || !(tableType === tableTypes['BAM_TABLE']);
 
 	useEffect(() => {
 		if (firstRender) {
@@ -81,26 +78,21 @@ const PageContent = () => {
 		firstRender || isEqual(sqon, currentFilters) || setCurrentFilters(sqon);
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
-	// Disable Visualization button unless only 1 BAM Compatible file is selected
-	useEffect(() => {
-		const oneFileSelected = selectedRows.length === 1;
-		if (oneFileSelected) {
-			const fileData = tableData.filter(rowIsFileData) as FileTableData[];
-			const selectedBamFile = fileData.find((rowData) => {
-				const { id, file_type } = rowData;
-				const idMatch = id === selectedRows[0];
-				const isBamFile = Boolean(file_type && BamFileExtensions.includes(file_type));
-				return idMatch && isBamFile;
-			});
+	const fileData = tableData.filter(rowIsFileData) as FileTableData[];
+	const currentFiles = fileData.filter((row) => selectedRows.includes(row.id));
 
-			setCurrentBamFile(selectedBamFile);
-		} else {
-			setCurrentBamFile(undefined);
-		}
-	}, [selectedRows]);
+	const iconColor = isFileTableActive
+		? currentFiles.length
+			? theme.colors.accent
+			: theme.colors.grey_4
+		: theme.colors.white;
 
-	const switchTable = (nextTableValue: string) => {
-		setTableType(nextTableValue);
+	const closeModal = () => {
+		setModalOpen(false);
+	};
+
+	const openModal = () => {
+		setModalOpen(true);
 	};
 
 	const toggleFullScreen = () => {
@@ -116,11 +108,15 @@ const PageContent = () => {
 	return useMemo(
 		() => (
 			<div
+				id={'pageContent'}
 				css={css`
 					flex: 1;
 					width: 100vw;
 				`}
 			>
+				<ModalContainer appRootId={'#pageContent'} closeModal={closeModal} isModalOpen={isModalOpen}>
+					<VisualizerModal closeModal={closeModal} setTable={setTableType} currentFiles={currentFiles} />
+				</ModalContainer>
 				<div
 					css={css`
 						display: flex;
@@ -180,13 +176,23 @@ const PageContent = () => {
 							>
 								<TableHeader
 									iconColor={iconColor}
-									isBamFileSelected={isBamFileSelected}
+									visualizersEnabled={currentFiles.length > 0}
 									isFileTableActive={isFileTableActive}
 									isFullScreen={isFullScreen}
+									setTable={setTableType}
+									openModal={openModal}
 									toggleFullScreen={toggleFullScreen}
-									switchTable={switchTable}
 								/>
-								{isFileTableActive ? <RepoTable /> : <BamTable file={currentBamFile} />}
+								{/* TODO: Add JBrowse & cBio Tables */}
+								{isFileTableActive ? (
+									<RepoTable />
+								) : tableType === tableTypes.JBROWSE_TABLE ? (
+									<RepoTable />
+								) : tableType === tableTypes.BAM_TABLE ? (
+									<BamTable file={currentFiles[0]} />
+								) : (
+									<RepoTable />
+								)}
 							</article>
 						</div>
 					</div>
