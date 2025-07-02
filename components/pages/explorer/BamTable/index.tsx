@@ -38,7 +38,7 @@ import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
-import { FileMetaData, FileTableData } from '../fileTypes';
+import { type FileMetaData, type FileTableData, type FileResponse } from '../fileTypes';
 import { getFileMetaData, isFileMetaData, getIndexFileData } from '../fileUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
@@ -56,9 +56,9 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
 	const loadAndSetFile = async (file: FileTableData) => {
-		// TODO: Add Client Error Handling
-		const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
-		const indexFile = indexFileResponse?.data?.file.hits.edges[0]?.node.file.index_file;
+		// TODO: Add API Client Error Handling & Type input
+		const indexFileResponse = (await getIndexFileData({ apiFetcher, fileId }))?.data as FileResponse;
+		const indexFile = indexFileResponse?.file.hits.edges[0]?.node.file.index_file;
 
 		const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
 
@@ -90,6 +90,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			console.error('No File Data');
 		}
 	}, [fileUrl, file]);
+
 	return (
 		<>
 			<h2>{fileId}</h2>

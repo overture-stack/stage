@@ -81,6 +81,7 @@ export const IndexFileQuery = `query IndexFile ($sqon: JSON) {
   }
 }`;
 
+// TODO: Add apiFetcher Type Argument
 export const getIndexFileData = async ({
 	apiFetcher,
 	fileId,

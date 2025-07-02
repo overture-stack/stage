@@ -73,3 +73,24 @@ export type FileTableData = {
 	file_type?: string;
 	file: { size: number };
 };
+
+export type FileNode = {
+	node: {
+		file: {
+			index_file: {
+				name: string;
+				object_id: string;
+				size: number;
+			};
+		};
+	};
+};
+
+export type FileResponse = {
+	file: {
+		hits: {
+			edges: FileNode[];
+			total: number;
+		};
+	};
+};
