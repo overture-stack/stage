@@ -87,10 +87,12 @@ export type FileNode = {
 };
 
 export type FileResponse = {
-	file: {
-		hits: {
-			edges: FileNode[];
-			total: number;
+	data: {
+		file: {
+			hits: {
+				edges: FileNode[];
+				total: number;
+			};
 		};
 	};
 };

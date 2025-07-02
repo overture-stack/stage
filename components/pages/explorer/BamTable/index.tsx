@@ -58,9 +58,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
 	const loadAndSetFile = async (file: FileTableData) => {
-		// TODO: Add API Client Error Handling & Type input
-		const indexFileResponse = (await getIndexFileData({ apiFetcher, fileId }))?.data as FileResponse;
-		const indexFile = indexFileResponse?.file.hits.edges[0]?.node.file.index_file;
+		const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
+		const indexFile = indexFileResponse?.data.file.hits.edges[0]?.node.file.index_file;
 
 		const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
 
