@@ -38,6 +38,7 @@ import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
+import { getConfig } from '@/global/config';
 import { type FileMetaData, type FileTableData, type FileResponse } from '../fileTypes';
 import { getFileMetaData, isFileMetaData, getIndexFileData } from '../fileUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
@@ -51,6 +52,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
+	const { NEXT_PUBLIC_IOBIO_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
@@ -99,7 +101,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				<Loader />
 			) : (
 				<>
-					<IobioDataBroker alignmentUrl={fileUrl} indexUrl={indexFileUrl} />
+					<IobioDataBroker alignmentUrl={fileUrl} indexUrl={indexFileUrl} server={NEXT_PUBLIC_IOBIO_API_URL} />
 					<div
 						css={css`
 							display: flex;
