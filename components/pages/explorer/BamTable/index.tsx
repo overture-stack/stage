@@ -57,22 +57,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
-	const loadAndSetFile = async (file: FileTableData) => {
-		const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
-		const indexFile = indexFileResponse?.data.file.hits.edges[0]?.node.file.index_file;
-
-		const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
-
-		if (isFileMetaData(fileMetaData)) {
-			setFileMetaData(fileMetaData);
-			setIndexFileData(indexFileMetaData);
-		} else {
-			setFileMetaData(undefined);
-			console.error('Error retrieving Score File Data');
-		}
-		setLoading(false);
-	};
-
 	const updateElements = (key: keyof BamContext, value: boolean) => {
 		const newState = {
 			...elementState,
@@ -83,6 +67,21 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	useEffect(() => {
 		if (!fileUrl && file) {
+			const loadAndSetFile = async (file: FileTableData) => {
+				const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
+				const indexFile = indexFileResponse?.data.file.hits.edges[0]?.node.file.index_file;
+
+				const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
+
+				if (isFileMetaData(fileMetaData)) {
+					setFileMetaData(fileMetaData);
+					setIndexFileData(indexFileMetaData);
+				} else {
+					setFileMetaData(undefined);
+					console.error('Error retrieving Score File Data');
+				}
+				setLoading(false);
+			};
 			// On page load, file table data is populated,
 			// but original file url needs to be requested from Score to use for Iobio analysis
 			loadAndSetFile(file);
