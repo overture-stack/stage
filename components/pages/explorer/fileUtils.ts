@@ -81,12 +81,13 @@ export const IndexFileQuery = `query IndexFile ($sqon: JSON) {
 }`;
 
 export const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
+	// Base BAM File download
 	const fileSize = selectedBamFile.file.size.toString();
 	const fileObjectId = selectedBamFile.id;
-
-	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
-
 	const fileMetaData = await getScoreFile({ length: fileSize, object_id: fileObjectId });
+
+	// Related Index File download
+	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
 	const indexFileMetaData = await getScoreFile({ length: indexFileSize, object_id: indexObjectId });
 
 	return { fileMetaData, indexFileMetaData };
