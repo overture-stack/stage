@@ -124,7 +124,6 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 									line-height: 14px;
 									letter-spacing: 0px;
 									padding: 5px;
-									vertical-align: middle;
 								}
 							`}
 						>
