@@ -39,7 +39,7 @@ import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData, type FileResponse } from '../fileTypes';
+import { type FileMetaData, type FileTableData } from '../fileTypes';
 import { getFileMetaData, isFileMetaData, getIndexFileData } from '../fileUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';

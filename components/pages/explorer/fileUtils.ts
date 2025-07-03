@@ -104,7 +104,7 @@ export const getIndexFileData = async ({
 	})) as Promise<FileResponse>;
 
 export const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
-	const fileSize = selectedBamFile.file?.size?.toString();
+	const fileSize = selectedBamFile.file.size.toString();
 	const fileObjectId = selectedBamFile.id;
 
 	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
