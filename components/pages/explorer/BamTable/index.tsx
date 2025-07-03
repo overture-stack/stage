@@ -39,8 +39,8 @@ import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData } from '../fileTypes';
-import { getFileMetaData, isFileMetaData, getIndexFileData } from '../fileUtils';
+import { type FileMetaData, type FileTableData, type FileResponse } from '../fileTypes';
+import { getFileMetaData, isFileMetaData, IndexFileQuery } from '../fileUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
@@ -68,7 +68,20 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	useEffect(() => {
 		if (!fileUrl && file) {
 			const loadAndSetFile = async (file: FileTableData) => {
-				const indexFileResponse = await getIndexFileData({ apiFetcher, fileId });
+				const indexFileResponse = (await apiFetcher({
+					endpointTag: 'GetIndexFileData',
+					body: {
+						query: IndexFileQuery,
+						variables: {
+							first: 1,
+							sqon: {
+								content: [{ op: 'in', content: { fieldName: '_id', value: fileId } }],
+								op: 'and',
+							},
+						},
+					},
+				})) as FileResponse;
+
 				const indexFile = indexFileResponse?.data.file.hits.edges[0]?.node.file.index_file;
 
 				const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);

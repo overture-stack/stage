@@ -21,11 +21,10 @@
 
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
-import { type APIFetcherFn } from '@overture-stack/arranger-components/dist/DataContext/types';
 import axios from 'axios';
 import urlJoin from 'url-join';
 import { baseScoreDownloadParams, JBrowseFileExtensions } from './constants';
-import { type FileMetaData, type FileTableData, type FileResponse, type ScoreDownloadParams } from './fileTypes';
+import { type FileMetaData, type FileTableData, type ScoreDownloadParams } from './fileTypes';
 
 // Type Check for Table Data unknown[]
 export const rowIsFileData = (row: unknown): row is FileTableData => {
@@ -80,28 +79,6 @@ export const IndexFileQuery = `query IndexFile ($sqon: JSON) {
 		} 
   }
 }`;
-
-export const getIndexFileData = async ({
-	apiFetcher,
-	fileId,
-}: {
-	apiFetcher: APIFetcherFn;
-	fileId: string | undefined;
-	// TODO: Add apiFetcher Type Argument
-}) =>
-	(await apiFetcher({
-		endpointTag: 'GetIndexFileData',
-		body: {
-			query: IndexFileQuery,
-			variables: {
-				first: 1,
-				sqon: {
-					content: [{ op: 'in', content: { fieldName: '_id', value: fileId } }],
-					op: 'and',
-				},
-			},
-		},
-	})) as Promise<FileResponse>;
 
 export const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
 	const fileSize = selectedBamFile.file.size.toString();
