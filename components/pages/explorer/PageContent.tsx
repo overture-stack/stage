@@ -30,15 +30,20 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import useUrlParamState from '@/global/hooks/useUrlParamsState';
 
 import BamTable from './BamTable/index';
-import { tableTypes } from './constants';
+import { JBrowseFileExtensions, tableTypes } from './constants';
 import Facets from './Facets';
 import { type FileTableData } from './fileTypes';
-import { rowIsFileData } from './fileUtils';
 import QueryBar from './QueryBar';
 import RepoTable from './RepoTable';
 import TableHeader from './TableHeader';
 import ModalContainer from './Modal';
 import { VisualizerModal } from './Modal/components';
+
+// Type Check for Table Data unknown[]
+const rowIsFileData = (row: unknown): row is FileTableData => {
+	const rowData = row as FileTableData;
+	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
+};
 
 const PageContent = () => {
 	const theme = useTheme();

@@ -21,6 +21,7 @@
 
 'use client';
 
+import axios from 'axios';
 import { css, useTheme } from '@emotion/react';
 import {
 	BamDisplayNames as displayNames,
@@ -36,13 +37,77 @@ import {
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
+import urlJoin from 'url-join';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData, type FileResponse } from '../fileTypes';
-import { getFileMetaData, isFileMetaData, IndexFileQuery } from '../fileUtils';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
+
+import { baseScoreDownloadParams } from '../constants';
+import { type FileMetaData, type FileTableData, type FileResponse, type ScoreDownloadParams } from '../fileTypes';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
+
+// Type Check for Score Data response
+const isFileMetaData = (file: any): file is FileMetaData => {
+	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
+};
+
+const getScoreFile = async ({ length, object_id }: { length: string; object_id: string }) => {
+	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
+	const scoreDownloadParams: ScoreDownloadParams = {
+		...baseScoreDownloadParams,
+		length,
+	};
+	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
+	try {
+		const response = await axios.get(
+			urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
+			{
+				headers: { accept: '*/*' },
+			},
+		);
+
+		if (response.status === 200) {
+			return response.data;
+		}
+	} catch (err: unknown) {
+		console.error(`Error at getScoreFile with object_id ${object_id}`);
+		console.error(err);
+	}
+};
+
+const IndexFileQuery = `query IndexFile ($sqon: JSON) {
+  file {
+		hits (filters: $sqon) {
+			total
+			edges {
+				node {
+					file {
+						index_file {
+							name
+							object_id
+							size
+						}
+					}
+				}
+			}
+		} 
+  }
+}`;
+
+const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
+	// Base BAM File download
+	const fileSize = selectedBamFile.file.size.toString();
+	const fileObjectId = selectedBamFile.id;
+	const fileMetaData = await getScoreFile({ length: fileSize, object_id: fileObjectId });
+
+	// Related Index File download
+	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
+	const indexFileMetaData = await getScoreFile({ length: indexFileSize, object_id: indexObjectId });
+
+	return { fileMetaData, indexFileMetaData };
+};
 
 const BamTable = ({ file }: { file?: FileTableData }) => {
 	const { apiFetcher } = useArrangerData({ callerName: 'GetIndexFileData' });
