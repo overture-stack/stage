@@ -86,6 +86,7 @@ export type FileNode = {
 	};
 };
 
+// Score API File Query Response
 export type FileResponse = {
 	data: {
 		file: {
