@@ -44,7 +44,13 @@ import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 
 import { baseScoreDownloadParams } from '../constants';
-import { type FileMetaData, type FileTableData, type FileResponse, type ScoreDownloadParams } from '../fileTypes';
+import {
+	type FileMetaData,
+	type FileNode,
+	type FileTableData,
+	type FileResponse,
+	type ScoreDownloadParams,
+} from '../fileTypes';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
@@ -96,15 +102,15 @@ const IndexFileQuery = `query IndexFile ($sqon: JSON) {
   }
 }`;
 
-const getFileMetaData = async (selectedBamFile: FileTableData, indexFile: any) => {
+const getFileMetaData = async (selectedBamFile: FileTableData, indexFileNode: FileNode) => {
 	// Base BAM File download
 	const fileSize = selectedBamFile.file.size.toString();
 	const fileObjectId = selectedBamFile.id;
 	const fileMetaData = await getScoreFile({ length: fileSize, object_id: fileObjectId });
 
 	// Related Index File download
-	const { object_id: indexObjectId, size: indexFileSize } = indexFile;
-	const indexFileMetaData = await getScoreFile({ length: indexFileSize, object_id: indexObjectId });
+	const { object_id: indexObjectId, size: indexFileSize } = indexFileNode.node.file.index_file;
+	const indexFileMetaData = await getScoreFile({ length: indexFileSize.toString(), object_id: indexObjectId });
 
 	return { fileMetaData, indexFileMetaData };
 };
@@ -147,9 +153,9 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					},
 				})) as FileResponse;
 
-				const indexFile = indexFileResponse?.data.file.hits.edges[0]?.node.file.index_file;
+				const indexFileNode = indexFileResponse?.data.file.hits.edges[0];
 
-				const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFile);
+				const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
 
 				if (isFileMetaData(fileMetaData)) {
 					setFileMetaData(fileMetaData);
