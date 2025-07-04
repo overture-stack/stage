@@ -54,12 +54,22 @@ import {
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
-// Type Check for Score Data response
-const isFileMetaData = (file: any): file is FileMetaData => {
+// Type Checks for Score Data response
+const isFileMetaData = (file: unknown): file is FileMetaData => {
 	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
-const getScoreFile = async ({ length, object_id }: { length: string; object_id: string }) => {
+const isFileResponse = (response: unknown): response is FileResponse => {
+	return Boolean((response as FileResponse)?.data?.file.hits);
+};
+
+const getScoreFile = async ({
+	length,
+	object_id,
+}: {
+	length: string;
+	object_id: string;
+}): Promise<FileMetaData | undefined> => {
 	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const scoreDownloadParams: ScoreDownloadParams = {
 		...baseScoreDownloadParams,
@@ -139,7 +149,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	useEffect(() => {
 		if (!fileUrl && file) {
 			const loadAndSetFile = async (file: FileTableData) => {
-				const indexFileResponse = (await apiFetcher({
+				const indexFileResponse = await apiFetcher({
 					endpointTag: 'GetIndexFileData',
 					body: {
 						query: IndexFileQuery,
@@ -151,15 +161,19 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 							},
 						},
 					},
-				})) as FileResponse;
+				});
 
-				const indexFileNode = indexFileResponse?.data.file.hits.edges[0];
+				if (isFileResponse(indexFileResponse)) {
+					const indexFileNode = indexFileResponse.data.file.hits.edges[0];
+					const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
 
-				const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
-
-				if (isFileMetaData(fileMetaData)) {
-					setFileMetaData(fileMetaData);
-					setIndexFileData(indexFileMetaData);
+					if (isFileMetaData(fileMetaData)) {
+						setFileMetaData(fileMetaData);
+						setIndexFileData(indexFileMetaData);
+					} else {
+						setFileMetaData(undefined);
+						console.error('Error retrieving Score File Data');
+					}
 				} else {
 					setFileMetaData(undefined);
 					console.error('Error retrieving Score File Data');
