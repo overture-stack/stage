@@ -19,6 +19,8 @@
  *
  */
 
+import { JBrowseFileExtensions } from './constants';
+
 export type FileMetaData = {
 	objectId: string;
 	objectKey?: string;
@@ -96,4 +98,10 @@ export type FileResponse = {
 			};
 		};
 	};
+};
+
+// Type Check for Table Data unknown[]
+export const rowIsFileData = (row: unknown): row is FileTableData => {
+	const rowData = row as FileTableData;
+	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
 };
