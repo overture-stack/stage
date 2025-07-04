@@ -30,8 +30,7 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 	const [showTable, setShowTable] = useState(true);
 	const { selectedRows } = useTableContext({ callerName: 'File Metadata Table' });
 	const theme = useTheme();
-	const { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileSize, fileStrategy } =
-		getTableData(file);
+	const { fileAccess, fileDataType, fileDonorId, fileFormat, fileStudy, fileSize, fileStrategy } = getTableData(file);
 
 	return (
 		<>
@@ -96,7 +95,7 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 				</button>
 			</div>
 			{showTable ? (
-				<div
+				<table
 					className={'statsTable'}
 					css={css`
 						display: flex;
@@ -105,72 +104,71 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 						font-size: 10px;
 					`}
 				>
-					<tr
-						css={css`
-							border: 1px solid ${theme.colors.grey_5};
-							border-bottom: 0;
-							display: flex;
-							flex-basis: 100%;
+					<tbody>
+						<tr
+							css={css`
+								border: 1px solid ${theme.colors.grey_5};
+								border-bottom: 0;
+								display: flex;
+								flex-basis: 100%;
 
-							th {
-								border-right: 1px solid ${theme.colors.grey_5};
-								:last-child {
-									border-right: 0;
+								th {
+									border-right: 1px solid ${theme.colors.grey_5};
+									:last-child {
+										border-right: 0;
+									}
+									display: inline-flex;
+									flex: 1;
+									font-weight: 700;
+									font-size: 13px;
+									line-height: 14px;
+									padding: 5px;
 								}
-								display: inline-flex;
-								flex: 1;
-								font-weight: 700;
-								font-size: 13px;
-								line-height: 14px;
-								letter-spacing: 0px;
-								padding: 5px;
-								vertical-align: middle;
-							}
-						`}
-					>
-						<th>File ID</th>
-						<th>Donor ID</th>
-						<th>Study</th>
-						<th>Data Type</th>
-						<th>Strategy</th>
-						<th>Format</th>
-						<th>Size</th>
-						<th>File Access</th>
-					</tr>
-					<tr
-						css={css`
-							border: 1px solid ${theme.colors.grey_5};
-							display: flex;
-							flex-basis: 100%;
-							margin-bottom: 10px;
+							`}
+						>
+							<th>File ID</th>
+							<th>Donor ID</th>
+							<th>Study</th>
+							<th>Data Type</th>
+							<th>Strategy</th>
+							<th>Format</th>
+							<th>Size</th>
+							<th>File Access</th>
+						</tr>
+						<tr
+							css={css`
+								border: 1px solid ${theme.colors.grey_5};
+								display: flex;
+								flex-basis: 100%;
+								margin-bottom: 10px;
 
-							td {
-								border-right: 1px solid ${theme.colors.grey_5};
-								:last-child {
-									border-right: 0;
+								td {
+									border-right: 1px solid ${theme.colors.grey_5};
+									:last-child {
+										border-right: 0;
+									}
+									border-top: 0;
+									display: inline-flex;
+									flex: 1;
+									font-weight: 400;
+									font-size: 13px;
+									line-height: 14px;
+									padding: 5px;
+									vertical-align: middle;
 								}
-								border-top: 0;
-								display: inline-flex;
-								flex: 1;
-								font-weight: 400;
-								font-size: 13px;
-								line-height: 14px;
-								letter-spacing: 0px;
-								padding: 5px;
-								vertical-align: middle;
-							}
-						`}
-					>
-						<td>{fileId}</td>
-						<td>{fileDonorId}</td>
-						<td>{fileStudy}</td>
-						<td>{fileDataType}</td>
-						<td>{fileStrategy}</td>
-						<td>{fileFormat}</td>
-						<td>{fileSize}</td>
-						<td>{fileAccess}</td>
-					</tr>
-				</div>
+							`}
+						>
+							<td>{fileId}</td>
+							<td>{fileDonorId}</td>
+							<td>{fileStudy}</td>
+							<td>{fileDataType}</td>
+							<td>{fileStrategy}</td>
+							<td>{fileFormat}</td>
+							<td>{fileSize}</td>
+							<td>{fileAccess}</td>
+						</tr>
+					</tbody>
+				</table>
 			) : null}
 		</>
 	);

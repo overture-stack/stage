@@ -23,7 +23,7 @@ import { css, useTheme } from '@emotion/react';
 import { ChevronDown, FullScreen, BarGraph } from '../../theme/icons';
 import { tableTypes } from './constants';
 
-export const getHeaderButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
+const getHeaderButtonStyles = ({ active, accent }: { active: boolean; accent: string }) => {
 	const {
 		colors: { white },
 	} = useTheme();

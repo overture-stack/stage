@@ -19,35 +19,43 @@
  *
  */
 
-import { getConfig } from '@/global/config';
-import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import axios from 'axios';
 import urlJoin from 'url-join';
-import { baseScoreDownloadParams, JBrowseFileExtensions } from './constants';
-import { type FileMetaData, type FileTableData, type ScoreDownloadParams } from './fileTypes';
 
-// Type Check for Table Data unknown[]
-export const rowIsFileData = (row: unknown): row is FileTableData => {
-	const rowData = row as FileTableData;
-	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
-};
+import { getConfig } from '@/global/config';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 
-// Type Check for Score Data response
-export const isFileMetaData = (file: any): file is FileMetaData => {
+import { baseScoreDownloadParams } from '../constants';
+import {
+	type FileMetaData,
+	type FileNode,
+	type FileTableData,
+	type FileResponse,
+	type ScoreDownloadParams,
+} from '../fileTypes';
+
+// Type Checks for Score Data response
+export const isFileMetaData = (file: unknown): file is FileMetaData => {
 	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
 };
 
-export const getScoreDownloadUrls = async (fileData: FileTableData) => {
-	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
-	const length = fileData.file?.size?.toString();
-	const object_id = fileData.id;
+export const isFileResponse = (response: unknown): response is FileResponse => {
+	return Boolean((response as FileResponse)?.data?.file.hits);
+};
 
+export const getScoreFile = async ({
+	length,
+	object_id,
+}: {
+	length: string;
+	object_id: string;
+}): Promise<FileMetaData | undefined> => {
+	const { NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const scoreDownloadParams: ScoreDownloadParams = {
 		...baseScoreDownloadParams,
 		length,
 	};
 	const urlParams = new URLSearchParams(scoreDownloadParams).toString();
-
 	try {
 		const response = await axios.get(
 			urlJoin(NEXT_PUBLIC_SCORE_API_URL, SCORE_API_DOWNLOAD_PATH, object_id, `?${urlParams}`),
@@ -60,12 +68,39 @@ export const getScoreDownloadUrls = async (fileData: FileTableData) => {
 			return response.data;
 		}
 	} catch (err: unknown) {
-		console.error(`Error at getScoreDownloadUrls with object_id ${object_id}`);
+		console.error(`Error at getScoreFile with object_id ${object_id}`);
 		console.error(err);
 	}
 };
 
-export const getFileMetaData = async (selectedBamFile: FileTableData) => {
-	const fileMetaData = await getScoreDownloadUrls(selectedBamFile);
-	return fileMetaData;
+export const getFileMetaData = async (selectedBamFile: FileTableData, indexFileNode: FileNode) => {
+	// Base BAM File download
+	const fileSize = selectedBamFile.file.size.toString();
+	const fileObjectId = selectedBamFile.id;
+	const fileMetaData = await getScoreFile({ length: fileSize, object_id: fileObjectId });
+
+	// Related Index File download
+	const { object_id: indexObjectId, size: indexFileSize } = indexFileNode.node.file.index_file;
+	const indexFileMetaData = await getScoreFile({ length: indexFileSize.toString(), object_id: indexObjectId });
+
+	return { fileMetaData, indexFileMetaData };
 };
+
+export const IndexFileQuery = `query IndexFile ($sqon: JSON) {
+  file {
+    hits (filters: $sqon) {
+      total
+      edges {
+        node {
+          file {
+            index_file {
+              name
+              object_id
+              size
+            }
+          }
+        }
+      }
+    } 
+  }
+}`;

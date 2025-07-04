@@ -25,15 +25,7 @@ import { css, useTheme } from '@emotion/react';
 import { GenericHelpMessage } from '../../DMSAdminContact';
 import { Checkmark, Warning } from '../../theme/icons';
 
-const ListItem = ({
-	Icon,
-	value,
-	fieldName,
-}: {
-	Icon?: ReactNode;
-	value: string;
-	fieldName: string;
-}) => {
+const ListItem = ({ Icon, value, fieldName }: { Icon?: ReactNode; value: string; fieldName: string }) => {
 	const theme = useTheme();
 
 	return (
@@ -82,15 +74,15 @@ const getConfigError = ({
 	index && documentType ? (
 		!hasConfig && (
 			<span>
-				No active configurations for the platform were found. Please make sure the index and GraphQL
-				document type are correctly configured.
+				No active configurations for the platform were found. Please make sure the index and GraphQL document type are
+				correctly configured.
 				<GenericHelpMessage />
 			</span>
 		)
 	) : (
 		<span>
-			One or more of the following values required by the platform do not exist. Please make sure
-			these values are specified in your platform configuration. <GenericHelpMessage />
+			One or more of the following values required by the platform do not exist. Please make sure these values are
+			specified in your platform configuration. <GenericHelpMessage />
 			<ul
 				css={css`
 					list-style-type: none;
