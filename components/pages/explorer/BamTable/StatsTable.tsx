@@ -122,7 +122,6 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 									font-weight: 700;
 									font-size: 13px;
 									line-height: 14px;
-									letter-spacing: 0px;
 									padding: 5px;
 								}
 							`}
@@ -154,7 +153,6 @@ export const StatsTable = ({ file, fileId = '' }: { file: FileTableData; fileId?
 									font-weight: 400;
 									font-size: 13px;
 									line-height: 14px;
-									letter-spacing: 0px;
 									padding: 5px;
 									vertical-align: middle;
 								}
