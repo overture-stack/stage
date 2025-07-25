@@ -36,6 +36,9 @@ import {
 	getFileMetadata,
 	percentKeys,
 	type BamContext,
+	type BamPercentKey,
+	type BamHistogramKey,
+	type FileDocument,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 import { useArrangerData } from '@overture-stack/arranger-components';
@@ -86,10 +89,9 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 						},
 					},
 				});
-				console.log('iobioFileResponse', iobioFileResponse);
+
 				if (isFileResponse(iobioFileResponse)) {
-					const fileNode = iobioFileResponse.data.file.hits.edges[0];
-					console.log('fileNode', fileNode);
+					const fileNode: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
 					const { fileMetadata, indexFileMetadata } = await getFileMetadata(fileNode);
 
 					if (isFileMetaData(fileMetadata)) {
@@ -137,7 +139,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 							`}
 						>
 							{percentKeys.map(
-								(key) =>
+								(key: BamPercentKey) =>
 									elementState[key] && (
 										<div
 											css={css`
@@ -173,7 +175,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 								</div>
 							)}
 							{histogramKeys.map(
-								(key) =>
+								(key: BamHistogramKey) =>
 									elementState[key] && (
 										<div
 											css={css`

@@ -68,7 +68,7 @@ export const ToggleButtonPanel = ({
 					flex-wrap: wrap;
 				`}
 			>
-				{BamKeys.map((key) => {
+				{BamKeys.map((key: BamKey) => {
 					const active = bamContext[key];
 					if (active === undefined) return null;
 					const toggleButtonStyles = getActiveButtonStyles({ active });

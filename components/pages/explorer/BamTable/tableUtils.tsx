@@ -51,19 +51,18 @@ export const IobioFileQuery = `query IobioFile ($sqon: JSON) {
       total
       edges {
         node {
-          file {
 						object_id
 						data_type
 						file_access
 						file_type
-						analysis
+						analysis {
 							experiment { experimentalStrategy }
 						}
 						file {
 							size
 							name
 							data_type
-							index_file
+							index_file {
 								object_id
 								name
 								file_type
@@ -76,6 +75,5 @@ export const IobioFileQuery = `query IobioFile ($sqon: JSON) {
           }
         }
       }
-    } 
-  }
+}
 }`;
