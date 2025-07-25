@@ -76,30 +76,6 @@ export type FileTableData = {
 	file: { size: number };
 };
 
-export type FileNode = {
-	node: {
-		file: {
-			index_file: {
-				name: string;
-				object_id: string;
-				size: number;
-			};
-		};
-	};
-};
-
-// Score API File Query Response
-export type FileResponse = {
-	data: {
-		file: {
-			hits: {
-				edges: FileNode[];
-				total: number;
-			};
-		};
-	};
-};
-
 // Type Check for Table Data unknown[]
 export const rowIsFileData = (row: unknown): row is FileTableData => {
 	const rowData = row as FileTableData;

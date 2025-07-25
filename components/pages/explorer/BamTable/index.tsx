@@ -31,31 +31,35 @@ import {
 	IobioHistogram,
 	IobioPercentBox,
 	isOutlierKey,
+	isFileResponse,
+	isFileMetaData,
+	getFileMetadata,
 	percentKeys,
 	type BamContext,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
 import { type FileMetaData, type FileTableData } from '../fileTypes';
-import { getFileMetaData, IndexFileQuery, isFileResponse, isFileMetaData } from './scoreFileHelpers';
+import { IobioFileQuery } from './tableUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
 const BamTable = ({ file }: { file?: FileTableData }) => {
-	const { apiFetcher } = useArrangerData({ callerName: 'GetIndexFileData' });
+	const { apiFetcher } = useArrangerData({ callerName: 'GetindexFile' });
 	const theme = useTheme();
 	const [elementState, setElementState] = useState(initElementState);
-	const [indexFileData, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
+	const [indexFile, setIndexFile] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
 	const { NEXT_PUBLIC_IOBIO_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
-	const indexFileUrl = indexFileData?.parts[0]?.url || null;
+	const indexFileUrl = indexFile?.parts[0]?.url || null;
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
 		const newState = {
@@ -68,10 +72,11 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	useEffect(() => {
 		if (!fileUrl && file) {
 			const loadAndSetFile = async (file: FileTableData) => {
-				const indexFileResponse = await apiFetcher({
-					endpointTag: 'GetIndexFileData',
+				console.log('filetabledata', file);
+				const iobioFileResponse = await apiFetcher({
+					endpointTag: 'GetIobioFileData',
 					body: {
-						query: IndexFileQuery,
+						query: IobioFileQuery,
 						variables: {
 							first: 1,
 							sqon: {
@@ -81,14 +86,15 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 						},
 					},
 				});
+				console.log('iobioFileResponse', iobioFileResponse);
+				if (isFileResponse(iobioFileResponse)) {
+					const fileNode = iobioFileResponse.data.file.hits.edges[0];
+					console.log('fileNode', fileNode);
+					const { fileMetadata, indexFileMetadata } = await getFileMetadata(fileNode);
 
-				if (isFileResponse(indexFileResponse)) {
-					const indexFileNode = indexFileResponse.data.file.hits.edges[0];
-					const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
-
-					if (isFileMetaData(fileMetaData)) {
-						setFileMetaData(fileMetaData);
-						setIndexFileData(indexFileMetaData);
+					if (isFileMetaData(fileMetadata)) {
+						setFileMetaData(fileMetadata);
+						setIndexFile(indexFileMetadata);
 					} else {
 						setFileMetaData(undefined);
 						console.error('Error retrieving Score File Data');
