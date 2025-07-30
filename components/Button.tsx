@@ -19,9 +19,9 @@
  *
  */
 
-import React, { ReactNode, ReactNodeArray } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import React, { ReactNode } from 'react';
 
 import defaultTheme from './theme';
 import { Spinner } from './theme/icons';
@@ -56,7 +56,7 @@ const ButtonElement = styled('button')`
 const Button = React.forwardRef<
 	HTMLButtonElement,
 	{
-		children?: ReactNode | ReactNodeArray;
+		children?: ReactNode;
 		disabled?: boolean;
 		onClick?: (
 			e: React.SyntheticEvent<HTMLButtonElement>,
@@ -98,7 +98,7 @@ const Button = React.forwardRef<
 					{children}
 				</span>
 				<span
-					css={(theme) => css`
+					css={css`
 						position: absolute;
 						visibility: ${shouldShowLoading ? 'visible' : 'hidden'};
 						bottom: 1px;
@@ -110,15 +110,4 @@ const Button = React.forwardRef<
 		);
 	},
 );
-export const TransparentButton = styled(ButtonElement)`
-	background: none;
-	border: none;
-	justify-content: flex-start;
-	text-align: left;
-
-	&:focus,
-	&:hover {
-		background: none;
-	}
-`;
 export default Button;
