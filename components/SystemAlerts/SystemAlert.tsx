@@ -40,10 +40,12 @@ type Props = {
 	onClose: () => void;
 };
 
-const alertContainerStyle = css`
+const alertContainerStyle = (backgroundColor: string, outline: string) => css`
 	padding: 12px;
 	display: flex;
 	justify-content: space-between;
+	background-color: ${backgroundColor};
+	border-bottom: 1px solid ${outline};
 `;
 
 const contentWrapperStyle = css`
@@ -54,11 +56,14 @@ const iconContainerStyle = css`
 	margin: auto 15px auto auto;
 `;
 
-const titleStyle = css`
+const titleStyle = (textColor: string, hasMessage: boolean) => css`
+	color: ${textColor};
+	margin-top: ${hasMessage ? '0px' : '6px'};
 	${theme.typography.heading};
 `;
 
-const messageStyle = css`
+const messageStyle = (textColor: string) => css`
+	color: ${textColor};
 	margin-bottom: 8px;
 	${theme.typography.regular};
 `;
@@ -92,40 +97,12 @@ export const SystemAlert = ({ alert, onClose }: Props) => {
 	const { backgroundColor, icon, textColor, outline } = AlertVariants[alert.level];
 
 	return (
-		<div
-			css={[
-				alertContainerStyle,
-				css`
-					background-color: ${backgroundColor};
-					border-bottom: 1px solid ${outline};
-				`,
-			]}
-		>
+		<div css={alertContainerStyle(backgroundColor, outline)}>
 			<div css={contentWrapperStyle}>
 				<div css={iconContainerStyle}>{icon}</div>
 				<div>
-					<div
-						css={[
-							titleStyle,
-							css`
-								color: ${textColor};
-								margin-top: ${alert.message ? '0px' : '6px'};
-							`,
-						]}
-					>
-						{alert.title}
-					</div>
-					{alert.message && (
-						<div
-							css={[
-								messageStyle,
-								css`
-									color: ${textColor};
-								`,
-							]}
-							dangerouslySetInnerHTML={{ __html: alert.message }}
-						/>
-					)}
+					<div css={titleStyle(textColor, !!alert.message)}>{alert.title}</div>
+					{alert.message && <div css={messageStyle(textColor)} dangerouslySetInnerHTML={{ __html: alert.message }} />}
 				</div>
 			</div>
 			{alert.dismissible && (
