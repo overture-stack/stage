@@ -93,6 +93,12 @@ const AlertVariants = {
 	},
 };
 
+/**
+ * Renders a single system alert with appropriate styling based on alert level
+ * @param alert - Alert definition containing level, title, message, dismissible flag, and id
+ * @param onClose - Callback function triggered when the alert is dismissed
+ * @returns JSX element representing the styled alert
+ */
 export const SystemAlert = ({ alert, onClose }: Props) => {
 	const { backgroundColor, icon, textColor, outline } = AlertVariants[alert.level];
 

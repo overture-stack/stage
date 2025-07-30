@@ -19,9 +19,9 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { SystemAlert, AlertDef, AlertLevel } from '@/components/SystemAlerts/SystemAlert';
+import { AlertDef, AlertLevel, SystemAlert } from '@/components/SystemAlerts/SystemAlert';
 import { getConfig } from '@/global/config';
 
 export const isAlertLevel = (level: any): level is AlertLevel => {
@@ -42,7 +42,12 @@ type Props = {
 	alerts?: AlertDef[];
 };
 
-export const SystemAlerts: React.ComponentType<Props> = ({ alerts }) => {
+/**
+ * Manages and displays a collection of system alerts with dismissal functionality
+ * @param alerts - Optional array of alert definitions to display (falls back to config if not provided)
+ * @returns JSX element containing rendered system alerts
+ */
+export const SystemAlerts = ({ alerts }: Props) => {
 	const [displayAlerts, setDisplayAlerts] = useState<AlertDef[]>([]);
 	const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
