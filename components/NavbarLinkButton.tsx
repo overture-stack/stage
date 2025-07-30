@@ -19,55 +19,57 @@
  *
  */
 
-import { css, useTheme } from '@emotion/react';
+import { css, Theme, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { InternalLink as Link } from './Link';
-import defaultTheme from './theme';
+
+import { InternalLink } from '@/components/Link';
+import defaultTheme from '@/components/theme';
 
 type NavbarLinkProps = {
 	path: string;
 	label: string;
 };
 
-const NavbarLinkButton: React.FC<NavbarLinkProps> = ({ path, label }) => {
+const getContainerStyles = (theme: typeof defaultTheme) => css`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 144px;
+	background-color: ${theme.colors.white};
+	height: 100%;
+	&:hover {
+		background-color: ${theme.colors.grey_2};
+	}
+	border-right: 2px solid ${theme.colors.white};
+`;
+
+const getLinkStyles = (theme: Theme, isActive: boolean) => css`
+	display: flex;
+	flex: 1;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	color: ${theme.colors.accent_dark};
+	cursor: pointer;
+	${isActive
+		? `
+		background-color: ${theme.colors.grey_2};
+		color: ${theme.colors.accent2_dark};
+	`
+		: ''}
+`;
+
+const NavbarLinkButton = ({ path, label }: NavbarLinkProps) => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
-	const activeLinkStyle = `
-    background-color: ${theme.colors.grey_2};
-    color: ${theme.colors.accent2_dark};
-	`;
+	const isActive = router.pathname === path;
+
 	return (
-		<div
-			css={(theme) => css`
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				width: 144px;
-				background-color: ${theme.colors.white};
-				height: 100%;
-				&:hover {
-					background-color: ${theme.colors.grey_2};
-				}
-				border-right: 2px solid ${theme.colors.white};
-			`}
-		>
-			<Link path={path}>
-				<a
-					css={(theme) => css`
-						display: flex;
-						flex: 1;
-						height: 100%;
-						justify-content: center;
-						align-items: center;
-						text-decoration: none;
-						color: ${theme.colors.accent_dark};
-						cursor: pointer;
-						${router.pathname === path ? activeLinkStyle : ''}
-					`}
-				>
-					{label}
-				</a>
-			</Link>
+		<div css={getContainerStyles(theme)}>
+			<InternalLink path={path}>
+				<a css={getLinkStyles(theme, isActive)}>{label}</a>
+			</InternalLink>
 		</div>
 	);
 };
