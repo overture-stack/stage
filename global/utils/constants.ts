@@ -32,10 +32,6 @@ export const EGO_SCOPES_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/scopes`;
 export const EXPLORER_PATH = '/explorer';
 export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
-export const DATA_DICTIONARY_PATH = '/data-dictionary';
-
-// paths
-export const INTERNAL_PATHS = [EXPLORER_PATH, DATA_DICTIONARY_PATH, LOGIN_PATH, USER_PATH];
 
 // external docs links
 export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose';
