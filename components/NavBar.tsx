@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2022 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -23,13 +23,15 @@ import { getConfig } from '@/global/config';
 import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import useAuthContext from '../global/hooks/useAuthContext';
-import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '../global/utils/constants';
-import { InternalLink as Link, StyledLinkAsButton } from './Link';
-import NavbarLinkButton from './NavbarLinkButton';
-import UserDropdown from './UserDropdown';
-import defaultTheme from './theme';
-import { OvertureLogo } from './theme/icons';
+
+import useAuthContext from '@/global/hooks/useAuthContext';
+import { EXPLORER_PATH, LOGIN_PATH, USER_PATH } from '@/global/utils/constants';
+
+import { InternalLink, StyledLinkAsButton } from '@/components/Link';
+import NavbarLinkButton from '@/components/NavbarLinkButton';
+import UserDropdown from '@/components/UserDropdown';
+import defaultTheme from '@/components/theme';
+import { OvertureLogo } from '@/components/theme/icons';
 
 const NavBar: React.ComponentType = () => {
 	const { user } = useAuthContext();
@@ -78,7 +80,7 @@ const NavBar: React.ComponentType = () => {
 					gap: 10px;
 				`}
 			>
-				<Link path={EXPLORER_PATH}>
+				<InternalLink path={EXPLORER_PATH}>
 					<a
 						css={(theme) => css`
 							display: flex;
@@ -97,7 +99,7 @@ const NavBar: React.ComponentType = () => {
 							{NEXT_PUBLIC_LAB_NAME}
 						</span>
 					</a>
-				</Link>
+				</InternalLink>
 				<NavbarLinkButton path={EXPLORER_PATH} label="Data Explorer" />
 			</div>
 			<div
@@ -130,7 +132,7 @@ const NavBar: React.ComponentType = () => {
 								justify-content: center;
 							`}
 						>
-							<Link path={LOGIN_PATH}>
+							<InternalLink path={LOGIN_PATH}>
 								<StyledLinkAsButton
 									css={(theme) => css`
 										width: 70px;
@@ -140,7 +142,7 @@ const NavBar: React.ComponentType = () => {
 								>
 									Log in
 								</StyledLinkAsButton>
-							</Link>
+							</InternalLink>
 						</div>
 					))}
 			</div>
