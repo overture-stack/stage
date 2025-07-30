@@ -19,10 +19,22 @@
  *
  */
 
-import { getConfig } from '@/global/config';
 import React, { useEffect, useState } from 'react';
-import { SystemAlert } from '@/components/SystemAlerts/SystemAlert';
-import { AlertDef, isAlertDefs } from '@/components/SystemAlerts/types';
+
+import { SystemAlert, AlertDef, AlertLevel } from '@/components/SystemAlerts/SystemAlert';
+import { getConfig } from '@/global/config';
+
+export const isAlertLevel = (level: any): level is AlertLevel => {
+	return level === 'info' || level === 'warning' || level === 'critical';
+};
+
+export const isAlertDef = (obj: any): obj is AlertDef => {
+	return obj.id && obj.title && obj.dismissible !== undefined && isAlertLevel(obj.level);
+};
+
+export const isAlertDefs = (obj: any): obj is AlertDef[] => {
+	return Array.isArray(obj) && obj.every(isAlertDef);
+};
 
 const LOCAL_STORAGE_KEY = 'SYSTEM_ALERTS_DISMISSED_IDS';
 
@@ -38,7 +50,9 @@ export const SystemAlerts: React.ComponentType<Props> = ({ alerts }) => {
 		try {
 			const { NEXT_PUBLIC_SYSTEM_ALERTS } = getConfig();
 			const parsed = JSON.parse(NEXT_PUBLIC_SYSTEM_ALERTS);
-			if (!isAlertDefs(parsed)) throw new Error('System Alert types are invalid!');
+			if (!isAlertDefs(parsed)) {
+				throw new Error('System Alert types are invalid!');
+			}
 			return parsed;
 		} catch (e) {
 			console.error('Failed to parse systems alerts! Using empty array!', e);

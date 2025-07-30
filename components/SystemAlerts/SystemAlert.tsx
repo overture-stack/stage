@@ -19,17 +19,53 @@
  *
  */
 
-import { AlertDef } from '@/components/SystemAlerts/types';
+import { css } from '@emotion/react';
+
 import { default as theme } from '@/components/theme';
 import { Error as ErrorIcon, Info, Warning } from '@/components/theme/icons';
 import Dismiss from '@/components/theme/icons/dismiss';
-import { css } from '@emotion/react';
-import React from 'react';
+
+export type AlertLevel = 'info' | 'warning' | 'critical';
+
+export type AlertDef = {
+	level: AlertLevel;
+	title: string;
+	message?: string;
+	dismissible: boolean;
+	id: string;
+};
 
 type Props = {
 	alert: AlertDef;
 	onClose: () => void;
 };
+
+const alertContainerStyle = css`
+	padding: 12px;
+	display: flex;
+	justify-content: space-between;
+`;
+
+const contentWrapperStyle = css`
+	display: flex;
+`;
+
+const iconContainerStyle = css`
+	margin: auto 15px auto auto;
+`;
+
+const titleStyle = css`
+	${theme.typography.heading};
+`;
+
+const messageStyle = css`
+	margin-bottom: 8px;
+	${theme.typography.regular};
+`;
+
+const dismissButtonStyle = css`
+	cursor: pointer;
+`;
 
 const AlertVariants = {
 	critical: {
@@ -52,60 +88,48 @@ const AlertVariants = {
 	},
 };
 
-export const SystemAlert: React.FC<Props> = ({ alert, onClose }) => {
+export const SystemAlert = ({ alert, onClose }: Props) => {
 	const { backgroundColor, icon, textColor, outline } = AlertVariants[alert.level];
 
 	return (
 		<div
-			css={css`
-				padding: 12px;
-				display: flex;
-				justify-content: space-between;
-				background-color: ${backgroundColor};
-				border-bottom: 1px solid ${outline};
-			`}
+			css={[
+				alertContainerStyle,
+				css`
+					background-color: ${backgroundColor};
+					border-bottom: 1px solid ${outline};
+				`,
+			]}
 		>
-			<div
-				css={css`
-					display: flex;
-				`}
-			>
-				<div
-					css={css`
-						margin: auto 15px auto auto;
-					`}
-				>
-					{icon}
-				</div>
+			<div css={contentWrapperStyle}>
+				<div css={iconContainerStyle}>{icon}</div>
 				<div>
 					<div
-						css={css`
-							color: ${textColor};
-							margin-top: ${alert.message ? '0px' : '6px'};
-							${theme.typography.heading};
-						`}
+						css={[
+							titleStyle,
+							css`
+								color: ${textColor};
+								margin-top: ${alert.message ? '0px' : '6px'};
+							`,
+						]}
 					>
 						{alert.title}
 					</div>
 					{alert.message && (
 						<div
-							css={css`
-								color: ${textColor};
-								margin-bottom: 8px;
-								${theme.typography.regular};
-							`}
+							css={[
+								messageStyle,
+								css`
+									color: ${textColor};
+								`,
+							]}
 							dangerouslySetInnerHTML={{ __html: alert.message }}
 						/>
 					)}
 				</div>
 			</div>
-			{alert.dismissable && (
-				<div
-					css={css`
-						cursor: pointer;
-					`}
-					onClick={onClose}
-				>
+			{alert.dismissible && (
+				<div css={dismissButtonStyle} onClick={onClose}>
 					<Dismiss height={15} width={15} fill={theme.colors.black} />
 				</div>
 			)}
