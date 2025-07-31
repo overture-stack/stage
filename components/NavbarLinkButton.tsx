@@ -60,6 +60,12 @@ const getLinkStyles = (theme: Theme, isActive: boolean) => css`
 		: ''}
 `;
 
+/**
+ *  @param {NavbarLinkProps} props - The properties for the NavbarLinkButton component.
+ *  @param {string} props.path - The path for the link.
+ *  @param {string} props.label - The label for the link.
+ *  @return JSX.Element - A styled link button for the navigation bar.
+ */
 const NavbarLinkButton = ({ path, label }: NavbarLinkProps) => {
 	const router = useRouter();
 	const theme: typeof defaultTheme = useTheme();
