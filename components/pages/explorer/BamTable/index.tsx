@@ -31,7 +31,6 @@ import {
 	IobioHistogram,
 	IobioPercentBox,
 	isOutlierKey,
-	isFileResponse,
 	isFileMetaData,
 	getFileMetadata,
 	percentKeys,
@@ -39,14 +38,14 @@ import {
 	type BamPercentKey,
 	type BamHistogramKey,
 	type FileDocument,
+	type FileMetaData,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
-
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData } from '../fileTypes';
+import { type FileTableData, isFileResponse } from '../fileTypes';
 import { IobioFileQuery } from './tableUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
@@ -75,7 +74,6 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	useEffect(() => {
 		if (!fileUrl && file) {
 			const loadAndSetFile = async (file: FileTableData) => {
-				console.log('filetabledata', file);
 				const iobioFileResponse = await apiFetcher({
 					endpointTag: 'GetIobioFileData',
 					body: {

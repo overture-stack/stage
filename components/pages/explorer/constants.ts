@@ -19,6 +19,8 @@
  *
  */
 
+import { type ScoreDownloadParams } from './fileTypes';
+
 const bamFileExtension = 'BAM';
 const cramFileExtension = 'CRAM';
 const vcfFileExtension = 'VCF';
@@ -26,7 +28,7 @@ const vcfFileExtension = 'VCF';
 export const BamFileExtensions = [bamFileExtension, cramFileExtension];
 export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
 
-export const baseScoreDownloadParams = {
+export const baseScoreDownloadParams: Omit<ScoreDownloadParams, 'length'> = {
 	external: 'true',
 	offset: '0',
 	'User-Agent': 'unknown',

@@ -20,21 +20,7 @@
  */
 
 import { JBrowseFileExtensions } from './constants';
-
-export type FileMetaData = {
-	objectId: string;
-	objectKey?: string;
-	objectMd5?: string;
-	objectSize?: number;
-	parts: {
-		md5?: string | null;
-		offset?: number;
-		partNumber?: number;
-		partSize?: number;
-		url: string;
-	}[];
-	uploadId?: string;
-};
+import { type IndexFile } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 export type ScoreDownloadParams = {
 	'User-Agent': string;
@@ -76,8 +62,31 @@ export type FileTableData = {
 	file: { size: number };
 };
 
+export type FileNode = {
+	node: {
+		file: {
+			index_file: IndexFile;
+		};
+	};
+};
+
+export type FileResponse = {
+	data: {
+		file: {
+			hits: {
+				edges: FileNode[];
+				total: number;
+			};
+		};
+	};
+};
+
 // Type Check for Table Data unknown[]
 export const rowIsFileData = (row: unknown): row is FileTableData => {
 	const rowData = row as FileTableData;
 	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
+};
+
+export const isFileResponse = (response: unknown): response is FileResponse => {
+	return typeof (response as FileResponse)?.data?.file.hits === 'object';
 };
