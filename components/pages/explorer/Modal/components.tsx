@@ -59,23 +59,25 @@ const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean })
 	padding: 10px;
 	position: relative;
 
-	${isEnabled ? '' : `cursor: not-allowed; color: ${theme.colors.grey_5};`}
+	${isEnabled ? '' : `cursor: not-allowed; color: ${theme.colors.grey_6};`}
 `;
 
-export const VisualizerDetail = ({ title, description, previewImage, logoImage }: VisualizerDetailProps) => {
+export const VisualizerDetail = ({ description, isEnabled, logoImage, previewImage, title }: VisualizerDetailProps) => {
 	return (
 		<>
 			<div
 				css={css`
 					max-height: 28%;
 					overflow-y: hidden;
-
-					img {
-						width: 100%;
-					}
 				`}
 			>
-				<img src={previewImage} />
+				<img
+					css={css`
+						width: 100%;
+						${isEnabled ? '' : 'filter: grayscale(1);'}
+					`}
+					src={previewImage}
+				/>
 			</div>
 			<div
 				css={css`
@@ -87,6 +89,7 @@ export const VisualizerDetail = ({ title, description, previewImage, logoImage }
 						height: 18px;
 						vertical-align: text-bottom;
 						width: 18px;
+						${isEnabled ? '' : 'filter: grayscale(1);'}
 					`}
 					src={logoImage}
 				/>
@@ -146,7 +149,13 @@ export const VisualizerOption = ({
 	return (
 		<button css={optionStyle({ theme, isEnabled })} disabled={!isEnabled} onClick={onClick}>
 			<div>
-				<VisualizerDetail title={title} description={description} previewImage={previewImage} logoImage={logoImage} />
+				<VisualizerDetail
+					isEnabled={isEnabled}
+					title={title}
+					description={description}
+					previewImage={previewImage}
+					logoImage={logoImage}
+				/>
 
 				<div
 					css={css`
