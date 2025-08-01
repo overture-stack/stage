@@ -32,6 +32,8 @@ import {
 	IobioPercentBox,
 	isOutlierKey,
 	percentKeys,
+	IobioLabelInfoButton,
+	IobioPanel,
 	type BamContext,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
@@ -142,7 +144,14 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPercentBox label={displayNames[key]} percentKey={key} totalKey="total_reads" />
+											<IobioPanel>
+												<IobioLabelInfoButton label={displayNames[key]}>
+													<div slot="content">
+														<p>Test Content</p>
+													</div>
+												</IobioLabelInfoButton>
+												<IobioPercentBox percentKey={key} totalKey="total_reads" />
+											</IobioPanel>
 										</div>
 									),
 							)}
