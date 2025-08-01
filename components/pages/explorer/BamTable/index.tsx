@@ -26,6 +26,7 @@ import {
 	BamDisplayNames as displayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
+	getBrowserBedUrls,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
@@ -56,6 +57,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [elementState, setElementState] = useState(initElementState);
 	const [indexFile, setIndexFile] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
+	const [bedUrl, setBedUrl] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
 	const { NEXT_PUBLIC_IOBIO_API_URL } = getConfig();
@@ -90,11 +92,12 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 				if (isFileResponse(iobioFileResponse)) {
 					const fileNode: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
-					const { fileMetadata, indexFileMetadata } = await getFileMetadata(fileNode);
-
-					if (isFileMetaData(fileMetadata)) {
-						setFileMetaData(fileMetadata);
+					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata(fileNode);
+					const defaultBedUrl = getBrowserBedUrls(fileNode);
+					if (isFileMetaData(scoreFileMetadata)) {
+						setFileMetaData(scoreFileMetadata);
 						setIndexFile(indexFileMetadata);
+						setBedUrl(defaultBedUrl);
 					} else {
 						setFileMetaData(undefined);
 						console.error('Error retrieving Score File Data');
@@ -122,7 +125,12 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				<Loader />
 			) : (
 				<>
-					<IobioDataBroker alignmentUrl={fileUrl} indexUrl={indexFileUrl} server={NEXT_PUBLIC_IOBIO_API_URL} />
+					<IobioDataBroker
+						alignmentUrl={fileUrl}
+						bedUrl={bedUrl}
+						indexUrl={indexFileUrl}
+						server={NEXT_PUBLIC_IOBIO_API_URL}
+					/>
 					<div
 						css={css`
 							display: flex;
