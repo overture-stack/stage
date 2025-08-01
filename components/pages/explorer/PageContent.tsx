@@ -78,9 +78,8 @@ const PageContent = () => {
 	}, [currentFilters, firstRender, setCurrentFilters, sqon]);
 
 	const fileData = tableData.filter(rowIsFileData) as FileTableData[];
-	console.log('fileData', fileData);
 	const currentFiles = fileData.filter((row) => selectedRows.includes(row.id));
-	console.log('currentFiles', currentFiles);
+
 	const iconColor = isFileTableActive
 		? currentFiles.length
 			? theme.colors.accent
