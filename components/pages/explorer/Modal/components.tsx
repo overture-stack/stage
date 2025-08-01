@@ -59,7 +59,7 @@ const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean })
 	padding: 10px;
 	position: relative;
 
-	${isEnabled ? '' : `cursor: not-allowed;`}
+	${isEnabled ? '' : `cursor: not-allowed; color: ${theme.colors.grey_5};`}
 `;
 
 export const VisualizerDetail = ({ title, description, previewImage, logoImage }: VisualizerDetailProps) => {
