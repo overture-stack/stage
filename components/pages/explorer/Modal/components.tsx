@@ -28,9 +28,9 @@ import { BadgeItem, VisualizerDetailProps } from './types';
 
 const accentBadgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
 	${badgeStyle({ theme, isDisabled })}
-	background-color: ${theme.colors.accent_light};
+	background-color: #497AA2;
 	margin-left: 5px;
-	${isDisabled ? `background-color: ${theme.colors.grey_5};` : ''}
+	${isDisabled ? `background-color:  #757575;` : ''}
 `;
 
 const badgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
@@ -44,7 +44,7 @@ const badgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }
 	background-color: ${theme.colors.accent};
 	color: ${theme.colors.white};
 
-	${isDisabled ? `background-color: ${theme.colors.grey_6};` : ''}
+	${isDisabled ? `background-color: #353535;` : ''}
 `;
 
 const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean }) => css`
