@@ -69,7 +69,7 @@ export const ToggleButtonPanel = ({
 				`}
 			>
 				{BamKeys.map((key) => {
-					const active = bamContext[key];
+					const active = bamContext[key] || false;
 					const toggleButtonStyles = getActiveButtonStyles({ active });
 
 					return (
@@ -85,7 +85,7 @@ export const ToggleButtonPanel = ({
 							`}
 							key={key}
 							onClick={() => {
-								onToggle(key, bamContext[key]);
+								onToggle(key, active);
 							}}
 						>
 							{displayNames[key]}
