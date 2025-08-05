@@ -112,7 +112,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	return (
 		<>
-			<h2>{fileId}</h2>
+			<h2>File Id: {fileId}</h2>
 			<ToggleButtonPanel bamContext={elementState} onToggle={updateElements} />
 			{loading || !fileUrl ? (
 				<Loader />
@@ -147,7 +147,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											<IobioPanel>
 												<IobioLabelInfoButton label={displayNames[key]}>
 													<div slot="content">
-														<p>Test Content</p>
+														<p>Display name: {displayNames[key]}</p>
 													</div>
 												</IobioLabelInfoButton>
 												<IobioPercentBox percentKey={key} totalKey="total_reads" />
