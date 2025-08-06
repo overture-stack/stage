@@ -21,7 +21,6 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	BamKeys,
 	BamDisplayNames as displayNames,
 	type BamContext,
 	type BamKey,
@@ -47,6 +46,7 @@ export const ToggleButtonPanel = ({
 	const {
 		colors: { accent },
 	} = useTheme();
+	const contextKeys = Object.keys(bamContext).filter((key): key is keyof BamContext => bamContext.hasOwnProperty(key));
 	return (
 		<div
 			css={css`
@@ -68,8 +68,8 @@ export const ToggleButtonPanel = ({
 					flex-wrap: wrap;
 				`}
 			>
-				{BamKeys.map((key) => {
-					const active = bamContext[key] || false;
+				{contextKeys.map((key) => {
+					const active = !!bamContext[key];
 					const toggleButtonStyles = getActiveButtonStyles({ active });
 
 					return (
