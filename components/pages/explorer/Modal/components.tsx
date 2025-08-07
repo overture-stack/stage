@@ -147,7 +147,12 @@ export const VisualizerOption = ({
 }) => {
 	const theme = useTheme();
 	return (
-		<button aria-label={`Select ${title} Visualizer`} css={optionStyle({ theme, isEnabled })} onClick={onClick}>
+		<button
+			aria-label={`Select ${title} Visualizer`}
+			aria-disabled={!isEnabled}
+			css={optionStyle({ theme, isEnabled })}
+			onClick={onClick}
+		>
 			<div>
 				<VisualizerDetail
 					isEnabled={isEnabled}
