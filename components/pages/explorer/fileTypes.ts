@@ -22,13 +22,6 @@
 import { JBrowseFileExtensions } from './constants';
 import { type IndexFile } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-export type ScoreDownloadParams = {
-	'User-Agent': string;
-	external: string;
-	length: string;
-	offset: string;
-};
-
 export type FileTableData = {
 	id: string;
 	analysis?: {

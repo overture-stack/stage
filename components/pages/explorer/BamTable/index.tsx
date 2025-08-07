@@ -46,6 +46,7 @@ import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
 import { type FileTableData, isFileResponse } from '../fileTypes';
 import { IobioFileQuery } from './tableUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
@@ -60,7 +61,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [bedUrl, setBedUrl] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
-	const { NEXT_PUBLIC_IOBIO_API_URL } = getConfig();
+	const { NEXT_PUBLIC_IOBIO_API_URL, NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 	const indexFileUrl = indexFile?.parts[0]?.url || null;
@@ -92,7 +93,11 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 				if (isFileResponse(iobioFileResponse)) {
 					const fileNode: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
-					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata(fileNode);
+					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata(
+						fileNode,
+						NEXT_PUBLIC_SCORE_API_URL,
+						SCORE_API_DOWNLOAD_PATH,
+					);
 					const defaultBedUrl = getBrowserBedUrls(fileNode);
 					if (isFileMetaData(scoreFileMetadata)) {
 						setFileMetaData(scoreFileMetadata);
