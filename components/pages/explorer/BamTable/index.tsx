@@ -64,6 +64,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const { NEXT_PUBLIC_IOBIO_API_URL, NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
+	const fileFormat = file?.file_type;
 	const indexFileUrl = indexFile?.parts[0]?.url || null;
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
@@ -76,7 +77,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	useEffect(() => {
 		if (!fileUrl && file) {
-			const loadAndSetFile = async (file: FileTableData) => {
+			const loadAndSetFile = async () => {
 				const iobioFileResponse = await apiFetcher({
 					endpointTag: 'GetIobioFileData',
 					body: {
@@ -115,7 +116,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			};
 			// On page load, file table data is populated,
 			// but original file url needs to be requested from Score to use for Iobio analysis
-			loadAndSetFile(file);
+			loadAndSetFile();
 		} else if (file === null) {
 			// TODO: Add Client Error Handling
 			console.error('No File Data');
@@ -133,6 +134,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					<IobioDataBroker
 						alignmentUrl={fileUrl}
 						bedUrl={bedUrl}
+						fileFormat={fileFormat}
 						indexUrl={indexFileUrl}
 						server={NEXT_PUBLIC_IOBIO_API_URL}
 					/>

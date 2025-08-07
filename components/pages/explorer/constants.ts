@@ -19,20 +19,11 @@
  *
  */
 
-import { type ScoreDownloadParams } from './fileTypes';
+import { BamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
-const bamFileExtension = 'BAM';
-const cramFileExtension = 'CRAM';
 const vcfFileExtension = 'VCF';
 
-export const BamFileExtensions = [bamFileExtension, cramFileExtension];
 export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
-
-export const baseScoreDownloadParams: Omit<ScoreDownloadParams, 'length'> = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
-};
 
 export const tableTypes = {
 	REPO_TABLE: 'repoTable',
