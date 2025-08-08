@@ -24,21 +24,12 @@ import urlJoin from 'url-join';
 
 import { getConfig } from '@/global/config';
 import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
+import { type FileMetaData } from '@overture-stack/iobio-components/packages/iobio-react-components';
 
 import { baseScoreDownloadParams } from '../constants';
-import {
-	type FileMetaData,
-	type FileNode,
-	type FileTableData,
-	type FileResponse,
-	type ScoreDownloadParams,
-} from '../fileTypes';
+import { type FileNode, type FileTableData, type FileResponse, type ScoreDownloadParams } from '../fileTypes';
 
 // Type Checks for Score Data response
-export const isFileMetaData = (file: unknown): file is FileMetaData => {
-	return Boolean((file as FileMetaData)?.objectId && (file as FileMetaData)?.parts[0]?.url);
-};
-
 export const isFileResponse = (response: unknown): response is FileResponse => {
 	return Boolean((response as FileResponse)?.data?.file.hits);
 };

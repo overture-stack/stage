@@ -21,21 +21,6 @@
 
 import { JBrowseFileExtensions } from './constants';
 
-export type FileMetaData = {
-	objectId: string;
-	objectKey?: string;
-	objectMd5?: string;
-	objectSize?: number;
-	parts: {
-		md5?: string | null;
-		offset?: number;
-		partNumber?: number;
-		partSize?: number;
-		url: string;
-	}[];
-	uploadId?: string;
-};
-
 export type ScoreDownloadParams = {
 	'User-Agent': string;
 	external: string;

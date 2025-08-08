@@ -36,15 +36,17 @@ import {
 	IobioPanel,
 	infoLabelHistogramCopy,
 	infoLabelPercentCopy,
+	fileMetaDataSchema,
 	type BamContext,
+	type FileMetaData,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData } from '../fileTypes';
-import { getFileMetaData, IndexFileQuery, isFileResponse, isFileMetaData } from './scoreFileHelpers';
+import { type FileTableData } from '../fileTypes';
+import { getFileMetaData, IndexFileQuery, isFileResponse } from './scoreFileHelpers';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
@@ -90,7 +92,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					const indexFileNode = indexFileResponse.data.file.hits.edges[0];
 					const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
 
-					if (isFileMetaData(fileMetaData)) {
+					if (fileMetaDataSchema.safeParse(fileMetaData).success) {
 						setFileMetaData(fileMetaData);
 						setIndexFileData(indexFileMetaData);
 					} else {
