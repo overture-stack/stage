@@ -21,7 +21,7 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	BamDisplayNames as displayNames,
+	bamDisplayNames,
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
@@ -88,7 +88,7 @@ export const ToggleButtonPanel = ({
 								onToggle(key, active);
 							}}
 						>
-							{displayNames[key]}
+							{bamDisplayNames[key]}
 						</button>
 					);
 				})}
