@@ -146,14 +146,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPanel>
-												<IobioLabelInfoButton label={bamDisplayNames[key]}>
-													<div slot="content">
-														<p>{infoLabelPercentCopy[key]}</p>
-													</div>
-												</IobioLabelInfoButton>
-												<IobioPercentBox percentKey={key} totalKey="total_reads" />
-											</IobioPanel>
+											<IobioLabelInfoButton label={bamDisplayNames[key]}>
+												<p>{infoLabelPercentCopy[key]}</p>
+											</IobioLabelInfoButton>
+											<IobioPercentBox percentKey={key} totalKey="total_reads" />
 										</div>
 									),
 							)}
