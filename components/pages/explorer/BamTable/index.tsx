@@ -23,7 +23,7 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	BamDisplayNames as displayNames,
+	bamDisplayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
 	IobioCoverageDepth,
@@ -147,7 +147,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											key={key}
 										>
 											<IobioPanel>
-												<IobioLabelInfoButton label={displayNames[key]}>
+												<IobioLabelInfoButton label={bamDisplayNames[key]}>
 													<div slot="content">
 														<p>{infoLabelPercentCopy[key]}</p>
 													</div>
@@ -190,7 +190,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											key={key}
 										>
 											<IobioPanel>
-												<IobioLabelInfoButton label={displayNames[key]}>
+												<IobioLabelInfoButton label={bamDisplayNames[key]}>
 													<div slot="content">
 														<p>{infoLabelHistogramCopy[key]}</p>
 													</div>
