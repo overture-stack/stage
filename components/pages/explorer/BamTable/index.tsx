@@ -34,8 +34,6 @@ import {
 	percentKeys,
 	IobioLabelInfoButton,
 	IobioPanel,
-	infoLabelHistogramCopy,
-	infoLabelPercentCopy,
 	fileMetaDataSchema,
 	type BamContext,
 	type FileMetaData,
@@ -148,9 +146,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioLabelInfoButton label={bamDisplayNames[key]}>
-												<p>{infoLabelPercentCopy[key]}</p>
-											</IobioLabelInfoButton>
+											<IobioLabelInfoButton bamKey={key} />
 											<IobioPercentBox percentKey={key} totalKey="total_reads" />
 										</div>
 									),
@@ -188,11 +184,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											key={key}
 										>
 											<IobioPanel>
-												<IobioLabelInfoButton label={bamDisplayNames[key]}>
-													<div slot="content">
-														<p>{infoLabelHistogramCopy[key]}</p>
-													</div>
-												</IobioLabelInfoButton>
+												<IobioLabelInfoButton key={key} />
 												<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} />
 											</IobioPanel>
 										</div>
