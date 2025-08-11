@@ -26,7 +26,7 @@ import {
 	BamDisplayNames as displayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
-	getBrowserBedUrls,
+	getBedUrlForEsDocument,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
@@ -99,7 +99,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 						NEXT_PUBLIC_SCORE_API_URL,
 						SCORE_API_DOWNLOAD_PATH,
 					);
-					const defaultBedUrl = getBrowserBedUrls(fileNode);
+					const defaultBedUrl = getBedUrlForEsDocument(fileNode);
 					if (isFileMetaData(scoreFileMetadata)) {
 						setFileMetaData(scoreFileMetadata);
 						setIndexFile(indexFileMetadata);
