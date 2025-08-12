@@ -40,6 +40,7 @@ import {
 	type BamHistogramKey,
 	type FileDocument,
 	type FileMetaData,
+	type ScoreConfig,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
@@ -94,10 +95,13 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 				if (isFileResponse(iobioFileResponse)) {
 					const fileDocument: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
-					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata({
-						selectedFile: fileDocument,
+					const scoreConfig: ScoreConfig = {
 						scoreApiUrl: NEXT_PUBLIC_SCORE_API_URL,
 						scoreApiDownloadPath: SCORE_API_DOWNLOAD_PATH,
+					};
+					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata({
+						selectedFile: fileDocument,
+						scoreConfig,
 					});
 					const defaultBedUrl = getBedUrlForEsDocument(fileDocument);
 					if (isFileMetaData(scoreFileMetadata)) {
