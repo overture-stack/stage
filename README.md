@@ -1,55 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Overture - JBrowse2 Integration
 
-## Getting Started
+This integration connects Overture's genomic data management platform with [JBrowse 2](https://jbrowse.org/jb2/) genome visualization functionality, specifically linear and circular viewers for BAM and VCF files.
 
-This app has been tested using NodeJS version ^16, and it may not work correctly on versions <14.
+## Setting up the development enviroment 
 
-We strongly recommend using the supported version.
+**Prerequisites**
 
-### Development Setup
+- Node.js and npm installed
+- Internet connection required
 
-Setting up the project, and running a development server
+### Setup Instructions
 
-```bash
-# 1. install the dependencies
-  npm ci
+1. **Clone the repository**
 
-# 2. serve the application
-  npm run dev
-```
+   ```bash
+   git clone https://github.com/overture-stack/stage.git -b feat/jbrowsemvp-arranger3
+   cd stage
+   ```
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+2. **Install the dependencies**
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+   ```bash
+   npm install
+   ```
 
-This app has been tested using Node v16+. We recommend using this version if you encounter any issues.
+3. **Update the env.schema file**
 
-### Troubleshooting Note:
+4. **Start the demo environment**
 
-DMS-UI requires NPM v^8.3.0, to ensure all dependencies are installed correctly
+   ```bash
+   npm run dev
+   ```
 
-```bash
-# If you need to update your NPM version first, use the following command:
-  npm i -g npm
-```
+> [!NOTE]
+> A demo environment to locally spin up all dependent services, with demo data, is available here at https://github.com/overture-stack/prelude/tree/jbrowse-demo
 
-## Learn More
+## Funding Acknowledgement
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Acknowledgements
-
-DMS development supported by:
-
-[![Canarie logo](canarie-logo.png)](https://canarie.ca)
+Overture is supported by grant #U24CA253529 from the National Cancer Institute at the US National Institutes of Health, and additional funding from Genome Canada, the Canada Foundation for Innovation, the Canadian Institutes of Health Research, Canarie, and the Ontario Institute for Cancer Research.
