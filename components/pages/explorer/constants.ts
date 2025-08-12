@@ -19,11 +19,11 @@
  *
  */
 
-import { BamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { bamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 const vcfFileExtension = 'VCF';
 
-export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
+export const JBrowseFileExtensions = [vcfFileExtension, ...bamFileExtensions];
 
 export const tableTypes = {
 	REPO_TABLE: 'repoTable',

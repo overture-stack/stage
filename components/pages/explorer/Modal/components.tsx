@@ -22,7 +22,7 @@
 import { css, useTheme, Theme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { getConfig } from '../../../../global/config';
-import { BamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { bamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { tableTypes } from '../constants';
 import { type FileTableData } from '../fileTypes';
 import { type BadgeItem, type VisualizerDetailProps } from './types';
@@ -206,7 +206,7 @@ export const VisualizerModal = ({
 		NEXT_PUBLIC_IOBIO_ENABLED &&
 		currentFiles.length === 1 &&
 		currentFiles[0].file_type &&
-		BamFileExtensions.includes(currentFiles[0].file_type);
+		bamFileExtensions.includes(currentFiles[0].file_type);
 
 	const selectVisualizer = (tableType: string) => () => {
 		setTable(tableType);

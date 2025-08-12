@@ -20,7 +20,7 @@
  */
 
 import { JBrowseFileExtensions } from './constants';
-import { type IndexFile } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { type IndexFile, type FileDocument } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 export type FileTableData = {
 	id: string;
@@ -56,11 +56,7 @@ export type FileTableData = {
 };
 
 export type FileNode = {
-	node: {
-		file: {
-			index_file: IndexFile;
-		};
-	};
+	node: FileDocument;
 };
 
 export type FileResponse = {

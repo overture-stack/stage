@@ -23,7 +23,7 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	BamDisplayNames as displayNames,
+	bamDisplayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
 	getBedUrlForEsDocument,
@@ -93,13 +93,13 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				});
 
 				if (isFileResponse(iobioFileResponse)) {
-					const fileNode: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
-					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata(
-						fileNode,
-						NEXT_PUBLIC_SCORE_API_URL,
-						SCORE_API_DOWNLOAD_PATH,
-					);
-					const defaultBedUrl = getBedUrlForEsDocument(fileNode);
+					const fileDocument: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
+					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata({
+						selectedFile: fileDocument,
+						scoreApiUrl: NEXT_PUBLIC_SCORE_API_URL,
+						scoreApiDownloadPath: SCORE_API_DOWNLOAD_PATH,
+					});
+					const defaultBedUrl = getBedUrlForEsDocument(fileDocument);
 					if (isFileMetaData(scoreFileMetadata)) {
 						setFileMetaData(scoreFileMetadata);
 						setIndexFile(indexFileMetadata);
@@ -163,7 +163,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPercentBox label={displayNames[key]} percentKey={key} totalKey="total_reads" />
+											<IobioPercentBox label={bamDisplayNames[key]} percentKey={key} totalKey="total_reads" />
 										</div>
 									),
 							)}
@@ -199,7 +199,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} label={displayNames[key]} />
+											<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} label={bamDisplayNames[key]} />
 										</div>
 									),
 							)}
