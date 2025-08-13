@@ -23,7 +23,7 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	BamDisplayNames as displayNames,
+	bamDisplayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
 	IobioCoverageDepth,
@@ -32,15 +32,19 @@ import {
 	IobioPercentBox,
 	isOutlierKey,
 	percentKeys,
+	IobioLabelInfoButton,
+	IobioPanel,
+	fileMetaDataSchema,
 	type BamContext,
+	type FileMetaData,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileMetaData, type FileTableData } from '../fileTypes';
-import { getFileMetaData, IndexFileQuery, isFileResponse, isFileMetaData } from './scoreFileHelpers';
+import { type FileTableData } from '../fileTypes';
+import { getFileMetaData, IndexFileQuery, isFileResponse } from './scoreFileHelpers';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
@@ -86,7 +90,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					const indexFileNode = indexFileResponse.data.file.hits.edges[0];
 					const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
 
-					if (isFileMetaData(fileMetaData)) {
+					if (fileMetaDataSchema.safeParse(fileMetaData).success) {
 						setFileMetaData(fileMetaData);
 						setIndexFileData(indexFileMetaData);
 					} else {
@@ -110,7 +114,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	return (
 		<>
-			<h2>{fileId}</h2>
+			<h2>File Id: {fileId}</h2>
 			<ToggleButtonPanel bamContext={elementState} onToggle={updateElements} />
 			{loading || !fileUrl ? (
 				<Loader />
@@ -142,7 +146,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPercentBox label={displayNames[key]} percentKey={key} totalKey="total_reads" />
+											<IobioLabelInfoButton bamKey={key} />
+											<IobioPercentBox percentKey={key} totalKey="total_reads" />
 										</div>
 									),
 							)}
@@ -178,7 +183,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} label={displayNames[key]} />
+											<IobioPanel>
+												<IobioLabelInfoButton key={key} />
+												<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} />
+											</IobioPanel>
 										</div>
 									),
 							)}

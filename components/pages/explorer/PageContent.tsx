@@ -88,6 +88,7 @@ const PageContent = () => {
 
 	const closeModal = () => {
 		setModalOpen(false);
+		setErrorMessage('');
 	};
 
 	const openModal = () => {
@@ -104,6 +105,8 @@ const PageContent = () => {
 		}
 	};
 
+	const [errorMessage, setErrorMessage] = useState('');
+
 	return useMemo(
 		() => (
 			<div
@@ -113,8 +116,18 @@ const PageContent = () => {
 					width: 100vw;
 				`}
 			>
-				<ModalContainer appRootId={'#pageContent'} closeModal={closeModal} isModalOpen={isModalOpen}>
-					<VisualizerModal closeModal={closeModal} setTable={setTableType} currentFiles={currentFiles} />
+				<ModalContainer
+					appRootId={'#pageContent'}
+					closeModal={closeModal}
+					isModalOpen={isModalOpen}
+					errorMessage={errorMessage}
+				>
+					<VisualizerModal
+						closeModal={closeModal}
+						setTable={setTableType}
+						currentFiles={currentFiles}
+						setErrorMessage={setErrorMessage}
+					/>
 				</ModalContainer>
 				<div
 					css={css`

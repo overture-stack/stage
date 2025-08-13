@@ -28,9 +28,9 @@ import { BadgeItem, VisualizerDetailProps } from './types';
 
 const accentBadgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
 	${badgeStyle({ theme, isDisabled })}
-	background-color: ${theme.colors.accent_light};
+	background-color: #497AA2;
 	margin-left: 5px;
-	${isDisabled ? `background-color: ${theme.colors.grey_5};` : ''}
+	${isDisabled ? `background-color:  #757575;` : ''}
 `;
 
 const badgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
@@ -44,7 +44,7 @@ const badgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }
 	background-color: ${theme.colors.accent};
 	color: ${theme.colors.white};
 
-	${isDisabled ? `background-color: ${theme.colors.grey_6};` : ''}
+	${isDisabled ? `background-color: #353535;` : ''}
 `;
 
 const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean }) => css`
@@ -59,23 +59,25 @@ const optionStyle = ({ theme, isEnabled }: { theme: Theme; isEnabled: boolean })
 	padding: 10px;
 	position: relative;
 
-	${isEnabled ? '' : `cursor: not-allowed;`}
+	${isEnabled ? '' : `cursor: not-allowed; color: ${theme.colors.grey_6};`}
 `;
 
-export const VisualizerDetail = ({ title, description, previewImage, logoImage }: VisualizerDetailProps) => {
+export const VisualizerDetail = ({ description, isEnabled, logoImage, previewImage, title }: VisualizerDetailProps) => {
 	return (
 		<>
 			<div
 				css={css`
 					max-height: 28%;
 					overflow-y: hidden;
-
-					img {
-						width: 100%;
-					}
 				`}
 			>
-				<img src={previewImage} />
+				<img
+					css={css`
+						width: 100%;
+						${isEnabled ? '' : 'filter: grayscale(1);'}
+					`}
+					src={previewImage}
+				/>
 			</div>
 			<div
 				css={css`
@@ -87,6 +89,7 @@ export const VisualizerDetail = ({ title, description, previewImage, logoImage }
 						height: 18px;
 						vertical-align: text-bottom;
 						width: 18px;
+						${isEnabled ? '' : 'filter: grayscale(1);'}
 					`}
 					src={logoImage}
 				/>
@@ -144,10 +147,20 @@ export const VisualizerOption = ({
 }) => {
 	const theme = useTheme();
 	return (
-		<button css={optionStyle({ theme, isEnabled })} disabled={!isEnabled} onClick={onClick}>
+		<button
+			aria-label={`Select ${title} Visualizer`}
+			aria-disabled={!isEnabled}
+			css={optionStyle({ theme, isEnabled })}
+			onClick={onClick}
+		>
 			<div>
-				<VisualizerDetail title={title} description={description} previewImage={previewImage} logoImage={logoImage} />
-
+				<VisualizerDetail
+					isEnabled={isEnabled}
+					title={title}
+					description={description}
+					previewImage={previewImage}
+					logoImage={logoImage}
+				/>
 				<div
 					css={css`
 						position: absolute;
@@ -177,6 +190,15 @@ export const VisualizerOption = ({
 	);
 };
 
+const featureFlagError = (appName: string) =>
+	`The ${appName} Visualizer is not enabled. Please update your app configuration.`;
+const tooManyFilesError = (count: number) => {
+	const countText = count > 1 ? `${count} files` : `${count} file`;
+	return `Too many files are selected. Please select a maximum of ${countText} to launch plugin.`;
+};
+const wrongFileTypeError =
+	'This app does not support the file type you are using. Please choose a different app or use another file format.';
+
 /**
  *
  * Responsibility is rendering the options available
@@ -187,10 +209,12 @@ export const VisualizerModal = ({
 	closeModal,
 	setTable,
 	currentFiles,
+	setErrorMessage,
 }: {
 	closeModal: () => void;
 	setTable: (tableType: string) => void;
 	currentFiles: FileTableData[];
+	setErrorMessage: (s: string) => void;
 }) => {
 	const {
 		NEXT_PUBLIC_BASE_PATH,
@@ -204,10 +228,10 @@ export const VisualizerModal = ({
 	const isIobioEnabled =
 		NEXT_PUBLIC_IOBIO_ENABLED &&
 		currentFiles.length === 1 &&
-		currentFiles[0].file_type &&
+		currentFiles[0].file_type !== undefined &&
 		BamFileExtensions.includes(currentFiles[0].file_type);
 
-	const selectVisualizer = (tableType: string) => () => {
+	const selectVisualizer = (tableType: string) => {
 		setTable(tableType);
 		closeModal();
 	};
@@ -220,7 +244,18 @@ export const VisualizerModal = ({
 					{ label: '.VCF', isAccent: true },
 					{ label: '.BAM', isAccent: true },
 				]}
-				onClick={selectVisualizer(tableTypes.JBROWSE_TABLE)}
+				onClick={() => {
+					if (isJbrowseEnabled) {
+						selectVisualizer(tableTypes.JBROWSE_TABLE);
+					} else {
+						const errorMessage = !NEXT_PUBLIC_JBROWSE_ENABLED
+							? featureFlagError('JBrowse')
+							: !(currentFiles.length <= 5)
+							? tooManyFilesError(5)
+							: wrongFileTypeError;
+						setErrorMessage(errorMessage);
+					}
+				}}
 				isEnabled={isJbrowseEnabled}
 				details={{
 					title: 'JBrowse',
@@ -235,7 +270,18 @@ export const VisualizerModal = ({
 					{ label: '1 Max', isAccent: false },
 					{ label: '.BAM', isAccent: true },
 				]}
-				onClick={selectVisualizer(tableTypes.BAM_TABLE)}
+				onClick={() => {
+					if (isIobioEnabled) {
+						selectVisualizer(tableTypes.BAM_TABLE);
+					} else {
+						const errorMessage = !NEXT_PUBLIC_IOBIO_ENABLED
+							? featureFlagError('Iobio')
+							: !(currentFiles.length === 1)
+							? tooManyFilesError(1)
+							: wrongFileTypeError;
+						setErrorMessage(errorMessage);
+					}
+				}}
 				isEnabled={!!isIobioEnabled}
 				details={{
 					title: 'IOBIO',
@@ -257,7 +303,18 @@ export const VisualizerModal = ({
 					logoImage: urlJoin(NEXT_PUBLIC_BASE_PATH, '/images/cBioPortal_Logo.png'),
 				}}
 				isEnabled={isCBioEnabled}
-				onClick={selectVisualizer(tableTypes.CBIO_TABLE)}
+				onClick={() => {
+					if (isCBioEnabled) {
+						selectVisualizer(tableTypes.CBIO_TABLE);
+					} else {
+						const errorMessage = !NEXT_PUBLIC_CBIOPORTAL_ENABLED
+							? featureFlagError('cBioPortal')
+							: !(currentFiles.length <= 2)
+							? tooManyFilesError(2)
+							: wrongFileTypeError;
+						setErrorMessage(errorMessage);
+					}
+				}}
 			/>
 		</>
 	);

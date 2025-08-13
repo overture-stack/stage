@@ -29,4 +29,5 @@ export type VisualizerDetailProps = {
 	description: string;
 	previewImage: string;
 	logoImage: string;
+	isEnabled?: boolean;
 };
