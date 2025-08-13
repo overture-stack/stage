@@ -22,6 +22,7 @@
 import { css, useTheme } from '@emotion/react';
 import {
 	bamDisplayNames,
+	bamKeys,
 	type BamContext,
 	type BamKey,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
@@ -46,7 +47,7 @@ export const ToggleButtonPanel = ({
 	const {
 		colors: { accent },
 	} = useTheme();
-	const contextKeys = Object.keys(bamContext).filter((key): key is keyof BamContext => bamContext.hasOwnProperty(key));
+	const contextKeys = bamKeys.filter((key) => bamContext.hasOwnProperty(key));
 	return (
 		<div
 			css={css`
