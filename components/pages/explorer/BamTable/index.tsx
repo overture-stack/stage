@@ -23,42 +23,51 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	bamDisplayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
+	getDefaultBedFileUrl,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
 	IobioPercentBox,
 	isOutlierKey,
+	getFileMetadata,
 	percentKeys,
 	IobioLabelInfoButton,
 	IobioPanel,
 	fileMetaDataSchema,
 	type BamContext,
+	type BamPercentKey,
+	type BamHistogramKey,
+	type FileDocument,
 	type FileMetaData,
+	type ScoreConfig,
 } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 import { useArrangerData } from '@overture-stack/arranger-components';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Loader';
 import { getConfig } from '@/global/config';
-import { type FileTableData } from '../fileTypes';
-import { getFileMetaData, IndexFileQuery, isFileResponse } from './scoreFileHelpers';
+import { SCORE_API_DOWNLOAD_PATH } from '@/global/utils/constants';
+import { type FileTableData, isFileResponse } from '../fileTypes';
+import { IobioFileQuery } from './tableUtils';
 import { ToggleButtonPanel } from './ToggleButtonPanel';
 import { StatsTable } from './StatsTable';
 
 const BamTable = ({ file }: { file?: FileTableData }) => {
-	const { apiFetcher } = useArrangerData({ callerName: 'GetIndexFileData' });
+	const { apiFetcher } = useArrangerData({ callerName: 'GetindexFile' });
 	const theme = useTheme();
 	const [elementState, setElementState] = useState(initElementState);
 	const [indexFileData, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
-	const { NEXT_PUBLIC_IOBIO_API_URL } = getConfig();
+	const { NEXT_PUBLIC_IOBIO_API_URL, NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
+	const fileFormat = file?.file_type;
+	const fileStrategy = file?.analysis?.experiment?.experimentalStrategy;
+	const bedUrl = getDefaultBedFileUrl(fileStrategy);
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
@@ -71,11 +80,11 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	useEffect(() => {
 		if (!fileUrl && file) {
-			const loadAndSetFile = async (file: FileTableData) => {
-				const indexFileResponse = await apiFetcher({
-					endpointTag: 'GetIndexFileData',
+			const loadAndSetFile = async () => {
+				const iobioFileResponse = await apiFetcher({
+					endpointTag: 'GetIobioFileData',
 					body: {
-						query: IndexFileQuery,
+						query: IobioFileQuery,
 						variables: {
 							first: 1,
 							sqon: {
@@ -86,13 +95,20 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 					},
 				});
 
-				if (isFileResponse(indexFileResponse)) {
-					const indexFileNode = indexFileResponse.data.file.hits.edges[0];
-					const { fileMetaData, indexFileMetaData } = await getFileMetaData(file, indexFileNode);
+				if (isFileResponse(iobioFileResponse)) {
+					const fileDocument: FileDocument = iobioFileResponse.data.file.hits.edges[0].node;
+					const scoreConfig: ScoreConfig = {
+						scoreApiUrl: NEXT_PUBLIC_SCORE_API_URL,
+						scoreApiDownloadPath: SCORE_API_DOWNLOAD_PATH,
+					};
+					const { scoreFileMetadata, indexFileMetadata } = await getFileMetadata({
+						selectedFile: fileDocument,
+						scoreConfig,
+					});
 
-					if (fileMetaDataSchema.safeParse(fileMetaData).success) {
-						setFileMetaData(fileMetaData);
-						setIndexFileData(indexFileMetaData);
+					if (fileMetaDataSchema.safeParse(scoreFileMetadata).success) {
+						setFileMetaData(scoreFileMetadata);
+						setIndexFileData(indexFileMetadata);
 					} else {
 						setFileMetaData(undefined);
 						console.error('Error retrieving Score File Data');
@@ -105,7 +121,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 			};
 			// On page load, file table data is populated,
 			// but original file url needs to be requested from Score to use for Iobio analysis
-			loadAndSetFile(file);
+			loadAndSetFile();
 		} else if (file === null) {
 			// TODO: Add Client Error Handling
 			console.error('No File Data');
@@ -120,7 +136,13 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 				<Loader />
 			) : (
 				<>
-					<IobioDataBroker alignmentUrl={fileUrl} indexUrl={indexFileUrl} server={NEXT_PUBLIC_IOBIO_API_URL} />
+					<IobioDataBroker
+						alignmentUrl={fileUrl}
+						bedUrl={bedUrl}
+						fileFormat={fileFormat}
+						indexUrl={indexFileUrl}
+						server={NEXT_PUBLIC_IOBIO_API_URL}
+					/>
 					<div
 						css={css`
 							display: flex;
@@ -135,7 +157,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 							`}
 						>
 							{percentKeys.map(
-								(key) =>
+								(key: BamPercentKey) =>
 									elementState[key] && (
 										<div
 											css={css`
@@ -172,7 +194,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 								</div>
 							)}
 							{histogramKeys.map(
-								(key) =>
+								(key: BamHistogramKey) =>
 									elementState[key] && (
 										<div
 											css={css`

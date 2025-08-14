@@ -22,9 +22,10 @@
 import { css, useTheme, Theme } from '@emotion/react';
 import urlJoin from 'url-join';
 import { getConfig } from '../../../../global/config';
-import { BamFileExtensions, tableTypes } from '../constants';
-import { FileTableData } from '../fileTypes';
-import { BadgeItem, VisualizerDetailProps } from './types';
+import { bamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+import { tableTypes } from '../constants';
+import { type FileTableData } from '../fileTypes';
+import { type BadgeItem, type VisualizerDetailProps } from './types';
 
 const accentBadgeStyle = ({ theme, isDisabled }: { theme: Theme; isDisabled: boolean }) => css`
 	${badgeStyle({ theme, isDisabled })}
@@ -229,7 +230,7 @@ export const VisualizerModal = ({
 		NEXT_PUBLIC_IOBIO_ENABLED &&
 		currentFiles.length === 1 &&
 		currentFiles[0].file_type !== undefined &&
-		BamFileExtensions.includes(currentFiles[0].file_type);
+		bamFileExtensions.includes(currentFiles[0].file_type);
 
 	const selectVisualizer = (tableType: string) => {
 		setTable(tableType);

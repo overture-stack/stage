@@ -19,18 +19,11 @@
  *
  */
 
-const bamFileExtension = 'BAM';
-const cramFileExtension = 'CRAM';
+import { bamFileExtensions } from '@overture-stack/iobio-components/packages/iobio-react-components/';
+
 const vcfFileExtension = 'VCF';
 
-export const BamFileExtensions = [bamFileExtension, cramFileExtension];
-export const JBrowseFileExtensions = [vcfFileExtension, ...BamFileExtensions];
-
-export const baseScoreDownloadParams = {
-	external: 'true',
-	offset: '0',
-	'User-Agent': 'unknown',
-};
+export const JBrowseFileExtensions = [vcfFileExtension, ...bamFileExtensions];
 
 export const tableTypes = {
 	REPO_TABLE: 'repoTable',

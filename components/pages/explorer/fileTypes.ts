@@ -20,13 +20,7 @@
  */
 
 import { JBrowseFileExtensions } from './constants';
-
-export type ScoreDownloadParams = {
-	'User-Agent': string;
-	external: string;
-	length: string;
-	offset: string;
-};
+import { type FileDocument } from '@overture-stack/iobio-components/packages/iobio-react-components/';
 
 export type FileTableData = {
 	id: string;
@@ -62,18 +56,9 @@ export type FileTableData = {
 };
 
 export type FileNode = {
-	node: {
-		file: {
-			index_file: {
-				name: string;
-				object_id: string;
-				size: number;
-			};
-		};
-	};
+	node: FileDocument;
 };
 
-// Score API File Query Response
 export type FileResponse = {
 	data: {
 		file: {
@@ -89,4 +74,8 @@ export type FileResponse = {
 export const rowIsFileData = (row: unknown): row is FileTableData => {
 	const rowData = row as FileTableData;
 	return Boolean(rowData?.id && rowData?.file_type && JBrowseFileExtensions.includes(rowData?.file_type));
+};
+
+export const isFileResponse = (response: unknown): response is FileResponse => {
+	return typeof (response as FileResponse)?.data?.file.hits === 'object';
 };
