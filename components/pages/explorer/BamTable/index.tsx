@@ -23,7 +23,6 @@
 
 import { css, useTheme } from '@emotion/react';
 import {
-	bamDisplayNames,
 	histogramKeys,
 	defaultBamContext as initElementState,
 	getBedUrlForEsDocument,
@@ -32,7 +31,6 @@ import {
 	IobioHistogram,
 	IobioPercentBox,
 	isOutlierKey,
-	isFileMetaData,
 	getFileMetadata,
 	percentKeys,
 	IobioLabelInfoButton,
@@ -60,7 +58,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const { apiFetcher } = useArrangerData({ callerName: 'GetindexFile' });
 	const theme = useTheme();
 	const [elementState, setElementState] = useState(initElementState);
-	const [indexFile, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
+	const [indexFileData, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [bedUrl, setBedUrl] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
@@ -69,7 +67,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 	const fileFormat = file?.file_type;
-	const indexFileUrl = indexFile?.parts[0]?.url || null;
+	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
 		const newState = {
