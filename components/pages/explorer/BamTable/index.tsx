@@ -35,6 +35,9 @@ import {
 	isFileMetaData,
 	getFileMetadata,
 	percentKeys,
+	IobioLabelInfoButton,
+	IobioPanel,
+	fileMetaDataSchema,
 	type BamContext,
 	type BamPercentKey,
 	type BamHistogramKey,
@@ -57,7 +60,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const { apiFetcher } = useArrangerData({ callerName: 'GetindexFile' });
 	const theme = useTheme();
 	const [elementState, setElementState] = useState(initElementState);
-	const [indexFile, setIndexFile] = useState<FileMetaData | undefined>(undefined);
+	const [indexFile, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
 	const [bedUrl, setBedUrl] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
@@ -104,9 +107,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 						scoreConfig,
 					});
 					const defaultBedUrl = getBedUrlForEsDocument(fileDocument);
-					if (isFileMetaData(scoreFileMetadata)) {
+
+					if (fileMetaDataSchema.safeParse(scoreFileMetadata).success) {
 						setFileMetaData(scoreFileMetadata);
-						setIndexFile(indexFileMetadata);
+						setIndexFileData(indexFileMetadata);
 						setBedUrl(defaultBedUrl);
 					} else {
 						setFileMetaData(undefined);
@@ -129,7 +133,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 
 	return (
 		<>
-			<h2>{fileId}</h2>
+			<h2>File Id: {fileId}</h2>
 			<ToggleButtonPanel bamContext={elementState} onToggle={updateElements} />
 			{loading || !fileUrl ? (
 				<Loader />
@@ -167,7 +171,8 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioPercentBox label={bamDisplayNames[key]} percentKey={key} totalKey="total_reads" />
+											<IobioLabelInfoButton bamKey={key} />
+											<IobioPercentBox percentKey={key} totalKey="total_reads" />
 										</div>
 									),
 							)}
@@ -203,7 +208,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											`}
 											key={key}
 										>
-											<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} label={bamDisplayNames[key]} />
+											<IobioPanel>
+												<IobioLabelInfoButton key={key} />
+												<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} />
+											</IobioPanel>
 										</div>
 									),
 							)}
