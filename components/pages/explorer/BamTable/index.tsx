@@ -206,7 +206,7 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 											key={key}
 										>
 											<IobioPanel>
-												<IobioLabelInfoButton key={key} />
+												<IobioLabelInfoButton bamKey={key} />
 												<IobioHistogram brokerKey={key} ignoreOutliers={isOutlierKey(key)} />
 											</IobioPanel>
 										</div>
