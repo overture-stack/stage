@@ -46,11 +46,11 @@ export const getTableData = (file: FileTableData) => {
 };
 
 export const IobioFileQuery = `query IobioFile ($sqon: JSON) {
-  file {
-    hits (filters: $sqon) {
-      total
-      edges {
-        node {
+	file {
+		hits (filters: $sqon) {
+			total
+			edges {
+				node {
 						object_id
 						data_type
 						file_access
@@ -72,8 +72,8 @@ export const IobioFileQuery = `query IobioFile ($sqon: JSON) {
 								dataCategory
 							}
 						}
-          }
-        }
-      }
-}
-}`;
+					}
+				}
+			}
+		}
+	}`;
