@@ -25,7 +25,7 @@ import { css, useTheme } from '@emotion/react';
 import {
 	histogramKeys,
 	defaultBamContext as initElementState,
-	getBedUrlForEsDocument,
+	getDefaultBedFileUrl,
 	IobioCoverageDepth,
 	IobioDataBroker,
 	IobioHistogram,
@@ -60,13 +60,14 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 	const [elementState, setElementState] = useState(initElementState);
 	const [indexFileData, setIndexFileData] = useState<FileMetaData | undefined>(undefined);
 	const [fileMetaData, setFileMetaData] = useState<FileMetaData | undefined>(undefined);
-	const [bedUrl, setBedUrl] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(true);
 
 	const { NEXT_PUBLIC_IOBIO_API_URL, NEXT_PUBLIC_SCORE_API_URL } = getConfig();
 	const fileUrl = fileMetaData?.parts[0]?.url || null;
 	const fileId = file?.id || fileUrl?.split('/').pop()?.split('?')[0];
 	const fileFormat = file?.file_type;
+	const fileStrategy = file?.analysis?.experiment?.experimentalStrategy;
+	const bedUrl = getDefaultBedFileUrl(fileStrategy);
 	const indexFileUrl = indexFileData?.parts[0]?.url || null;
 
 	const updateElements = (key: keyof BamContext, value: boolean) => {
@@ -104,12 +105,10 @@ const BamTable = ({ file }: { file?: FileTableData }) => {
 						selectedFile: fileDocument,
 						scoreConfig,
 					});
-					const defaultBedUrl = getBedUrlForEsDocument(fileDocument);
 
 					if (fileMetaDataSchema.safeParse(scoreFileMetadata).success) {
 						setFileMetaData(scoreFileMetadata);
 						setIndexFileData(indexFileMetadata);
-						setBedUrl(defaultBedUrl);
 					} else {
 						setFileMetaData(undefined);
 						console.error('Error retrieving Score File Data');
