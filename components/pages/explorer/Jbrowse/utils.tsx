@@ -104,6 +104,27 @@ export const jbrowseFileMetadataQuery = `
 }
 `;
 
+export const fileQuery = `file {
+	hits (filters: $filters){
+		total 
+		edges {
+			node {
+				file_access
+				file_type
+				object_id
+				file {
+					name
+					size
+					index_file {
+						object_id
+						size
+					}
+				}
+			}
+		}
+	}
+}`;
+
 // check if file is the right type for jbrowse
 // and that it has an index
 // MVP: restrict controlled access files

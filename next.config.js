@@ -62,6 +62,7 @@ module.exports = withPlugins([withTranspileModules], {
 		// Optional features/functionalities
 		NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG,
 		NEXT_PUBLIC_SHOW_MOBILE_WARNING: process.env.NEXT_PUBLIC_SHOW_MOBILE_WARNING,
+		NEXT_PUBLIC_JBROWSE_DATA_MODEL: process.env.NEXT_PUBLIC_JBROWSE_DATA_MODEL,
 	},
 	assetPrefix: process.env.ASSET_PREFIX || '',
 	optimizeFonts: false,

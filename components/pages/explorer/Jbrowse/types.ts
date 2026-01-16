@@ -94,3 +94,25 @@ export type JbrowseInput = JbrowseFileType &
 	};
 
 export type JbrowseCompatibleFile = ScoreDownloadJbrowseInput & JbrowseFileName & JbrowseFileType;
+
+// Example Query Objects for configurable env queries
+export type TableData = {
+	node: {
+		data_type: string;
+		object_id: string;
+		name: string;
+		size: number;
+		fileType: string;
+		file_access: string;
+	};
+};
+
+export type TableNodes = {
+	node: {
+		files: {
+			hits: {
+				edges: TableData[];
+			};
+		};
+	};
+};
