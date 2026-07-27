@@ -178,7 +178,7 @@ After installation and configuration, verify that Stage is functioning correctly
    - Expected result: A new API key should be generated and displayed on the screen.
 
 :::info Need Help?
-If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
+If you encounter any issues or have questions about our API, please don't hesitate to reach out through our [**support page**](/community/support) or our [**discussion forum**](https://github.com/overture-stack/docs/discussions?discussions_q=).
 :::
 
 :::warning
