@@ -47,7 +47,7 @@ We'll use our Quickstart service, a flexible Docker Compose setup, to spin up St
    - Ensure all ports are free on your system before starting the environment.
    - You may need to adjust the ports in the `docker-compose.yml` file if you have conflicts with existing services.
 
-   For more information on configuring and using these services, see our [Quickstart documentation linked here](https://docs.overture.bio/docs/other-software/Quickstart)
+   For more information on configuring and using these services, see our [Quickstart documentation linked here](/deploy/quickstart)
 
     </details>
 
@@ -65,12 +65,12 @@ In the next steps, we will run a Stage development server against these supporti
 2.  Configure environment variables:
 
     ```bash
-    mv .env.stage .env
+    cp .env.schema .env
     ```
 
     :::info
 
-    This `.env` file is preconfigured as follows for the Stage dev environment:
+    Copy the `.env.schema` template to `.env` and populate it for your environment. A complete configuration for the Stage dev environment looks like this:
 
          ```
           # Stage Variables
@@ -78,7 +78,6 @@ In the next steps, we will run a Stage development server against these supporti
           NEXT_PUBLIC_LAB_NAME=Stage Development Environment
           NEXT_PUBLIC_ADMIN_EMAIL=contact@overture.bio
           NEXT_PUBLIC_DEBUG=true
-          NEXT_PUBLIC_SHOW_MOBILE_WARNING=true
 
           # Keycloak Variables
           NEXT_PUBLIC_AUTH_PROVIDER=keycloak
