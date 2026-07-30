@@ -10,46 +10,44 @@ Before you begin, ensure you have the following installed on your system:
 
 ## Developer Setup
 
-This guide will walk you through setting up a complete development environment, including Stage and its complementary services.
+Stage is the front-end scaffolding for an Overture portal, so it needs a search API to render anything. This guide runs Stage's development server on your host against a ready-made portal back end.
 
 ### Setting up supporting services
 
-We'll use our Quickstart service, a flexible Docker Compose setup, to spin up Stage's complementary services.
+Stage queries an Arranger server, which in turn queries a search engine. Rather than assembling those yourself, use the search portal demo from the Prelude repository, which ships them preconfigured and preloaded with sample data.
 
-1. Clone the Quickstart repository and move into its directory:
+1. Clone the demo and move into its directory:
 
    ```bash
-   git clone -b quickstart https://github.com/overture-stack/prelude.git
+   git clone -b docs-demo/search-portal-workshop https://github.com/overture-stack/prelude.git
    cd prelude
    ```
 
-2. Run the appropriate start command for your operating system:
+2. Start the demo:
 
-   | Operating System | Command               |
-   | ---------------- | --------------------- |
-   | Unix/macOS       | `make stageDev`       |
-   | Windows          | `./make.bat stageDev` |
+   ```bash
+   make demo
+   ```
 
-    <details>
-    <summary>**Click here for a detailed breakdown**</summary>
+   <details>
+   <summary>**Click here for a detailed breakdown**</summary>
 
-   This command will set up all complementary services for Stage development as follows:
+   `make demo` runs a pre-deployment check, then brings up the portal and loads the sample data into it:
 
-   ![Stage Dev](./assets/stageDev.svg "Stage Dev Environment")
+   | Service       | Port   | Description                              | Purpose in Stage Development                             |
+   | ------------- | ------ | ---------------------------------------- | -------------------------------------------------------- |
+   | Elasticsearch | `9200` | Search and analytics engine              | Stores and indexes the data Arranger queries             |
+   | Arranger      | `5050` | GraphQL API for data querying            | The API your Stage development server will talk to       |
+   | Postgres      | -      | Relational database used by the demo     | Backs the demo's data submission flow                    |
+   | Stage         | `3000` | The demo's own portal UI                 | The finished result, for comparison; not the copy you edit |
 
-   | Service         | Port   | Description                                     | Purpose in Stage Development                          |
-   | --------------- | ------ | ----------------------------------------------- | ----------------------------------------------------- |
-   | Conductor       | -      | Orchestrates deployments and environment setups | Manages the overall development environment           |
-   | Keycloak        | `8080` | Authorization and authentication service        | Provides OAuth2 authentication for Stage              |
-   | Arranger Server | `5050` | GraphQL API for data querying                   | Handles data queries for Stage's search functionality |
-   | Elasticsearch   | `9200` | Search and analytics engine                     | Stores and indexes data for Arranger                  |
+   - Elasticsearch and Arranger are bound to `127.0.0.1` only, so they are reachable from your host but not from your network.
+   - Elasticsearch runs with authentication enabled. The demo's default credentials are `elastic` / `myelasticpassword`.
+   - The demo brings up its **own** Stage container on port `3000`. Your development server therefore needs a different port; step 4 below uses `3001`. If port `3000` is already occupied when you run `make demo`, the demo moves its own Stage to `3001` instead and reports so, in which case pick another port for your server.
+   - This demo does not include Keycloak, so there is no authentication provider to log in against. See the note on authentication in the next section.
+   - `make down` shuts the demo down while preserving its data; `make status` shows what is running. For a full walkthrough of the demo and the data behind it, see [Running the Demo](/use/workshop/running-the-demo).
 
-   - Ensure all ports are free on your system before starting the environment.
-   - You may need to adjust the ports in the `docker-compose.yml` file if you have conflicts with existing services.
-
-   For more information on configuring and using these services, see our [Quickstart documentation linked here](/deploy/quickstart)
-
-    </details>
+   </details>
 
 In the next steps, we will run a Stage development server against these supporting services.
 
@@ -70,56 +68,47 @@ In the next steps, we will run a Stage development server against these supporti
 
     :::info
 
-    Copy the `.env.schema` template to `.env` and populate it for your environment. A complete configuration for the Stage dev environment looks like this:
+    Copy the `.env.schema` template to `.env` and populate it for your environment. A configuration that points Stage at the demo started above looks like this:
 
          ```
           # Stage Variables
-          NEXTAUTH_URL=http://localhost:3000/api/auth
+          NEXTAUTH_URL=http://localhost:3001/api/auth
           NEXT_PUBLIC_LAB_NAME=Stage Development Environment
           NEXT_PUBLIC_ADMIN_EMAIL=contact@overture.bio
           NEXT_PUBLIC_DEBUG=true
 
-          # Keycloak Variables
-          NEXT_PUBLIC_AUTH_PROVIDER=keycloak
+          # Auth: left unset because the demo ships no identity provider
+          NEXT_PUBLIC_AUTH_PROVIDER=
           ACCESSTOKEN_ENCRYPTION_SECRET=super_secret
           SESSION_ENCRYPTION_SECRET=this_is_a_super_secret_secret
-          NEXT_PUBLIC_KEYCLOAK_HOST=http://keycloak:8080
-          NEXT_PUBLIC_KEYCLOAK_REALM=myrealm
-          NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=webclient
-          KEYCLOAK_CLIENT_SECRET=ikksyrYaKX07acf4hpGrpKWcUGaFkEdM
-          NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE=dms
 
           # Arranger Variables
-          NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE=file
-          NEXT_PUBLIC_ARRANGER_INDEX=file_centric
-          NEXT_PUBLIC_ARRANGER_API_URL=http://arranger-server:5050
-          NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS=repositories.code, object_id, analysis.analysis_id, study_id, file_type, file.name, file.size, file.md5sum, file.index_file.object_id, donors.donor_id, donors.specimens.samples.sample_id
+          NEXT_PUBLIC_ARRANGER_API_URL=http://localhost:5050
+          NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE=records
+          NEXT_PUBLIC_ARRANGER_INDEX=datatable1-index
+          NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS=
          ```
 
          <details>
            <summary>**Click here for a detailed explanation of the Stage environment variables**</summary>
             - **Stage Variables**
 
-               - `NEXTAUTH_URL`: Specifies the base URL for NextAuth.js, which handles authentication in Next.js applications. This setting is used to configure the authentication flow, including where to redirect users after successful authentication.
+               - `NEXTAUTH_URL`: Specifies the base URL for NextAuth.js, which handles authentication in Next.js applications. This setting is used to configure the authentication flow, including where to redirect users after successful authentication. It must match the port your development server runs on.
                - `NEXT_PUBLIC_LAB_NAME`: The name displayed in the top left of the portal interface. Feel free to customize this.
                - `NEXT_PUBLIC_ADMIN_EMAIL`: The email address of the administrator or support contact. This setting updates the help link found by default in the footer navigation of the portal interface.
+               - `NEXT_PUBLIC_DEBUG`: Enables verbose client-side logging.
 
-            - **Keycloak Variables**
+            - **Auth Variables**
 
-               - `NEXT_PUBLIC_AUTH_PROVIDER`: Specifies the authentication provider, in this case, "keycloak".
+               - `NEXT_PUBLIC_AUTH_PROVIDER`: Selects the identity provider, either `keycloak` or `ego`. Left empty here: the search portal demo ships no identity provider, and Stage hides its login and profile controls when this is unset. To develop against Keycloak, set this to `keycloak`, populate the `NEXT_PUBLIC_KEYCLOAK_*` variables and `KEYCLOAK_CLIENT_SECRET` from the template, and supply a Keycloak instance yourself.
                - `ACCESSTOKEN_ENCRYPTION_SECRET`: Defines the secret used to encrypt access tokens, enhancing security by preventing easy decoding of intercepted tokens.
                - `SESSION_ENCRYPTION_SECRET`: Specifies the secret used to encrypt session cookies, protecting sensitive information stored in the cookie from unauthorized access.
-               - `NEXT_PUBLIC_KEYCLOAK_HOST`: Specifies the URL where the Keycloak server is hosted (e.g., "http://localhost:8080").
-               - `NEXT_PUBLIC_KEYCLOAK_REALM`: Defines the realm in Keycloak that contains the users and roles for the application.
-               - `NEXT_PUBLIC_KEYCLOAK_CLIENT_ID`: The client ID for the Keycloak application.
-               - `KEYCLOAK_CLIENT_SECRET`: The client secret for the Keycloak application.
-               - `NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE`: Specifies the audience for the permission claims in the access token, restricting the scope of access granted to the token.
 
             - **Arranger Variables**
-               - `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`: Specifies whether the index is file-centric or analysis (participant) centric.
-               - `NEXT_PUBLIC_ARRANGER_INDEX`: Defines the index used by the Arranger service.
-               - `NEXT_PUBLIC_ARRANGER_API_URL`: The URL of the Arranger GraphQL API. By default, Arranger's API is mapped to port 5050.
-               - `NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS`: Lists the columns to be included in the manifest generated for download with Score.
+               - `NEXT_PUBLIC_ARRANGER_API_URL`: The URL of the Arranger GraphQL API. The demo publishes Arranger on port `5050`.
+               - `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`: The GraphQL type name for the catalogue's documents, set by the demo's Arranger configuration to `records`.
+               - `NEXT_PUBLIC_ARRANGER_INDEX`: The index Arranger queries, set by the demo's Arranger configuration to `datatable1-index`.
+               - `NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS`: Lists the columns to be included in the manifest generated for download with Score. The search portal demo includes no Score service, so this can be left empty.
          </details>
 
     :::
@@ -139,10 +128,10 @@ In the next steps, we will run a Stage development server against these supporti
 
     :::
 
-4.  Start the Stage development server:
+4.  Start the Stage development server on a port the demo is not already using:
 
     ```bash
-    npm run dev
+    npm run dev -- -p 3001
     ```
 
 ### Verification
@@ -151,30 +140,30 @@ After installation and configuration, verify that Stage is functioning correctly
 
 1. **Check the Stage UI**
 
-   - Navigate to `http://localhost:3000` in a web browser.
-   - Expected result: You should see the Stage front-end UI.
+   - Navigate to `http://localhost:3001` in a web browser.
+   - Expected result: You should see the Stage front-end UI, served by your development server rather than the demo's container on port `3000`.
    - Troubleshooting:
      - Check your browser's console for error messages.
-     - Verify that you're using the correct URL.
+     - Verify that you're using the correct URL and port.
 
-2. **Test Login Functionality**
+2. **Check the connection to Arranger**
 
-   - Use the default Keycloak credentials:
-
-     | Field    | Value      |
-     | -------- | ---------- |
-     | Username | `admin`    |
-     | Password | `admin123` |
-
-   - Expected result: You should be able to log in and access the Stage dashboard.
+   - Navigate to the portal's explorer page.
+   - Expected result: The data table and facets populate with the demo's sample records.
    - Troubleshooting:
-     - Ensure Keycloak is running and configured correctly.
-     - Check the Stage server logs for authentication-related errors.
+     - Confirm Arranger is reachable: `curl http://localhost:5050/ping`.
+     - Verify `NEXT_PUBLIC_ARRANGER_API_URL`, `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`, and `NEXT_PUBLIC_ARRANGER_INDEX` match the demo's Arranger configuration.
+     - Restart the development server after changing `.env`; Next.js reads these values at start-up.
 
-3. **Test API Key Functionality**
-   - From the top right dropdown, select "Profile".
-   - On the profile page, select "Generate API Key".
-   - Expected result: A new API key should be generated and displayed on the screen.
+3. **Check your theming changes apply**
+   - Edit a value under `components/theme/` and save.
+   - Expected result: The running server rebuilds and the change appears in the browser.
+
+:::note Authentication
+
+Login, the user profile page, and API key generation all require an identity provider, which the search portal demo does not include. To exercise those flows, point `NEXT_PUBLIC_AUTH_PROVIDER` at a Keycloak instance you supply and complete the `NEXT_PUBLIC_KEYCLOAK_*` variables in `.env.schema`.
+
+:::
 
 :::info Need Help?
 If you encounter any issues or have questions about our API, please don't hesitate to reach out through our [**support page**](/community/support) or our [**discussion forum**](https://github.com/overture-stack/docs/discussions?discussions_q=).
