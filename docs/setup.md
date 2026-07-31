@@ -156,7 +156,7 @@ After installation and configuration, verify that Stage is functioning correctly
    - Navigate to the portal's explorer page.
    - Expected result: The data table and facets populate with the mock ARGO donor records.
    - Troubleshooting:
-     - Confirm Arranger is reachable: `curl http://localhost:5050/ping`.
+     - Confirm Arranger is serving the catalogue, using the same query as step 3 above. `/ping` is not enough on its own: it answers even when the catalogue failed to mount.
      - Verify `NEXT_PUBLIC_ARRANGER_API_URL`, `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`, and `NEXT_PUBLIC_ARRANGER_INDEX` match `dev-services/configs/arranger/donor/base.json`.
      - Restart the development server after changing `.env`; Next.js reads these values at start-up.
 
