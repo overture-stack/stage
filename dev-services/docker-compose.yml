@@ -14,6 +14,11 @@
 # See docs/setup.md for the walkthrough. Development only, never deploy this.           #
 # ==================================================================================== #
 
+# Pinned so the project name does not come from the directory name. Sibling Overture
+# repositories ship their own `dev-services/`, and without this they would all resolve
+# to the same project, sharing this stack's volume and network.
+name: stage-dev
+
 x-default-logging: &default-logging
   driver: "json-file"
   options:
@@ -54,7 +59,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s -f 'localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s' || exit 1",
+          "curl -s -f 'localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' || exit 1",
         ]
       interval: 10s
       timeout: 10s
@@ -88,6 +93,9 @@ services:
       ES_URL: http://opensearch:9200
       INDEX: donor-index
       ALIAS: donor_centric
+      # Document count in data/donor.ndjson. Used to tell a finished load apart from a
+      # partial one, so keep it in step if you change the data.
+      EXPECTED_DOCS: "373"
     command:
       - sh
       - -c
@@ -108,11 +116,20 @@ services:
         fi
 
         count=$$(curl -sS "$$ES_URL/$$INDEX/_count" | sed -n 's/.*"count":\([0-9]*\).*/\1/p')
-        if [ "$${count:-0}" -gt 0 ]; then
-          echo "Index $$INDEX already holds $$count documents, skipping load"
+        if [ "$${count:-0}" -eq "$$EXPECTED_DOCS" ]; then
+          echo "Index $$INDEX already holds all $$EXPECTED_DOCS documents, skipping load"
         else
-          echo "Bulk-loading mock ARGO clinical documents into $$INDEX"
+          if [ "$${count:-0}" -gt 0 ]; then
+            # Comparing against the expected count rather than zero: a load that failed
+            # part way leaves documents behind, and treating that as done would start
+            # Arranger against a short index.
+            echo "Index $$INDEX holds $$count of $$EXPECTED_DOCS documents, reloading"
+          else
+            echo "Bulk-loading mock ARGO clinical documents into $$INDEX"
+          fi
           # /data/donor.ndjson is already in _bulk form: an action line per document.
+          # Each action line carries an explicit _id, so re-running overwrites rather
+          # than duplicating and a partial load repairs itself.
           resp=$$(curl -sS -H 'Content-Type: application/x-ndjson' \
             -X POST "$$ES_URL/$$INDEX/_bulk" --data-binary @/data/donor.ndjson)
           # _bulk answers 200 even when individual items fail, so check the errors flag.
@@ -122,6 +139,10 @@ services:
           fi
           curl -sS -X POST "$$ES_URL/$$INDEX/_refresh" > /dev/null
           count=$$(curl -sS "$$ES_URL/$$INDEX/_count" | sed -n 's/.*"count":\([0-9]*\).*/\1/p')
+          if [ "$${count:-0}" -ne "$$EXPECTED_DOCS" ]; then
+            echo "ERROR: expected $$EXPECTED_DOCS documents, index holds $${count:-0}" >&2
+            exit 1
+          fi
           echo "Loaded $$count documents"
         fi
         echo "Setup complete"
