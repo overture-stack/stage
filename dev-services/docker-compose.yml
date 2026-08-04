@@ -169,12 +169,13 @@ services:
       - ./configs/arranger:/app/configs:ro
     environment:
       ES_HOST: http://opensearch:9200
-      PORT: 5050
-      DEBUG: false
+      SERVER_PORT: 5050
+      ENABLE_DEBUG: false
       # Logs on so `make logs` is useful while you are wiring Stage up.
       ENABLE_LOGS: true
-      # Dev conveniences: browse the schema at http://localhost:5050/graphql.
-      ENABLE_GRAPHQL_PLAYGROUND: true
+      # Dev conveniences: browse the schema at http://localhost:5050/graphql. Both of these
+      # flags are phrased negatively, so `false` is what keeps the feature available.
+      DISABLE_GRAPHQL_PLAYGROUND: false
       DISABLE_GRAPHQL_INTROSPECTION: false
     ports:
       - "127.0.0.1:5050:5050" # Localhost only, not reachable from your network
