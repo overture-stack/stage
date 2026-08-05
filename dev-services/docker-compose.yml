@@ -1,0 +1,202 @@
+# ==================================================================================== #
+# Complementary services for Stage development.                                        #
+#                                                                                      #
+# Stage is front-end scaffolding: it renders a portal by querying an Arranger search    #
+# API, which in turn queries a search engine. This stack supplies exactly those two     #
+# services, preloaded with mock ARGO clinical data, so `npm run dev` on your host has   #
+# something to render. Stage itself is NOT containerised here; that is the copy you     #
+# are editing.                                                                         #
+#                                                                                      #
+#   opensearch  9200   search engine, holds donor-index                                #
+#   setup         -    creates the index, bulk-loads data/donor.ndjson, then exits      #
+#   arranger    5050   the search API Stage talks to; serves the `donor` catalogue      #
+#                                                                                      #
+# See docs/setup.md for the walkthrough. Development only, never deploy this.           #
+# ==================================================================================== #
+
+# Pinned so the project name does not come from the directory name. Sibling Overture
+# repositories ship their own `dev-services/`, and without this they would all resolve
+# to the same project, sharing this stack's volume and network.
+name: stage-dev
+
+x-default-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "10"
+
+services:
+  # ---------------------------------------------------------------------------------- #
+  # OpenSearch                                                                         #
+  # ---------------------------------------------------------------------------------- #
+  # The search engine Arranger queries. Apache-2.0 fork of Elasticsearch 7.10;          #
+  # https://opensearch.org/docs/latest/                                                 #
+  # ---------------------------------------------------------------------------------- #
+  opensearch:
+    # 2.x serves the ES7-style index templates and queries this stack uses.
+    image: opensearchproject/opensearch:${OPENSEARCH_TAG:-2.17.1}
+    pull_policy: if_not_present
+    container_name: stage-dev-opensearch
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      cluster.name: stage-dev
+      # Security plugin OFF for this localhost-bound dev stack: keeps the API on plain
+      # HTTP with no self-signed TLS and no admin password, so curl and Arranger reach
+      # it unconfigured. Do NOT disable security on anything network-exposed.
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      # NOTE: do NOT set `compatibility.override_main_response_version` here. It hides
+      # `version.distribution` on `GET /`, so Arranger auto-detects the Elasticsearch
+      # client instead of the OpenSearch one and fails to start its mappings. Arranger
+      # keys that choice on the real `distribution: opensearch` value.
+      OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx2048m}
+    ports:
+      - "127.0.0.1:9200:9200" # Localhost only, not reachable from your network
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -f 'localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' || exit 1",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 25s
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          memory: ${OPENSEARCH_MEM_LIMIT:-3G}
+          cpus: "2"
+
+  # ---------------------------------------------------------------------------------- #
+  # Setup                                                                              #
+  # ---------------------------------------------------------------------------------- #
+  # One-shot: applies the index template, creates donor-index with its donor_centric     #
+  # alias, and bulk-loads the mock ARGO clinical documents. Idempotent, so it is safe    #
+  # to re-run; `make up` runs it on every start and it skips work already done.          #
+  # ---------------------------------------------------------------------------------- #
+  setup:
+    image: alpine/curl:8.8.0
+    pull_policy: if_not_present
+    container_name: stage-dev-setup
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    volumes:
+      - ./configs:/configs:ro
+      - ./data:/data:ro
+    environment:
+      ES_URL: http://opensearch:9200
+      INDEX: donor-index
+      ALIAS: donor_centric
+      # Document count in data/donor.ndjson. Used to tell a finished load apart from a
+      # partial one, so keep it in step if you change the data.
+      EXPECTED_DOCS: "373"
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        echo "Applying index template donor-template"
+        curl -sS -X PUT "$$ES_URL/_template/donor-template" \
+          -H 'Content-Type: application/json' \
+          -d @/configs/opensearch/donor-mapping.json > /dev/null
+
+        if curl -sS -f "$$ES_URL/$$INDEX" > /dev/null 2>&1; then
+          echo "Index $$INDEX already exists"
+        else
+          echo "Creating index $$INDEX with alias $$ALIAS"
+          curl -sS -X PUT "$$ES_URL/$$INDEX" \
+            -H 'Content-Type: application/json' \
+            -d "{\"aliases\":{\"$$ALIAS\":{}}}" > /dev/null
+        fi
+
+        count=$$(curl -sS "$$ES_URL/$$INDEX/_count" | sed -n 's/.*"count":\([0-9]*\).*/\1/p')
+        if [ "$${count:-0}" -eq "$$EXPECTED_DOCS" ]; then
+          echo "Index $$INDEX already holds all $$EXPECTED_DOCS documents, skipping load"
+        else
+          if [ "$${count:-0}" -gt 0 ]; then
+            # Comparing against the expected count rather than zero: a load that failed
+            # part way leaves documents behind, and treating that as done would start
+            # Arranger against a short index.
+            echo "Index $$INDEX holds $$count of $$EXPECTED_DOCS documents, reloading"
+          else
+            echo "Bulk-loading mock ARGO clinical documents into $$INDEX"
+          fi
+          # /data/donor.ndjson is already in _bulk form: an action line per document.
+          # Each action line carries an explicit _id, so re-running overwrites rather
+          # than duplicating and a partial load repairs itself.
+          resp=$$(curl -sS -H 'Content-Type: application/x-ndjson' \
+            -X POST "$$ES_URL/$$INDEX/_bulk" --data-binary @/data/donor.ndjson)
+          # _bulk answers 200 even when individual items fail, so check the errors flag.
+          if echo "$$resp" | grep -q '"errors":true'; then
+            echo "ERROR: bulk load reported item errors" >&2
+            exit 1
+          fi
+          curl -sS -X POST "$$ES_URL/$$INDEX/_refresh" > /dev/null
+          count=$$(curl -sS "$$ES_URL/$$INDEX/_count" | sed -n 's/.*"count":\([0-9]*\).*/\1/p')
+          if [ "$${count:-0}" -ne "$$EXPECTED_DOCS" ]; then
+            echo "ERROR: expected $$EXPECTED_DOCS documents, index holds $${count:-0}" >&2
+            exit 1
+          fi
+          echo "Loaded $$count documents"
+        fi
+        echo "Setup complete"
+
+  # ---------------------------------------------------------------------------------- #
+  # Arranger search server                                                             #
+  # ---------------------------------------------------------------------------------- #
+  # Generates the search API Stage queries, one catalogue per directory under            #
+  # configs/arranger. With a single catalogue the server mounts it at the root,           #
+  # http://localhost:5050/graphql; it only switches to /<catalogue>/graphql when more     #
+  # than one catalogue is registered. Stage reads one catalogue, so this stack ships      #
+  # one (donor) and NEXT_PUBLIC_ARRANGER_API_URL is just http://localhost:5050.           #
+  # ---------------------------------------------------------------------------------- #
+  arranger:
+    image: ghcr.io/overture-stack/arranger-search-server:${ARRANGER_TAG:-b5c6051b}
+    pull_policy: if_not_present
+    container_name: stage-dev-arranger
+    restart: unless-stopped
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+    volumes:
+      # WORKDIR is /app and the server reads ./configs, one directory per catalogue.
+      - ./configs/arranger:/app/configs:ro
+    environment:
+      ES_HOST: http://opensearch:9200
+      SERVER_PORT: 5050
+      ENABLE_DEBUG: false
+      # Logs on so `make logs` is useful while you are wiring Stage up.
+      ENABLE_LOGS: true
+      # Dev conveniences: browse the schema at http://localhost:5050/graphql. Both of these
+      # flags are phrased negatively, so `false` is what keeps the feature available.
+      DISABLE_GRAPHQL_PLAYGROUND: false
+      DISABLE_GRAPHQL_INTROSPECTION: false
+    ports:
+      - "127.0.0.1:5050:5050" # Localhost only, not reachable from your network
+    healthcheck:
+      # /ping only proves the process is up: it answers 200 even when the catalogue's
+      # GraphQL endpoint failed to mount. Probe the endpoint itself instead.
+      test:
+        [
+          "CMD-SHELL",
+          'curl -sf -X POST -H ''Content-Type: application/json'' -d ''{"query":"{ __typename }"}'' http://localhost:5050/graphql | grep -q __typename || exit 1',
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1"
+
+volumes:
+  opensearch-data:
