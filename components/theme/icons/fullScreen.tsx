@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2024 The Ontario Institute for Cancer Research. All rights reserved
+ * Copyright (c) 2025 The Ontario Institute for Cancer Research. All rights reserved
  *
  *  This program and the accompanying materials are made available under the terms of
  *  the GNU Affero General Public License v3.0. You should have received a copy of the
@@ -19,6 +19,26 @@
  *
  */
 
-declare module 'url-join';
-declare module 'js-cookie';
-declare module 'jsonwebtoken';
+import { css } from '@emotion/react';
+
+import { IconProps } from './types';
+
+const FullScreen = ({ width, height, style }: IconProps) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width={width}
+		height={height}
+		css={css`
+			${style}
+		`}
+		fill="none"
+		viewBox="0 0 16 15"
+	>
+		<path
+			fill="#fff"
+			d="M2 12.728h4v2H0V9.272h2zm14 2h-6v-2h4V9.272h2zM6 2.182H2v3.455H0V.182h6zm10 3.455h-2V2.182h-4v-2h6z"
+		></path>
+	</svg>
+);
+
+export default FullScreen;

@@ -19,16 +19,16 @@
  *
  */
 
-import { useEffect, useState } from 'react';
 import { css, useTheme } from '@emotion/react';
-import { ArrangerDataProvider } from '@overture-stack/arranger-components';
+import { ArrangerDataProvider, TableContextProvider } from '@overture-stack/arranger-components';
+import { useEffect, useState } from 'react';
 
+import { getConfig } from '../../../global/config';
 import ErrorNotification from '../../ErrorNotification';
 import Loader from '../../Loader';
 import PageLayout from '../../PageLayout';
 import createArrangerFetcher from '../../utils/arrangerFetcher';
 import sleep from '../../utils/sleep';
-import { getConfig } from '../../../global/config';
 import { RepoFiltersType } from './sqonTypes';
 
 import getConfigError from './getConfigError';
@@ -64,11 +64,7 @@ const configsQuery = `
 
 const RepositoryPage = () => {
 	const theme = useTheme();
-	const {
-		NEXT_PUBLIC_ARRANGER_API,
-		NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-		NEXT_PUBLIC_ARRANGER_INDEX,
-	} = getConfig();
+	const { NEXT_PUBLIC_ARRANGER_API, NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX } = getConfig();
 	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
 	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
 
@@ -149,7 +145,9 @@ const RepositoryPage = () => {
 						},
 					}}
 				>
-					<PageContent />
+					<TableContextProvider>
+						<PageContent />
+					</TableContextProvider>
 				</ArrangerDataProvider>
 			)}
 		</PageLayout>

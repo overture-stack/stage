@@ -19,40 +19,50 @@
  *
  */
 
-import GoogleLogo from './google';
+import Avatar from './avatar';
+import BarGraph from './barGraph';
+import Checkmark from './checkmark';
+import ChevronDown from './chevron_down';
+import Dismiss from './dismiss';
+import Download from './download';
+import Error from './error';
 import FacebookLogo from './facebook';
+import File from './file';
+import FullScreen from './fullScreen';
 import GitHubLogo from './github';
+import GoogleLogo from './google';
+import Illustration from './illustration';
+import KeycloakLogo from './keycloak';
 import LinkedInLogo from './linkedin';
 import OrcidLogo from './orcid';
-import KeycloakLogo from './keycloak';
-import Illustration from './illustration';
-import Avatar from './avatar';
-import ChevronDown from './chevron_down';
-import Download from './download';
 import OvertureLogo from './overture_logo';
 import OvertureLogoWithText from './overture_logo_with_text';
 import OvertureUser from './overture_user';
-import Checkmark from './checkmark';
+import Screen from './screen';
 import Spinner from './spinner';
-import Error from './error';
 import Warning from './warning';
 
 export {
-	GoogleLogo,
+	Avatar,
+	BarGraph,
+	Checkmark,
+	ChevronDown,
+	Dismiss,
+	Download,
+	Error,
 	FacebookLogo,
+	File,
+	FullScreen,
 	GitHubLogo,
+	GoogleLogo,
+	Illustration,
+	KeycloakLogo,
 	LinkedInLogo,
 	OrcidLogo,
-	KeycloakLogo,
-	Illustration,
-	Avatar,
-	ChevronDown,
-	Download,
 	OvertureLogo,
 	OvertureLogoWithText,
 	OvertureUser,
-	Checkmark,
+	Screen,
 	Spinner,
-	Error,
 	Warning,
 };

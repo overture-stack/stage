@@ -6,15 +6,31 @@ const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
 const withTranspileModules = require('next-transpile-modules')([]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const jsdom = require('jsdom');
+
 /**
  * @type {import('next').NextConfig}
  **/
 module.exports = withPlugins([withTranspileModules], {
 	webpack: (config, options) => {
-		// These 'react' related configs are added to enable linking packages in development
-		// (e.g. Arranger), and not get the "broken Hooks" warning.
-		// https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
 		if (options.isServer) {
+			// Adaptors for Browser APIs used in iobio-charts web components
+			const { JSDOM } = jsdom;
+			const dom = new JSDOM('', { url: 'http://localhost/' });
+
+			// @ts-ignore
+			global.window = dom.window;
+
+			global.customElements = global.window.customElements;
+			global.HTMLElement = global.window.HTMLElement;
+			global.document = global.window.document;
+			global.Element = global.window.Element;
+			global.localStorage = global.window.localStorage;
+			global.navigator = global.window.navigator;
+
+			// These 'react' related configs are added to enable linking packages in development
+			// (e.g. Arranger), and not get the "broken Hooks" warning.
+			// https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
 			config.externals = ['react', ...config.externals];
 		} else {
 			options.dev &&
@@ -26,12 +42,11 @@ module.exports = withPlugins([withTranspileModules], {
 				);
 		}
 
-		config.resolve.alias['@emotion/react'] = path.resolve(
-			__dirname,
-			'.',
-			'node_modules',
-			'@emotion/react',
-		);
+		config.experiments = {
+			...config.experiments,
+			topLevelAwait: true,
+		};
+		config.resolve.alias['@emotion/react'] = path.resolve(__dirname, '.', 'node_modules', '@emotion/react');
 		config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
 
 		process.env.NODE_ENV === 'development' && (config.optimization.minimize = false);
@@ -58,7 +73,12 @@ module.exports = withPlugins([withTranspileModules], {
 		NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE: process.env.NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE,
 		NEXT_PUBLIC_LAB_NAME: process.env.NEXT_PUBLIC_LAB_NAME,
 		NEXT_PUBLIC_LOGO_FILENAME: process.env.NEXT_PUBLIC_LOGO_FILENAME,
+		NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
+		NEXT_PUBLIC_IOBIO_API_URL: process.env.NEXT_PUBLIC_IOBIO_API_URL,
 		NEXT_PUBLIC_SSO_PROVIDERS: process.env.NEXT_PUBLIC_SSO_PROVIDERS,
+		NEXT_PUBLIC_JBROWSE_ENABLED: process.env.NEXT_PUBLIC_JBROWSE_ENABLED,
+		NEXT_PUBLIC_IOBIO_ENABLED: process.env.NEXT_PUBLIC_IOBIO_ENABLED,
+		NEXT_PUBLIC_CBIOPORTAL_ENABLED: process.env.NEXT_PUBLIC_CBIOPORTAL_ENABLED,
 		NEXT_PUBLIC_UI_VERSION: process.env.npm_package_version,
 	},
 	assetPrefix: process.env.ASSET_PREFIX || '',
