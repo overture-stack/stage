@@ -20,6 +20,8 @@
  */
 
 import { css } from '@emotion/react';
+import { ComponentType } from 'react';
+
 import { IconProps } from './theme/icons/types';
 
 const IconButton = ({
@@ -29,7 +31,7 @@ const IconButton = ({
 	width,
 	onClick = () => {},
 }: {
-	Icon: React.ComponentType<IconProps>;
+	Icon: ComponentType<IconProps>;
 	fill: string;
 	height: number;
 	width: number;

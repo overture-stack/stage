@@ -46,7 +46,7 @@ As part of the larger Overture.bio software suite, Stage is typically used with 
 └── /tests
 ```
 
-[Click here to view the Stage respository on GitHub](https://github.com/overture-stack/stage)
+[Click here to view the Stage repository on GitHub](https://github.com/overture-stack/stage)
 
 - **Components:** UI elements and tools used to compose Pages and features throughout the application. Includes standardized reusable elements for navigation, page layout, error states, theming, and page-specific features.
 
