@@ -19,16 +19,17 @@
  *
  */
 
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { css, useTheme } from '@emotion/react';
 import { ArrangerDataProvider } from '@overture-stack/arranger-components';
 
-import ErrorNotification from '../../ErrorNotification';
-import Loader from '../../Loader';
-import PageLayout from '../../PageLayout';
-import createArrangerFetcher from '../../utils/arrangerFetcher';
-import sleep from '../../utils/sleep';
-import { getConfig } from '../../../global/config';
+import ErrorNotification from '@/components/ErrorNotification';
+import Loader from '@/components/Loader';
+import PageLayout from '@/components/PageLayout';
+import createArrangerFetcher from '@/components/utils/arrangerFetcher';
+import useArrangerCatalogues from '@/global/hooks/useArrangerCatalogues';
+import useUrlParamState from '@/global/hooks/useUrlParamsState';
+import { getConfig } from '@/global/config';
 import { RepoFiltersType } from './sqonTypes';
 
 import getConfigError from './getConfigError';
@@ -54,73 +55,38 @@ export interface PageContentProps {
 	fetchData?: () => Promise<any>;
 }
 
-const arrangerFetcher = createArrangerFetcher({});
-
-const configsQuery = `
-  query ($documentType: String!, $index: String!) {
-    hasValidConfig (documentType: $documentType, index: $index)
-  }
-`;
-
 const RepositoryPage = () => {
 	const theme = useTheme();
-	const {
-		NEXT_PUBLIC_ARRANGER_API,
-		NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-		NEXT_PUBLIC_ARRANGER_INDEX,
-	} = getConfig();
-	const [arrangerHasConfig, setArrangerHasConfig] = useState<boolean>(false);
-	const [loadingArrangerConfig, setLoadingArrangerConfig] = useState<boolean>(true);
-
-	useEffect(() => {
-		arrangerFetcher({
-			endpoint: 'graphql/hasValidConfig',
-			body: JSON.stringify({
-				variables: {
-					documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
-					index: NEXT_PUBLIC_ARRANGER_INDEX,
-				},
-				query: configsQuery,
-			}),
-		})
-			.then(async ({ data } = {}) => {
-				if (data?.hasValidConfig) {
-					await setArrangerHasConfig(data.hasValidConfig);
-					// 1s delay so loader doesn't flicker on and off too quickly
-					await sleep(1000);
-
-					return setLoadingArrangerConfig(false);
-				}
-
-				throw new Error('Could not validate Arranger server configuration!');
-			})
-			.catch(async (err) => {
-				console.warn(err);
-				// same as above comment
-				await sleep(1000);
-				setLoadingArrangerConfig(false);
-			});
-	}, [NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE, NEXT_PUBLIC_ARRANGER_INDEX]);
-
-	const ConfigError = getConfigError({
-		hasConfig: arrangerHasConfig,
-		index: NEXT_PUBLIC_ARRANGER_INDEX,
-		documentType: NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE,
+	const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
+	const [urlCatalogue] = useUrlParamState<string | null>('catalogue', null, {
+		serialize: (value) => value ?? '',
+		deSerialize: (value) => value || null,
 	});
+	const { catalogues, hasError, isLoading } = useArrangerCatalogues();
+
+	// A URL-named catalogue wins if it's actually offered (reached via the navbar dropdown, or a
+	// shared link); otherwise default to the first one, there's no neutral "pick one" landing
+	// state here, selection happens from the navbar, not this page.
+	const selectedCatalogue = catalogues.find(({ catalogueId }) => catalogueId === urlCatalogue) ?? catalogues[0];
+
+	const arrangerFetcher = useMemo(
+		() => (selectedCatalogue ? createArrangerFetcher({ catalogue: selectedCatalogue.catalogueId }) : undefined),
+		[selectedCatalogue],
+	);
+
+	const ConfigError = getConfigError({ hasConfig: !hasError });
 
 	return (
 		<PageLayout subtitle="Data Explorer">
-			{loadingArrangerConfig ? (
+			{isLoading ? (
 				<div
-					css={(theme) =>
-						css`
-							display: flex;
-							flex-direction: column;
-							justify-content: center;
-							align-items: center;
-							background-color: ${theme.colors.grey_2};
-						`
-					}
+					css={(theme) => css`
+						align-items: center;
+						background-color: ${theme.colors.grey_2};
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+					`}
 				>
 					<Loader />
 				</div>
@@ -136,11 +102,13 @@ const RepositoryPage = () => {
 				>
 					{ConfigError}
 				</ErrorNotification>
-			) : (
+			) : selectedCatalogue ? (
 				<ArrangerDataProvider
 					apiUrl={NEXT_PUBLIC_ARRANGER_API}
+					catalogue={selectedCatalogue.catalogueId}
 					customFetcher={arrangerFetcher}
-					documentType={NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE}
+					documentType={selectedCatalogue.documentType}
+					key={selectedCatalogue.catalogueId}
 					theme={{
 						colors: {
 							common: {
@@ -151,7 +119,7 @@ const RepositoryPage = () => {
 				>
 					<PageContent />
 				</ArrangerDataProvider>
-			)}
+			) : null}
 		</PageLayout>
 	);
 };

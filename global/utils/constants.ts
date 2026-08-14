@@ -23,8 +23,7 @@ import urlJoin from 'url-join';
 
 import { getConfig } from '../config';
 
-const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } =
-	getConfig();
+const { NEXT_PUBLIC_EGO_API_ROOT, NEXT_PUBLIC_KEYCLOAK_HOST, NEXT_PUBLIC_KEYCLOAK_REALM } = getConfig();
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 export const EGO_API_KEY_ENDPOINT = `${NEXT_PUBLIC_EGO_API_ROOT}/o/api_key`;
@@ -35,15 +34,11 @@ export const USER_PATH = '/user';
 export const LOGIN_PATH = '/login';
 
 // external docs links
-export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose'
+export const HELP_URL = 'https://github.com/overture-stack/stage/issues/new/choose';
 export const EMAIL_SETTING_URL = 'admin@example.com';
 
 // keycloak
-export const KEYCLOAK_URL_ISSUER = urlJoin(
-	NEXT_PUBLIC_KEYCLOAK_HOST,
-	'realms',
-	NEXT_PUBLIC_KEYCLOAK_REALM,
-);
+export const KEYCLOAK_URL_ISSUER = urlJoin(NEXT_PUBLIC_KEYCLOAK_HOST, 'realms', NEXT_PUBLIC_KEYCLOAK_REALM);
 export const KEYCLOAK_URL_TOKEN = urlJoin(KEYCLOAK_URL_ISSUER, 'protocol/openid-connect/token');
 export const KEYCLOAK_API_KEY_ENDPOINT = urlJoin(KEYCLOAK_URL_ISSUER, 'apikey/api_key');
 
@@ -52,12 +47,13 @@ export const AUTH_PROVIDER = {
 	KEYCLOAK: 'keycloak',
 };
 
+const ARRANGER_SEARCH = 'arranger-search';
 const PROXY_API_PATH = '/api';
 const PROXY_PROTECTED_API_PATH = '/api/protected';
 
 export const INTERNAL_API_PROXY = {
-	ARRANGER: urlJoin(PROXY_API_PATH, 'arranger'),
-	PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, 'arranger'),
+	ARRANGER: urlJoin(PROXY_API_PATH, ARRANGER_SEARCH),
+	PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, ARRANGER_SEARCH),
 	PROTECTED_EGO_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/apikey'),
 	PROTECTED_EGO_API_SCOPES_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'ego/scopes'),
 	PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/apikey'),

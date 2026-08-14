@@ -24,13 +24,18 @@ import ajax from './ajax';
 import { INTERNAL_API_PROXY } from '@/global/utils/constants';
 
 const createArrangerFetcher = ({
-	onError = (err: any) => Promise.reject(err),
+	catalogue,
 	defaultHeaders = {},
+	onError = (err: any) => Promise.reject(err),
+}: {
+	catalogue?: string;
+	defaultHeaders?: Record<string, string>;
+	onError?: (err: any) => any;
 } = {}) => {
 	const cache = new Map();
 
 	return async (args: {
-		body?: Record<string, any> | string | null;
+		body?: Record<string, unknown> | string | null;
 		endpoint?: string;
 		endpointTag?: string;
 		headers?: Record<string, string>;
@@ -41,7 +46,10 @@ const createArrangerFetcher = ({
 		// TODO: max cache size
 
 		const { body = {}, endpoint = '/graphql', endpointTag = '', headers = {} } = args;
-		const uri = urlJoin(INTERNAL_API_PROXY.ARRANGER, endpoint, endpointTag);
+		// The request's destination comes from this app's own config alone, never from whatever
+		// `url` DataProvider happens to call this with: the browser must go through this app's own
+		// proxy, never the real Arranger host directly.
+		const uri = urlJoin(INTERNAL_API_PROXY.ARRANGER, catalogue ?? '', endpoint, endpointTag);
 		const response = await ajax
 			.post(uri, body, {
 				headers: {

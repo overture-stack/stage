@@ -17,6 +17,7 @@
 		"jsxImportSource": "@emotion/react",
 		"incremental": true,
 		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied `any` type.. */,
+		"preserveSymlinks": true,
 		"strictNullChecks": true /* When type checking, take into account `null` and `undefined`. */,
 		"baseUrl": "./",
 		"paths": {

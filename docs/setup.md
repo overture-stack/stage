@@ -91,8 +91,7 @@ Stage is the front-end scaffolding for an Overture portal. Its explorer page is 
 
           # Arranger Variables
           NEXT_PUBLIC_ARRANGER_API_URL=http://localhost:5050
-          NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE=records
-          NEXT_PUBLIC_ARRANGER_INDEX=donor-index
+          NEXT_PUBLIC_ARRANGER_CATALOGUES=
           NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS=
          ```
 
@@ -113,8 +112,7 @@ Stage is the front-end scaffolding for an Overture portal. Its explorer page is 
 
             - **Arranger Variables**
                - `NEXT_PUBLIC_ARRANGER_API_URL`: The URL of the Arranger GraphQL API. The `dev-services` stack publishes Arranger on port `5050`.
-               - `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`: The GraphQL type name for the catalogue's documents, set by `dev-services/configs/arranger/donor/base.json` to `records`.
-               - `NEXT_PUBLIC_ARRANGER_INDEX`: The index Arranger queries, set by `dev-services/configs/arranger/donor/base.json` to `donor-index`.
+               - `NEXT_PUBLIC_ARRANGER_CATALOGUES`: A comma-separated list restricting which catalogue(s) Stage considers, by catalogue ID or document type, when the Arranger server registers more than one. Leave empty for this stack, which registers only one catalogue (`donor`) and resolves it automatically.
                - `NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS`: Lists the columns to be included in the manifest generated for download with Score. The `dev-services` stack includes no Score service, so this can be left empty.
          </details>
 
@@ -157,7 +155,7 @@ After installation and configuration, verify that Stage is functioning correctly
    - Expected result: The data table and facets populate with the mock ARGO donor records.
    - Troubleshooting:
      - Confirm Arranger is serving the catalogue, using the same query as step 3 above. `/ping` is not enough on its own: it answers even when the catalogue failed to mount.
-     - Verify `NEXT_PUBLIC_ARRANGER_API_URL`, `NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE`, and `NEXT_PUBLIC_ARRANGER_INDEX` match `dev-services/configs/arranger/donor/base.json`.
+     - Verify `NEXT_PUBLIC_ARRANGER_API_URL` matches this stack's Arranger port; if `NEXT_PUBLIC_ARRANGER_CATALOGUES` is set, confirm it names a catalogue ID or document type this stack actually registers, per `dev-services/configs/arranger/donor/base.json`.
      - Restart the development server after changing `.env`; Next.js reads these values at start-up.
 
 3. **Check your theming changes apply**

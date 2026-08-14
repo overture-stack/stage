@@ -23,6 +23,7 @@ import React from 'react';
 import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 
+import ExplorerNavItem from './ExplorerNavItem';
 import UserDropdown from './UserDropdown';
 import defaultTheme from './theme';
 import { OvertureLogo } from './theme/icons';
@@ -122,23 +123,7 @@ const NavBar: React.ComponentType = () => {
 						border-right: 2px solid ${theme.colors.white};
 					`}
 				>
-					<Link path={EXPLORER_PATH}>
-						<a
-							css={(theme) => css`
-								display: flex;
-								flex: 1;
-								height: 100%;
-								justify-content: center;
-								align-items: center;
-								text-decoration: none;
-								color: ${theme.colors.accent_dark};
-								cursor: pointer;
-								${router.pathname === EXPLORER_PATH ? activeLinkStyle : ''}
-							`}
-						>
-							Data Explorer
-						</a>
-					</Link>
+					<ExplorerNavItem />
 				</div>
 
 				{NEXT_PUBLIC_AUTH_PROVIDER &&

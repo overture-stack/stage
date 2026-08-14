@@ -28,9 +28,6 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 	callerName: 'Explorer-Facets',
 	components: {
 		Aggregations: {
-			ActionIcon: {
-				fill: theme.colors.secondary,
-			},
 			AggsGroup: {
 				collapsedBackground: theme.colors.grey_2,
 				css: css`
@@ -61,6 +58,14 @@ const getAggregationsStyles = (theme: DMSThemeInterface) => ({
 						line-height: 20px;
 					}
 				`,
+				filtering: {
+					activeFill: theme.colors.accent,
+					fill: theme.colors.secondary,
+				},
+				sorting: {
+					activeFill: theme.colors.accent,
+					fill: theme.colors.secondary,
+				},
 				groupDividerColor: theme.colors.grey_3,
 				headerBackground: theme.colors.white,
 				headerDividerColor: theme.colors.grey_2,

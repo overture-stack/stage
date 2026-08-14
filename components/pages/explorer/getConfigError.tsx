@@ -19,95 +19,15 @@
  *
  */
 
-import { ReactNode } from 'react';
-import { css, useTheme } from '@emotion/react';
+import { GenericHelpMessage } from '@/components/DMSAdminContact';
 
-import { GenericHelpMessage } from '../../DMSAdminContact';
-import { Checkmark, Warning } from '../../theme/icons';
-
-const ListItem = ({
-	Icon,
-	value,
-	fieldName,
-}: {
-	Icon?: ReactNode;
-	value: string;
-	fieldName: string;
-}) => {
-	const theme = useTheme();
-
-	return (
-		<li
-			css={css`
-				display: flex;
-				align-items: center;
-				${value === 'Missing' &&
-				css`
-					color: ${theme.colors.error_dark};
-				`}
-			`}
-		>
-			{Icon || <Checkmark height={16} width={16} fill={theme.colors.primary} />}
-			<span
-				css={css`
-					padding-left: 6px;
-				`}
-			>
-				{fieldName}:{' '}
-				<span
-					css={css`
-						font-weight: bold;
-					`}
-				>
-					{value}
-				</span>
-			</span>
-		</li>
-	);
-};
-
-const WarningListItem = ({ fieldName }: { fieldName: string }) => (
-	<ListItem Icon={<Warning height={16} width={16} />} fieldName={fieldName} value={'Missing'} />
-);
-
-const getConfigError = ({
-	hasConfig,
-	documentType,
-	index,
-}: {
-	hasConfig: boolean;
-	documentType: string;
-	index: string;
-}) =>
-	index && documentType ? (
-		!hasConfig && (
-			<span>
-				No active configurations for the platform were found. Please make sure the index and GraphQL
-				document type are correctly configured.
-				<GenericHelpMessage />
-			</span>
-		)
-	) : (
+/** Renders the explorer page's Arranger configuration error state, or `false` when there is none. */
+const getConfigError = ({ hasConfig }: { hasConfig: boolean }) =>
+	!hasConfig && (
 		<span>
-			One or more of the following values required by the platform do not exist. Please make sure
-			these values are specified in your platform configuration. <GenericHelpMessage />
-			<ul
-				css={css`
-					list-style-type: none;
-					padding-left: 0px;
-				`}
-			>
-				{[
-					{ field: 'GraphQL Document type', value: documentType },
-					{ field: 'Elasticsearch index', value: index },
-				].map(({ field, value }) => {
-					return value ? (
-						<ListItem key={`${field}-${value}`} fieldName={field} value={value} />
-					) : (
-						<WarningListItem key={`${field}-${value}`} fieldName={field} />
-					);
-				})}
-			</ul>
+			No active configurations for the platform were found. Please make sure the GraphQL document
+			type is correctly configured and its catalogue is registered on the Arranger server.
+			<GenericHelpMessage />
 		</span>
 	);
 
