@@ -1,4 +1,7 @@
 # Atlas index
 
-- [Generic Overture UI component library: foundation decision](roadmap/ui-component-library.md): relocated reasoning for the shadcn-over-Mantine/Base-UI/React-Aria/Ark-UI/Untitled-UI decision, per `roadmap_split: yes`
+- [Generic Overture UI component library: foundation decision](roadmap/ui-component-library.md): relocated reasoning for the shadcn-over-Mantine/Base-UI/React-Aria/Ark-UI/Untitled-UI decision, per `roadmap_split: yes`, and the packaging requirements a published UI package has to meet so it does not break its hosts, each with a check
+- [Portal session layer: what replacing NextAuth has to provide](roadmap/session-layer.md): the rules a post-Next.js session layer must meet, with each one's standing (decided by Usher, decided for iMicroSeq and Stage, recommended, open), usable as a checklist for the replacement
 - [Cross-UI findings: patterns and lessons from sibling Overture-family portals](cross-ui-findings.md): running collection of what's portable vs. app-specific in other Overture/Overture-adjacent UIs, grows as more get reviewed
+- [System alert banners from environment config: validation failure modes](system-alert-config.md): design guidance for an alert-banner feature Stage does not have yet, from failure modes a sibling portal's implementation hit (silent enum rejection, diagnostics logged below the enabled level, partial success asserted but not built)
+- [Stating integration facts: current implementation versus durable requirement](integration-facts.md): why constraints handed to another team keep describing how Stage works today instead of what it will require, and the labelling practice that prevents it
