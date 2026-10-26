@@ -21,6 +21,7 @@
 
 import React from 'react';
 import { ThemeProvider } from '@emotion/react';
+import { useSession } from 'next-auth/react';
 import { AuthProvider } from '../global/hooks/useAuthContext';
 import { PageContext } from '../global/hooks/usePageContext';
 import { ClientSideGetInitialPropsContext } from '../global/utils/pages/types';
@@ -30,12 +31,12 @@ import defaultTheme from './theme';
 const Root = ({
 	children,
 	pageContext,
-	session,
 }: {
 	children: React.ReactElement;
 	pageContext: ClientSideGetInitialPropsContext;
-	session: any;
 }) => {
+	const { data: session } = useSession();
+
 	return (
 		<>
 			<style>

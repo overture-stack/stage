@@ -16,8 +16,12 @@ declare module 'next-auth' {
 		expires: string;
 		account: {
 			provider: string;
-			accessToken: string;
+			/** EGO sessions only. A Keycloak session's tokens stay on the server-side session token. */
+			accessToken?: string;
 		};
-		scopes: string[];
+		/** Set when the session has ended because Keycloak refused to renew it. */
+		error?: string;
+		/** EGO sessions only. */
+		scopes?: string[];
 	}
 }

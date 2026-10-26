@@ -11,7 +11,9 @@ September 2026, nothing implemented yet:
   by `NEXT_PUBLIC_AUTH_PROVIDER`, so this is removal of a path rather than construction of one.
   Usher is not an authentication service and does not replace this layer: it consumes a subject from
   Keycloak and answers what that subject may reach. What Usher needs from it is a stable `sub`,
-  which is also what its audit trail correlates on.
+  which is also what its audit trail correlates on. Keycloak sign-in, renewal and sign-out do not
+  depend on EGO; removing EGO also removes the EGO-only token encryption (`global/utils/crypt.ts`
+  and its secret) and `jsonwebtoken`.
 - **Rework the user profile to read from Usher.** The profile must show a person their own access.
   Today's equivalent in the sibling portal derives that from JWT scope claims parsed in the browser,
   which Usher's design rules out: permissions arrive as a JWE the browser must never decrypt, so the
@@ -23,7 +25,9 @@ September 2026, nothing implemented yet:
 
 The API-token surface on `/user` is the nearest existing thing and is not being replaced: it already
 performs the "what does this caller hold" read to compute token scopes, then discards the result
-unrendered.
+unrendered. Keycloak is the identity provider only, so in Keycloak deployments that read, a Keycloak
+permission request, has no audience to ask, and API tokens are postponed until after Usher's
+integration.
 
 ### Move off Next.js; extract a generic Overture UI component library from this repo
 Two linked initiatives: framework migration off Next.js (no replacement chosen yet, still open), and extracting a generic, reusable Overture UI component library published from this repo as its own package(s). Component foundation decided, August 2026: shadcn. Full reasoning, alternatives considered, and the packaging requirements a published UI package has to meet: `.dev/docs/atlas/roadmap/ui-component-library.md`. Storybook (component development/showcase in isolation, not a test runner) is a natural fit once this actually starts, worth deciding then, not before.

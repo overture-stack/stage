@@ -47,6 +47,15 @@ export const AUTH_PROVIDER = {
 	KEYCLOAK: 'keycloak',
 };
 
+/** Marks a session whose Keycloak renewal failed. Such a session holds no tokens and is refused server-side. */
+export const SESSION_ENDED = 'SessionEnded';
+
+/**
+ * Response header marking the protected proxy's own answer that the session has ended. The proxy withholds it
+ * from upstream responses, so only Stage can send it.
+ */
+export const SESSION_ENDED_HEADER = 'x-stage-session';
+
 const ARRANGER_SEARCH = 'arranger-search';
 const PROXY_API_PATH = '/api';
 const PROXY_PROTECTED_API_PATH = '/api/protected';

@@ -107,8 +107,9 @@ Stage is the front-end scaffolding for an Overture portal. Its explorer page is 
             - **Auth Variables**
 
                - `NEXT_PUBLIC_AUTH_PROVIDER`: Selects the identity provider, either `keycloak` or `ego`. Left empty here: this stack ships no identity provider, and Stage hides its login and profile controls when this is unset. To develop against Keycloak, set this to `keycloak`, populate the `NEXT_PUBLIC_KEYCLOAK_*` variables and `KEYCLOAK_CLIENT_SECRET` from the template, and supply a Keycloak instance yourself.
-               - `ACCESSTOKEN_ENCRYPTION_SECRET`: Defines the secret used to encrypt access tokens, enhancing security by preventing easy decoding of intercepted tokens.
-               - `SESSION_ENCRYPTION_SECRET`: Specifies the secret used to encrypt session cookies, protecting sensitive information stored in the cookie from unauthorized access.
+               - `ACCESSTOKEN_ENCRYPTION_SECRET`: Encrypts the EGO token in an EGO session. Used only when `NEXT_PUBLIC_AUTH_PROVIDER` is `ego`.
+               - `SESSION_ENCRYPTION_SECRET`: Encrypts the session cookie. With Keycloak sign-in it must be a random value of at least 32 characters, or Stage refuses to start. The placeholder above is shorter, which this stack allows only because it runs without an identity provider.
+               - What each secret requires in a deployment, and what changing one costs: [Secrets](./secrets.md).
 
             - **Arranger Variables**
                - `NEXT_PUBLIC_ARRANGER_API_URL`: The URL of the Arranger GraphQL API. The `dev-services` stack publishes Arranger on port `5050`.

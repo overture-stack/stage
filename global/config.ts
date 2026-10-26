@@ -21,12 +21,21 @@
 
 import getNextConfig from 'next/config';
 
+// Keycloak's default SSO session idle limit.
+const DEFAULT_SESSION_IDLE_TIMEOUT_SECONDS = 30 * 60;
+
+const positiveWholeNumber = (value: string | undefined, fallback: number): number => {
+	const parsed = Number(value);
+	return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+};
+
 export const getConfig = () => {
 	const publicConfig: { [k: string]: string } = getNextConfig()?.publicRuntimeConfig || {};
 
 	return {
 		ACCESSTOKEN_ENCRYPTION_SECRET: process.env.ACCESSTOKEN_ENCRYPTION_SECRET || 'super_secret',
 		KEYCLOAK_CLIENT_SECRET: process.env.KEYCLOAK_CLIENT_SECRET || '',
+		NEXTAUTH_URL: process.env.NEXTAUTH_URL_INTERNAL || process.env.NEXTAUTH_URL || '',
 		NEXT_PUBLIC_ADMIN_EMAIL: publicConfig.NEXT_PUBLIC_ADMIN_EMAIL,
 		NEXT_PUBLIC_ARRANGER_API: publicConfig.NEXT_PUBLIC_ARRANGER_API || 'http://localhost:5050',
 		NEXT_PUBLIC_ARRANGER_CATALOGUES: publicConfig.NEXT_PUBLIC_ARRANGER_CATALOGUES || '',
@@ -49,9 +58,14 @@ export const getConfig = () => {
 		NEXT_PUBLIC_SSO_PROVIDERS: publicConfig.NEXT_PUBLIC_SSO_PROVIDERS || '',
 		NEXT_PUBLIC_UI_VERSION: publicConfig.NEXT_PUBLIC_UI_VERSION || '',
 		SESSION_ENCRYPTION_SECRET: process.env.SESSION_ENCRYPTION_SECRET || '',
+		SESSION_IDLE_TIMEOUT_SECONDS: positiveWholeNumber(
+			process.env.SESSION_IDLE_TIMEOUT_SECONDS,
+			DEFAULT_SESSION_IDLE_TIMEOUT_SECONDS,
+		),
 	} as {
 		ACCESSTOKEN_ENCRYPTION_SECRET: string;
 		KEYCLOAK_CLIENT_SECRET: string;
+		NEXTAUTH_URL: string;
 		NEXT_PUBLIC_ADMIN_EMAIL: string;
 		NEXT_PUBLIC_AUTH_PROVIDER: string;
 		NEXT_PUBLIC_ARRANGER_API: string;
@@ -71,5 +85,6 @@ export const getConfig = () => {
 		NEXT_PUBLIC_SSO_PROVIDERS: string;
 		NEXT_PUBLIC_UI_VERSION: string;
 		SESSION_ENCRYPTION_SECRET: string;
+		SESSION_IDLE_TIMEOUT_SECONDS: number;
 	};
 };

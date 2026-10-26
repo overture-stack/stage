@@ -1,9 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
 import httpProxy from 'http-proxy';
 
-import { getAuthOptions } from '../auth/[...nextauth]';
 import { getConfig } from '@/global/config';
+import {
+	answerSessionEnded,
+	failProxyResponse,
+	getProxyAuthorization,
+	relayProxyResponse,
+} from '@/global/utils/protectedProxyAuth';
 import {
 	INTERNAL_API_PROXY,
 	KEYCLOAK_API_KEY_ENDPOINT,
@@ -11,10 +15,14 @@ import {
 	EGO_API_KEY_ENDPOINT,
 	EGO_SCOPES_ENDPOINT,
 } from '@/global/utils/constants';
-import { decryptContent } from '@/global/utils/crypt';
 import { removeFromPath, SSLSecured } from '@/global/utils/proxyUtils';
 
 const proxy = httpProxy.createProxyServer();
+proxy.on('proxyRes', (proxyResponse, req, res) => {
+	relayProxyResponse(proxyResponse, req as NextApiRequest, res as NextApiResponse).catch((error) =>
+		failProxyResponse(res as NextApiResponse, error, 'proxy.relay_failed'),
+	);
+});
 
 const { NEXT_PUBLIC_ARRANGER_API } = getConfig();
 
@@ -52,12 +60,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 	req.url = path;
 
-	const session = await getServerSession(req, res, getAuthOptions(req));
+	const proxyAuthorization = await getProxyAuthorization(req, res);
+	if (proxyAuthorization.status === 'refused') {
+		return answerSessionEnded(res);
+	}
+	if (proxyAuthorization.status === 'unavailable') {
+		return res.status(503).json({ error: 'identity_provider_unavailable' });
+	}
 
 	console.info(`protected proxy - proxing to target:${target} path:${path}`);
 
-	if (session?.account?.accessToken) {
-		req.headers['Authorization'] = 'Bearer ' + decryptContent(session?.account?.accessToken);
+	if (proxyAuthorization.authorization) {
+		req.headers['Authorization'] = proxyAuthorization.authorization;
 	}
 
 	// Don't forward cookies to the API:
@@ -70,11 +84,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			target,
 			changeOrigin: true,
 			secure: SSLSecured,
+			selfHandleResponse: true,
 		},
-		(err) => {
-			console.error(`Proxy error URL: ${req.url}. Error: ${JSON.stringify(err)}`);
-
-			return res.status(500).json(err);
-		},
+		(error) => failProxyResponse(res, error, 'proxy.upstream_unreachable'),
 	);
 }

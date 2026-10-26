@@ -37,6 +37,7 @@ import defaultTheme from '../../theme';
 import { Checkmark } from '../../theme/icons';
 import { AccessLevel, parseScope, ScopeObj } from '../../../global/utils/egoTokenUtils';
 import ErrorNotification from '../../ErrorNotification';
+import { signOutIfSessionEnded } from '@/global/utils/signOutIfSessionEnded';
 
 import sleep from '../../utils/sleep';
 import DMSAdminContact, { GenericHelpMessage } from '../../DMSAdminContact';
@@ -168,6 +169,7 @@ const ApiTokenInfo = () => {
 			  })
 					.then((res) => {
 						if (res.status !== 200) {
+							signOutIfSessionEnded(res);
 							setRequestError({ type: ApiTokenErrorType.SCOPES_ERROR, statusCode: res.status });
 							throw new Error(`${res.status}: ${ApiTokenErrorType.SCOPES_ERROR}`);
 						}
@@ -184,6 +186,7 @@ const ApiTokenInfo = () => {
 			  )
 					.then((res) => {
 						if (res.status !== 200) {
+							signOutIfSessionEnded(res);
 							setRequestError({ type: ApiTokenErrorType.SCOPES_ERROR, statusCode: res.status });
 							throw new Error(`${res.status}: ${ApiTokenErrorType.SCOPES_ERROR}`);
 						}
@@ -222,6 +225,7 @@ const ApiTokenInfo = () => {
 				return fetch(fullUrlApiKeyService, { method: 'POST' })
 					.then((res) => {
 						if (res.status !== 200) {
+							signOutIfSessionEnded(res);
 							setRequestError({
 								type: ApiTokenErrorType.GENERATE_TOKEN_ERROR,
 								statusCode: res.status,
@@ -253,6 +257,7 @@ const ApiTokenInfo = () => {
 			})
 				.then((res) => {
 					if (res.status !== 200) {
+						signOutIfSessionEnded(res);
 						setRequestError({ type: ApiTokenErrorType.REVOKE_TOKEN_ERROR, statusCode: res.status });
 						throw new Error(`${res.status}: ${ApiTokenErrorType.REVOKE_TOKEN_ERROR}`);
 					}
@@ -306,6 +311,7 @@ const ApiTokenInfo = () => {
 			fetch(urlJoin(apiKeyEndpoint, `?${searchParam}`), { method: 'GET' })
 				.then((res) => {
 					if (res.status !== 200) {
+						signOutIfSessionEnded(res);
 						setRequestError({ type: ApiTokenErrorType.FETCH_TOKENS_ERROR, statusCode: res.status });
 						throw new Error(`${res.status}: ${ApiTokenErrorType.FETCH_TOKENS_ERROR}`);
 					}
@@ -394,10 +400,6 @@ const ApiTokenInfo = () => {
 				>
 					<ErrorNotification
 						size="sm"
-						css={css`
-							background-color: ${theme.colors.error_1};
-							color: ${theme.colors.accent_dark};
-						`}
 						dismissible
 						onDismiss={() => setRequestError(null)}
 					>

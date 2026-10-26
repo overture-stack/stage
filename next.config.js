@@ -6,10 +6,14 @@ const withPlugins = require('next-compose-plugins');
 const { patchWebpackConfig: patchForGlobalCSS } = require('next-global-css');
 const withTranspileModules = require('next-transpile-modules')([]);
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_SERVER } = require('next/constants');
+
+const { assertAuthSecrets } = require('./global/utils/authSecrets');
+
 /**
  * @type {import('next').NextConfig}
  **/
-module.exports = withPlugins([withTranspileModules], {
+const nextConfig = withPlugins([withTranspileModules], {
 	webpack: (config, options) => {
 		// These 'react' related configs are added to enable linking packages in development
 		// (e.g. Arranger), and not get the "broken Hooks" warning.
@@ -66,3 +70,11 @@ module.exports = withPlugins([withTranspileModules], {
 		esmExternals: 'loose',
 	},
 });
+
+// Secrets are injected when the server starts, not when the image is built, so only server phases check them.
+module.exports = (phase, context) => {
+	if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_SERVER) {
+		assertAuthSecrets(process.env);
+	}
+	return nextConfig(phase, context);
+};

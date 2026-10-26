@@ -21,8 +21,8 @@
 
 import React, { createContext, useEffect, useState } from 'react';
 
-import { AUTH_PROVIDER } from '../utils/constants';
-import { ProviderType, UserStatus, UserType, UserWithId } from '../../global/types';
+import { userFromSession } from '../utils/sessionState';
+import { UserWithId } from '../../global/types';
 import { getConfig } from '../config';
 
 type T_AuthContext = {
@@ -48,29 +48,8 @@ export const AuthProvider = ({
 	const [user, setUser] = useState<UserWithId>();
 
 	useEffect(() => {
-		if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK && session?.account) {
-			const newUser: UserWithId = {
-				id: session?.user?.id,
-				email: session?.user?.email,
-				type: UserType.USER,
-				status: UserStatus.APPROVED,
-				firstName: session?.user?.firstName,
-				lastName: session?.user?.lastName,
-				createdAt: 0,
-				lastLogin: 0,
-				providerType: ProviderType.KEYCLOAK,
-				providerSubjectId: '',
-				scope: session?.scopes,
-			};
-			setUser(newUser);
-		} else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO && session?.user) {
-			const newUser: UserWithId = {
-				...session?.user,
-				scope: session?.scopes,
-			};
-			setUser(newUser);
-		}
-	}, [session]);
+		setUser(userFromSession(NEXT_PUBLIC_AUTH_PROVIDER, session));
+	}, [NEXT_PUBLIC_AUTH_PROVIDER, session]);
 
 	const authData = {
 		user,

@@ -35,7 +35,10 @@ const KeycloakLogo = ({
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			id="Guides"
-			viewBox="0 230 600 130"
+			// Frames the square mark at the left of Keycloak's wordmark, which is too wide to read in an icon slot.
+			viewBox="17 236 142 128"
+			width={width}
+			height={height}
 			css={css`
 				.cls-1 {
 					fill: none;
@@ -283,6 +286,7 @@ const KeycloakLogo = ({
 				.cls-82 {
 					fill: #008aaa;
 				}
+				${style}
 			`}
 		>
 			<defs>

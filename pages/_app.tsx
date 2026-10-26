@@ -21,9 +21,9 @@
 
 import Root from '../components/Root';
 import { AppContext } from 'next/app';
-import { SessionProvider, getSession } from 'next-auth/react';
+import { SessionProvider, signOut, useSession } from 'next-auth/react';
 
-import { AUTH_PROVIDER, LOGIN_PATH } from '../global/utils/constants';
+import { AUTH_PROVIDER, LOGIN_PATH, SESSION_ENDED } from '../global/utils/constants';
 import { PageWithConfig } from '../global/utils/pages/types';
 import { useEffect } from 'react';
 import Router from 'next/router';
@@ -31,6 +31,45 @@ import getInternalLink from '../global/utils/getInternalLink';
 import { isValidJwt } from '../global/utils/egoTokenUtils';
 import { getConfig } from '../global/config';
 import { decryptContent } from '@/global/utils/crypt';
+import { readPageSession } from '@/global/utils/readPageSession';
+import { sessionAction } from '@/global/utils/sessionState';
+
+const isSessionUsable = (authProvider: string, session: any): boolean => {
+	if (authProvider === AUTH_PROVIDER.EGO) {
+		return Boolean(session) && isValidJwt(decryptContent(session?.account?.accessToken));
+	}
+	if (authProvider === AUTH_PROVIDER.KEYCLOAK) {
+		return Boolean(session);
+	}
+	return true;
+};
+
+// Follows NextAuth's live session, which changes when another tab signs out and when the tab regains focus,
+// rather than the session read when the page loaded.
+const SessionGuard = ({ isPublicPage }: { isPublicPage: boolean }) => {
+	const { data: session, status } = useSession();
+	const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
+
+	useEffect(() => {
+		const action = sessionAction({
+			hasEnded: session?.error === SESSION_ENDED,
+			isPublicPage,
+			isUsable: isSessionUsable(NEXT_PUBLIC_AUTH_PROVIDER, session),
+			status,
+		});
+		if (action === 'sign-out') {
+			signOut({ callbackUrl: `${getInternalLink({ path: LOGIN_PATH })}?session_expired=true` });
+		}
+		if (action === 'redirect-to-login') {
+			Router.push({
+				pathname: getInternalLink({ path: LOGIN_PATH }),
+				query: { session_expired: true },
+			});
+		}
+	}, [isPublicPage, NEXT_PUBLIC_AUTH_PROVIDER, session, status]);
+
+	return null;
+};
 
 const DMSApp = ({
 	Component,
@@ -43,33 +82,12 @@ const DMSApp = ({
 	ctx: any;
 	session: any;
 }) => {
-	const { NEXT_PUBLIC_AUTH_PROVIDER } = getConfig();
-	useEffect(() => {
-		if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.EGO) {
-			if (
-				(!session || !isValidJwt(decryptContent(session?.account?.accessToken))) &&
-				!Component.isPublic
-			) {
-				// redirect to logout when token is expired/missing only if user is on a non-public page
-				Router.push({
-					pathname: getInternalLink({ path: LOGIN_PATH }),
-					query: { session_expired: true },
-				});
-			}
-		} else if (NEXT_PUBLIC_AUTH_PROVIDER === AUTH_PROVIDER.KEYCLOAK) {
-			if (!session && !Component.isPublic) {
-				Router.push({
-					pathname: getInternalLink({ path: LOGIN_PATH }),
-					query: { session_expired: true },
-				});
-			}
-		}
-	}),
-		[session];
-
 	return (
+		// No refetchInterval: every session read extends the session's idle limit, so a timed re-read would keep an
+		// unattended tab's session alive until Keycloak's maximum. Tabs update on focus, navigation and sign-out instead.
 		<SessionProvider session={session}>
-			<Root pageContext={ctx} session={session}>
+			<SessionGuard isPublicPage={Boolean(Component.isPublic)} />
+			<Root pageContext={ctx}>
 				<Component {...pageProps} />
 			</Root>
 		</SessionProvider>
@@ -78,7 +96,7 @@ const DMSApp = ({
 
 DMSApp.getInitialProps = async ({ ctx, Component }: AppContext & { Component: PageWithConfig }) => {
 	const pageProps = await Component.getInitialProps({ ...ctx });
-	const session = await getSession(ctx);
+	const session = await readPageSession(ctx);
 	return {
 		ctx: {
 			pathname: ctx.pathname,

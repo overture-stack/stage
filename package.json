@@ -72,5 +72,13 @@
 	},
 	"engines": {
 		"npm": ">=8.3.0"
+	},
+	"jest": {
+		"moduleNameMapper": {
+			"^@/(.*)$": "<rootDir>/$1"
+		},
+		"transformIgnorePatterns": [
+			"/node_modules/(?!url-join/)"
+		]
 	}
 }
