@@ -1,4 +1,5 @@
-FROM node:lts-alpine
+# Pinned to Node 24: do not update. Next.js 12 bundles a jsonwebtoken that cannot load on Node 26 or later
+FROM node:24-alpine
 
 ARG ASSET_PREFIX
 ENV ASSET_PREFIX $ASSET_PREFIX
